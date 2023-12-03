@@ -6,7 +6,7 @@ import usernameImage from '../images/username.png';
 
 const LoginComponent = () => {
   return (
-    <div className="body"> {/* Use className instead of style for class-based styles */}
+    <div className="login-body"> 
       <div className="login-div">
         <div className="login-inner-div">
           <img src={logoImage} alt="logo" className="logo" />
