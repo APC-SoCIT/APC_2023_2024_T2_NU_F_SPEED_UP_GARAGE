@@ -1,0 +1,164 @@
+:root {
+    --light: #f6f6f9;
+    --primary: #1976D2;
+    --red: #b70202;
+    --light-primary: #CFE8FF;
+    --grey: #eee;
+    --dark-grey: #AAAAAA;
+    --dark: #363949;
+    --danger: #D32F2F;
+	--light-danger: #FECDD3;
+    --warning: #FBC02D;
+    --light-warning: #FFF2C6;
+    --success: #388E3C;
+    --light-success: #BBF7D0;
+    --hover: #e0dddd;
+    --dark-hover: #232428;
+    --ai-message: #445264;
+    --dark-chat: #2c2f33;
+    --secodary-dark-char: #363949;
+    --border: #555;
+    --white: #fff;
+}
+
+.notif {
+    position: relative;
+}
+
+.notification-bar {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    min-width: 200px;
+    margin-top: 5px;
+    overflow: hidden;
+    z-index: 1;
+    transform-origin: top right;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.notification {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.notification:hover {
+    background-color: #f9f9f9;
+}
+
+.notif.active .notification-bar {
+    display: block;
+    opacity: 1;
+    transform: translateY(8px) scaleY(1);
+}
+
+body.dark .notification-bar {
+    background-color: #363949;
+    color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #333333;
+}
+
+body.dark .notification {
+    background-color: #2c2f33;
+    color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #333232;
+}
+
+body.dark .notification:hover {
+    background-color: #232428;
+}
+
+body.dark .notif.active .notification-bar {
+    transform: translateY(8px) scaleY(1);
+    opacity: 1;
+}
+
+/* Add these styles for dark mode to the notification count */
+body.dark .count {
+    background-color: #555;
+    color: #fff;
+    border: 2px solid #555;
+}
+
+/* End of Notification bar */
+
+/* This is for Profile */
+
+/* Add styles for the profile dropdown menu */
+.profile {
+    position: relative;
+}
+
+.profile-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    min-width: 200px;
+    overflow: hidden;
+    z-index: 1;
+    transform-origin: top right;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.menu-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Show the profile menu when the profile icon is clicked */
+.profile.active .profile-menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(8px) scaleY(1);
+}
+
+body.dark .profile-menu {
+    background-color: #363949;
+    color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #333333;
+}
+
+body.dark .menu-item {
+    background-color: #2c2f33;
+    color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #333232;
+}
+
+body.dark .menu-item:hover {
+    background-color: #232428;
+}
+
+body.dark .profile.active .profile-menu {
+    transform: translateY(8px) scaleY(1);
+    opacity: 1;
+}
