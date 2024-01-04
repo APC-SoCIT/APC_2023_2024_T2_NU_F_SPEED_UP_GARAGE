@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/users.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <title>Users</title>
 </head>
@@ -27,7 +29,7 @@
             <li class="active"><a href="/users"><i class='bx bx-group'></i>Users</a></li>
             <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
             <li class="logout">
-            <a href="/welcome" class="logout"><i class='bx bx-log-out-circle'></i>Logout</a>
+                <a href="/welcome" class="logout"><i class='bx bx-log-out-circle'></i>Logout</a>
             </li>
         </ul>
     </div>
@@ -47,16 +49,16 @@
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
             <a href="#" class="notif" onclick="toggleNotification()">
-            <i class='bx bx-bell'></i>
-            <span class="count">12</span>
-            <!-- Notification bar -->
-            <div class="notification-bar" id="notificationBar">
-                <!-- Notifications go here -->
-                <div class="notification">Notification 1</div>
-                <div class="notification">Notification 2</div>
-                <div class="notification">Notification 3</div>
-                <!-- Add more notifications as needed -->
-            </div>
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+                <!-- Notification bar -->
+                <div class="notification-bar" id="notificationBar">
+                    <!-- Notifications go here -->
+                    <div class="notification">Notification 1</div>
+                    <div class="notification">Notification 2</div>
+                    <div class="notification">Notification 3</div>
+                    <!-- Add more notifications as needed -->
+                </div>
             </a>
             <a href="#" class="profile" onclick="toggleProfileMenu()">
                 <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
@@ -101,56 +103,104 @@
                 </div>
             </div>
 
-        </main>
+            <div class="user-table-container">
+            <div class="user-filter-container">
+                <div class="add-user-container">
+                    <button class="add-user-btn" onclick="showAddUserModal()">+ Add User</button>
+                    <div class="dropdown-container">
+                        <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
+                            <option value="">Select Role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Inventory Clerk">Inventory Clerk</option>
+                            <option value="Cashier">Cashier</option>
+                        </select>
 
-        <div class="table-container">
-        <table class="inventory-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Example rows; replace with server-side generated rows -->
-                    <tr data-id="1">
-                        <td>1</td>
-                        <td>Product A</td>
-                        <td>Category A</td>
-                        <td><span class="quantity">100</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                        <td><span class="price">$10.00</span><input type="text" class="edit-price" style="display:none;"></td>
-                        <td>
-                            <button class="edit-btn" onclick="editRow(1)">Edit</button>
-                            <button class="save-btn" onclick="saveRow(1)" style="display:none;">Save</button>
-                            <button class="cancel-btn" onclick="cancelEdit(1)" style="display:none;">Cancel</button>
-                            <button class="delete-btn" onclick="deleteRow(1)">Delete</button>
-                        </td>
-                    </tr>
-                    <tr data-id="2">
-                        <td>2</td>
-                        <td>Product B</td>
-                        <td>Category B</td>
-                        <td><span class="quantity">50</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                        <td><span class="price">$20.00</span><input type="text" class="edit-price" style="display:none;"></td>
-                        <td>
-                            <button class="edit-btn" onclick="editRow(2)">Edit</button>
-                            <button class="save-btn" onclick="saveRow(2)" style="display:none;">Save</button>
-                            <button class="cancel-btn" onclick="cancelEdit(2)" style="display:none;">Cancel</button>
-                            <button class="delete-btn" onclick="deleteRow(2)">Delete</button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows as needed -->
-                </tbody>
-            </table>
+                        <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()"
+                            id="searchInput">
+                    </div>
+                </div>
+            </div>
+
+            <div class="entries-dropdown">
+                <label class="entries-label" for="entries-per-page">Show</label>
+                <select class="entries-per-page" id="entries-per-page">
+                    <option class="entries-option" value="5">5</option>
+                    <option class="entries-option" value="10">10</option>
+                    <option class="entries-option" value="20">20</option>
+                    <option class="entries-option" value="50">50</option>
+                </select>
+                <label class="entries-label" for="entries-per-page">entries</label>
+            </div>
+
+            <div class="table-container">
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Role</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryTableBody">
+                        <tr data-id="1">
+                            <td class="status">Inactive</td>
+                            <td>1</td>
+                            <td class="username">cinnamonesurena</td>
+                            <td class="full-name">James Vincent T. Esurena</td>
+                            <td class="user-role">Cashier</td>
+                            <td class="email">esurenajames@gmail.com</td>
+                            <td>
+                                <input type="password" class="password" value="password" readonly>
+                            </td>
+                            <td>
+                                <button class="edit-btn" onclick="editRow(event)">Edit</button>
+                                <button class="delete-btn" onclick="deleteRow()">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <span class="pagination-link" onclick="changePage(-1)"><</span>
+                <span class="pagination-link" data-page="1" onclick="goToPage(1)">1</span>
+                <span class="pagination-link" data-page="2" onclick="goToPage(2)">2</span>
+                <span class="pagination-link" data-page="3" onclick="goToPage(3)">3</span>
+                <span class="pagination-link" data-page="4" onclick="goToPage(4)">4</span>
+                <span class="pagination-link" data-page="5" onclick="goToPage(5)">5</span>
+                <span class="pagination-link" onclick="changePage(1)">></span>
+            </div>
+        </div>
+
+        <div class="edit-user-modal" id="editUserModal">
+            <div class="edit-user-modal-content">
+                <h2 class="edit-user-modal-title">Edit User Details</h2>
+                <label for="userUsername">Username:</label>
+                <input type="text" id="userUsername" name="userUsername">
+                <label for="UserFullName">Full Name:</label>
+                <input type="text" id="UserFullName" name="UserFullName">
+                <label for="UserRole">Role</label>
+                <input type="text" id="UserRole" name="UserRole">
+                <label for="userEmail">Email:</label>
+                <input type="text" id="userEmail" name="userEmail">
+                <label for="userPassword">Password:</label>
+                <input type="password" id="userPassword" name="userPassword">
+                <!-- Add more fields as needed -->
+                <div class="modal-button-container">
+                    <button class="modal-save-button" onclick="saveUserChanges()">Save</button>
+                    <button class="modal-close-button" onclick="cancelUserEditModal()">Cancel</button>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    </div>
+    </main>
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
 </body>
