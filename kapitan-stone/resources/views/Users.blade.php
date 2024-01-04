@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/users.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <title>Users</title>
 </head>

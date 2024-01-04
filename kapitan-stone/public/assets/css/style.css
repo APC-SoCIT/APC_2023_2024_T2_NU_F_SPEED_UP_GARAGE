@@ -858,6 +858,36 @@ body.dark .search-bar i {
     font-weight: 600;
 }
 
+.inventory-table .password {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: var(--light); /* Match the background color of the table */
+    color: var(--dark); /* Match the text color of the table */
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+/* Style for readonly password input */
+.inventory-table .password[readonly] {
+    border-color: transparent; 
+    background-color: transparent; 
+    color: var(--dark); 
+    font-size: 14px;
+}
+
+/* Hover effect for readonly password input */
+.inventory-table .password[readonly]:hover {
+    cursor: not-allowed; 
+}
+
+/* Focus effect for readonly password input */
+.inventory-table .password[readonly]:focus {
+    outline: none; 
+}
+
 .inventory-table th,
 .inventory-table td {
     border: 1px solid #ddd;
@@ -868,6 +898,13 @@ body.dark .search-bar i {
 .inventory-table th {
     background-color: #3498db;
     color: white;
+}
+
+.inventory-table td:nth-child(7),
+.inventory-table th:nth-child(7) {
+    /* Your styles for the seventh column here */
+    width: 10%;
+    white-space: nowrap;
 }
 
 .inventory-table th:last-child,
