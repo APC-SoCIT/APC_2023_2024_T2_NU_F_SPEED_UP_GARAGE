@@ -16,3 +16,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::view('admin','Admin');
+Route::view('inventory','Inventory');
+Route::view('stocks','Stocks');
+Route::view('products','Products');
+Route::view('reports','Reports');
+Route::view('pos','POS');
+Route::view('users','Users');
+Route::view('settings','Settings');
+Route::view('welcome','Welcome');
+
+
+use App\Http\Controllers\AuthController;
+
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+

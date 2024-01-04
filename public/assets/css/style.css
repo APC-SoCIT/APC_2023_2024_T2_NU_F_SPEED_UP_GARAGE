@@ -1,0 +1,1603 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --light: #f6f6f9;
+    --primary: #1976D2;
+    --red: #b70202;
+    --light-primary: #CFE8FF;
+    --grey: #eee;
+    --dark-grey: #AAAAAA;
+    --dark: #363949;
+    --danger: #D32F2F;
+	--light-danger: #FECDD3;
+    --warning: #FBC02D;
+    --light-warning: #FFF2C6;
+    --success: #388E3C;
+    --light-success: #BBF7D0;
+    --hover: #e0dddd;
+    --dark-hover: #232428;
+    --ai-message: #445264;
+    --dark-chat: #2c2f33;
+    --secodary-dark-char: #363949;
+    --border: #555;
+    --white: #fff;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.bx{
+    font-size: 1.7rem;
+}
+
+a{
+    text-decoration: none;
+}
+
+li{
+    list-style: none;
+}
+
+html{
+    overflow-x: hidden;
+}
+
+body.dark{
+    --light: #181a1e;
+    --grey: #25252c;
+    --dark: #fbfbfb
+}
+
+body{
+    background: var(--grey);
+    overflow-x: hidden;
+}
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--light);
+    width: 230px;
+    height: 100%;
+    z-index: 1000;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar::-webkit-scrollbar{
+    display: none;
+}
+
+.sidebar.close{
+    width: 60px;
+}
+
+.sidebar .logo{
+    font-size: 18px;
+    font-weight: 600;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    color: var(--red);
+    z-index: 500;
+    padding-bottom: 20px;
+    box-sizing: content-box;
+}
+
+.sidebar .logo-image{
+    width: 60px;
+}
+
+.sidebar .logo .logo-name span{
+    color: var(--dark);
+}
+
+.sidebar .logo .bx{
+    min-width: 60px;
+    display: flex;
+    justify-content: center;
+    font-size: 2.2rem;
+}
+
+.sidebar .side-menu{
+    width: 100%;
+    margin-top: 48px;
+}
+
+.sidebar .side-menu li{
+    height: 48px;
+    background: transparent;
+    margin-left: 6px;
+    border-radius: 48px 0 0 48px;
+    padding: 4px;
+}
+
+.sidebar .side-menu li a{
+    width: 100%;
+    height: 100%;
+    background: var(--light);
+    display: flex;
+    align-items: center;
+    border-radius: 48px;
+    font-size: 16px;
+    color: var(--dark);
+    white-space: nowrap;
+    overflow-x: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar .side-menu li:hover a {
+    background-color: var(--hover);
+}
+
+body.dark .sidebar .side-menu li:hover a {
+    background-color: #232428;
+}
+
+.sidebar .side-menu li.active a{
+    color: var(--red);
+}
+
+.sidebar.close .side-menu li a{
+    width: calc(48px - (4px * 2));
+    transition: all 0.3s ease;
+}
+
+.sidebar .side-menu li a .bx{
+    min-width: calc(60px - ((4px + 6px) * 2));
+    display: flex;
+    font-size: 1.6rem;
+    justify-content: center;
+}
+
+.sidebar .side-menu li.logout {
+    position: absolute;
+    bottom: 20px; 
+    width: 100%;
+}
+
+.sidebar .side-menu li a.logout {
+    color: var(--red);
+}
+
+.content{
+    position: relative;
+    width: calc(100% - 230px);
+    left: 230px;
+    transition: all 0.3s ease;
+    
+}
+
+.sidebar.close~.content{
+    width: calc(100% - 60px);
+    left: 60px;
+}
+
+.content nav{
+    height: 56px;
+    background: var(--light);
+    padding: 0 24px 0 0;
+    display: flex;
+    align-items: center;
+    grid-gap: 24px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.content nav::before{
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: -40px;
+    left: 0;
+    border-radius: 50%;
+    box-shadow: -20px -20px 0 var(--light);
+}
+
+.content nav a{
+    color: var(--dark);
+}
+
+.content nav .bx.bx-menu{
+    cursor: pointer;
+    color: var(--dark);
+}
+
+.content nav form{
+    max-width: 400px;
+    width: 100%;
+    justify-content: center;
+    margin-right: auto;
+}
+
+.content nav form .form-input{
+    display: flex;
+    align-items: center;
+    height: 36px;
+}
+
+.content nav form .form-input input{
+    flex-grow: 1;
+    padding: 0 16px;
+    height: 100%;
+    border: none;
+    background: var(--grey);
+    border-radius: 36px 0 0 36px;
+    outline: none;
+    width: 100%;
+    color: var(--dark);
+}
+
+.content nav form .form-input button{
+    width: 80px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--primary);
+    color: var(--light);
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-radius: 0 36px 36px 0;
+    cursor: pointer;
+}
+
+.content nav .notif{
+    font-size: 20px;
+    position: relative;
+}
+
+.content nav .notif .count{
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    background: var(--danger);
+    border-radius: 50%;
+    color: var(--light);
+    border: 2px solid var(--light);
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content nav .profile img{
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.content nav .theme-toggle{
+    display: block;
+    min-width: 50px;
+    height: 25px;
+    background: var(--grey);
+    cursor: pointer;
+    position: relative;
+    border-radius: 25px;
+}
+
+.content nav .theme-toggle::before{
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    bottom: 2px;
+    width: calc(25px - 4px);
+    background: var(--primary);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.content nav #theme-toggle:checked+.theme-toggle::before{
+    left: calc(100% - (25px - 4px) - 2px);
+}
+
+.content main{
+    width: 100%;
+    padding: 36px 24px;
+    max-height: calc(100vh - 56px);
+}
+
+.content main .header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 16px;
+    flex-wrap: wrap;
+}
+
+.content main .header .left h1{
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+.content main .header .left .breadcrumb{
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+}
+
+.content main .header .left .breadcrumb li{
+    color: var(--dark);
+    cursor: pointer;
+}
+
+.content main .header .left .breadcrumb li a{
+    color: var(--dark-grey);
+}
+
+.content main .header .left .breadcrumb li a.active{
+    color: var(--primary);
+
+}
+
+.content main .header .report{
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 36px;
+    background: var(--primary);
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 10px;
+    font-weight: 500;
+}
+
+.content main .insights{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-gap: 24px;
+    margin-top: 36px;
+}
+
+.content main .insights li{
+    padding: 24px;
+    background: var(--light);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    grid-gap: 24px;
+    cursor: pointer;
+}
+
+.content main .insights li .bx{
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content main .insights li:nth-child(1) .bx{
+    background: var(--light-primary);
+    color: var(--primary);
+}
+
+.content main .insights li:nth-child(2) .bx{
+    background: var(--light-warning);
+    color: var(--warning);
+}
+
+.content main .insights li:nth-child(3) .bx{
+    background: var(--light-success);
+    color: var(--success);
+}
+
+.content main .insights li:nth-child(4) .bx{
+    background: var(--light-danger);
+    color: var(--danger);
+}
+
+.content main .insights li .info h3{
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.content main .insights li .info p{
+    color: var(--dark);
+}
+
+.content main .bottom-data{
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 100%;
+    color: var(--dark);
+}
+
+.content main .bottom-data>div{
+    border-radius: 20px;
+    background: var(--light);
+    padding: 24px;
+    overflow-x: auto;
+}
+
+.content main .bottom-data .header{
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    margin-bottom: 24px;
+}
+
+.content main .bottom-data .header h3{
+    margin-right: auto;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.content main .bottom-data .header .bx{
+    cursor: pointer;
+}
+
+.content main .bottom-data .orders{
+    flex-grow: 1;
+    flex-basis: 500px;
+}
+
+.content main .bottom-data .orders table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.content main .bottom-data .orders table th{
+    padding-bottom: 12px;
+    font-size: 13px;
+    text-align: left;
+    border-bottom: 1px solid var(--grey);
+}
+
+.content main .bottom-data .orders table td{
+    padding: 16px 0;
+}
+
+.content main .bottom-data .orders table tr td:first-child{
+    display: flex;
+    align-items: center;
+    grid-gap: 12px;
+    padding-left: 6px;
+}
+
+.content main .bottom-data .orders table td img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.content main .bottom-data .orders table tbody tr{
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.content main .bottom-data .orders table tbody tr:hover{
+    background: var(--grey);
+}
+
+.content main .bottom-data .orders table tr td .status{
+    font-size: 10px;
+    padding: 6px 16px;
+    color: var(--light);
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+content main .bottom-data .orders table tr td .status.completed{
+    background: var(--success);
+}
+
+.content main .bottom-data .orders table tr td .status.process{
+    background: var(--primary);
+}
+
+.content main .bottom-data .orders table tr td .status.pending{
+    background: var(--warning);
+}
+
+.content main .bottom-data .reminders{
+    flex-grow: 1;
+    flex-basis: 300px;
+}
+
+.content main .bottom-data .reminders .task-list{
+    width: 100%;
+}
+
+.content main .bottom-data .reminders .task-list li{
+    width: 100%;
+    margin-bottom: 16px;
+    background: var(--grey);
+    padding: 14px 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content main .bottom-data .reminders .task-list li .task-title{
+    display: flex;
+    align-items: center;
+}
+
+.content main .bottom-data .reminders .task-list li .task-title p{
+    margin-left: 6px;
+}
+
+.content main .bottom-data .reminders .task-list li .bx{
+  cursor: pointer;  
+}
+
+.content main .bottom-data .reminders .task-list li.completed{
+    border-left: 10px solid var(--success);
+}
+
+.content main .bottom-data .reminders .task-list li.not-completed{
+    border-left: 10px solid var(--danger);
+}
+
+.content main .bottom-data .reminders .task-list li:last-child{
+   margin-bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar{
+        width: 200px;
+    }
+
+    .content{
+        width: calc(100% - 60px);
+        left: 200px;
+    }
+
+}
+
+@media screen and (max-width: 576px) {
+    
+    .content nav form .form-input input{
+        display: none;
+    }
+
+    .content nav form .form-input button{
+        width: auto;
+        height: auto;
+        background: transparent;
+        color: var(--dark);
+        border-radius: none;
+    }
+
+    .content nav form.show .form-input input{
+        display: block;
+        width: 100%;
+    }
+
+    .content nav form.show .form-input button{
+        width: 36px;
+        height: 100%;
+        color: var(--light);
+        background: var(--danger);
+        border-radius: 0 36px 36px 0;
+    }
+
+    .content nav form.show~.notif, .content nav form.show~.profile{
+        display: none;
+    }
+
+    .content main .insights {
+        grid-template-columns: 1fr;
+    }
+
+    .content main .bottom-data .header{
+        min-width: 340px;
+    }
+
+    .content main .bottom-data .orders table{
+        min-width: 340px;
+    }
+
+    .content main .bottom-data .reminders .task-list{
+        min-width: 340px;
+    }
+
+}
+
+/* this is for ai chat bot */
+
+.chat-icon {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.chat-window {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    background-color: #ffffff;
+    right: 20px;
+    width: 350px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.chat-header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.chat-header span {
+    margin-right: auto; /* Push the AI chat title to the left */
+}
+
+.chat-header .icons-container {
+    display: flex;
+}
+
+.chat-body {
+    padding: 10px;
+    height: 200px;
+    overflow-y: auto;
+    background-color: #f0efef;
+}
+
+.chat-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    outline: none;
+    border: none;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 8px;
+    margin-right: 10px;
+    outline: none;
+    border: solid;
+    border-radius: 10px;
+    border-width: 1px;
+    margin: 10px;
+    border-color: #929191;
+}
+
+.chat-input button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    display: inline-block; /* Make each message inline-block */
+}
+
+.user {
+    background-color: #3498db;
+    color: #fff;
+    text-align: right;
+}
+
+.ai {
+    background-color: #e0e0e0;
+    color: #000;
+    text-align: left;
+    margin-right: auto; /* Push messages to the left */
+}
+
+.minimize-icon{
+    cursor: pointer;
+}
+
+.close-icon {
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+body.dark .chat-window {
+    background-color: var(--secodary-dark-char);
+    border-color: var(--border);
+}
+
+body.dark .chat-header {
+    background-color: var(--secodary-dark-char);
+    color: var(--white);
+}
+
+body.dark .chat-body {
+    background-color: var(--dark-chat);
+    color: var(--white);
+}
+
+body.dark .chat-input input {
+    background-color: var(--dark-chat);
+    color: var(--white);
+    border: 1px solid #555;
+}
+
+body.dark .message.user{
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+body.dark .message.ai {
+    background-color: var(--ai-message);
+    color: var(--white);
+}
+
+@media screen and (max-width: 376px) {
+    .chat-window {
+        width: 270px; /* Adjust the width for smaller screens */
+    }
+    
+    .chat-header {
+        padding-right: 10px; /* Adjust spacing in the header */
+    }
+
+    .chat-header .minimize-icon,
+    .chat-header .close-icon {
+        font-size: 18px; /* Adjust icon size for smaller screens */
+    }
+
+    .message {
+        max-width: 90%; /* Further limit message width on smaller screens */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .chat-window {
+        width: 300px; /* Adjust the width for smaller screens */
+    }
+    
+    .chat-header {
+        padding-right: 10px; /* Adjust spacing in the header */
+    }
+
+    .chat-header .minimize-icon,
+    .chat-header .close-icon {
+        font-size: 18px; /* Adjust icon size for smaller screens */
+    }
+
+    .message {
+        max-width: 90%; /* Further limit message width on smaller screens */
+    }
+}
+
+/* Add a media query for tablet-sized screens (adjust the max-width as needed) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .chat-window {
+        width: 400px; /* Adjust the width for tablet-sized screens */
+    }
+
+    .chat-header {
+        padding-right: 20px; /* Adjust spacing in the header for tablets */
+    }
+
+    .chat-header .minimize-icon,
+    .chat-header .close-icon {
+        font-size: 24px; /* Adjust icon size for tablets */
+    }
+
+    .message {
+        max-width: 100%; /* Set max-width to 100% for messages on tablets */
+    }
+}
+
+/* This is for Notification bar */
+
+.notif {
+    position: relative;
+}
+
+.notification-bar {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    min-width: 200px;
+    margin-top: 5px;
+    overflow: hidden;
+    z-index: 1;
+    transform-origin: top right;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.notification {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.notification:hover {
+    background-color: #f9f9f9;
+}
+
+.notif.active .notification-bar {
+    display: block;
+    opacity: 1;
+    transform: translateY(8px) scaleY(1);
+}
+
+body.dark .notification-bar {
+    background-color: #363949;
+    color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #333333;
+}
+
+body.dark .notification {
+    background-color: #2c2f33;
+    color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #333232;
+}
+
+body.dark .notification:hover {
+    background-color: #232428;
+}
+
+body.dark .notif.active .notification-bar {
+    transform: translateY(8px) scaleY(1);
+    opacity: 1;
+}
+
+/* Add these styles for dark mode to the notification count */
+body.dark .count {
+    background-color: #555;
+    color: #fff;
+    border: 2px solid #555;
+}
+
+/* End of Notification bar */
+
+/* This is for Profile */
+
+/* Add styles for the profile dropdown menu */
+.profile {
+    position: relative;
+}
+
+.profile-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    min-width: 200px;
+    overflow: hidden;
+    z-index: 1;
+    transform-origin: top right;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.menu-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Show the profile menu when the profile icon is clicked */
+.profile.active .profile-menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(8px) scaleY(1);
+}
+
+body.dark .profile-menu {
+    background-color: #363949;
+    color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #333333;
+}
+
+body.dark .menu-item {
+    background-color: #2c2f33;
+    color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #333232;
+}
+
+body.dark .menu-item:hover {
+    background-color: #232428;
+}
+
+body.dark .profile.active .profile-menu {
+    transform: translateY(8px) scaleY(1);
+    opacity: 1;
+}
+
+/* End of Profile */
+
+/* This is for filter */
+
+.maintable-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-container {
+    margin-top: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Add a border between filter and table */
+}
+
+
+body.dark .filter-container {
+    border-color: #555; /* Border color in dark mode */
+}
+
+.add-product-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.add-product-btn {
+    padding: 12px 20px;
+    background-color: #2ecc71; /* Green color, you can change it */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-product-btn:hover {
+    background-color: #27ae60; /* Darker shade of green */
+}
+
+.category-dropdown,
+.brand-dropdown{
+    padding: 12px;
+    width: 250px; /* Set a fixed width for both category and brand dropdowns */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.search-bar {
+    padding: 12px;
+    width: 250px; /* Set a fixed width for both category and brand dropdowns */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+body.dark .category-dropdown,
+body.dark .brand-dropdown,
+body.dark .search-bar {
+    background-color: #333; /* Background color in dark mode */
+    color: #fff; /* Text color in dark mode */
+    border-color: var(--border); /* Border color in dark mode */
+    outline: none;
+}
+
+.category-dropdown:hover,
+.brand-dropdown:hover,
+.search-bar:hover {
+    border-color: #3498db; /* Highlight border on hover */
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.2); /* Add a subtle shadow on hover */
+}
+
+.search-bar {
+    position: relative;
+    outline: none;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: transparent; /* Set input background to transparent */
+    color: #333; /* Text color for input in dark mode */
+}
+
+body.dark .search-bar input {
+    color: #fff; /* Text color for input in dark mode */
+}
+
+.search-bar i {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s;
+    outline: none;
+}
+
+body.dark .search-bar i {
+    color: #fff; /* Icon color in dark mode */
+}
+
+.search-bar i:hover {
+    color: #3498db; /* Change icon color on hover */
+}
+
+@media screen and (max-width: 768px) {
+    .maintable-container {
+        padding: 10px; /* Adjusted padding for smaller screens */
+        left: 0;
+    }
+
+    .add-product-container {
+        flex-direction: column; /* Adjust to a column layout on small screens */
+    }
+
+    .add-product-btn {
+        margin-top: 10px; /* Add some spacing between button and inputs on small screens */
+        margin: 20px;
+        width: 100%;
+    }
+
+    .category-dropdown,
+    .brand-dropdown,
+    .search-bar {
+        width: 100%; /* Make inputs full-width on small screens */
+        margin-bottom: 10px; /* Add some spacing between inputs on small screens */
+    }
+
+    .search-bar input {
+        width: calc(100% - 30px); /* Adjust input width for icon */
+    }
+
+    .search-bar i {
+        top: 10px; /* Adjust icon position */
+        right: 10px; /* Adjust icon position */
+    }
+
+    .edit-btn,
+    .delete-btn {
+        margin-bottom: 5px; /* Add some spacing between buttons on small screens */
+    }
+}
+
+/* Your existing styles */
+
+/* ... (Your existing styles) ... */
+
+@media screen and (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+    }
+    .edit-btn,
+    .delete-btn {
+        display: block;
+        min-width: 100%; /* Set a minimum width to take up the full width */
+        box-sizing: border-box; /* Include padding and border in the width calculation */
+        margin-bottom: 10px; /* Add some space between the buttons */
+    }
+}
+
+@media screen and (max-width: 1098px) {
+    .table-container {
+        overflow-x: auto;
+    }
+    .edit-btn,
+    .delete-btn {
+        display: block;
+        min-width: 100%; /* Set a minimum width to take up the full width */
+        box-sizing: border-box; /* Include padding and border in the width calculation */
+        margin-bottom: 10px; /* Add some space between the buttons */
+    }
+}
+
+@media screen and (max-width: 1298px) {
+    .table-container {
+        overflow-x: auto;
+    }
+    .edit-btn,
+    .delete-btn {
+        display: block;
+        min-width: 100%; /* Set a minimum width to take up the full width */
+        box-sizing: border-box; /* Include padding and border in the width calculation */
+        margin-bottom: 10px; /* Add some space between the buttons */
+    }
+}
+
+/* This is the end for filter */
+
+/* This is for the table */
+
+.table-container {
+    width: 100%;
+    margin: 20px auto;
+    overflow-x: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.inventory-table {
+    width: 100%;
+    font-size: 14px;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--light);
+}
+
+/* Light mode styles */
+.status-out-of-stock {
+    color: var(--danger);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.status-low-stock {
+    color: var(--warning);
+    font-weight: 600;
+}
+
+.status-in-stock {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.inventory-table th,
+.inventory-table td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+}
+
+.inventory-table th {
+    background-color: #3498db;
+    color: white;
+}
+
+.inventory-table th:last-child,
+.inventory-table td:last-child {
+    width: 10%; /* Set a small width for the last column */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.edit-btn,
+.delete-btn {
+    width: 50%; /* Adjusted width for buttons */
+    min-width: 70px; /* Set a minimum width for the buttons */
+    box-sizing: border-box; /* Include padding in the width calculation */
+    cursor: pointer;
+    padding: 6px 10px; /* Adjusted padding for buttons */
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.edit-btn{
+    background-color: #27ae60;
+    color: #fff;
+}
+
+.delete-btn{
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.edit-btn:hover{
+    background-color: #36cf76;
+}
+
+.delete-btn:hover{
+    background-color: #f56353;
+}
+
+body.dark .inventory-table th{
+    background-color: var(--border);
+    color: white;
+    border: 1px solid #444343;
+    outline: none;
+}
+
+body.dark .inventory-table td {
+    background-color: var(--dark-hover);
+    color: white;
+    border: 1px solid #444343;
+    outline: none;
+}
+
+body.dark .inventory-table tr:nth-child(odd) {
+    background-color: var(--dark-chat);
+    color: white;
+}
+
+body.dark .inventory-table tr:nth-child(even) {
+    background-color: var(--dark-chat);
+    color: white;
+}
+
+
+body.dark .edit-btn,
+body.dark .delete-btn,
+body.dark .save-btn,
+body.dark .cancel-btn {
+    background-color: var(--border);
+    color: #fff;
+}
+
+/* This is the end for the table */
+
+/* this is for popup window during edit */
+
+.modal,
+.add-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Set a higher z-index value for modals */
+}
+
+.modal-content,
+.add-product-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 450px;
+    width: 100%;
+    overflow-y: auto; /* Add overflow-y property to enable scroll when content exceeds height */
+    max-height: 80vh; /* Set a maximum height to ensure modal fits within the viewport */
+    scrollbar-color: #ddd rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
+}
+
+.modal-content::-webkit-scrollbar,
+.add-product-modal-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+.modal-content::-webkit-scrollbar-thumb,
+.add-product-modal-content::-webkit-scrollbar-thumb {
+    background-color: #8b8a8a;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track,
+.add-product-modal-content::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.modal-content label,
+.add-product-modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.modal-content input,
+.add-product-modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    border-radius: 4px;
+}
+
+.modal-button-container,
+.add-product-modal-content .modal-button-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.modal-save-button,
+.add-product-modal-content .modal-save-button {
+    width: 40%;
+    padding: 8px 15px;
+    background-color: var(--primary);
+    color: rgb(250, 250, 250);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+.modal-close-button,
+.add-product-modal-content .modal-close-button {
+    width: 40%;
+    padding: 8px 15px;
+    background-color: #c0392b;
+    color: rgb(250, 250, 250);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+.modal-save-button:hover,
+.add-product-modal-content .modal-save-button:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+.modal-close-button:hover,
+.add-product-modal-content .modal-close-button:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+.image-placeholder-edit {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.image-preview-edit {
+    max-width: 100%;
+    max-height: 200px; /* Set the desired max height for the image */
+    margin: 10px auto; /* Center horizontally with auto margins */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.image-placeholder-edit label {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: var(--primary);
+    color: rgb(250, 250, 250);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.image-placeholder-edit label:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+/* Add this style to show the image preview when it's not hidden */
+.image-placeholder-edit.has-image .image-preview-edit {
+    display: block;
+}
+
+.image-placeholder {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.image-preview {
+    max-width: 100%;
+    max-height: 200px; /* Set the desired max height for the image */
+    margin: 10px auto; /* Center horizontally with auto margins */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: none;
+}
+
+.image-placeholder label {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: var(--primary);
+    color: rgb(250, 250, 250);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.image-placeholder label:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+/* Add this style to show the image preview when it's not hidden */
+.image-placeholder.has-image .image-preview {
+    display: block;
+}
+
+/* Dark mode styles for both modals */
+body.dark .modal-content,
+body.dark .add-product-modal-content {
+    background-color: #333;
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    border: 1px solid #444343;
+}
+
+body.dark .modal-content label,
+body.dark .add-product-modal-content label {
+    color: white;
+}
+
+body.dark .modal-content input,
+body.dark .add-product-modal-content input {
+    color: white;
+    background-color: #444343;
+    border: 1px solid #444343;
+}
+
+body.dark .modal-save-button,
+body.dark .add-product-modal-content .modal-save-button {
+    background-color: #3498db;
+    color: white;
+}
+
+body.dark .modal-close-button,
+body.dark .add-product-modal-content .modal-close-button {
+    background-color: #e74c3c;
+    color: white;
+    border: 1px solid #e74c3c;
+}
+
+body.dark .modal-save-button:hover,
+body.dark .add-product-modal-content .modal-save-button:hover {
+    background-color: #2980b9;
+}
+
+body.dark .modal-close-button:hover,
+body.dark .add-product-modal-content .modal-close-button:hover {
+    background-color: #c0392b;
+}
+
+/* Media query for smaller screens */
+@media only screen and (max-width: 500px) {
+    .modal-content,
+    .add-product-modal-content {
+        max-width: 75%;
+    }
+}
+
+/* this is the end for popup window during edit */
+
+
+/* this is for the show entries 20 10 5 */
+
+.entries-dropdown {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.modal-title{
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.entries-label {
+    margin-right: 10px;
+    margin-left: 10px;
+    color: #333; /* Default text color */
+    font-size: 14px;
+}
+
+.entries-per-page {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+}
+
+.entries-per-page option {
+    padding: 10px;
+}
+
+body.dark .entries-label {
+    color: white; /* Text color for labels in dark mode */
+}
+
+body.dark .entries-per-page {
+    border-color: #555; /* Border color for the dropdown in dark mode */
+    background-color: #333; /* Background color for the dropdown in dark mode */
+    color: white; /* Text color for the options in dark mode */
+}
+
+body.dark .entries-per-page option {
+    background-color: #333; /* Background color for the options in dark mode */
+    color: white; /* Text color for the options in dark mode */
+}
+
+/* this is the end for the show entries 20 10 5 */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.pagination-link {
+    padding: 8px;
+    margin: 0 5px;
+    cursor: pointer;
+    color: #3498db;
+}
+
+.pagination-link:hover {
+    color: #1f73b7;
+}
+
+.pagination-link.active {
+    color: #fff;
+    background-color: #3498db;
+    border-radius: 4px;
+}
+
+.page-number {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
