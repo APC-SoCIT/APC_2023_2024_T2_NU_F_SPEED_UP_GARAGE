@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 Route::view('admin','Admin');
 Route::view('inventory','Inventory');
-Route::view('stocks','Stocks');
+Route::view('transactions','Transactions');
 Route::view('products','Products');
 Route::view('reports','Reports');
 Route::view('pos','POS');

@@ -23,8 +23,8 @@
         <ul class="side-menu">
             <li class="active"><a href="#"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
             <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
-            <li><a href="/stocks"><i class='bx bxs-coin-stack'></i>Stocks</a></li>
             <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
+            <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
             <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
@@ -97,10 +97,6 @@
                 <div class="left">
                     <h1>Dashboard</h1>
                 </div>
-                <a href="#" class="report">
-                    <i class='bx bx-cloud-download'></i>
-                    <span>Download CSV</span>
-                </a>
             </div>
 
             <!-- Insights -->
@@ -109,61 +105,70 @@
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            1,074
+                            111,074
                         </h3>
-                        <p>Paid Order</p>
+                        <p>Total Inventory Price</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bx-calendar-check'></i>
+                    <span class="info">
+                        <h3>
+                            588
+                        </h3>
+                        <p>Total Items on Hand</p>
                     </span>
                 </li>
                 <li><i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            3,944
+                            1
                         </h3>
-                        <p>Site Visit</p>
+                        <p>Out of Stock Items</p>
                     </span>
                 </li>
                 <li><i class='bx bx-line-chart'></i>
                     <span class="info">
                         <h3>
-                            14,721
+                            3
                         </h3>
-                        <p>Searches</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-dollar-circle'></i>
-                    <span class="info">
-                        <h3>
-                            $6,742
-                        </h3>
-                        <p>Total Sales</p>
+                        <p>Low Stock Items</p>
                     </span>
                 </li>
             </ul>
 
             <ul class="insights">
+                <li><i class='bx bx-dollar-circle'></i>
+                    <span class="info">
+                        <h3>
+                            P500.00
+                        </h3>
+                        <p>Todays Sales</p>
+                    </span>
+                </li>
                 <li>
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            1,074
+                            231,074
                         </h3>
-                        <p>Paid Order</p>
+                        <p>Monthly Sales</p>
                     </span>
                 </li>
                 <li><i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            3,944
+                            5
                         </h3>
-                        <p>Site Visit</p>
+                        <p>Product Sold / day</p>
                     </span>
                 </li>
                 <li><i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            3,944
+                            P1,300
                         </h3>
-                        <p>Site Visit</p>
+                        <p>Average Daily Sales / month</p>
                     </span>
                 </li>
                 
@@ -193,7 +198,7 @@
                                     <p>James Esurena</p>
                                 </td>
                                 <td>14-08-2023</td>
-                                <td><span class="status completed">Completed</span></td>
+                                <td><span class="status pending">Pending</span></td>
                             </tr>
                             <tr>
                                 <td>

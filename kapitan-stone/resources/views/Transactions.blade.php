@@ -22,8 +22,8 @@
         <ul class="side-menu">
             <li><a href="/admin"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
             <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
-            <li class="active"><a href="/stocks"><i class='bx bxs-coin-stack'></i>Stocks</a></li>
             <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
+            <li class="active"><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
             <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
@@ -76,11 +76,11 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Inventory Stocks</h1>
+                    <h1>Transactions</h1>
                     <ul class="breadcrumb">
                         <li><a href='/admin'>Dashboard</a></li>
                         /
-                        <li><a href='/stocks' class="active">Stocks</a></li>
+                        <li><a href='/stocks' class="active">Transactions</a></li>
                     </ul>
                 </div>
                 <a href="#" class="report">
