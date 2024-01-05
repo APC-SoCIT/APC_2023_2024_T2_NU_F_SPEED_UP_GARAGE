@@ -108,7 +108,7 @@
             <div class="user-table-container">
             <div class="user-filter-container">
                 <div class="add-user-container">
-                    <button class="add-user-btn" onclick="showAddUserModal()">+ Add User</button>
+                    <button class="add-user-btn" onclick="addUserModal()">+ Add User</button>
                     <div class="dropdown-container">
                         <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Role</option>
@@ -138,19 +138,19 @@
                 <table class="inventory-table">
                     <thead>
                         <tr>
-                            <th>Status</th>
                             <th>#</th>
                             <th>Username</th>
                             <th>Full Name</th>
                             <th>Role</th>
                             <th>Email</th>
                             <th>Password</th>
+                            <th>Date Created</th>
+                            <th>Last Login</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="inventoryTableBody">
                         <tr data-id="1">
-                            <td class="status">Inactive</td>
                             <td>1</td>
                             <td class="username">cinnamonesurena</td>
                             <td class="full-name">James Vincent T. Esurena</td>
@@ -159,8 +159,10 @@
                             <td>
                                 <input type="password" class="password" value="password" readonly>
                             </td>
+                            <td class="user-date-creation">December 12, 2023</td>
+                            <td class="user-last-login">January 04, 2024</td>
                             <td>
-                                <button class="edit-btn" onclick="editRow(event)">Edit</button>
+                                <button class="edit-btn" onclick="showEditUserModal()">Edit</button>
                                 <button class="delete-btn" onclick="deleteRow()">Delete</button>
                             </td>
                         </tr>
@@ -196,6 +198,27 @@
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="saveUserChanges()">Save</button>
                     <button class="modal-close-button" onclick="cancelUserEditModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="add-user-modal" id="addUserModal">
+            <div class="edit-user-modal-content">
+                <h2 class="edit-user-modal-title">Create User</h2>
+                <label for="userUsername">Username:</label>
+                <input type="text" id="userUsername" name="userUsername">
+                <label for="UserFullName">Full Name:</label>
+                <input type="text" id="UserFullName" name="UserFullName">
+                <label for="UserRole">Role</label>
+                <input type="text" id="UserRole" name="UserRole">
+                <label for="userEmail">Email:</label>
+                <input type="text" id="userEmail" name="userEmail">
+                <label for="userPassword">Password:</label>
+                <input type="password" id="userPassword" name="userPassword">
+                <!-- Add more fields as needed -->
+                <div class="modal-button-container">
+                    <button class="modal-save-button" onclick="saveUserChanges()">Save</button>
+                    <button class="modal-close-button" onclick="cancelCreateUserModal()">Cancel</button>
                 </div>
             </div>
         </div>

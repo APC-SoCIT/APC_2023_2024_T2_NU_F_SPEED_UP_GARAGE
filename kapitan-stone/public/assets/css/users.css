@@ -57,7 +57,7 @@ body.dark .filter-container {
 }
 
 /* Edit User Modal */
-.edit-user-modal {
+.edit-user-modal, .add-user-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -77,8 +77,8 @@ body.dark .filter-container {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     max-width: 450px;
     width: 100%;
-    overflow-y: auto;
-    max-height: 80vh;
+    overflow-y: auto; /* Add overflow-y property to enable scroll when content exceeds height */
+    max-height: 80vh; /* Set a maximum height to ensure modal fits within the viewport */
     scrollbar-color: #ddd rgba(0, 0, 0, 0);
     scrollbar-width: thin;
 }

@@ -620,5 +620,25 @@ function handleImageChange(input) {
         imageContainer.classList.remove('has-image'); // Remove the 'has-image' class
     }
 }
-  
+
+function showEditUserModal() {
+    var modal = document.getElementById("editUserModal");
+    modal.style.display = "flex";
+}
+
+function addUserModal() {
+    var modal = document.getElementById("addUserModal");
+    modal.style.display = "flex";
+}
+
+// Function to close the edit user modal
+function cancelUserEditModal() {
+    var modal = document.getElementById("editUserModal");
+    modal.style.display = "none";
+}
+
+function cancelCreateUserModal(){
+    var modal = document.getElementById("addUserModal");
+    modal.style.display = "none";
+}
   

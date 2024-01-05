@@ -900,8 +900,8 @@ body.dark .search-bar i {
     color: white;
 }
 
-.inventory-table td:nth-child(7),
-.inventory-table th:nth-child(7) {
+.inventory-table td:nth-child(6),
+.inventory-table th:nth-child(6) {
     /* Your styles for the seventh column here */
     width: 10%;
     white-space: nowrap;
