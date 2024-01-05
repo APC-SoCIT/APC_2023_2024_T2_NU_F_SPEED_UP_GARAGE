@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,18 +17,51 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::view('admin','Admin');
-Route::view('inventory','Inventory');
-Route::view('transactions','Transactions');
-Route::view('products','Products');
-Route::view('reports','Reports');
-Route::view('pos','POS');
-Route::view('users','Users');
-Route::view('settings','Settings');
-Route::view('welcome','Welcome');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-use App\Http\Controllers\AuthController;
+Route::get('/Users', function () {
+    return view('Users');
+})->middleware(['auth', 'verified'])->name('Users');
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('admin', function () {
+    return view('Admin');
+})->name('admin');
 
+Route::get('inventory', function () {
+    return view('Inventory');
+})->name('inventory');
+
+Route::get('transactions', function () {
+    return view('Transactions');
+})->name('transactions');
+
+Route::get('products', function () {
+    return view('Products');
+})->name('products');
+
+Route::get('reports', function () {
+    return view('Reports');
+})->name('reports');
+
+Route::get('pos', function () {
+    return view('POS');
+})->name('pos');
+
+Route::get('users', function () {
+    return view('Users');
+})->name('users');
+
+Route::get('settings', function () {
+    return view('Settings');
+})->name('settings');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
