@@ -104,6 +104,19 @@
             </div>
 
         </main>
+<!-- Inside the <div class="content"> where you want to place the POS -->
+<main>
+    <div class="header">
+        <div class="left">
+            <h1>Point of Sales</h1>
+        </div>
+    </div>
+    
+    
+            </div>
+        </div>
+    </div>
+</main>
 
     </div>
 

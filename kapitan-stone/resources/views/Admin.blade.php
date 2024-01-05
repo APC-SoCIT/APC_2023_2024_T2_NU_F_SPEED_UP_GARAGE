@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/chart.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
+    <link rel="stylesheet" href="../css/app.css">
     <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
 <body>
@@ -222,48 +225,36 @@
 
                 <!-- Reminders -->
                 <div class="reminders">
-                    <div class="header">
-                        <i class='bx bx-note'></i>
-                        <h3>Remiders</h3>
-                        <i class='bx bx-filter'></i>
-                        <i class='bx bx-plus'></i>
-                    </div>
-                    <ul class="task-list">
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p>Start Our Meeting</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p>Analyse Our Site</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <div class="task-title">
-                                <i class='bx bx-x-circle'></i>
-                                <p>Play Footbal</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                    </ul>
+                <h2>Product Stocks</h2>
+      <p>Month-to-month Comparison</p>
+      <div class="pulse"></div>
+      <div class="chart-area">
+        <div class="grid"></div>
+      </div>
+     
                 </div>
+              <!-- End of Reminders-->
 
-                <!-- End of Reminders-->
+              <div class="reminders">
+                <h2>Top Products</h2>
+      <p>Top Products This Month</p>
+      <div class="pulse"></div>
+      <div class="bar-chart">
+      <div class="grid"></div>
+      </div>
+      
+</div>
 
-            </div>
-
-        </main>
-
+<div class="reminders">
+    <h2 id="salesForecastTitle">Sales Forecast</h2>
+    <p>Sales Performance Overview</p>
+    <div class="pulse"></div>
+    <div class="sales-chart">
+        <div class="grid"></div>
     </div>
-
-    
-    
-    <script src="{{ asset('assets/js/index.js') }}">
+</div>
+      
+    <script src="{{ asset('assets/js/index.js') }}">     
     // Disable the back button
     history.pushState(null, null, document.URL);
     window.addEventListener('popstate', function () {
