@@ -849,20 +849,42 @@ body.dark .search-bar i {
 }
 
 /* Light mode styles */
-.status-out-of-stock {
-    color: var(--danger);
+.status{
+    font-size: 11px;
+    padding: 6px 16px;
+    color: var(--light);
+    border-radius: 20px;
     font-weight: 600;
-    font-size: 14px;
+}
+
+.status-out-of-stock {
+    color: var(--white);
+    background-color: var(--danger);
 }
 
 .status-low-stock {
-    color: var(--warning);
-    font-weight: 600;
+    color: var(--white);
+    background-color: var(--warning);
 }
 
 .status-in-stock {
-    color: var(--success);
-    font-weight: 600;
+    color: var(--white);
+    background-color: var(--success);
+}
+
+.dark .status-out-of-stock {
+    color: var(--dark-hover);
+    background-color: var(--danger);
+}
+
+.dark .status-low-stock {
+    color: var(--dark-hover);
+    background-color: var(--warning);
+}
+
+.dark .status-in-stock {
+    color: var(--dark-hover);
+    background-color: var(--success);
 }
 
 .inventory-table .password {

@@ -105,8 +105,35 @@
                 <div class="chat-icon" onclick="toggleChat()">
                 <i class='bx bx-message'></i>
             </div>
+
+
         </main>
-        
+        <table class="transaction-table">
+            <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sample data, replace with your actual data -->
+                <tr>
+                    <td>John Doe</td>
+                    <td>Product A</td>
+                    <td>$20.00</td>
+                    <td>$20.00</td>
+                </tr>
+                <tr>
+                    <td>Jane Smith</td>
+                    <td>Product B</td>
+                    <td>$15.00</td>
+                    <td>$15.00</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>        
 
     </div>
 

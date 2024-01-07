@@ -217,7 +217,7 @@
                         <tbody id="inventoryTableBody">
                             <!-- Example rows; replace with server-side generated rows -->
                             <tr data-id="1">
-                            <td class="status"></td>
+                            <td><span class="status"></span></td>
                                 <td></td>
                                 <td class="tag">0923213412</td>
                                 <td class="product-name">Spongebob</td>
@@ -233,7 +233,7 @@
                                 </td>
                             </tr>
                             <tr data-id="2">
-                            <td class="status"></td>
+                            <td><span class="status"></span></td>
                                 <td></td>
                                 <td class="tag">0923213412</td>
                                 <td class="product-name">Judge</td>
@@ -249,7 +249,7 @@
                                 </td>
                             </tr>
                             <tr data-id="3">
-                            <td class="status"></td>
+                            <td><span class="status"></span></td>
                                 <td></td>
                                 <td class="tag">0923213412</td>
                                 <td class="product-name">Hello Kitty</td>
