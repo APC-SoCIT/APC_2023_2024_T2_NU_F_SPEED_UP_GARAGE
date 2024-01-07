@@ -64,8 +64,8 @@
                 <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
                 <!-- Profile dropdown menu -->
                 <div class="profile-menu" id="profileMenu">
-                    <div class="menu-item">Profile</div>
-                    <div class="menu-item">Settings</div>
+                    <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
+                    <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
                     <div class="menu-item" onclick="logout()">Logout</div>
                 </div>
             </a>
@@ -106,7 +106,31 @@
                     <span>Download CSV</span>
                 </a>
             </div>
-        </main>
+
+
+            <!-- Insights -->
+            <ul class="reports">
+                <li>
+                    <i class='bx bx-calendar-check'></i>
+                    <span class="info">
+                        <h3 onclick="navigateTo('/inventory-reports')">
+                            Inventory Reports
+                        </h3>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bx-calendar-check'></i>
+                    <span class="info">
+                    <h3 onclick="navigateTo('/sales-reports')">
+                            Sales Reports
+                        </h3>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+        
 
     </div>
 

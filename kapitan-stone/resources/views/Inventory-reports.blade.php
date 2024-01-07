@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
-    <title>Stocks</title>
+    <title>Inventory Reports</title>
 </head>
 
 <body>
@@ -23,8 +23,8 @@
             <li><a href="/admin"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
             <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
             <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
-            <li class="active"><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
-            <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
+            <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
+            <li class="active"><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
             <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
@@ -69,8 +69,11 @@
                     <div class="menu-item" onclick="logout()">Logout</div>
                 </div>
             </a>
+            <div class="chat-icon" onclick="toggleChat()">
+                <i class='bx bx-message'></i>
+            </div>
         </nav>
-        
+
         <div id="chatWindow" class="chat-window">
             <div class="chat-header">
                 <span>AI Chat</span>
@@ -91,21 +94,55 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Transactions</h1>
+                    <h1>Reports</h1>
                     <ul class="breadcrumb">
                         <li><a href='/admin'>Dashboard</a></li>
                         /
-                        <li><a href='/stocks' class="active">Transactions</a></li>
+                        <li><a href='/reports'>Reports</a></li>
+                        /
+                        <li><a href='/inventory-reports' class="active">Inventory Reports</a></li>
                     </ul>
                 </div>
                 <a href="#" class="report">
                     <i class='bx bx-cloud-download'></i>
                     <span>Download CSV</span>
                 </a>
-                <div class="chat-icon" onclick="toggleChat()">
-                <i class='bx bx-message'></i>
             </div>
-        </main>
+
+
+            <!-- Insights -->
+            <ul class="reports">
+                <li>
+                    <i class='bx bx-calendar-check'></i>
+                    <span class="info">
+                        <h3>
+                            Daily Report
+                        </h3>
+                        <p>View Report</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bx-calendar-check'></i>
+                    <span class="info">
+                        <h3>
+                            Weekly Report
+                        </h3>
+                        <p>View Report</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bx-calendar-check'></i>
+                    <span class="info">
+                        <h3>
+                            Monthly Report
+                        </h3>
+                        <p>View Report</p>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
         
 
     </div>

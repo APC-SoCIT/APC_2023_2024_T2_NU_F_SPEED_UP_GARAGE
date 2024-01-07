@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,10 +59,21 @@ Route::get('settings', function () {
     return view('Settings');
 })->name('settings');
 
+Route::get('inventory-reports', function () {
+    return view('Inventory-reports');
+})->name('Inventory-reports');
+
+Route::get('sales-reports', function () {
+    return view('Sales-reports');
+})->name('sales-reports');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/reports/{type}', [ReportController::class, 'show'])->name('reports.show');
 });
 
 require __DIR__.'/auth.php';
+

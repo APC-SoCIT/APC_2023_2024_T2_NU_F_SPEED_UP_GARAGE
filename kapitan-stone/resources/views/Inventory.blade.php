@@ -65,8 +65,8 @@
                 <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
                 <!-- Profile dropdown menu -->
                 <div class="profile-menu" id="profileMenu">
-                    <div class="menu-item">Profile</div>
-                    <div class="menu-item">Settings</div>
+                    <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
+                    <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
                     <div class="menu-item" onclick="logout()">Logout</div>
                 </div>
             </a>

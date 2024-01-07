@@ -224,6 +224,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+function navigateTo(url) {
+  // Navigate to the specified URL
+  window.location.href = url;
+}
+
+
 // This is for pagination
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -642,6 +648,11 @@ function cancelCreateUserModal(){
     modal.style.display = "none";
 }
 
+
+// this is for the charts
+// this is for the charts
+// this is for the charts
+
 function getLastFiveMonths() {
     const months = [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -662,9 +673,7 @@ function getLastFiveMonths() {
   
   const lastSixMonths = getLastFiveMonths();
 
-let primaryColor = getComputedStyle(document.documentElement)
-  .getPropertyValue("--color-primary")
-  .trim();
+let primaryColor = "#1976D2";
 
 let labelColor = getComputedStyle(document.documentElement)
   .getPropertyValue("--color-label")

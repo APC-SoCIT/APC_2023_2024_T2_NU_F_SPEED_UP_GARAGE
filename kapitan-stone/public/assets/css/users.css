@@ -152,3 +152,25 @@ body.dark .filter-container {
 .edit-user-modal-content.has-image .image-preview-edit {
     display: block;
 }
+
+.content main .reports{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-gap: 24px;
+    margin-top: 36px;
+}
+
+@media screen and (max-width: 767px) {
+    .add-user-container {
+        flex-direction: column;
+    }
+
+    .add-user-btn {
+        width: 100%; /* Reset width for mobile view */
+        margin-bottom: 10px;
+    }
+    .edit-user-modal-content, .add-user-modal-content {
+        max-width: 75%;
+    }
+}
+

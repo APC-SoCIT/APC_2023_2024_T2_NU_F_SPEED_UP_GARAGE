@@ -68,8 +68,8 @@
                 <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
                 <!-- Profile dropdown menu -->
                 <div class="profile-menu" id="profileMenu">
-                    <div class="menu-item">Profile</div>
-                    <div class="menu-item">Settings</div>
+                    <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
+                    <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
                     <div class="menu-item" onclick="logout()">Logout</div>
                 </div>
             </a>
@@ -179,7 +179,33 @@
             <!-- End of Insights -->
 
             <div class="bottom-data">
-                <div class="orders">
+                
+
+                <!-- Reminders -->
+                <div class="reminders">
+                <h2>Sales</h2>
+      <p>Month-to-month Comparison</p>
+      <div class="pulse"></div>
+      <div class="chart-area">
+        <div class="grid"></div>
+      </div>
+     
+                </div>
+              <!-- End of Reminders-->
+
+              <div class="reminders">
+                <h2>Top Products</h2>
+      <p>Top Products This Month</p>
+      <div class="pulse"></div>
+      <div class="bar-chart">
+      <div class="grid"></div>
+      </div>
+
+      
+      
+</div>
+
+<div class="orders">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
                         <h3>Recent Orders</h3>
@@ -222,28 +248,7 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Reminders -->
-                <div class="reminders">
-                <h2>Product Stocks</h2>
-      <p>Month-to-month Comparison</p>
-      <div class="pulse"></div>
-      <div class="chart-area">
-        <div class="grid"></div>
-      </div>
-     
-                </div>
-              <!-- End of Reminders-->
-
-              <div class="reminders">
-                <h2>Top Products</h2>
-      <p>Top Products This Month</p>
-      <div class="pulse"></div>
-      <div class="bar-chart">
-      <div class="grid"></div>
-      </div>
-      
-</div>
+            </div>
 
       
     <script src="{{ asset('assets/js/index.js') }}">     

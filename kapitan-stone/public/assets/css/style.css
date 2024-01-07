@@ -345,7 +345,13 @@ body.dark .sidebar .side-menu li:hover a {
 
 .content main .header .left .breadcrumb li a.active{
     color: var(--primary);
+}
 
+@media screen and (max-width: 600px) {
+    .content main .header .left .breadcrumb {
+        flex-wrap: wrap;
+        justify-content: flex-start; 
+    }
 }
 
 .content main .header .report{
@@ -414,7 +420,7 @@ body.dark .sidebar .side-menu li:hover a {
     color: var(--dark);
 }
 
-.content main .insights li .info p{
+.content main .insights li p{
     color: var(--dark);
 }
 
