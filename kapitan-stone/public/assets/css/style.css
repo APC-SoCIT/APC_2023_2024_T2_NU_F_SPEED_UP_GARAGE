@@ -432,6 +432,7 @@ body.dark .sidebar .side-menu li:hover a {
     background: var(--light);
     padding: 24px;
     overflow-x: auto;
+    margin-bottom: 25px;
 }
 
 .content main .bottom-data .header{
