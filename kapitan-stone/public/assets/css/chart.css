@@ -90,6 +90,14 @@
   height: 100%;
 }
 
+.salesreminders {
+
+  position: relative;
+  width: 100%;
+  top:-22px;
+
+}
+
 body .apexcharts-tooltip.apexcharts-theme-light {
   color: var(--color-text);
   background: rgba(0, 0, 0, 0.5);

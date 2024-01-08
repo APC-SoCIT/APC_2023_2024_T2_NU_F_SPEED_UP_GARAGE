@@ -191,7 +191,7 @@
       </div>
      
                 </div>
-              <!-- End of Reminders-->
+         
 
               <div class="reminders">
                 <h2>Top Products</h2>
@@ -200,6 +200,8 @@
       <div class="bar-chart">
       <div class="grid"></div>
       </div>
+
+    
 
       
       
@@ -248,7 +250,16 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+           
+
+            <div class="salesreminders">
+    <h2 id="salesForecastTitle">Sales Forecast</h2>
+    <p>Sales Performance Overview</p>
+    <div class="pulse"></div>
+    <div class="sales-chart">
+        <div class="grid"></div>
+    </div>
+</div>
 
       
     <script src="{{ asset('assets/js/index.js') }}">   

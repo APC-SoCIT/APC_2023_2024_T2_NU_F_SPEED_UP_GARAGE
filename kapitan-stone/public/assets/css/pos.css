@@ -1,0 +1,526 @@
+:root {
+    --light: #f6f6f9;
+    --primary: #1976D2;
+    --red: #b70202;
+    --light-primary: #CFE8FF;
+    --grey: #eee;
+    --dark-grey: #AAAAAA;
+    --dark: #363949;
+    --danger: #D32F2F;
+	--light-danger: #FECDD3;
+    --warning: #FBC02D;
+    --light-warning: #FFF2C6;
+    --success: #3daf43;
+    --light-success: #BBF7D0;
+    --hover: #e0dddd;
+    --dark-hover: #232428;
+    --ai-message: #445264;
+    --dark-chat: #2c2f33;
+    --secodary-dark-char: #363949;
+    --border: #555;
+    --white: #fff;
+}
+
+
+
+
+
+
+.pos-layout {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--grey); /* Replace with your desired color */
+    height: 100%; /* Full height */
+    width: 100%; /* Full width */
+    padding-top: 16px; /* Top padding */
+    padding-bottom: 16px; /* Bottom padding */
+  }
+
+  .con{
+    display: flex;
+    padding: 0 8px; /* Adjust padding as needed */
+    flex-direction: row; /* Assuming you want a row direction */
+    position: relative;
+  }
+
+  .arrow-icon {
+    height: 1.5rem; /* Adjust height as needed */
+    width: 1.5rem; /* Adjust width as needed */
+    stroke: currentColor;
+    stroke-width: 2;
+    fill:none;
+  }
+
+  .search-button {
+    z-index: 1; /* Ensure the button appears above other elements */
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    padding: 8px;
+    border-radius: 50%;
+    background-color: #1976d2; /* Replace with your desired color */
+    color: var(--grey);
+  }
+  
+  /* Custom class for the search bar container */
+  .search-bar1-container {
+    position: relative;
+  }
+  
+  /* Custom class for the search bar */
+  .search-bar1 {
+    
+    color: var(--dark);
+    background: var(--light);
+    border-radius: 20px;
+    font-size: 16px;
+    padding: 12px 16px;
+    width: calc(100% - 1px); /* Adjust width accounting for button width */
+    height: 64px; /* Adjust height as needed */
+    padding-left: 56px; /* Adjust padding for button position */
+    border: none; /* Remove the border */
+  }
+
+  .product-container {
+    height: 100%; /* Adjust height as needed */
+    overflow: hidden;
+    margin-top: 1rem; /* Adjust margin as needed */
+  }
+  
+  .product-inner-container {
+    height: 90%;
+    overflow-y: auto;
+    padding: 0 0.5rem; /* Adjust padding as needed */
+  }
+  
+  .products {
+    display: flex;
+    height: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    color: var(--dark);
+    background-color: var(--light); /* Replace with your desired background color */
+    border-radius: 1.5rem; /* Adjust border radius as needed */
+    
+  }
+
+  .products-product {
+    display: grid; /* Equivalent to grid */
+    grid-template-columns: repeat(5, minmax(0, 1fr)); /* Equivalent to grid-cols-5 */
+    gap: 1rem; /* Equivalent to gap-4 */
+    padding-bottom: 0.75rem; /* Equivalent to pb-3 */
+    /* Add any additional styles for products-product here */
+  }
+
+  .db-info {
+    width: 100%;
+    text-align: center; /* Makes the element take up the full width of its container */
+  }
+
+  
+  /* Additional styles */
+  .products.select-none {
+    user-select: none; /* Prevent text selection */
+  }
+  
+
+  .checkout-card {
+    width: 41.666667%; /* Equivalent to w-5/12 (5/12 = 41.666667%) */
+    display: flex; /* Equivalent to flex */
+    flex-direction: column; /* Equivalent to flex-col */
+    height: 100%; /* Equivalent to h-full */
+    background-color: var(--grey);
+    padding-right: 1rem; /* Equivalent to pr-4 */
+    padding-left: 0.5rem; /* Equivalent to pl-2 */
+    padding-top: 1rem; /* Equivalent to py-4 */
+    padding-bottom: 1rem; /* Equivalent to py-4 */
+  }
+
+  .checkout-inner-card {
+    background-color: var(--light); /* Equivalent to bg-white */
+    border-radius: 1.5rem; /* Equivalent to rounded-3xl */
+    display: flex; /* Equivalent to flex */
+    flex-direction: column; /* Equivalent to flex-col */
+    height: 100%; /* Equivalent to h-full */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Equivalent to shadow */
+    /* Add any additional styles for checkout-inner-card here */
+  }
+  
+  .total-text {
+    display: flex; /* Makes the element a flex container */
+    margin-bottom: 8px;
+    font-size: 1.125rem; /* Equivalent to text-lg */
+    font-weight: 600; /* Equivalent to font-semibold */
+    color: var(--dark); /* Equivalent to text-blue-gray-700 */
+  }
+
+
+  .cash-text {
+    margin-bottom: 12px; 
+    color: var(--dark); 
+    padding-left: 12px; 
+    padding-top: 8px; 
+    padding-bottom: 12px; 
+    padding-right: 12px; 
+    border-radius: 8px; 
+    background-color: var(--grey); 
+  }
+  
+  .cash-text > .flex > .flex-grow {
+    font-size: 1.125rem; /* Equivalent to text-lg */
+    font-weight: 600; /* Equivalent to font-semibold */
+    text-align: left; /* Equivalent to text-left */
+  }
+  
+  .cash-text > .flex > .flex-grow {
+    flex-grow: 1; /* Equivalent to flex-grow */
+    text-align: left; /* Equivalent to text-left */
+  }
+  
+  .cash-text > .flex > .flex:last-child {
+    margin-right: 0.5rem; /* Equivalent to mr-2 */
+  }
+  
+  
+  
+  .cash-card {
+    background-color: var(--light);
+    border-radius: 0.25rem; /* Reduced border radius */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adjusted box shadow */
+    transition: box-shadow 0.3s ease;
+    display: inline-block;
+    padding: 0.15rem 0.35rem; /* Reduced padding */
+    font-size: 0.75rem; /* Decreased font size */
+    width: 100%;
+
+  }
+  
+  
+  .cash-card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .cash-card:focus {
+    outline: none;
+  }
+  
+  .cash-inner-card {
+    width: 112px; /* Equivalent to w-28 */
+    background-color: var(--light); /* Equivalent to bg-white */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Equivalent to shadow */
+    border-radius: 8px; /* Equivalent to rounded-lg */
+    outline: none; /* Equivalent to focus:outline-none */
+    padding-left: 10px; /* Adjust padding for content alignment */
+    margin-left: 10px; /* Creates space from the left edge */
+    transition: box-shadow 0.3s ease; /* Adding transition for hover effect */
+  }
+  
+  .cash-inner-card:focus {
+    background-color: var(--light); /* Equivalent to focus:bg-white */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Equivalent to focus:shadow-lg */
+  }
+  
+  .cash-inner-card > .px-2 {
+    padding-left: 8px; /* Equivalent to px-2 */
+    padding-right: 8px; /* Equivalent to px-2 */
+  }
+
+  .money-grid {
+    display: grid; /* Establishes the element as a grid container */
+    grid-template-columns: repeat(4, minmax(0, 1fr)); /* Creates 4 equal-width columns */
+    gap: 0.5rem; /* Creates a gap of 0.5rem between grid items */
+    margin-top: 0.5rem; /* Adds margin space of 0.5rem on top */
+  }
+  
+
+  .add-money {
+    background-color: var(--light); /* Equivalent to bg-white */
+    border-radius: 8px; /* Equivalent to rounded-lg */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Equivalent to shadow */
+    outline: none; /* Equivalent to focus:outline-none */
+    display: inline-block; /* Equivalent to inline-block */
+    padding: 0.25rem 0.5rem; /* Equivalent to px-2 py-1 */
+    font-size: 0.875rem; /* Equivalent to text-sm */
+    transition: box-shadow 0.3s ease; /* Adding transition for hover effect */
+  }
+  
+  .add-money:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Equivalent to hover:shadow-lg */
+  }
+  
+  
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #cfd8dc;
+    border-radius: 5px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #b0bec5;
+    border-radius: 5px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #90a4ae;
+  }
+  
+  .bg-cyan-50, .hover\:bg-cyan-50:hover {
+      background-color: #e0f7fa;
+  }
+  .bg-cyan-100, .hover\:bg-cyan-100:hover {
+      background-color: #b2ebf2;
+  }
+  .bg-cyan-200, .hover\:bg-cyan-200:hover {
+      background-color: #000000;
+  }
+  .bg-cyan-300, .hover\:bg-cyan-300:hover {
+      background-color: #4dd0e1;
+  }
+  .bg-cyan-400, .hover\:bg-cyan-400:hover {
+      background-color: #26c6da;
+  }
+  .bg-cyan-500, .hover\:bg-cyan-500:hover {
+      background-color: #00bcd4;
+  }
+  .bg-cyan-600, .hover\:bg-cyan-600:hover {
+      background-color: #00acc1;
+  }
+  .bg-cyan-700, .hover\:bg-cyan-700:hover {
+      background-color: #0097a7;
+  }
+  .bg-cyan-800, .hover\:bg-cyan-800:hover {
+      background-color: #00838f;
+  }
+  .bg-cyan-900, .hover\:bg-cyan-900:hover {
+      background-color: #006064;
+  }
+  
+  
+  .text-cyan-50, .hover\:text-cyan-50:hover {
+      color: #e0f7fa;
+  }
+  .text-cyan-100, .hover\:text-cyan-100:hover {
+      color: #b2ebf2;
+  }
+  .text-cyan-200, .hover\:text-cyan-200:hover {
+      color: #80deea;
+  }
+  .text-cyan-300, .hover\:text-cyan-300:hover {
+      color: #4dd0e1;
+  }
+  .text-cyan-400, .hover\:text-cyan-400:hover {
+      color: #26c6da;
+  }
+  .text-cyan-500, .hover\:text-cyan-500:hover {
+      color: #00bcd4;
+  }
+  .text-cyan-600, .hover\:text-cyan-600:hover {
+      color: #00acc1;
+  }
+  .text-cyan-700, .hover\:text-cyan-700:hover {
+      color: #0097a7;
+  }
+  .text-cyan-800, .hover\:text-cyan-800:hover {
+      color: #00838f;
+  }
+  .text-cyan-900, .hover\:text-cyan-900:hover {
+      color: #006064;
+  }
+  
+  .bg-blue-gray-50, .hover\:bg-blue-gray-50:hover {
+      background-color: #eceff1;
+  }
+  .bg-blue-gray-100, .hover\:bg-blue-gray-100:hover {
+      background-color: #cfd8dc;
+  }
+  .bg-blue-gray-200, .hover\:bg-blue-gray-200:hover {
+      background-color: #b0bec5;
+  }
+  .bg-blue-gray-300, .hover\:bg-blue-gray-300:hover {
+      background-color: #90a4ae;
+  }
+  .bg-blue-gray-400, .hover\:bg-blue-gray-400:hover {
+      background-color: #78909c;
+  }
+  .bg-blue-gray-500, .hover\:bg-blue-gray-500:hover {
+      background-color: #607d8b;
+  }
+  .bg-blue-gray-600, .hover\:bg-blue-gray-600:hover {
+      background-color: #546e7a;
+  }
+  .bg-blue-gray-700, .hover\:bg-blue-gray-700:hover {
+      background-color: #455a64;
+  }
+  .bg-blue-gray-800, .hover\:bg-blue-gray-800:hover {
+      background-color: #37474f;
+  }
+  .bg-blue-gray-900, .hover\:bg-blue-gray-900:hover {
+      background-color: #263238;
+  }
+  
+  .text-blue-gray-50, .hover\:text-blue-gray-50:hover {
+      color: #eceff1;
+  }
+  .text-blue-gray-100, .hover\:text-blue-gray-100:hover {
+      color: #cfd8dc;
+  }
+  .text-blue-gray-200, .hover\:text-blue-gray-200:hover {
+      color: #b0bec5;
+  }
+  .text-blue-gray-300, .hover\:text-blue-gray-300:hover {
+      color: #90a4ae;
+  }
+  .text-blue-gray-400, .hover\:text-blue-gray-400:hover {
+      color: #78909c;
+  }
+  .text-blue-gray-500, .hover\:text-blue-gray-500:hover {
+      color: #607d8b;
+  }
+  .text-blue-gray-600, .hover\:text-blue-gray-600:hover {
+      color: #546e7a;
+  }
+  .text-blue-gray-700, .hover\:text-blue-gray-700:hover {
+      color: #455a64;
+  }
+  .text-blue-gray-800, .hover\:text-blue-gray-800:hover {
+      color: #37474f;
+  }
+  .text-blue-gray-900, .hover\:text-blue-gray-900:hover {
+      color: #263238;
+  }
+  .bg-teal-50, .hover\:bg-teal-50:hover {
+      background-color: #e0f2f1;
+  }
+  .bg-teal-100, .hover\:bg-teal-100:hover {
+      background-color: #b2dfdb;
+  }
+  .bg-teal-200, .hover\:bg-teal-200:hover {
+      background-color: #80cbc4;
+  }
+  .bg-teal-300, .hover\:bg-teal-300:hover {
+      background-color: #4db6ac;
+  }
+  .bg-teal-400, .hover\:bg-teal-400:hover {
+      background-color: #26a69a;
+  }
+  .bg-teal-500, .hover\:bg-teal-500:hover {
+      background-color: #009688;
+  }
+  .bg-teal-600, .hover\:bg-teal-600:hover {
+      background-color: #00897b;
+  }
+  .bg-teal-700, .hover\:bg-teal-700:hover {
+      background-color: #00796b;
+  }
+  .bg-teal-800, .hover\:bg-teal-800:hover {
+      background-color: #00695c;
+  }
+  .bg-teal-900, .hover\:bg-teal-900:hover {
+      background-color: #004d40;
+  }
+  
+  .text-teal-50, .hover\:text-teal-50:hover {
+      color: #e0f2f1;
+  }
+  .text-teal-100, .hover\:text-teal-100:hover {
+      color: #b2dfdb;
+  }
+  .text-teal-200, .hover\:text-teal-200:hover {
+      color: #80cbc4;
+  }
+  .text-teal-300, .hover\:text-teal-300:hover {
+      color: #4db6ac;
+  }
+  .text-teal-400, .hover\:text-teal-400:hover {
+      color: #26a69a;
+  }
+  .text-teal-500, .hover\:text-teal-500:hover {
+      color: #009688;
+  }
+  .text-teal-600, .hover\:text-teal-600:hover {
+      color: #00897b;
+  }
+  .text-teal-700, .hover\:text-teal-700:hover {
+      color: #00796b;
+  }
+  .text-teal-800, .hover\:text-teal-800:hover {
+      color: #00695c;
+  }
+  .text-teal-900, .hover\:text-teal-900:hover {
+      color: #004d40;
+  }
+  
+  .nowrap {
+    white-space: nowrap;
+  }
+  
+  .glass {
+    background-color: rgba(100, 120, 130, .6);
+    backdrop-filter: blur(10px);
+  }
+  
+  table td {
+    vertical-align: top;
+  }
+  
+  #receipt-content {
+    max-height: 70vh;
+  }
+  
+  @media print {
+    .hide-print {
+      display: none !important;
+    }
+    .print-area {
+      display: block;
+    }
+  }
+  
