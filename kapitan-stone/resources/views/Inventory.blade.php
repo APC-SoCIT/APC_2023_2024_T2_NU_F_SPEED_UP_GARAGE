@@ -278,7 +278,6 @@
                     <span class="pagination-link" data-page="5" onclick="goToPage(5)">5</span>
                     <span class="pagination-link" onclick="changePage(1)">></span>
                 </div>
-
             </div>
         </div>
 

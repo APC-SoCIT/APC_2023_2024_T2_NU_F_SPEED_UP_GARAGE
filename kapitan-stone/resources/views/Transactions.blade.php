@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
-    <title>Stocks</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <title>Transactions</title>
 </head>
 
 <body>
@@ -95,47 +99,175 @@
                     <ul class="breadcrumb">
                         <li><a href='/admin'>Dashboard</a></li>
                         /
-                        <li><a href='/stocks' class="active">Transactions</a></li>
+                        <li><a href='/inventory' class="active">Transactions</a></li>
                     </ul>
                 </div>
                 <a href="#" class="report">
                     <i class='bx bx-cloud-download'></i>
                     <span>Download CSV</span>
                 </a>
-                <div class="chat-icon" onclick="toggleChat()">
-                <i class='bx bx-message'></i>
             </div>
 
+            <div class="maintable-container">
+                <div class="filter-container">
+                    <div class="add-product-container">
+                        <button class="add-product-btn" onclick="showAddProductModal()">+ Add Transactions</button>
+                        <div class="dropdown-container">
+                            
+                        <label for="startDate" class="date-filter">From</label>
+                        <input type="date" id="startDate" class="filter-input" onchange="filterTable()">
+                        <label for="endDate" class="date-filter">To</label>
+                        <input type="date" id="endDate" class="filter-input" onchange="filterTable()">
 
-        </main>
-        <table class="transaction-table">
-            <thead>
-                <tr>
-                    <th>Customer Name</th>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th>Total Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Sample data, replace with your actual data -->
-                <tr>
-                    <td>John Doe</td>
-                    <td>Product A</td>
-                    <td>$20.00</td>
-                    <td>$20.00</td>
-                </tr>
-                <tr>
-                    <td>Jane Smith</td>
-                    <td>Product B</td>
-                    <td>$15.00</td>
-                    <td>$15.00</td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
-        </table>        
+                        <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
+                            <option value="">Select Status</option>
+                            <option value="Out of Stock">Paid</option>
+                            <option value="Low Stock">Partially Paid</option>
+                            <option value="In Stock">Not Paid</option>
+                        </select>
+                        
+                            <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
+                        </div>
+                    </div>
+                </div>
 
-    </div>
+                <div class="entries-dropdown">
+                    <label class="entries-label" for="entries-per-page">Show</label>
+                    <select class="entries-per-page" id="entries-per-page">
+                        <option class="entries-option" value="5">5</option>
+                        <option class="entries-option" value="10">10</option>
+                        <option class="entries-option" value="20">20</option>
+                        <option class="entries-option" value="50">50</option>
+                    </select>
+                    <label class="entries-label" for="entries-per-page">entries</label>
+                </div>
+
+                <div class="table-container">
+                    <table class="inventory-table">
+                        <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Date</th>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Total Amount</th>
+                            <th>Payment Method</th>
+                            <th>Status</th>
+                            <th>Cashier</th>
+                        </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody">
+                            <tr data-id="1">
+                                <td>1</td>
+                                <td>John Doe</td>
+                                <td>0923213412</td>
+                                <td>2024-01-08</td>
+                                <td>Spongebob</td>
+                                <td>0</td>
+                                <td>P500.00</td>
+                                <td>Credit Card</td>
+                                <td>Paid</td>
+                                <td>Cashier 1</td>
+                            </tr>
+                            <tr data-id="2">
+                                <td>2</td>
+                                <td>Jane Doe</td>
+                                <td>0923213412</td>
+                                <td>2024-01-08</td>
+                                <td>Judge</td>
+                                <td>8</td>
+                                <td>P500.00</td>
+                                <td>Cash</td>
+                                <td>Partially Paid</td>
+                                <td>Cashier 2</td>
+                            </tr>
+                            <tr data-id="3">
+                                <td>3</td>
+                                <td>Bob Smith</td>
+                                <td>0923213412</td>
+                                <td>2024-01-08</td>
+                                <td>Hello Kitty</td>
+                                <td>22</td>
+                                <td>P500.00</td>
+                                <td>Debit Card</td>
+                                <td>Not Paid</td>
+                                <td>Cashier 3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <span class="pagination-link" onclick="changePage(-1)"><</span>
+                    <span class="pagination-link" data-page="1" onclick="goToPage(1)">1</span>
+                    <span class="pagination-link" data-page="2" onclick="goToPage(2)">2</span>
+                    <span class="pagination-link" data-page="3" onclick="goToPage(3)">3</span>
+                    <span class="pagination-link" data-page="4" onclick="goToPage(4)">4</span>
+                    <span class="pagination-link" data-page="5" onclick="goToPage(5)">5</span>
+                    <span class="pagination-link" onclick="changePage(1)">></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="editModal">
+            <div class="modal-content">
+                <h2 class="modal-title">Edit Product</h2>
+                <!-- Add form fields for editing -->
+                <label for="editedProductImage">Product Image:</label>
+                <div class="image-placeholder-edit" id="editedImagePlaceholderContainer">
+                    <img src="#" id="editedImagePreview" class="image-preview-edit">
+                </div>
+                <input type="file" id="editedProductImage" name="editedProductImage" onchange="EditImageChange(this)">
+                <label for="editedTag">Tag:</label>
+                <input type="text" id="editedTag" name="editedTag">
+                <label for="editedProductName">Product Name:</label>
+                <input type="text" id="editedProductName" name="editedProductName">
+                <label for="editedCategory">Category:</label>
+                <input type="text" id="editedCategory" name="editedCategory">
+                <label for="editedBrand">Brand:</label>
+                <input type="text" id="editedBrand" name="editedBrand">
+                <label for="editedQuantity">Quantity:</label>
+                <input type="text" id="editedQuantity" name="editedQuantity">
+                <label for="editedPrice">Price:</label>
+                <input type="text" id="editedPrice" name="editedPrice">
+                <div class="modal-button-container">
+                    <button class="modal-save-button" onclick="saveChanges()">Save</button>
+                    <button class="modal-close-button" onclick="cancelEditModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="add-modal" id="addProductModal">
+            <div class="add-product-modal-content">
+                <h2 class="modal-title">Add Product</h2>
+                <label for="newProductImage">Product Image:</label>
+            <div class="image-placeholder" id="imagePlaceholderContainer">
+                <img src="#" id="newProductImagePreview" class="image-preview">
+                <label for="newProductImage" id="imageInputLabel">Choose an image</label>
+            </div>
+                <input type="file" id="newProductImage" name="newProductImage" onchange="handleImageChange(this)">
+                <label for="newTag">Tag:</label>
+                <input type="text" id="newTag" name="newTag">
+                <label for="newProductName">Product Name:</label>
+                <input type="text" id="newProductName" name="newProductName">
+                <label for="newCategory">Category:</label>
+                <input type="text" id="newCategory" name="newCategory">
+                <label for="newBrand">Brand:</label>
+                <input type="text" id="newBrand" name="newBrand">
+                <label for="newQuantity">Quantity:</label>
+                <input type="text" id="newQuantity" name="newQuantity">
+                <label for="newPrice">Price:</label>
+                <input type="text" id="newPrice" name="newPrice">
+                <div class="modal-button-container">
+                    <button class="modal-save-button" onclick="addProduct()">Add</button>
+                    <button class="modal-close-button" onclick="closeAddProductModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
 </body>

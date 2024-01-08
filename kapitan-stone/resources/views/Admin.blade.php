@@ -251,7 +251,7 @@
             </div>
 
       
-    <script src="{{ asset('assets/js/index.js') }}">     
+    <script src="{{ asset('assets/js/index.js') }}">   
     // Disable the back button
     history.pushState(null, null, document.URL);
     window.addEventListener('popstate', function () {

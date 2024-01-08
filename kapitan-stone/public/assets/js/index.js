@@ -1060,4 +1060,5 @@ xaxisCategories = xaxisCategories.map(item => item.label);
       let ccchart = new ApexCharts(document.querySelector(".sales-chart"), salesOptions);
       ccchart.render();
     });
+
     
