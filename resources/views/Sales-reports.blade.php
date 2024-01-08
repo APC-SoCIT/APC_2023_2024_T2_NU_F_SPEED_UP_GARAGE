@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
-    <title>Stocks</title>
+    <title>Sales Reports</title>
 </head>
 
 <body>
@@ -20,9 +22,9 @@
         <ul class="side-menu">
             <li><a href="/admin"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
             <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
-            <li class="active"><a href="/stocks"><i class='bx bxs-coin-stack'></i>Stocks</a></li>
             <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
-            <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
+            <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
+            <li class="active"><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
             <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
@@ -62,33 +64,15 @@
                 <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
                 <!-- Profile dropdown menu -->
                 <div class="profile-menu" id="profileMenu">
-                    <div class="menu-item">Profile</div>
-                    <div class="menu-item">Settings</div>
+                    <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
+                    <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
                     <div class="menu-item" onclick="logout()">Logout</div>
                 </div>
             </a>
-        </nav>
-
-        <!-- End of Navbar -->
-
-        <main>
-            <div class="header">
-                <div class="left">
-                    <h1>Inventory Stocks</h1>
-                    <ul class="breadcrumb">
-                        <li><a href='/admin'>Dashboard</a></li>
-                        /
-                        <li><a href='/stocks' class="active">Stocks</a></li>
-                    </ul>
-                </div>
-                <a href="#" class="report">
-                    <i class='bx bx-cloud-download'></i>
-                    <span>Download CSV</span>
-                </a>
-                <div class="chat-icon" onclick="toggleChat()">
+            <div class="chat-icon" onclick="toggleChat()">
                 <i class='bx bx-message'></i>
             </div>
-        </main>
+        </nav>
 
         <div id="chatWindow" class="chat-window">
             <div class="chat-header">
@@ -107,50 +91,50 @@
 
         <!-- End of Navbar -->
 
-        <div class="table-container">
-        <table class="inventory-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Example rows; replace with server-side generated rows -->
-                    <tr data-id="1">
-                        <td>1</td>
-                        <td>Product A</td>
-                        <td>Category A</td>
-                        <td><span class="quantity">100</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                        <td><span class="price">$10.00</span><input type="text" class="edit-price" style="display:none;"></td>
-                        <td>
-                            <button class="edit-btn" onclick="editRow(1)">Edit</button>
-                            <button class="save-btn" onclick="saveRow(1)" style="display:none;">Save</button>
-                            <button class="cancel-btn" onclick="cancelEdit(1)" style="display:none;">Cancel</button>
-                            <button class="delete-btn" onclick="deleteRow(1)">Delete</button>
-                        </td>
-                    </tr>
-                    <tr data-id="2">
-                        <td>2</td>
-                        <td>Product B</td>
-                        <td>Category B</td>
-                        <td><span class="quantity">50</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                        <td><span class="price">$20.00</span><input type="text" class="edit-price" style="display:none;"></td>
-                        <td>
-                            <button class="edit-btn" onclick="editRow(2)">Edit</button>
-                            <button class="save-btn" onclick="saveRow(2)" style="display:none;">Save</button>
-                            <button class="cancel-btn" onclick="cancelEdit(2)" style="display:none;">Cancel</button>
-                            <button class="delete-btn" onclick="deleteRow(2)">Delete</button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows as needed -->
-                </tbody>
-            </table>
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Reports</h1>
+                    <ul class="breadcrumb">
+                        <li><a href='/admin'>Dashboard</a></li>
+                        /
+                        <li><a href='/reports'>Reports</a></li>
+                        /
+                        <li><a href='/inventory-reports' class="active">Sales Reports</a></li>
+                    </ul>
+                </div>
+                <a href="#" class="report">
+                    <i class='bx bx-cloud-download'></i>
+                    <span>Download CSV</span>
+                </a>
+            </div>
+
+
+            <!-- Insights -->
+            <ul class="reports">
+                <li>
+                    <i class='bx bx-calendar-check'></i>
+                    <span class="info">
+                        <h3>
+                            Daily Report
+                        </h3>
+                        <p>View Report</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bx-calendar-check'></i>
+                    <span class="info">
+                        <h3>
+                            Monthly Report
+                        </h3>
+                        <p>View Report</p>
+                    </span>
+                </li>
+            </ul>
         </div>
+    </div>
+
+        
 
     </div>
 

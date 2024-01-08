@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <title>Settings</title>
 </head>
@@ -20,8 +22,8 @@
         <ul class="side-menu">
             <li><a href="/admin"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
             <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
-            <li><a href="/stocks"><i class='bx bxs-coin-stack'></i>Stocks</a></li>
             <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
+            <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
             <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
@@ -62,8 +64,8 @@
                 <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
                 <!-- Profile dropdown menu -->
                 <div class="profile-menu" id="profileMenu">
-                    <div class="menu-item">Profile</div>
-                    <div class="menu-item">Settings</div>
+                    <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
+                    <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
                     <div class="menu-item" onclick="logout()">Logout</div>
                 </div>
             </a>
