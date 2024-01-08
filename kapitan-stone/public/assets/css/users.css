@@ -83,6 +83,13 @@ body.dark .filter-container {
     scrollbar-width: thin;
 }
 
+.dark .edit-user-modal-content{
+    background-color: #333;
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    border: 1px solid #444343;
+}
+
 .edit-user-modal-content::-webkit-scrollbar {
     width: 5px;
 }
@@ -102,11 +109,19 @@ body.dark .filter-container {
     color: #333;
 }
 
+.dark .edit-user-modal-content h2 {
+    color: white;
+}
+
 .edit-user-modal-content label {
     display: block;
     margin-bottom: 5px;
     font-size: 14px;
     color: #333;
+}
+
+.dark .edit-user-modal-content label{
+    color: white;
 }
 
 .edit-user-modal-content input, .edit-user-modal-content select {
@@ -116,6 +131,14 @@ body.dark .filter-container {
     border: 1px solid #ddd;
     outline: none;
     border-radius: 4px;
+}
+
+
+.dark .edit-user-modal-content select, .dark .edit-user-modal-content input{
+    background-color: #333; /* Background color in dark mode */
+    color: #fff; /* Text color in dark mode */
+    border-color: var(--border); /* Border color in dark mode */
+    outline: none;
 }
 
 .modal-button-container {

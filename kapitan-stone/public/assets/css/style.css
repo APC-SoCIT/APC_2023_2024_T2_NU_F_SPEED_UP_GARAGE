@@ -1077,6 +1077,16 @@ body.dark .cancel-btn {
     border-radius: 4px;
 }
 
+.dark .modal-content input, .dark .modal-content select, .dark .add-product-modal-content select,
+.dark .add-product-modal-content input {
+    background-color: #333; /* Background color in dark mode */
+    color: #fff; /* Text color in dark mode */
+    border-color: var(--border); /* Border color in dark mode */
+    outline: none;
+}
+
+
+
 .modal-button-container,
 .add-product-modal-content .modal-button-container {
     text-align: center;
@@ -1203,7 +1213,7 @@ body.dark .add-product-modal-content label {
 }
 
 body.dark .modal-content input,
-body.dark .add-product-modal-content input {
+body.dark .add-product-modal-content {
     color: white;
     background-color: #444343;
     border: 1px solid #444343;
