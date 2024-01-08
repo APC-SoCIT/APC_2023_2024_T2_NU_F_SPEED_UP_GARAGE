@@ -295,9 +295,67 @@
                 <label for="editedProductName">Product Name:</label>
                 <input type="text" id="editedProductName" name="editedProductName">
                 <label for="editedCategory">Category:</label>
-                <input type="text" id="editedCategory" name="editedCategory">
+                <select id="editedCategory" name="editedCategory">
+                    <option value="">Select Category</option>
+                    <option value="Air Filter">Air Filter</option>
+                    <option value="Battery">Battery</option>
+                    <option value="Bearing">Bearing</option>
+                    <option value="Belt">Belt</option>
+                    <option value="Brake Pads">Brake Pads</option>
+                    <option value="Center Spring">Center Spring</option>
+                    <option value="Clutch">Clutch</option>
+                    <option value="Crank">Crank</option>
+                    <option value="Cylinder">Cylinder</option>
+                    <option value="Disc Brake">Disc Brake</option>
+                    <option value="Engine Oil">Engine Oil</option>
+                    <option value="ECU">ECU</option>
+                    <option value="Flyball">Flyball</option>
+                    <option value="Fuel Filter">Fuel Filter</option>
+                    <option value="Fuel Injector">Fuel Injector</option>
+                    <option value="Fuel Pump">Fuel Pump</option>
+                    <option value="Gasket">Gasket</option>
+                    <option value="Grip">Grip</option>
+                    <option value="ISC">ISC</option>
+                    <option value="MDL Bracket">MDL Bracket</option>
+                    <option value="O Ring">O Ring</option>
+                    <option value="Oil Seal">Oil Seal</option>
+                    <option value="Piston">Piston</option>
+                    <option value="Pulley Set">Pulley Set</option>
+                    <option value="Rectifier">Rectifier</option>
+                    <option value="Rocker Arm">Rocker Arm</option>
+                    <option value="Slider Piece">Slider Piece</option>
+                    <option value="Solenoid Set">Solenoid Set</option>
+                    <option value="Sparkplug">Sparkplug</option>
+                    <option value="Speedometer">Speedometer</option>
+                    <option value="Starter">Starter</option>
+                    <option value="Stator">Stator</option>
+                    <option value="Torque">Torque</option>
+                    <option value="Valve">Valve</option>
+                    <option value="Washer Plate">Washer Plate</option>
+                    <option value="Water Pump">Water Pump</option>
+                    <option value="Wheel">Wheel</option>
+                    <option value="Wheel Speed Sensor">Wheel Speed Sensor</option>
+                    <option value="TPS">TPS</option>
+                </select>
                 <label for="editedBrand">Brand:</label>
-                <input type="text" id="editedBrand" name="editedBrand">
+                    <select id="editedBrand" name="editedBrand">
+                        <option value="">Select Brand</option>
+                        <option value="Mio">Mio</option>
+                        <option value="NMAX">NMAX</option>
+                        <option value="AEROX">AEROX</option>
+                        <option value="PCX">PCX</option>
+                        <option value="Click">Click</option>
+                        <option value="ADV">ADV</option>
+                        <option value="Beat">Beat</option>
+                        <option value="Faito">Faito</option>
+                        <option value="M3">M3</option>
+                        <option value="PIAA">PIAA</option>
+                        <option value="Burgman">Burgman</option>
+                        <option value="Legion">Legion</option>
+                        <option value="Error 12">Error 12</option>
+                        <option value="MXI">MXI</option>
+                        <option value="RS8">RS8</option>
+                    </select>
                 <label for="editedQuantity">Quantity:</label>
                 <input type="text" id="editedQuantity" name="editedQuantity">
                 <label for="editedPrice">Price:</label>
@@ -322,10 +380,68 @@
                 <input type="text" id="newTag" name="newTag">
                 <label for="newProductName">Product Name:</label>
                 <input type="text" id="newProductName" name="newProductName">
-                <label for="newCategory">Category:</label>
-                <input type="text" id="newCategory" name="newCategory">
-                <label for="newBrand">Brand:</label>
-                <input type="text" id="newBrand" name="newBrand">
+                <label for="editedCategory">Category:</label>
+                <select id="editedCategory" name="editedCategory">
+                    <option value="">Select Category</option>
+                    <option value="Air Filter">Air Filter</option>
+                    <option value="Battery">Battery</option>
+                    <option value="Bearing">Bearing</option>
+                    <option value="Belt">Belt</option>
+                    <option value="Brake Pads">Brake Pads</option>
+                    <option value="Center Spring">Center Spring</option>
+                    <option value="Clutch">Clutch</option>
+                    <option value="Crank">Crank</option>
+                    <option value="Cylinder">Cylinder</option>
+                    <option value="Disc Brake">Disc Brake</option>
+                    <option value="Engine Oil">Engine Oil</option>
+                    <option value="ECU">ECU</option>
+                    <option value="Flyball">Flyball</option>
+                    <option value="Fuel Filter">Fuel Filter</option>
+                    <option value="Fuel Injector">Fuel Injector</option>
+                    <option value="Fuel Pump">Fuel Pump</option>
+                    <option value="Gasket">Gasket</option>
+                    <option value="Grip">Grip</option>
+                    <option value="ISC">ISC</option>
+                    <option value="MDL Bracket">MDL Bracket</option>
+                    <option value="O Ring">O Ring</option>
+                    <option value="Oil Seal">Oil Seal</option>
+                    <option value="Piston">Piston</option>
+                    <option value="Pulley Set">Pulley Set</option>
+                    <option value="Rectifier">Rectifier</option>
+                    <option value="Rocker Arm">Rocker Arm</option>
+                    <option value="Slider Piece">Slider Piece</option>
+                    <option value="Solenoid Set">Solenoid Set</option>
+                    <option value="Sparkplug">Sparkplug</option>
+                    <option value="Speedometer">Speedometer</option>
+                    <option value="Starter">Starter</option>
+                    <option value="Stator">Stator</option>
+                    <option value="Torque">Torque</option>
+                    <option value="Valve">Valve</option>
+                    <option value="Washer Plate">Washer Plate</option>
+                    <option value="Water Pump">Water Pump</option>
+                    <option value="Wheel">Wheel</option>
+                    <option value="Wheel Speed Sensor">Wheel Speed Sensor</option>
+                    <option value="TPS">TPS</option>
+                </select>
+                <label for="editedBrand">Brand:</label>
+                    <select id="editedBrand" name="editedBrand">
+                        <option value="">Select Brand</option>
+                        <option value="Mio">Mio</option>
+                        <option value="NMAX">NMAX</option>
+                        <option value="AEROX">AEROX</option>
+                        <option value="PCX">PCX</option>
+                        <option value="Click">Click</option>
+                        <option value="ADV">ADV</option>
+                        <option value="Beat">Beat</option>
+                        <option value="Faito">Faito</option>
+                        <option value="M3">M3</option>
+                        <option value="PIAA">PIAA</option>
+                        <option value="Burgman">Burgman</option>
+                        <option value="Legion">Legion</option>
+                        <option value="Error 12">Error 12</option>
+                        <option value="MXI">MXI</option>
+                        <option value="RS8">RS8</option>
+                    </select>
                 <label for="newQuantity">Quantity:</label>
                 <input type="text" id="newQuantity" name="newQuantity">
                 <label for="newPrice">Price:</label>

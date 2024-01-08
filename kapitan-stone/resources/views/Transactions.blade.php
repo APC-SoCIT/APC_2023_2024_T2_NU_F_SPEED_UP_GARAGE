@@ -241,7 +241,7 @@
 
         <div class="add-modal" id="addProductModal">
             <div class="add-product-modal-content">
-                <h2 class="modal-title">Add Product</h2>
+                <h2 class="modal-title">Add Transactions</h2>
                 <label for="newProductImage">Product Image:</label>
             <div class="image-placeholder" id="imagePlaceholderContainer">
                 <img src="#" id="newProductImagePreview" class="image-preview">

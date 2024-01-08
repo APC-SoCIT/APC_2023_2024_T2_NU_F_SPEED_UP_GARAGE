@@ -190,7 +190,12 @@
                 <label for="UserFullName">Full Name:</label>
                 <input type="text" id="UserFullName" name="UserFullName">
                 <label for="UserRole">Role</label>
-                <input type="text" id="UserRole" name="UserRole">
+                <select>
+                            <option value="">Select Role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Inventory Clerk">Inventory Clerk</option>
+                            <option value="Cashier">Cashier</option>
+                </select>
                 <label for="userEmail">Email:</label>
                 <input type="text" id="userEmail" name="userEmail">
                 <label for="userPassword">Password:</label>
@@ -211,7 +216,12 @@
                 <label for="UserFullName">Full Name:</label>
                 <input type="text" id="UserFullName" name="UserFullName">
                 <label for="UserRole">Role</label>
-                <input type="text" id="UserRole" name="UserRole">
+                <select>
+                            <option value="">Select Role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Inventory Clerk">Inventory Clerk</option>
+                            <option value="Cashier">Cashier</option>
+                </select>
                 <label for="userEmail">Email:</label>
                 <input type="text" id="userEmail" name="userEmail">
                 <label for="userPassword">Password:</label>

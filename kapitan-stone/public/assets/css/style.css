@@ -1067,7 +1067,7 @@ body.dark .cancel-btn {
     font-size: 14px;
 }
 
-.modal-content input,
+.modal-content input, .modal-content select, .add-product-modal-content select,
 .add-product-modal-content input {
     width: 100%;
     padding: 8px;
