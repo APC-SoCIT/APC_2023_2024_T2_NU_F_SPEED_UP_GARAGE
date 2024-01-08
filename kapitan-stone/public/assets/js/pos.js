@@ -1,5 +1,6 @@
+
 async function loadDatabase() {
-  const db = await idb.openDB("tailwind_store", 1, {
+  const db = await idb.openDB("poop", 1, {
     upgrade(db, oldVersion, newVersion, transaction) {
       db.createObjectStore("products", {
         keyPath: "id",
@@ -28,7 +29,7 @@ function initApp() {
     time: null,
     firstTime: localStorage.getItem("") === null,
     activeMenu: 'pos',
-    loadingSampleData: false,
+    loadingSampleData: true,
     moneys: [1, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000,],
     products: [],
     keyword: "",
@@ -40,32 +41,44 @@ function initApp() {
     receiptDate: null,
     async initDatabase() {
       this.db = await loadDatabase();
+      await this.startWithSampleData(); // Load JSON immediately
       this.loadProducts();
     },
+
     async loadProducts() {
       this.products = await this.db.getProducts();
-      console.log("products loaded", this.products);
+      console.log("Products loaded", this.products);
     },
-    async startWithSampleData() {
-      const response = await fetch('/assets/css/sample.json');
-      const data = await response.json();
-      this.products = data.products;
-      for (let product of data.products) {
-        await this.db.addProduct(product);
-      }
 
-      this.setFirstTime(false);
+    async startWithSampleData() {
+      try {
+        const response = await fetch('/assets/css/sample.json');
+        console.log('Response:', response); // Log the response
+
+        const data = await response.json();
+        console.log('Fetched Data:', data); // Log the fetched data
+
+        this.products = data.products;
+
+        for (let product of data.products) {
+          await this.db.addProduct(product);
+        }
+
+        // Set firstTime to false if needed
+        // this.firstTime = false;
+
+        console.log('Sample data loaded successfully.'); // Log success
+      } catch (error) {
+        console.error('Error loading sample data:', error); // Log errors
+      }
     },
+    
     startBlank() {
       this.setFirstTime(false);
     },
+    
     setFirstTime(firstTime) {
       this.firstTime = firstTime;
-      if (firstTime) {
-        localStorage.removeItem("first_time");
-      } else {
-        localStorage.setItem("first_time", new Date().getTime());
-      }
     },
     filteredProducts() {
       const rg = this.keyword ? new RegExp(this.keyword, "gi") : null;
@@ -85,7 +98,7 @@ function initApp() {
       } else {
         this.cart[index].qty += 1;
       }
-      this.beep();
+      
       this.updateChange();
     },
     findCartIndex(product) {
@@ -102,14 +115,14 @@ function initApp() {
         this.clearSound();
       } else {
         this.cart[index].qty = afterAdd;
-        this.beep();
+        
       }
       this.updateChange();
     },
     addCash(amount) {      
       this.cash = (this.cash || 0) + amount;
       this.updateChange();
-      this.beep();
+      
     },
     getItemsCount() {
       return this.cart.reduce((count, item) => count + item.qty, 0);
@@ -149,9 +162,20 @@ function initApp() {
         .replace(/^0|\./g, "")
         .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     },
+
+    numberFormat1(number) {
+      return (number || "")
+        .toString()
+        .replace(/^0|\./g, "")
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1");
+    },
     priceFormat(number) {
       return number ? `PHP ${this.numberFormat(number)}` : `PHP 0`;
     },
+    qtyFormat(number) {
+      return number ? `STOCK: ${this.numberFormat1(number)}` : `Qty: 0`;
+    },
+
     clear() {
       this.cash = 0;
       this.cart = [];
@@ -160,18 +184,7 @@ function initApp() {
       this.updateChange();
       this.clearSound();
     },
-    beep() {
-      this.playSound("");
-    },
-    clearSound() {
-      this.playSound("");
-    },
-    playSound(src) {
-      const sound = new Audio();
-      sound.src = src;
-      sound.play();
-      sound.onended = () => delete(sound);
-    },
+  
     printAndProceed() {
       const receiptContent = document.getElementById('receipt-content');
       const titleBefore = document.title;
@@ -194,3 +207,6 @@ function initApp() {
 
   return app;
 }
+
+const myApp = initApp();
+myApp.initDatabase();

@@ -2,86 +2,111 @@
     "products": [
         {
           "id": 1,
-          "name": "Beef Burger",
-          "price": 45000,
-          "image": "assets/images/beef-burger.png",
+          "brand":"Athena",
+          "name": "Athena Gasket Kit - Complete",
+          "price": 450000,
+          "image": "assets/images/gasket-kit.jpg",
+          "quantity": 55555,
           "options": null
+          
         },
         {
           "id": 2,
-          "name": "Sandwich",
+          "brand":"Galfer",
+          "name": "Galfer Front Brake Line Kit",
           "price": 32000,
-          "image": "assets/images/sandwich.png",
+          "image": "assets/images/brake-line.jpg",
+          "quantity": 22,
           "options": null
         },
         {
           "id": 3,
-          "name": "Sawarma",
+          "brand":"Acerbis",
+          "name": "Acerbis Gas Tank",
           "price": 30000,
-          "image": "assets/images/sawarma.png",
+          "image": "assets/images/gas-tank.jpg",
+          "quantity": 25,
           "options": null
         },
         {
           "id": 4,
-          "name": "Croissant",
+          "brand":"EBC",
+          "name": "EBC R Series Sintered Brake Pads",
           "price": 16000,
-          "image": "assets/images/croissant.png",
+          "image": "assets/images/brake-pad.jpg",
+          "quantity": 211,
           "options": null
         },
         {
           "id": 5,
-          "name": "Cinnamon Roll",
+          "brand":"Driven",
+          "name": "Driven Performance Clutch Kit",
           "price": 20000,
-          "image": "assets/images/cinnamon-roll.png",
+          "image": "assets/images/clutch-kit.jpg",
+          "quantity": 222,
           "options": null
         },
         {
           "id": 6,
-          "name": "Choco Glaze Donut with Peanut",
+          "brand":"Turner Performance",
+          "name": "Turner Performance Products Sport Series Brake Rotor - Rear",
           "price": 10000,
-          "image": "assets/images/choco-glaze-donut-peanut.png",
+          "image": "assets/images/brake-rotor.jpg",
+          "quantity": 252,
           "options": null
         },
         {
           "id": 7,
-          "name": "Choco Glazed Donut",
+          "brand":"Twin Air",
+          "name": "Twin Air Oil Filter",
           "price": 10000,
-          "image": "assets/images/choco-glaze-donut.png",
+          "image": "assets/images/oil-filter1.jpg",
+          "quantity": 2156,
           "options": null
         },
         {
           "id": 8,
-          "name": "Red Glazed Donut",
+          "brand":"Myler's",
+          "name": "Myler's SuperCool Radiator",
           "price": 10000,
-          "image": "assets/images/red-glaze-donut.png",
+          "image": "assets/images/radiator.jpg",
+          "quantity": 22,
           "options": null
         },
         {
           "id": 9,
-          "name": "Iced Coffee Latte",
+          "brand":"Turner Performance",
+          "name": "Turner Performance Products Oil Filler Cap",
           "price": 25000,
-          "image": "assets/images/coffee-latte.png",
+          "image": "assets/images/oil-filler-cap.jpg",
+          "quantity": 2111,
           "options": null
         },
         {
           "id": 10,
-          "name": "Iced Chocolate",
+          "brand":"Wiseco",
+          "name": "Wiseco 2-Stroke Piston",
           "price": 20000,
-          "image": "assets/images/ice-chocolate.png",
+          "image": "assets/images/stroke-piston.jpg",
+          "quantity": 2,
           "options": null
         },
         {
           "id": 11,
-          "name": "Iced Tea",
+          "brand":"Yoshimura",
+          "name": "Yoshimura RS-4 Slip-On Exhaust",
           "price": 15000,
-          "image": "assets/images/ice-tea.png",
+          "image": "assets/images/slip-on-exhaust.jpg",
+          "quantity": 11111,
           "options": null
         },
         {
           "id": 12,
-          "name": "Iced Matcha Latte",
+          "brand":"Filguard",
+          "name": "FilGuard Premium Oil Filter",
           "price": 22000,
-          "image": "assets/images/matcha-latte.png",
+          "image": "assets/images/oil-filter.jpg",
+          "quantity": 2,
           "options": null
         }
     ]
