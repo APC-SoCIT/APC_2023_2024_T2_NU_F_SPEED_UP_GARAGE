@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -358,7 +356,7 @@
                 <label for="newProductName">Product Name:</label>
                 <input type="text" id="newProductName" name="newProductName">
                 <label for="editedCategory">Category:</label>
-                <select id="editedCategory" name="editedCategory">
+                <select id="newCategory" name="newCategory">
                     <option value="">Select Category</option>
                     <option value="Air Filter">Air Filter</option>
                     <option value="Battery">Battery</option>
@@ -401,7 +399,7 @@
                     <option value="TPS">TPS</option>
                 </select>
                 <label for="editedBrand">Brand:</label>
-                    <select id="editedBrand" name="editedBrand">
+                <select id="newBrand" name="newBrand">
                         <option value="">Select Brand</option>
                         <option value="Mio">Mio</option>
                         <option value="NMAX">NMAX</option>
@@ -438,6 +436,12 @@
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
+    <script>
+        
+        
+
+    </script>
+
 </body>
 
 </html>

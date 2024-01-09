@@ -90,7 +90,7 @@ Route::get('customers', function () {
 
 // Use ProductController to handle inventory-related functionality
 Route::get('/inventory', [ProductController::class, 'index']);  
-Route::post('/add-product', 'ProductController@addProduct');
+Route::post('/addProduct', [ProductController::class, 'addProduct'])->middleware('auth');
 
 
 Route::middleware('auth')->group(function () {
