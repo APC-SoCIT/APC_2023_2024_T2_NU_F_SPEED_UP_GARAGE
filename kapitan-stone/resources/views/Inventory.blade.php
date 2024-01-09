@@ -1,9 +1,12 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
@@ -221,56 +224,24 @@
                             </tr>
                         </thead>
                         <tbody id="inventoryTableBody">
-                            <!-- Example rows; replace with server-side generated rows -->
-                            <tr data-id="1">
-                            <td><span class="status"></span></td>
-                                <td></td>
-                                <td class="tag">0923213412</td>
-                                <td class="product-name">Spongebob</td>
-                                <td class="category">Air Filter</td>
-                                <td class="brand">Mio</td>
-                                <td><span class="quantity">0</span><input type="text" class="edit-quantity"
-                                        style="display:none;"></td>
-                                <td><span class="price">P500.00</span><input type="text" class="edit-price"
-                                        style="display:none;"></td>
+                    
+                            @foreach ($products as $product)
+                            <tr data-id="{{ $product->id }}">
+                                <td><span class="status"></span></td>
+                                <td>{{ $product->id }}</td>
+                                <td class="tag">{{ $product->tag }}</td>
+                                <td class="product-name">{{ $product->product_name }}</td>
+                                <td class="category">{{ $product->category }}</td>
+                                <td class="brand">{{ $product->brand }}</td>
+                                <td><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
+                                <td><span class="price">{{ $product->price }}</span><input type="text" class="edit-price" style="display:none;"></td>
                                 <td>
                                     <button class="edit-btn" onclick="editRow(event)">Edit</button>
                                     <button class="delete-btn" onclick="deleteRow()">Delete</button>
                                 </td>
                             </tr>
-                            <tr data-id="2">
-                            <td><span class="status"></span></td>
-                                <td></td>
-                                <td class="tag">0923213412</td>
-                                <td class="product-name">Judge</td>
-                                <td class="category">Belt</td>
-                                <td class="brand">ADV</td>
-                                <td><span class="quantity">8</span><input type="text" class="edit-quantity"
-                                        style="display:none;"></td>
-                                <td><span class="price">P500.00</span><input type="text" class="edit-price"
-                                        style="display:none;"></td>
-                                <td>
-                                    <button class="edit-btn" onclick="editRow(event)">Edit</button>
-                                    <button class="delete-btn" onclick="deleteRow()">Delete</button>
-                                </td>
-                            </tr>
-                            <tr data-id="3">
-                            <td><span class="status"></span></td>
-                                <td></td>
-                                <td class="tag">0923213412</td>
-                                <td class="product-name">Hello Kitty</td>
-                                <td class="category">Battery</td>
-                                <td class="brand">NMAX</td>
-                                <td><span class="quantity">22</span><input type="text" class="edit-quantity"
-                                        style="display:none;"></td>
-                                <td><span class="price">P500.00</span><input type="text" class="edit-price"
-                                        style="display:none;"></td>
-                                <td>
-                                    <button class="edit-btn" onclick="editRow(event)">Edit</button>
-                                    <button class="delete-btn" onclick="deleteRow()">Delete</button>
-                                </td>
-                            </tr>
-                            <!-- Add more rows as needed -->
+                            @endforeach
+                            
                         </tbody>
                     </table>
                 </div>
@@ -463,6 +434,8 @@
 
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
 </body>
