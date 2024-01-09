@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/entries.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/users.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
@@ -157,7 +158,7 @@
                     </thead>
                     <tbody id="inventoryTableBody">
                         <tr data-id="1">
-                            <td>1</td>
+                            <td class="auto-number"></td>
                             <td class="username">cinnamonesurena</td>
                             <td class="full-name">James Vincent T. Esurena</td>
                             <td class="user-role">Cashier</td>
@@ -168,7 +169,7 @@
                             <td class="user-date-creation">December 12, 2023</td>
                             <td class="user-last-login">January 04, 2024</td>
                             <td>
-                                <button class="edit-btn" onclick="showEditUserModal()">Edit</button>
+                                <button class="edit-btn" onclick="showEditUserModal(event)">Edit</button>
                                 <button class="delete-btn" onclick="deleteRow()">Delete</button>
                             </td>
                         </tr>
@@ -195,12 +196,13 @@
                 <label for="UserFullName">Full Name:</label>
                 <input type="text" id="UserFullName" name="UserFullName">
                 <label for="UserRole">Role</label>
-                <select>
-                            <option value="">Select Role</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Inventory Clerk">Inventory Clerk</option>
-                            <option value="Cashier">Cashier</option>
+                <select id="UserRole" name="userRole">
+                    <option value="">Select Role</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Inventory Clerk">Inventory Clerk</option>
+                    <option value="Cashier">Cashier</option>
                 </select>
+
                 <label for="userEmail">Email:</label>
                 <input type="text" id="userEmail" name="userEmail">
                 <label for="userPassword">Password:</label>
@@ -214,18 +216,18 @@
         </div>
 
         <div class="add-user-modal" id="addUserModal">
-            <div class="edit-user-modal-content">
-                <h2 class="edit-user-modal-title">Create User</h2>
+            <div class="add-user-modal-content">
+                <h2 class="add-user-modal-title">Create User</h2>
                 <label for="userUsername">Username:</label>
                 <input type="text" id="userUsername" name="userUsername">
                 <label for="UserFullName">Full Name:</label>
                 <input type="text" id="UserFullName" name="UserFullName">
                 <label for="UserRole">Role</label>
-                <select>
-                            <option value="">Select Role</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Inventory Clerk">Inventory Clerk</option>
-                            <option value="Cashier">Cashier</option>
+                <select id="UserRole" name="userRole">
+                    <option value="">Select Role</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Inventory Clerk">Inventory Clerk</option>
+                    <option value="Cashier">Cashier</option>
                 </select>
                 <label for="userEmail">Email:</label>
                 <input type="text" id="userEmail" name="userEmail">
@@ -244,6 +246,9 @@
     </main>
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    <script src="{{ asset('assets/js/users.js') }}"></script>
+    <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/navbar.js') }}"></script>
 </body>
 
 </html>

@@ -128,18 +128,65 @@
 
                         <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Category</option>
-                            <option value="Category 1">Category 1</option>
-                            <option value="Category 2">Category 2</option>
-                            <option value="Category 3">Category 3</option>
-                            <option value="Category 4">Category 4</option>
+                            <option value="Air Filter">Air Filter</option>
+                            <option value="Battery">Battery</option>
+                            <option value="Bearing">Bearing</option>
+                            <option value="Belt">Belt</option>
+                            <option value="Brake Pads">Brake Pads</option>
+                            <option value="Center Spring">Center Spring</option>
+                            <option value="Clutch">Clutch</option>
+                            <option value="Crank">Crank</option>
+                            <option value="Cylinder">Cylinder</option>
+                            <option value="Disc Brake">Disc Brake</option>
+                            <option value="Engine Oil">Engine Oil</option>
+                            <option value="ECU">ECU</option>
+                            <option value="Flyball">Flyball</option>
+                            <option value="Fuel Filter">Fuel Filter</option>
+                            <option value="Fuel Injector">Fuel Injector</option>
+                            <option value="Fuel Pump">Fuel Pump</option>
+                            <option value="Gasket">Gasket</option>
+                            <option value="Grip">Grip</option>
+                            <option value="ISC">ISC</option>
+                            <option value="MDL Bracket">MDL Bracket</option>
+                            <option value="O Ring">O Ring</option>
+                            <option value="Oil Seal">Oil Seal</option>
+                            <option value="Piston">Piston</option>
+                            <option value="Pulley Set">Pulley Set</option>
+                            <option value="Rectifier">Rectifier</option>
+                            <option value="Rocker Arm">Rocker Arm</option>
+                            <option value="Slider Piece">Slider Piece</option>
+                            <option value="Solenoid Set">Solenoid Set</option>
+                            <option value="Sparkplug">Sparkplug</option>
+                            <option value="Speedometer">Speedometer</option>
+                            <option value="Starter">Starter</option>
+                            <option value="Stator">Stator</option>
+                            <option value="Torque">Torque</option>
+                            <option value="Valve">Valve</option>
+                            <option value="Washer Plate">Washer Plate</option>
+                            <option value="Water Pump">Water Pump</option>
+                            <option value="Wheel">Wheel</option>
+                            <option value="Wheel Speed Sensor">Wheel Speed Sensor</option>
+                            <option value="TPS">TPS</option>
                         </select>
+
 
                         <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
                             <option value="">Select Brand</option>
-                            <option value="Brand 1">Brand 1</option>
-                            <option value="Brand 2">Brand 2</option>
-                            <option value="Brand 3">Brand 3</option>
-                            <option value="Brand 4">Brand 4</option>
+                            <option value="Mio">Mio</option>
+                            <option value="NMAX">NMAX</option>
+                            <option value="AEROX">AEROX</option>
+                            <option value="PCX">PCX</option>
+                            <option value="Click">Click</option>
+                            <option value="ADV">ADV</option>
+                            <option value="Beat">Beat</option>
+                            <option value="Faito">Faito</option>
+                            <option value="M3">M3</option>
+                            <option value="PIAA">PIAA</option>
+                            <option value="Burgman">Burgman</option>
+                            <option value="Legion">Legion</option>
+                            <option value="Error 12">Error 12</option>
+                            <option value="MXI">MXI</option>
+                            <option value="RS8">RS8</option>
                         </select>
                         
                             <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
@@ -179,8 +226,8 @@
                                 <td></td>
                                 <td class="tag">0923213412</td>
                                 <td class="product-name">Spongebob</td>
-                                <td class="category">Category 1</td>
-                                <td class="brand">Brand 1</td>
+                                <td class="category">Air Filter</td>
+                                <td class="brand">Mio</td>
                                 <td><span class="quantity">0</span><input type="text" class="edit-quantity"
                                         style="display:none;"></td>
                                 <td><span class="price">P500.00</span><input type="text" class="edit-price"
@@ -191,20 +238,20 @@
                                 <td></td>
                                 <td class="tag">0923213412</td>
                                 <td class="product-name">Judge</td>
-                                <td class="category">Category 2</td>
-                                <td class="brand">Brand 2</td>
+                                <td class="category">Belt</td>
+                                <td class="brand">ADV</td>
                                 <td><span class="quantity">8</span><input type="text" class="edit-quantity"
                                         style="display:none;"></td>
                                 <td><span class="price">P500.00</span><input type="text" class="edit-price"
                                         style="display:none;"></td>
-                            </tr>
+                                </tr>
                             <tr data-id="3">
                             <td><span class="status"></span></td>
                                 <td></td>
                                 <td class="tag">0923213412</td>
                                 <td class="product-name">Hello Kitty</td>
-                                <td class="category">Category 3</td>
-                                <td class="brand">Brand 3</td>
+                                <td class="category">Battery</td>
+                                <td class="brand">NMAX</td>
                                 <td><span class="quantity">22</span><input type="text" class="edit-quantity"
                                         style="display:none;"></td>
                                 <td><span class="price">P500.00</span><input type="text" class="edit-price"
@@ -287,6 +334,8 @@
     </main>
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/navbar.js') }}"></script>
 </body>
 
 </html>
