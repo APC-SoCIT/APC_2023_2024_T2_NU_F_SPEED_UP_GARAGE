@@ -1,0 +1,179 @@
+.maintable-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-container {
+    margin-top: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Add a border between filter and table */
+}
+
+
+body.dark .filter-container {
+    border-color: #555; /* Border color in dark mode */
+}
+
+.add-product-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.add-product-btn {
+    padding: 12px 20px;
+    background-color: #2ecc71; /* Green color, you can change it */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-product-btn:hover {
+    background-color: #27ae60; /* Darker shade of green */
+}
+
+.category-dropdown,
+.brand-dropdown{
+    padding: 12px;
+    width: 250px; /* Set a fixed width for both category and brand dropdowns */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.search-bar {
+    padding: 12px;
+    width: 250px; /* Set a fixed width for both category and brand dropdowns */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+body.dark .category-dropdown,
+body.dark .brand-dropdown,
+body.dark .search-bar {
+    background-color: #333; /* Background color in dark mode */
+    color: #fff; /* Text color in dark mode */
+    border-color: var(--border); /* Border color in dark mode */
+    outline: none;
+}
+
+.category-dropdown:hover,
+.brand-dropdown:hover,
+.search-bar:hover {
+    border-color: #3498db; /* Highlight border on hover */
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.2); /* Add a subtle shadow on hover */
+}
+
+.search-bar {
+    position: relative;
+    outline: none;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: transparent; /* Set input background to transparent */
+    color: #333; /* Text color for input in dark mode */
+}
+
+body.dark .search-bar input {
+    color: #fff; /* Text color for input in dark mode */
+}
+
+.search-bar i {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s;
+    outline: none;
+}
+
+body.dark .search-bar i {
+    color: #fff; /* Icon color in dark mode */
+}
+
+.search-bar i:hover {
+    color: #3498db; /* Change icon color on hover */
+}
+
+.filter-input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 10px;
+    width: 250px;
+    border-radius: 5px;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.dark .filter-input{
+    background-color: #333; /* Background color in dark mode */
+    color: #fff; /* Text color in dark mode */
+    border-color: var(--border); /* Border color in dark mode */
+    outline: none;
+}
+
+.dark .filter-input:hover{
+    border-color: #3498db; /* Highlight border on hover */
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.2); /* Add a subtle shadow on hover */
+}
+
+
+@media screen and (max-width: 768px) {
+    .maintable-container {
+        padding: 10px; /* Adjusted padding for smaller screens */
+        left: 0;
+    }
+
+    .add-product-container {
+        flex-direction: column; /* Adjust to a column layout on small screens */
+    }
+
+    .add-product-btn {
+        margin-top: 10px; /* Add some spacing between button and inputs on small screens */
+        margin: 20px;
+        width: 100%;
+    }
+
+    .category-dropdown,
+    .brand-dropdown,
+    .search-bar {
+        width: 100%; /* Make inputs full-width on small screens */
+        margin-bottom: 10px; /* Add some spacing between inputs on small screens */
+    }
+
+    .search-bar input {
+        width: calc(100% - 30px); /* Adjust input width for icon */
+    }
+
+    .search-bar i {
+        top: 10px; /* Adjust icon position */
+        right: 10px; /* Adjust icon position */
+    }
+
+    .edit-btn,
+    .delete-btn {
+        margin-bottom: 5px; /* Add some spacing between buttons on small screens */
+    }
+}

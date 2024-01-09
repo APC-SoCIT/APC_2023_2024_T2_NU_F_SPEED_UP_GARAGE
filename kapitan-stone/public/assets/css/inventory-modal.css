@@ -1,0 +1,233 @@
+.modal,
+.add-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Set a higher z-index value for modals */
+}
+
+.modal-content,
+.add-product-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 450px;
+    width: 100%;
+    overflow-y: auto; /* Add overflow-y property to enable scroll when content exceeds height */
+    max-height: 80vh; /* Set a maximum height to ensure modal fits within the viewport */
+    scrollbar-color: #ddd rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
+}
+
+.modal-content::-webkit-scrollbar,
+.add-product-modal-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+.modal-content::-webkit-scrollbar-thumb,
+.add-product-modal-content::-webkit-scrollbar-thumb {
+    background-color: #8b8a8a;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track,
+.add-product-modal-content::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.modal-content label,
+.add-product-modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.modal-content input, .modal-content select, .add-product-modal-content select,
+.add-product-modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    border-radius: 4px;
+}
+
+.dark .modal-content input, .dark .modal-content select, .dark .add-product-modal-content select,
+.dark .add-product-modal-content input {
+    background-color: #333; /* Background color in dark mode */
+    color: #fff; /* Text color in dark mode */
+    border-color: var(--border); /* Border color in dark mode */
+    outline: none;
+}
+
+
+
+.modal-button-container,
+.add-product-modal-content .modal-button-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.modal-save-button,
+.add-product-modal-content .modal-save-button {
+    width: 40%;
+    padding: 8px 15px;
+    background-color: var(--primary);
+    color: rgb(250, 250, 250);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+.modal-close-button,
+.add-product-modal-content .modal-close-button {
+    width: 40%;
+    padding: 8px 15px;
+    background-color: #c0392b;
+    color: rgb(250, 250, 250);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+.modal-save-button:hover,
+.add-product-modal-content .modal-save-button:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+.modal-close-button:hover,
+.add-product-modal-content .modal-close-button:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+.image-placeholder-edit {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.image-preview-edit {
+    max-width: 100%;
+    max-height: 200px; /* Set the desired max height for the image */
+    margin: 10px auto; /* Center horizontally with auto margins */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.image-placeholder-edit label {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: var(--primary);
+    color: rgb(250, 250, 250);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.image-placeholder-edit label:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+/* Add this style to show the image preview when it's not hidden */
+.image-placeholder-edit.has-image .image-preview-edit {
+    display: block;
+}
+
+.image-placeholder {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.image-preview {
+    max-width: 100%;
+    max-height: 200px; /* Set the desired max height for the image */
+    margin: 10px auto; /* Center horizontally with auto margins */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: none;
+}
+
+.image-placeholder label {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: var(--primary);
+    color: rgb(250, 250, 250);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.image-placeholder label:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+/* Add this style to show the image preview when it's not hidden */
+.image-placeholder.has-image .image-preview {
+    display: block;
+}
+
+/* Dark mode styles for both modals */
+body.dark .modal-content,
+body.dark .add-product-modal-content {
+    background-color: #333;
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    border: 1px solid #444343;
+}
+
+body.dark .modal-content label,
+body.dark .add-product-modal-content label {
+    color: white;
+}
+
+body.dark .modal-content input,
+body.dark .add-product-modal-content {
+    color: white;
+    background-color: #444343;
+    border: 1px solid #444343;
+}
+
+body.dark .modal-save-button,
+body.dark .add-product-modal-content .modal-save-button {
+    background-color: #3498db;
+    color: white;
+}
+
+body.dark .modal-close-button,
+body.dark .add-product-modal-content .modal-close-button {
+    background-color: #e74c3c;
+    color: white;
+    border: 1px solid #e74c3c;
+}
+
+body.dark .modal-save-button:hover,
+body.dark .add-product-modal-content .modal-save-button:hover {
+    background-color: #2980b9;
+}
+
+body.dark .modal-close-button:hover,
+body.dark .add-product-modal-content .modal-close-button:hover {
+    background-color: #c0392b;
+}
+
+/* Media query for smaller screens */
+@media only screen and (max-width: 500px) {
+    .modal-content,
+    .add-product-modal-content {
+        max-width: 75%;
+    }
+}

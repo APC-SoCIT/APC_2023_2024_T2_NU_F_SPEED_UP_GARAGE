@@ -1,0 +1,46 @@
+.entries-dropdown {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.modal-title{
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.entries-label {
+    margin-right: 10px;
+    margin-left: 10px;
+    color: #333; /* Default text color */
+    font-size: 14px;
+}
+
+.entries-per-page {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+}
+
+.entries-per-page option {
+    padding: 10px;
+}
+
+body.dark .entries-label {
+    color: white; /* Text color for labels in dark mode */
+}
+
+body.dark .entries-per-page {
+    border-color: #555; /* Border color for the dropdown in dark mode */
+    background-color: #333; /* Background color for the dropdown in dark mode */
+    color: white; /* Text color for the options in dark mode */
+}
+
+body.dark .entries-per-page option {
+    background-color: #333; /* Background color for the options in dark mode */
+    color: white; /* Text color for the options in dark mode */
+}

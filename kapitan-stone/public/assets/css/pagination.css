@@ -1,0 +1,40 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.pagination-link {
+    padding: 8px;
+    margin: 0 5px;
+    cursor: pointer;
+    color: #3498db;
+}
+
+.pagination-link:hover {
+    color: #1f73b7;
+}
+
+.pagination-link.active {
+    color: #fff;
+    background-color: #3498db;
+    border-radius: 4px;
+}
+
+.page-number {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.date-filter {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.dark .date-filter {
+    font-size: 14px;
+    color: white;
+    margin-right: 10px;
+}
