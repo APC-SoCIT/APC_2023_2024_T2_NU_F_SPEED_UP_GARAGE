@@ -24,6 +24,7 @@
             <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
             <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
             <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
+            <li><a href="/customers"><i class='bx bxs-user-plus'></i>Customers</a></li>
             <li class="active"><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
@@ -101,10 +102,6 @@
                         <li><a href='/reports' class="active">Reports</a></li>
                     </ul>
                 </div>
-                <a href="#" class="report">
-                    <i class='bx bx-cloud-download'></i>
-                    <span>Download CSV</span>
-                </a>
             </div>
 
 

@@ -67,6 +67,27 @@ Route::get('sales-reports', function () {
     return view('Sales-reports');
 })->name('sales-reports');
 
+Route::get('daily-sales', function () {
+    return view('Daily-sales');
+})->name('daily-sales');
+
+Route::get('monthly-sales', function () {
+    return view('Monthly-sales');
+})->name('monthly-sales');
+
+Route::get('daily-inventory', function () {
+    return view('Daily-inventory');
+})->name('daily-inventory');
+
+Route::get('monthly-inventory', function () {
+    return view('Monthly-inventory');
+})->name('monthly-inventory');
+
+Route::get('customers', function () {
+    return view('Customers');
+})->name('customers');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

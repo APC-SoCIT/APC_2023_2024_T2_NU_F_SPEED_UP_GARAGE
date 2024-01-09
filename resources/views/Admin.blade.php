@@ -28,6 +28,7 @@
             <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
             <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
             <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
+            <li><a href="/customers"><i class='bx bxs-user-plus'></i>Customers</a></li>
             <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
@@ -191,7 +192,7 @@
       </div>
      
                 </div>
-              <!-- End of Reminders-->
+         
 
               <div class="reminders">
                 <h2>Top Products</h2>
@@ -200,6 +201,8 @@
       <div class="bar-chart">
       <div class="grid"></div>
       </div>
+
+    
 
       
       
@@ -215,9 +218,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Cashier</th>
+                                <th>User</th>
                                 <th>Order Date</th>
-                                <th>Total Amount</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -227,8 +229,7 @@
                                     <img src="{{ asset('assets/images/profile-1.jpg') }}">
                                     <p>James Esurena</p>
                                 </td>
-                                <td>14-08-2023 1:00 PM</td>
-                                <td>P500.00</td>
+                                <td>14-08-2023</td>
                                 <td><span class="status pending">Pending</span></td>
                             </tr>
                             <tr>
@@ -236,8 +237,7 @@
                                     <img src="{{ asset('assets/images/profile-1.jpg') }}">
                                     <p>James Esurena</p>
                                 </td>
-                                <td>14-08-2023 1:00 PM</td>
-                                <td>P500.00</td>
+                                <td>14-08-2023</td>
                                 <td><span class="status pending">Pending</span></td>
                             </tr>
                             <tr>
@@ -245,12 +245,20 @@
                                     <img src="{{ asset('assets/images/profile-1.jpg') }}">
                                     <p>James Esurena</p>
                                 </td>
-                                <td>14-08-2023 1:00 PM</td>
-                                <td>P500.00</td>
+                                <td>14-08-2023</td>
                                 <td><span class="status process">Processing</span></td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+           
+
+            <div class="salesreminders">
+                <h2 id="salesForecastTitle">Sales Forecast</h2>
+                <p>Sales Performance Overview</p>
+                <div class="pulse"></div>
+                <div class="sales-chart">
+                    <div class="grid"></div>
                 </div>
             </div>
 
