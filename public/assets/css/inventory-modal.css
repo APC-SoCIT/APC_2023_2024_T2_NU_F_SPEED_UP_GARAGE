@@ -1,3 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --light: #f6f6f9;
+    --primary: #1976D2;
+    --red: #b70202;
+    --light-primary: #CFE8FF;
+    --grey: #eee;
+    --dark-grey: #AAAAAA;
+    --dark: #363949;
+    --danger: #D32F2F;
+	--light-danger: #FECDD3;
+    --warning: #FBC02D;
+    --light-warning: #FFF2C6;
+    --success: #3daf43;
+    --light-success: #BBF7D0;
+    --hover: #e0dddd;
+    --dark-hover: #232428;
+    --ai-message: #445264;
+    --dark-chat: #2c2f33;
+    --secodary-dark-char: #363949;
+    --border: #555;
+    --white: #fff;
+}
+
 .modal,
 .add-modal {
     display: none;

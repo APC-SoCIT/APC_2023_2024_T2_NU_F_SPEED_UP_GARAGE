@@ -1,28 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
-:root {
-    --light: #f6f6f9;
-    --primary: #1976D2;
-    --red: #b70202;
-    --light-primary: #CFE8FF;
-    --grey: #eee;
-    --dark-grey: #AAAAAA;
-    --dark: #363949;
-    --danger: #D32F2F;
-	--light-danger: #FECDD3;
-    --warning: #FBC02D;
-    --light-warning: #FFF2C6;
-    --success: #388E3C;
-    --light-success: #BBF7D0;
-    --hover: #e0dddd;
-    --dark-hover: #232428;
-    --ai-message: #445264;
-    --dark-chat: #2c2f33;
-    --secodary-dark-char: #363949;
-    --border: #555;
-    --white: #fff;
-}
-
 .user-table-container {
     display: flex;
     flex-direction: column;
@@ -67,10 +42,10 @@ body.dark .filter-container {
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1000; /* Set a higher z-index value for modals */
 }
 
-.edit-user-modal-content {
+.edit-user-modal-content, .add-user-modal-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -83,48 +58,48 @@ body.dark .filter-container {
     scrollbar-width: thin;
 }
 
-.dark .edit-user-modal-content{
+.dark .edit-user-modal-content, .dark .add-user-modal-content{
     background-color: #333;
     color: white;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     border: 1px solid #444343;
 }
 
-.edit-user-modal-content::-webkit-scrollbar {
+.edit-user-modal-content::-webkit-scrollbar, .add-user-modal-content::-webkit-scrollbar {
     width: 5px;
 }
 
-.edit-user-modal-content::-webkit-scrollbar-thumb {
+.edit-user-modal-content::-webkit-scrollbar-thumb, .add-user-modal-content::-webkit-scrollbar-thumb {
     background-color: #8b8a8a;
     border-radius: 10px;
 }
 
-.edit-user-modal-content::-webkit-scrollbar-track {
+.edit-user-modal-content::-webkit-scrollbar-track, .add-user-modal-content::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0);
 }
 
-.edit-user-modal-content h2 {
+.edit-user-modal-content h2, .add-user-modal-content h2 {
     margin-bottom: 20px;
     text-align: center;
     color: #333;
 }
 
-.dark .edit-user-modal-content h2 {
+.dark .edit-user-modal-content h2, .dark .add-user-modal-content h2 {
     color: white;
 }
 
-.edit-user-modal-content label {
+.edit-user-modal-content label, .add-user-modal-content label {
     display: block;
     margin-bottom: 5px;
     font-size: 14px;
     color: #333;
 }
 
-.dark .edit-user-modal-content label{
+.dark .edit-user-modal-content label, .dark .add-user-modal-content label{
     color: white;
 }
 
-.edit-user-modal-content input, .edit-user-modal-content select {
+.edit-user-modal-content input, .add-user-modal-content select, .add-user-modal-content input, .edit-user-modal-content select  {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -134,7 +109,8 @@ body.dark .filter-container {
 }
 
 
-.dark .edit-user-modal-content select, .dark .edit-user-modal-content input{
+.dark .edit-user-modal-content select, .dark .edit-user-modal-content input, 
+.dark .add-user-modal-content select, .dark .add-user-modal-content input{
     background-color: #333; /* Background color in dark mode */
     color: #fff; /* Text color in dark mode */
     border-color: var(--border); /* Border color in dark mode */
