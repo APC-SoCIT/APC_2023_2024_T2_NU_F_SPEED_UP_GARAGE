@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +87,10 @@ Route::get('monthly-inventory', function () {
 Route::get('customers', function () {
     return view('Customers');
 })->name('customers');
+
+// Use ProductController to handle inventory-related functionality
+Route::get('/inventory', [ProductController::class, 'index']);  
+Route::post('/add-product', 'ProductController@addProduct');
 
 
 Route::middleware('auth')->group(function () {

@@ -279,10 +279,41 @@ function closeAddProductModal() {
 
 // Function to handle adding a new product (you can implement this based on your needs)
 function addProduct() {
-    // Add your logic to add a new product here
-    closeAddProductModal();
-    updateStatusClassForAll();
+    // Get input values
+    var tag = $('#newTag').val();
+    var productName = $('#newProductName').val();
+    var category = $('#editedCategory').val(); // Update the ID here
+    var brand = $('#editedBrand').val(); // Update the ID here
+    var quantity = $('#newQuantity').val();
+    var price = $('#newPrice').val();
+
+    // Validate input (add your own validation logic here)
+
+    // AJAX request to add the product
+    $.ajax({
+        url: '/add-product',
+        method: 'POST',
+        
+        data: {
+            
+            tag: tag,
+            product_name: productName,
+            category: category,
+            brand: brand,
+            quantity: quantity,
+            price: price
+        },
+        success: function (response) {
+            // Handle success (maybe close the modal, refresh the table, etc.)
+            console.log(response);
+        },
+        error: function (error) {
+            // Handle error
+            console.error(error);
+        }
+    });
 }
+
 
 // this is for status such as out of stock, low and in stock
 
