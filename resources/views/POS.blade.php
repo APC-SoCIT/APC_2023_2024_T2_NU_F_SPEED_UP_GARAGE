@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pos.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
-    
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
