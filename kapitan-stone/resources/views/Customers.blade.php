@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/filter.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/entries.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
-    <title>Products</title>
+    <title>Customers</title>
 </head>
 
 <body>
@@ -117,7 +118,7 @@
             <div class="maintable-container">
                 <div class="filter-container">
                     <div class="add-product-container">
-                    <button class="add-product-btn" onclick="showAddProductModal()">+ Add Customer</button>
+                    <button class="add-product-btn" onclick="addCustomerModal()">+ Add Customer</button>
                         <span></span>
                         <div class="dropdown-container">
                             <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
@@ -149,33 +150,33 @@
                         </thead>
                         <tbody id="inventoryTableBody">
                             <tr data-id="1">
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>0923213412</td>
-                                <td>Quezon City</td>
+                                <td class="customer-number"></td>
+                                <td class="customer-name">Art Rocha</td>
+                                <td class="customer-phone">0923213412</td>
+                                <td class="customer-address">Quezon City</td>
                                 <td>
-                                    <button class="edit-btn" onclick="editRow(event)">Edit</button>
-                                    <button class="delete-btn" onclick="deleteRow()">Delete</button>
+                                    <button class="edit-btn" onclick="editCustomer(event)">Edit</button>
+                                    <button class="delete-btn" onclick="deleteCustomerRow()">Delete</button>
                                 </td>
                             </tr>
                             <tr data-id="2">
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>0923213412</td>
-                                <td>Quezon City</td>
+                                <td class="customer-number"></td>
+                                <td class="customer-name">James Esurena</td>
+                                <td class="customer-phone">0923213412</td>
+                                <td class="customer-address">Quezon City</td>
                                 <td>
-                                    <button class="edit-btn" onclick="editRow(event)">Edit</button>
-                                    <button class="delete-btn" onclick="deleteRow()">Delete</button>
+                                    <button class="edit-btn" onclick="editCustomer(event)">Edit</button>
+                                    <button class="delete-btn" onclick="deleteCustomerRow()">Delete</button>
                                 </td>
                             </tr>
                             <tr data-id="3">
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>0923213412</td>
-                                <td>Quezon City</td>
+                                <td class="customer-number"></td>
+                                <td class="customer-name">Jiro Sison</td>
+                                <td class="customer-phone">0923213412</td>
+                                <td class="customer-address">Quezon City</td>
                                 <td>
-                                    <button class="edit-btn" onclick="editRow(event)">Edit</button>
-                                    <button class="delete-btn" onclick="deleteRow()">Delete</button>
+                                    <button class="edit-btn" onclick="editCustomer(event)">Edit</button>
+                                    <button class="delete-btn" onclick="deleteCustomerRow()">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -195,65 +196,47 @@
             </div>
         </div>
 
-        <div class="modal" id="editModal">
-            <div class="modal-content">
-                <h2 class="modal-title">Edit Product</h2>
-                <!-- Add form fields for editing -->
-                <label for="editedProductImage">Product Image:</label>
-                <div class="image-placeholder-edit" id="editedImagePlaceholderContainer">
-                    <img src="#" id="editedImagePreview" class="image-preview-edit">
-                </div>
-                <input type="file" id="editedProductImage" name="editedProductImage" onchange="EditImageChange(this)">
-                <label for="editedTag">Tag:</label>
-                <input type="text" id="editedTag" name="editedTag">
-                <label for="editedProductName">Product Name:</label>
-                <input type="text" id="editedProductName" name="editedProductName">
-                <label for="editedCategory">Category:</label>
-                <input type="text" id="editedCategory" name="editedCategory">
-                <label for="editedBrand">Brand:</label>
-                <input type="text" id="editedBrand" name="editedBrand">
-                <label for="editedQuantity">Quantity:</label>
-                <input type="text" id="editedQuantity" name="editedQuantity">
-                <label for="editedPrice">Price:</label>
-                <input type="text" id="editedPrice" name="editedPrice">
+        <div class="edit-customer-modal" id="editCustomerModal">
+            <div class="edit-customer-modal-content">
+                <h2 class="edit-customer-modal-title">Edit Customer Details</h2>
+                <label for="customerName">Customer Name:</label>
+                <input type="text" id="customerName" name="customerName">
+                <label for="customerPhone">Phone:</label>
+                <input type="text" id="customerPhone" name="customerPhone">
+                <label for="customerAddress">Address:</label>
+                <input type="text" id="customerAddress" name="customerAddress">
+                <!-- Add more fields as needed -->
                 <div class="modal-button-container">
-                    <button class="modal-save-button" onclick="saveChanges()">Save</button>
-                    <button class="modal-close-button" onclick="cancelEditModal()">Cancel</button>
+                    <button class="modal-save-button" onclick="saveCustomerChanges()">Save</button>
+                    <button class="modal-close-button" onclick="cancelCustomerEditModal()">Cancel</button>
                 </div>
             </div>
         </div>
 
-        <div class="add-modal" id="addProductModal">
-            <div class="add-product-modal-content">
-                <h2 class="modal-title">Add Product</h2>
-                <label for="newProductImage">Product Image:</label>
-            <div class="image-placeholder" id="imagePlaceholderContainer">
-                <img src="#" id="newProductImagePreview" class="image-preview">
-                <label for="newProductImage" id="imageInputLabel">Choose an image</label>
-            </div>
-                <input type="file" id="newProductImage" name="newProductImage" onchange="handleImageChange(this)">
-                <label for="newTag">Tag:</label>
-                <input type="text" id="newTag" name="newTag">
-                <label for="newProductName">Product Name:</label>
-                <input type="text" id="newProductName" name="newProductName">
-                <label for="newCategory">Category:</label>
-                <input type="text" id="newCategory" name="newCategory">
-                <label for="newBrand">Brand:</label>
-                <input type="text" id="newBrand" name="newBrand">
-                <label for="newQuantity">Quantity:</label>
-                <input type="text" id="newQuantity" name="newQuantity">
-                <label for="newPrice">Price:</label>
-                <input type="text" id="newPrice" name="newPrice">
+        <div class="add-customer-modal" id="addCustomerModal">
+            <div class="add-customer-modal-content">
+                <h2 class="add-customer-modal-title">Add New Customer</h2>
+                <label for="newCustomerName">Customer Name:</label>
+                <input type="text" id="newCustomerName" name="newCustomerName">
+                <label for="newCustomerPhone">Phone:</label>
+                <input type="text" id="newCustomerPhone" name="newCustomerPhone">
+                <label for="newCustomerAddress">Address:</label>
+                <input type="text" id="newCustomerAddress" name="newCustomerAddress">
+                <!-- Add more fields as needed -->
                 <div class="modal-button-container">
-                    <button class="modal-save-button" onclick="addProduct()">Add</button>
-                    <button class="modal-close-button" onclick="closeAddProductModal()">Cancel</button>
+                    <button class="modal-save-button" onclick="addNewCustomer()">Add Customer</button>
+                    <button class="modal-close-button" onclick="cancelAddCustomerModal()">Cancel</button>
                 </div>
             </div>
         </div>
 
     </main>
 
+
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    <script src="{{ asset('assets/js/customer.js') }}"></script>
+    <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/navbar.js') }}"></script>
 </body>
 
 </html>

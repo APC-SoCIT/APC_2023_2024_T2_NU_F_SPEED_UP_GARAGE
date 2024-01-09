@@ -263,13 +263,15 @@
             </div>
 
       
+    <script src="{{ asset('assets/js/chart.js') }}"></script>
+    <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/navbar.js') }}"></script>
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>           
     <script src="{{ asset('assets/js/index.js') }}">   
-    // Disable the back button
     history.pushState(null, null, document.URL);
     window.addEventListener('popstate', function () {
         history.pushState(null, null, document.URL);
     });
-
     </script>
 </body>
 

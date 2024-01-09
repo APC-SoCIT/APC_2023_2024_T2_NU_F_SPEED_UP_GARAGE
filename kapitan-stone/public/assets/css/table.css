@@ -221,3 +221,10 @@ body.dark .cancel-btn {
     background-color: var(--border);
     color: #fff;
 }
+
+body.dark .edit-btn:hover,
+body.dark .delete-btn:hover,
+body.dark .save-btn:hover,
+body.dark .cancel-btn:hover {
+    opacity: 80%;
+}

@@ -420,7 +420,8 @@
   <div id="print-area" class="print-area"></div>
 
 
-    <script src="{{ asset('assets/js/pos.js') }}"></script>
+    <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/index.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

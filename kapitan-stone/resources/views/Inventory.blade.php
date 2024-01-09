@@ -227,8 +227,8 @@
                                 <td></td>
                                 <td class="tag">0923213412</td>
                                 <td class="product-name">Spongebob</td>
-                                <td class="category">Category 1</td>
-                                <td class="brand">Brand 1</td>
+                                <td class="category">Air Filter</td>
+                                <td class="brand">Mio</td>
                                 <td><span class="quantity">0</span><input type="text" class="edit-quantity"
                                         style="display:none;"></td>
                                 <td><span class="price">P500.00</span><input type="text" class="edit-price"
@@ -243,8 +243,8 @@
                                 <td></td>
                                 <td class="tag">0923213412</td>
                                 <td class="product-name">Judge</td>
-                                <td class="category">Category 2</td>
-                                <td class="brand">Brand 2</td>
+                                <td class="category">Belt</td>
+                                <td class="brand">ADV</td>
                                 <td><span class="quantity">8</span><input type="text" class="edit-quantity"
                                         style="display:none;"></td>
                                 <td><span class="price">P500.00</span><input type="text" class="edit-price"
@@ -259,8 +259,8 @@
                                 <td></td>
                                 <td class="tag">0923213412</td>
                                 <td class="product-name">Hello Kitty</td>
-                                <td class="category">Category 3</td>
-                                <td class="brand">Brand 3</td>
+                                <td class="category">Battery</td>
+                                <td class="brand">NMAX</td>
                                 <td><span class="quantity">22</span><input type="text" class="edit-quantity"
                                         style="display:none;"></td>
                                 <td><span class="price">P500.00</span><input type="text" class="edit-price"
@@ -461,7 +461,10 @@
 
     </main>
 
+
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/navbar.js') }}"></script>
 </body>
 
 </html>
