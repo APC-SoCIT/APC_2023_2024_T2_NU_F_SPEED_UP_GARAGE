@@ -1,0 +1,129 @@
+/* Add this CSS at the end of your existing CSS or in a separate CSS file */
+
+.add-customer-modal, .edit-customer-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.add-customer-modal-content, .edit-customer-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 450px;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 80vh;
+    scrollbar-color: #ddd rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
+}
+
+.dark .add-customer-modal-content, .dark .edit-customer-modal-content {
+    background-color: #333;
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    border: 1px solid #444343;
+}
+
+.add-customer-modal-content::-webkit-scrollbar, .edit-customer-modal-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+.add-customer-modal-content::-webkit-scrollbar-thumb, .edit-customer-modal-content::-webkit-scrollbar-thumb {
+    background-color: #8b8a8a;
+    border-radius: 10px;
+}
+
+.add-customer-modal-content::-webkit-scrollbar-track, .edit-customer-modal-content::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.add-customer-modal-content h2, .edit-customer-modal-content h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.dark .add-customer-modal-content h2, .dark .edit-customer-modal-content h2 {
+    color: white;
+}
+
+.add-customer-modal-content label, .edit-customer-modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.dark .add-customer-modal-content label, .dark .edit-customer-modal-content label {
+    color: white;
+}
+
+.add-customer-modal-content input, .edit-customer-modal-content input, .add-customer-modal-content select, .edit-customer-modal-content select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    border-radius: 4px;
+}
+
+.dark .add-customer-modal-content select, .dark .add-customer-modal-content input, .dark .edit-customer-modal-content select, .dark .edit-customer-modal-content input {
+    background-color: #333;
+    color: #fff;
+    border-color: var(--border);
+    outline: none;
+}
+
+.modal-button-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.modal-save-button,
+.modal-close-button {
+    width: 40%;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.modal-save-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.modal-close-button {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.modal-save-button:hover,
+.modal-close-button:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+.add-customer-modal-content.has-image .image-preview,
+.edit-customer-modal-content.has-image .image-preview-edit {
+    display: block;
+}
+
+/* Add any additional styling for the customers modal if needed */
+
+/* Media query for responsiveness */
+@media screen and (max-width: 767px) {
+    .add-customer-modal-content, .edit-customer-modal-content {
+        max-width: 75%;
+    }
+}
