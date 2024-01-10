@@ -381,7 +381,6 @@ body.dark .sidebar .side-menu li:hover a {
     display: flex;
     align-items: center;
     grid-gap: 24px;
-    cursor: pointer;
 }
 
 .content main .insights li .bx{
@@ -422,6 +421,11 @@ body.dark .sidebar .side-menu li:hover a {
 
 .content main .insights li p{
     color: var(--dark);
+}
+
+.content main .insights li a{
+    color: var(--dark);
+    cursor: pointer;
 }
 
 .content main .bottom-data{

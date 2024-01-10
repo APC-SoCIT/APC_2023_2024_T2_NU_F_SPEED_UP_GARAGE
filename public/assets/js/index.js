@@ -356,8 +356,3 @@ function filterTable() {
     }
 }
 
-
-// this is for the charts
-// this is for the charts
-// this is for the charts
-
