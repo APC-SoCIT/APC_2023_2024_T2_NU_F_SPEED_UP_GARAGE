@@ -89,8 +89,13 @@ Route::get('customers', function () {
 })->name('customers');
 
 // Use ProductController to handle inventory-related functionality
-Route::get('/inventory', [ProductController::class, 'index']);  
-Route::post('/addProduct', [ProductController::class, 'addProduct'])->middleware('auth');
+
+Route::get('/inventory', [ProductController::class, 'index'])->name('inventory.index');
+Route::post('/add-product', [ProductController::class, 'addProduct'])->name('product.add');
+Route::get('/edit-product/{id}', [ProductController::class, 'editProduct'])->name('product.edit');
+Route::delete('/delete-product/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
+Route::put('/update-product/{id}', [ProductController::class, 'updateProduct']);
+
 
 
 Route::middleware('auth')->group(function () {
