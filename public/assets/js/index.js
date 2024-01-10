@@ -234,6 +234,12 @@ function closeAddProductModal() {
 
     // Clear the file input value to allow selecting the same file again
     fileInput.value = '';
+    newTag.value = '';
+    newProductName.value = '';
+    newCategory.value = '';
+    newBrand.value = '';
+    newQuantity.value = '';
+    newPrice.value = '';
 
     // Hide the modal
     addProductModal.style.display = 'none';

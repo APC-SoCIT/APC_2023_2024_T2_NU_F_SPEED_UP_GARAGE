@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\CustomerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,9 +24,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/Users', function () {
+Route::get('/users', function () {
     return view('Users');
-})->middleware(['auth', 'verified'])->name('Users');
+})->middleware(['auth', 'verified'])->name('users');
 
 Route::get('admin', function () {
     return view('Admin');
@@ -95,6 +95,15 @@ Route::post('/add-product', [ProductController::class, 'addProduct'])->name('pro
 Route::get('/edit-product/{id}', [ProductController::class, 'editProduct'])->name('product.edit');
 Route::delete('/delete-product/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
 Route::put('/update-product/{id}', [ProductController::class, 'updateProduct']);
+
+
+// Use CustomerController to handle customer-related functionality
+
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::post('/add-customer', [CustomerController::class, 'addCustomer'])->name('customer.add');
+Route::get('/edit-customer/{id}', [CustomerController::class, 'editCustomer'])->name('customer.edit');
+Route::delete('/delete-customer/{id}', [CustomerController::class, 'deleteCustomer'])->name('customer.delete');
+Route::put('/update-customer/{id}', [CustomerController::class, 'updateCustomer']);
 
 
 
