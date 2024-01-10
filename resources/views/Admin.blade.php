@@ -109,7 +109,7 @@
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            ₱{{ $totalInventoryValue }}
+                            ₱{{ $formattedTotalInventoryValue }}
                         </h3>
                         <a href="/inventory">Total Inventory Price</a>
                     </span>
@@ -118,7 +118,7 @@
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            {{$totalItemsOnHand}}
+                            {{$formattedItemsOnHand}}
                         </h3>
                         <a href="/inventory">Total Items on Hand</a>
                     </span>
