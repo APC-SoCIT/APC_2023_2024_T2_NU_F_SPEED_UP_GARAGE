@@ -14,10 +14,14 @@ class AdminController extends Controller
 
         $totalItemsOnHand = $products->sum('quantity');
 
+        $formattedItemsOnHand = number_format($totalItemsOnHand, 0, '.', ',');
+
         // Calculate the total inventory value by summing the product of quantity and price for each product
         $totalInventoryValue = $products->sum(function ($product) {
             return $product->quantity * $product->price;
         });
+
+        $formattedTotalInventoryValue = number_format($totalInventoryValue, 2, '.', ',');
 
         $outOfStockItems = $products->filter(function ($product) {
             return $product->quantity == 0;
@@ -33,8 +37,8 @@ class AdminController extends Controller
         // Pass the products and total inventory value to the view
         return view('admin', [
             'products' => $products,
-            'totalInventoryValue' => $totalInventoryValue,
-            'totalItemsOnHand' => $totalItemsOnHand,
+            'formattedTotalInventoryValue' => $formattedTotalInventoryValue,
+            'formattedItemsOnHand' => $formattedItemsOnHand,
             'outOfStockItems' => $outOfStockItems,
             'lowStockItems' => $lowStockItems,
         ]);
