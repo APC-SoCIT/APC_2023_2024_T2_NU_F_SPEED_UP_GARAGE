@@ -109,34 +109,35 @@
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            111,074
+                            ₱{{ $formattedTotalInventoryValue }}
                         </h3>
-                        <p>Total Inventory Price</p>
+                        <a href="/inventory">Total Inventory Price</a>
                     </span>
                 </li>
                 <li>
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            588
+                            {{$formattedItemsOnHand}}
                         </h3>
-                        <p>Total Items on Hand</p>
+                        <a href="/inventory">Total Items on Hand</a>
                     </span>
                 </li>
                 <li><i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            1
+                            {{ count($outOfStockItems) }}
                         </h3>
-                        <p>Out of Stock Items</p>
+                        <a href="/inventory?filter=Out of Stock">Low Stock Items</a>
                     </span>
                 </li>
-                <li><i class='bx bx-line-chart'></i>
+                <li>
+                    <i class='bx bx-line-chart'></i>
                     <span class="info">
                         <h3>
-                            3
+                            {{ count($lowStockItems) }}
                         </h3>
-                        <p>Low Stock Items</p>
+                        <a href="/inventory?filter=Low Stock">Low Stock Items</a>
                     </span>
                 </li>
             </ul>
@@ -272,6 +273,8 @@
     window.addEventListener('popstate', function () {
         history.pushState(null, null, document.URL);
     });
+
+
     </script>
 </body>
 

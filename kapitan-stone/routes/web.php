@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -109,6 +109,7 @@ Route::get('/edit-customer/{id}', [CustomerController::class, 'editCustomer'])->
 Route::delete('/delete-customer/{id}', [CustomerController::class, 'deleteCustomer'])->name('customer.delete');
 Route::put('/update-customer/{id}', [CustomerController::class, 'updateCustomer']);
 
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
 
 Route::middleware('auth')->group(function () {
