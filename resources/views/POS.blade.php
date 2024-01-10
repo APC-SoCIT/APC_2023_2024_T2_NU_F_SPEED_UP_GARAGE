@@ -36,7 +36,6 @@
             <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
             <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
             <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
-            <li><a href="/customers"><i class='bx bxs-user-plus'></i>Customers</a></li>
             <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li class="active"><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
@@ -101,7 +100,6 @@
                 <button onclick="askAI()">Send</button>
             </div>
         </div>
-
         <!-- End of Navbar -->
 
         <!-- Start of POS -->
@@ -109,30 +107,91 @@
   <!-- noprint-area -->
   <div class="hide-print flex flex-row h-screen antialiased text-blue-gray-800">
     <!-- left sidebar -->
-   
-
+  
     <!-- page content -->
-
-
     <div class="flex-grow flex">
-      
       <!-- store menu -->
       <div class="pos-layout">
+
+
+<div class="order-info">
+  <div class="right-section">
+  <div class="order-no" id="receiptNo"></div>
+  <div class="date-today" id="currentDate"></div>
+</div>
+<div class="left-section">
+  <div class="category-plc">
+
+    <select id="cashierName" class="category-dropdown1">
+      <option value="Select Cashier">Select Cashier</option>
+      <option value="Rocha">Rocha</option>
+      <option value="Loren B.">Loren B</option>
+      <option value="Loren B">Loren B</option>
+    </select>
+
+    <select id="customerName" class="category-dropdown1">
+      <option value="Select Customer">Select Customer</option>
+      <option value="Art Loren B. Rocha">Art Loren B. Rocha</option>
+      <option value="Art Loren">Art Loren</option>
+      <option value="Art">Art</option>
+    </select>
+
+    <div class="user-table-container">
+            <div class="user-filter-container">
+                <div class="add-user-container">
+                   <button class="add-customer-btn" onclick="addUserModal()">+ New Customer</button>
+                   </div>
+
+        <div class="add-user-modal" id="addUserModal">
+            <div class="edit-user-modal-content">
+                <h2 class="edit-user-modal-title">New Customer</h2>
+                <label for="userUsername">Name</label>
+                <input type="text" id="userUsername" name="userUsername">
+                <label for="UserFullName">Age</label>
+                <input type="text" id="UserFullName" name="UserFullName">
+                <label for="UserRole">Sex</label>
+                <select>
+                  <option value="Admin">Male</option>
+                  <option value="Inventory Clerk">Female</option>
+                  <option value="Inventory Clerk">Other</option> 
+                </select>
+                <label for="userEmail">Address</label>
+                <input type="text" id="userEmail" name="userEmail">
+                <div class="modal-button-container">
+                    <button class="modal-save-button" onclick="saveUserChanges()">Save</button>
+                    <button class="modal-close-button" onclick="cancelCreateUserModal()">Cancel</button>
+                </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
         <div class="con">
           <div class="search-button">
-
-
-            <!-- CHANGING 2 IMG SRC -->
           <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon" viewBox="0 0 24 24">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-<!-- CHANGING 2 IMG SRC -->
-
-          </div>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        </div>
           <input type="text" class="search-bar1" placeholder="Enter item name..." x-model="keyword"/>
         </div>
 
-        <!-- FIRST PART -->
+          <div class="brandpartSelect">
+            <select id="Brands" class="category-dropdown2">
+              <option value="Brands">All Brand</option>
+              <option value="Athena">Athena</option>
+              <option value="Acerbic">Acerbic</option>
+              <option value="Twin Air<">Twin Air</option>
+            </select>
 
+            <select id="Parts" class="category-dropdown2">
+              <option value="Parts">All Parts</option>
+              <option value="Oil Filter">Oil Filter</option>
+              <option value="Brake Kit">Brake Kit</option>
+              <option value="Radiator">Radiator</option>
+            </select>
+</div>
 
         <div class="product-container">
         <div class="product-inner-container">
@@ -148,9 +207,7 @@
 
              <!-- SECOND PART -->
             </div>
-            <div
-              class="search-card"
-              x-show="filteredProducts().length === 0 && keyword.length > 0">
+            <div class="search-card" x-show="filteredProducts().length === 0 && keyword.length > 0">
               <div class="w-full text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -204,24 +261,28 @@
             <div class="h-16 text-center flex justify-center">
               <div class="pl-8 text-left text-lg py-4 relative">
                 <!-- cart icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="cart-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="cart-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-                <div x-show="getItemsCount() > 0" class="text-center absolute bg-cyan-500 text-white w-5 h-5 text-xs p-0 leading-5 rounded-full -right-2 top-3" x-text="getItemsCount()"></div>
+                <div x-show="getItemsCount() > 0" class="cart-count" x-text="getItemsCount()"></div>
+              </div>
               </div>
               <div class="flex-grow px-8 text-right text-lg py-4 relative">
                 <!-- trash button -->
-                <button x-on:click="clear()" class="text-blue-gray-300 hover:text-pink-500 focus:outline-none">
+                
+                <button x-on:click="clear()" class="trash-svg">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </button>
+           
               </div>
             </div>
 
             <div class="flex-1 w-full px-4 overflow-auto">
               <template x-for="item in cart" :key="item.productId">
-                <div class="select-none mb-3 bg-blue-gray-50 rounded-lg w-full text-blue-gray-700 py-2 px-2 flex justify-center">
+                <div class="cart-image">
                   <img :src="item.image" alt="" class="rounded-lg h-10 w-10 bg-white shadow mr-2">
                   <div class="flex-grow">
                     <h5 class="text-sm" x-text="item.name"></h5>
@@ -229,13 +290,13 @@
                   </div>
                   <div class="py-1">
                     <div class="w-28 grid grid-cols-3 gap-2 ml-2">
-                      <button x-on:click="addQty(item, -1)" class="rounded-lg text-center py-1 text-white bg-blue-gray-600 hover:bg-blue-gray-700 focus:outline-none">
+                      <button x-on:click="addQty(item, -1)" class="add-minus">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                         </svg>
                       </button>
-                      <input x-model.number="item.qty" type="text" class="bg-white rounded-lg text-center shadow focus:outline-none focus:shadow-lg text-sm">
-                      <button x-on:click="addQty(item, 1)" class="rounded-lg text-center py-1 text-white bg-blue-gray-600 hover:bg-blue-gray-700 focus:outline-none">
+                      <input x-model.number="item.qty" type="text" class="qty-box">
+                      <button x-on:click="addQty(item, 1)" class="add-minus">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
@@ -255,14 +316,21 @@
               <div class="text-right w-full" x-text="priceFormat(getTotalPrice())"></div>
             </div>
             <div class="cash-text">
-  <div class="flex">
-    <div class="flex-grow text-lg font-semibold">
-      CASH
-    </div>
-    <div class="flex text-right">
-      <div class="mr-2">
+            
+              <div class="category-plc1">
+              
+            <select id="paymentMethod" class="category-dropdown2" >
+      <option value="">Payment Method</option>
+      <option value="CASH">Cash</option>
+      <option value="GCASH">GCASH</option>
+      </div>
+    </select>
+ 
+    <div class="text-php">
+      <div class="mr-2 mt-2">
         PHP
       </div>
+      
                   <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="cash-inner-card">
                 </div>
               </div>
@@ -282,23 +350,23 @@
             </div>
             <div
               x-show="change < 0"
-              class="flex mb-3 text-lg font-semibold bg-pink-100 text-blue-gray-700 rounded-lg py-2 px-3"
-            >
+              class="nochange">
               <div
-                class="text-right flex-grow text-pink-600"
+                class="text-right flex-grow text-red-600"
                 x-text="priceFormat(change)">
               </div>
             </div>
             <div
               x-show="change == 0 && cart.length > 0"
-              class="flex justify-center mb-3 text-lg font-semibold bg-cyan-50 text-cyan-700 rounded-lg py-2 px-3"
+              class="yeschange"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
               </svg>
             </div>
             <button
-              class="text-white rounded-2xl text-lg w-full py-3 focus:outline-none"
+              class="text-white text-lg w-full py-3 focus:outline-none"
+              style="border-radius:8px;"
               x-bind:class="{
                 'submit': submitable(),
                 'nosubmit': !submitable()
@@ -306,7 +374,7 @@
               :disabled="!submitable()"
               x-on:click="submit()"
             >
-              SUBMIT
+              CHECKOUT
             </button>
           </div>
           <!-- end of payment info -->
@@ -357,7 +425,7 @@
       >
         <div id="receipt-content" class="text-left w-full text-sm p-6 overflow-auto">
           <div class="text-center">
-            <img src="assets/images/logo.png" alt="SPEED UP POS" class="mb-3 w-8 h-8 inline-block">
+            <img src="assets/images/logo.png" alt="SPEED UP POS" class="mb-1 w-20 h-20 inline-block">
             <h2 class="text-xl font-semibold">SPEED-UP GARAGE POS</h2>
             
           </div>
@@ -402,6 +470,18 @@
               <div class="flex-grow">PAY AMOUNT</div>
               <div x-text="priceFormat(cash)"></div>
             </div>
+            <div class="flex text-xs font-semibold">
+              <div class="flex-grow">PAYMENT METHOD</div>
+              <div x-text="selectedPaymentMethod"></div>
+            </div>
+            <div class="flex text-xs font-semibold">
+              <div class="flex-grow">CASHIER</div>
+              <div x-text="selectedCashierName"></div>
+            </div>
+            <div class="flex text-xs font-semibold">
+              <div class="flex-grow">CUSTOMER</div>
+              <div x-text="selectedCustomerName"></div>
+            </div>
             <hr class="my-2">
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">CHANGE</div>
@@ -410,7 +490,7 @@
           </div>
         </div>
         <div class="p-4 w-full">
-          <button class="bg-cyan-500 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="printAndProceed()">PROCEED</button>
+          <button class="proceed-btn" x-on:click="printAndProceed()">PROCEED</button>
         </div>
       </div>
     </div>
@@ -420,8 +500,7 @@
   <div id="print-area" class="print-area"></div>
 
 
-    <script src="{{ asset('assets/js/chat.js') }}"></script>  
-    <script src="{{ asset('assets/js/navbar.js') }}"></script>
+    <script src="{{ asset('assets/js/pos.js') }}"></script>
     <script src="{{ asset('assets/js/index.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

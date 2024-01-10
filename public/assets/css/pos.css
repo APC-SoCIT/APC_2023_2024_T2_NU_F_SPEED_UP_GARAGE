@@ -51,6 +51,154 @@
     fill:none;
   }
 
+.add-customer-btn{
+display: flex;
+  padding: 12px 20px;
+  background-color: #2ecc71; /* Green color, you can change it */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 12px;
+  
+
+}
+
+.category-dropdown1 {
+        width: 100%; /* Make inputs full-width on small screens */
+        
+    }
+
+.category-dropdown1{
+    padding: 12px;
+    width: 200px; /* Set a fixed width for both category and brand dropdowns */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    
+}
+
+body.dark .category-dropdown1{
+    background-color: #333; /* Background color in dark mode */
+    color: #fff; /* Text color in dark mode */
+    border-color: var(--border); /* Border color in dark mode */
+    outline: none;
+    
+}
+
+.category-dropdown1:hover{
+    border-color: #3498db; /* Highlight border on hover */
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.2); /* Add a subtle shadow on hover */
+    
+}
+
+.category-dropdown2 {
+  width: 100%; /* Make inputs full-width on small screens */
+  
+}
+
+.category-dropdown2{
+padding: 12px;
+width: 200px; /* Set a fixed width for both category and brand dropdowns */
+border: 1px solid #ddd;
+border-radius: 8px;
+background-color: #fff;
+font-size: 14px;
+color: #333;
+transition: border-color 0.3s, box-shadow 0.3s;
+cursor: pointer;
+
+}
+
+body.dark .category-dropdown2{
+background-color: #333; /* Background color in dark mode */
+color: #fff; /* Text color in dark mode */
+border-color: var(--border); /* Border color in dark mode */
+outline: none;
+
+}
+
+.category-dropdown2:hover{
+border-color: #3498db; /* Highlight border on hover */
+box-shadow: 0 0 10px rgba(52, 152, 219, 0.2); /* Add a subtle shadow on hover */
+
+}
+
+
+.left-section {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
+.right-section {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+  .order-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  
+
+  
+  .order-no, .date-today, .category-plc {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .order-no {
+    font-weight: 600;
+    color: var(--dark);
+    font-size: 17px;
+    margin-left: 20px;
+    margin-right: 10px; /* Adjusted margin-right for closer spacing */
+  }
+  
+  .date-today {
+    color: var(--dark);
+    font-size: 17px;
+    margin-right: 10px; /* Added margin-right to match order-no */
+  }
+  
+  .category-plc {
+    margin-left: 82px;
+    display: flex;
+    align-items: center;
+    margin-right: 16px; /* Added margin-right to match order-no */
+  }
+  
+  .category-dropdown1 {
+    margin-left: 12px;
+  }
+  .category-plc1 {
+    
+    display: flex;
+    align-items: center;
+    
+  }
+  
+.text-php {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+  margin-left: 60px;
+  
+}
+  .brandpartSelect{
+margin-top: 14px;
+margin-left:8px;
+margin-right: 10px;
+
+  }
+
   .search-button {
     z-index: 1; /* Ensure the button appears above other elements */
     position: absolute;
@@ -69,14 +217,27 @@
   
   /* Custom class for the search bar */
   .search-bar1 {
-    
+    display:flex;
+    color: var(--dark);
+    background: var(--light);
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 12px 14px;
+    width: 99.5%;
+    height: 64px; /* Adjust height as needed */
+    padding-left: 56px; /* Adjust padding for button position */
+    border: none; /* Remove the border */
+  }
+
+  .search-bar2 {
+    display:flex;
     color: var(--dark);
     background: var(--light);
     border-radius: 20px;
     font-size: 16px;
-    padding: 12px 16px;
-    width: calc(100% - 1px); /* Adjust width accounting for button width */
-    height: 64px; /* Adjust height as needed */
+    padding: 12px 14px;
+    width: 25%;
+    height: 50px; /* Adjust height as needed */
     padding-left: 56px; /* Adjust padding for button position */
     border: none; /* Remove the border */
   }
@@ -86,7 +247,7 @@
     cursor: pointer;
     transition: box-shadow 0.3s ease;
     overflow: hidden;
-    border-radius: 1rem;
+    border-radius: 8px;
     background-color: white;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -242,6 +403,100 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Equivalent to shadow */
     /* Add any additional styles for checkout-inner-card here */
   }
+
+  .cart-icon {
+    height: 1.5rem; /* Set the height to h-6 (1.5rem by default in Tailwind) */
+    display: inline-block; /* Display as an inline block */
+    
+  }
+
+  .cart-svg{
+    display: flex;
+    color: var(--dark);
+    background-color: var(--light);
+  
+  }
+
+  .cart-count {
+    position: absolute; /* Position the element */
+    text-align: center; /* Center text horizontally */
+    background-color: var(--red); /* Background color set to bg-cyan-500 */
+    color: #fff; /* Text color set to text-white */
+    width: 1.25rem; /* Width set to w-5 (adjust according to your needs) */
+    height: 1.25rem; /* Height set to h-5 (adjust according to your needs) */
+    font-size: 0.75rem; /* Text size set to text-xs */
+    padding: 0; /* Remove padding */
+    line-height: 1.25rem; /* Adjust line height (leading-5) */
+    border-radius: 9999px; /* Rounded shape */
+    right: -0.5rem; /* Adjust the right position */
+    top: 0.75rem; /* Adjust the top position */
+  }
+
+  .trash-svg {
+    color: var(--dark); /* Text color set to text-blue-gray-300 */
+  }
+  
+  .trash-svg:hover {
+    color: var(--red); /* Hover color set to text-pink-500 */
+  }
+  
+  .trash-svg:focus {
+    outline: none; /* Remove outline on focus */
+  }
+
+  
+  
+
+  .cart-image {
+    display: flex;
+    user-select: none; /* Disable text selection */
+    margin-bottom: 3px; /* Adjust the margin value as needed */
+    color: var(--dark); 
+    background-color: var(--grey); /* Background color set to bg-blue-gray-50 */
+    border-radius: 8px; /* Rounded corners */
+    width: 100%; /* Full width */
+    padding-top: 8px; /* Adjust padding top */
+    padding-bottom: 8px; /* Adjust padding bottom */
+    padding-left: 8px; /* Adjust padding left */
+    padding-right: 8px; /* Adjust padding right */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+  }
+
+  .qty-box {
+    color: var(--dark); 
+    background-color: var(--light); /* Background color set to white */
+    border-radius: 8px; /* Rounded corners */
+    text-align: center; /* Center text horizontally */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    outline: none; /* Remove outline */
+    font-size: 0.875rem; /* Text size set to text-sm */
+
+    font-weight: 600;
+  }
+  
+  /* Focus styles */
+  .qty-box:focus {
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2); /* Focus shadow */
+  }
+
+  .add-minus {
+    border-radius: 8px; /* Rounded corners */
+    text-align: center; /* Center text horizontally */
+    padding-top: 0.25rem; /* Adjust top padding */
+    padding-bottom: 0.25rem; /* Adjust bottom padding */
+    color: #fff; /* Text color set to text-white */
+    background-color: var(--red); /* Background color set to bg-blue-gray-600 */
+  }
+  
+  .add-minus:hover {
+    background-color: #4d4f53; /* Hover background color set to hover:bg-blue-gray-700 */
+  }
+  
+  .add-minus:focus {
+    outline: none; /* Remove outline on focus */
+  }
+  
   
   .total-text {
     display: flex; /* Makes the element a flex container */
@@ -303,8 +558,11 @@
   }
   
   .cash-inner-card {
+    display:flex;
     width: 112px; /* Equivalent to w-28 */
+    height: 40px;
     background-color: var(--light); /* Equivalent to bg-white */
+    font-size:14px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Equivalent to shadow */
     border-radius: 8px; /* Equivalent to rounded-lg */
     outline: none; /* Equivalent to focus:outline-none */
@@ -332,30 +590,69 @@
   
 
   .add-money {
+    display:flex;
     background-color: var(--light); /* Equivalent to bg-white */
     border-radius: 8px; /* Equivalent to rounded-lg */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Equivalent to shadow */
     outline: none; /* Equivalent to focus:outline-none */
     display: inline-block; /* Equivalent to inline-block */
-    padding: 0.25rem 0.5rem; /* Equivalent to px-2 py-1 */
+    padding: 16px 12px; /* Equivalent to px-2 py-1 */
     font-size: 0.875rem; /* Equivalent to text-sm */
     transition: box-shadow 0.3s ease; /* Adding transition for hover effect */
   }
   
   .add-money:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Equivalent to hover:shadow-lg */
+    font-weight: 600;
   }
 
+
+  .yeschange {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3px; /* Adjust the margin value as needed */
+    font-size: 16px; /* Adjust as needed */
+    font-weight: 600; /* Equivalent to font-semibold */
+    color: #40d672; 
+    background-color: var(--grey); /* Adjust the text color */
+    border-radius: 8px; /* Rounded corners */
+    padding-top: 12px; /* Adjust padding top */
+    padding-bottom: 12px; /* Adjust padding bottom */
+    padding-left: 12px; /* Adjust padding left */
+    padding-right: 12px; /* Adjust padding right */
+    margin-bottom:12px;
+  }
+
+  .nochange {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3px; /* Adjust the margin value as needed */
+    font-size: 16px; /* Adjust as needed */
+    font-weight: 600; /* Equivalent to font-semibold */
+    background-color: #fce4ec; /* Background color changed to pink-100 */
+    color: #546e7a; /* Text color changed to blue-gray-700 */
+    border-radius: 8px; /* Rounded corners */
+    padding-top: 12px; /* Adjust padding top */
+    padding-bottom: 12px; /* Adjust padding bottom */
+    padding-left: 12px; /* Adjust padding left */
+    padding-right: 12px; /* Adjust padding right */
+    margin-bottom:12px;
+  }
 
   .change-card {
     display: flex;
     margin-bottom: 0.75rem; /* Adjust as needed */
-    font-size: 1.25rem; /* Adjust as needed */
+    font-size: 16px; /* Adjust as needed */
     font-weight: 600;
     color: var(--dark); 
     background-color: var(--grey); /* Example text color */
-    border-radius: 1rem; /* Example border radius */
-    padding: 0.5rem 1rem; /* Example padding */
+    border-radius: 8px; /* Rounded corners */
+    padding-top: 12px; /* Adjust padding top */
+    padding-bottom: 12px; /* Adjust padding bottom */
+    padding-left: 12px; /* Adjust padding left */
+    padding-right: 12px; /* Adjust padding right */
+   
+    
   }
   
   /* Styling for the Change Text */
@@ -370,51 +667,34 @@
     text-align: right;
     flex-grow: 1;
   }
-  
-  .dark .submit-button{
-    color: white; 
-    background-color: var(--grey);
-    border-radius: 2rem; /* Example border radius */
-    font-size: 1.25rem; /* Example font size */
-    width: 100%; /* Takes the full width */
-    padding: 0.75rem 1.5rem; /* Example padding */
-    outline: none; /* Removes outline */
-  }
 
-  .submit-button {
-    color: black; 
-    background-color: var(--grey);
-    border-radius: 2rem; /* Example border radius */
-    font-size: 1.25rem; /* Example font size */
-    width: 100%; /* Takes the full width */
-    padding: 0.75rem 1.5rem; /* Example padding */
-    outline: none; /* Removes outline */
-  }
-  
-  /* Styling for the submitable state */
-  .submit-button.bg-cyan-500:hover,
-  .submit-button.bg-cyan-600 {
-    /* Styles when the button is in a submitable state */
-    background-color: #1d3133; /* Example background color */
-  }
-  
-  /* Styling for the non-submitable state */
-  .submit-button.bg-blue-gray-200 {
-    /* Styles when the button is not submitable */
-    background-color: #14437c; /* Example background color */
-  }
-  
-  .submit{
-    color: var(--dark); 
-    background-color: var(--grey); 
+  .submit{ 
+    color: var(--light); 
+    background-color: #40d672; 
 
   }
  
   .nosubmit{
     color: var(--light); 
-    background-color: var(--grey);
-    opacity: 0.50; 
+    background-color: var(--red);
+    
 
+  }
+
+  .proceed-btn {
+    background-color: var(--red); /* Background color set to bg-cyan-500 */
+    color: #fff; /* Text color set to text-white */
+    font-size: 1.125rem; /* Text size set to text-lg */
+    padding-left: 1rem; /* Horizontal padding */
+    padding-right: 1rem; /* Horizontal padding */
+    padding-top: 0.75rem; /* Vertical padding */
+    padding-bottom: 0.75rem; /* Vertical padding */
+    border-radius: 1.5rem; /* Rounded corners */
+    width: 100%; /* Full width */
+  }
+  
+  .proceed-btn:focus {
+    outline: none; /* Remove outline on focus */
   }
 
 
@@ -426,7 +706,146 @@
 
 
 
+  /* Edit User Modal */
+.edit-user-modal, .add-user-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
+.edit-user-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 450px;
+  width: 100%;
+  overflow-y: auto; /* Add overflow-y property to enable scroll when content exceeds height */
+  max-height: 80vh; /* Set a maximum height to ensure modal fits within the viewport */
+  scrollbar-color: #ddd rgba(0, 0, 0, 0);
+  scrollbar-width: thin;
+}
+
+.dark .edit-user-modal-content{
+  background-color: #333;
+  color: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  border: 1px solid #444343;
+}
+
+.edit-user-modal-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.edit-user-modal-content::-webkit-scrollbar-thumb {
+  background-color: #8b8a8a;
+  border-radius: 10px;
+}
+
+.edit-user-modal-content::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.edit-user-modal-content h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.dark .edit-user-modal-content h2 {
+  color: white;
+}
+
+.edit-user-modal-content label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.dark .edit-user-modal-content label{
+  color: white;
+}
+
+.edit-user-modal-content input, .edit-user-modal-content select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+  border-radius: 4px;
+}
+
+
+.dark .edit-user-modal-content select, .dark .edit-user-modal-content input{
+  background-color: #333; /* Background color in dark mode */
+  color: #fff; /* Text color in dark mode */
+  border-color: var(--border); /* Border color in dark mode */
+  outline: none;
+}
+
+.modal-button-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.modal-save-button,
+.modal-close-button {
+  width: 40%;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.modal-save-button {
+  background-color: #3498db;
+  color: white;
+}
+
+.modal-close-button {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.modal-save-button:hover,
+.modal-close-button:hover {
+  cursor: pointer;
+  opacity: 80%;
+}
+
+.edit-user-modal-content.has-image .image-preview-edit {
+  display: block;
+}
+
+.content main .reports{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-gap: 24px;
+  margin-top: 36px;
+}
+
+@media screen and (max-width: 767px) {
+  .add-user-container {
+      flex-direction: column;
+  }
+
+  .add-user-btn {
+      width: 100%; /* Reset width for mobile view */
+      margin-bottom: 10px;
+  }
+  .edit-user-modal-content, .add-user-modal-content {
+      max-width: 75%;
+  }
+}
 
 
 
@@ -688,3 +1107,4 @@
       display: block;
     }
   }
+  

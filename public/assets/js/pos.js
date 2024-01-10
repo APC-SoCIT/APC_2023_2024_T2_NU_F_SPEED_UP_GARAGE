@@ -1,3 +1,25 @@
+function validateCheckout() {
+  const isCheckoutValid = app.submitable();
+  const checkoutButton = document.getElementById("checkoutButton");
+
+  if (isCheckoutValid) {
+    checkoutButton.disabled = false; // Enable checkout button if conditions are met
+  } else {
+    checkoutButton.disabled = true; // Disable checkout button otherwise
+  }
+}
+
+const app = initApp(); // Initialize the app
+app.initReceiptNo(); // Initialize the receipt number on app start
+
+function updateReceiptNo(receiptNo) {
+  const receiptNoElement = document.getElementById('receiptNo');
+  if (receiptNoElement) {
+    receiptNoElement.textContent = `Order #${receiptNo}`;
+  } else {
+    console.error('Receipt number element not found.');
+  }
+}
 
 async function loadDatabase() {
   const db = await idb.openDB("poop", 1, {
@@ -27,6 +49,9 @@ function initApp() {
   const app = {
     db: null,
     time: null,
+    selectedPaymentMethod: "",
+    selectedCustomerName:"",
+    selectedCashierName:"",
     firstTime: localStorage.getItem("") === null,
     activeMenu: 'pos',
     loadingSampleData: true,
@@ -39,6 +64,7 @@ function initApp() {
     isShowModalReceipt: false,
     receiptNo: null,
     receiptDate: null,
+    
     async initDatabase() {
       this.db = await loadDatabase();
       await this.startWithSampleData(); // Load JSON immediately
@@ -49,6 +75,18 @@ function initApp() {
       this.products = await this.db.getProducts();
       console.log("Products loaded", this.products);
     },
+
+    initReceiptNo() {
+  this.receiptNo = '12'; 
+  updateReceiptNo(this.receiptNo);
+},
+
+    getNextReceiptNo() {
+      const currentNumber = parseInt(this.receiptNo.slice(-4)); // Extract the numeric part (last 4 digits)
+      const nextNumber = pad(currentNumber + 1, 4); // Increment by 1 and pad with zeros to 4 digits
+      return `SPDG-POS${nextNumber}`;
+    },
+  
 
     async startWithSampleData() {
       try {
@@ -64,8 +102,6 @@ function initApp() {
           await this.db.addProduct(product);
         }
 
-        // Set firstTime to false if needed
-        // this.firstTime = false;
 
         console.log('Sample data loaded successfully.'); // Log success
       } catch (error) {
@@ -109,20 +145,22 @@ function initApp() {
       if (index === -1) {
         return;
       }
+    
       const afterAdd = item.qty + qty;
-      if (afterAdd === 0) {
+      if (afterAdd <= 0) {
+        // If quantity becomes zero or less, remove item from cart
         this.cart.splice(index, 1);
-        this.clearSound();
       } else {
         this.cart[index].qty = afterAdd;
-        
       }
+    
+      // Update the change whenever the quantity changes
       this.updateChange();
     },
+  
     addCash(amount) {      
       this.cash = (this.cash || 0) + amount;
       this.updateChange();
-      
     },
     getItemsCount() {
       return this.cart.reduce((count, item) => count + item.qty, 0);
@@ -141,14 +179,47 @@ function initApp() {
       );
     },
     submitable() {
-      return this.change >= 0 && this.cart.length > 0;
+      const cashierNameElement = document.getElementById("cashierName");
+      const customerNameElement = document.getElementById("customerName");
+      const paymentMethodElement = document.getElementById("paymentMethod");
+      const isCashierSelected = cashierNameElement.value !== "Select Cashier";
+      const isCustomerSelected = customerNameElement.value !== "Select Customer";
+      const isPaymentSelected = paymentMethodElement.value !== "";
+      const isCashEnough = this.change >= 0; // Cash provided is enough or more than the total amount
+    
+      return isCashierSelected && isCustomerSelected && isPaymentSelected && isCashEnough && this.cart.length > 0;
     },
     submit() {
       const time = new Date();
-      this.isShowModalReceipt = true;
-      this.receiptNo = `SPDG-POS${Math.round(time.getTime() / 1000)}`;
+      const newReceiptNo = "1";
+      this.receiptNo = newReceiptNo;
+    
+      const paymentMethodElement = document.getElementById("paymentMethod");
+      if (paymentMethodElement) {
+        this.selectedPaymentMethod = paymentMethodElement.value;
+      } else {
+        console.error('Payment method element not found.');
+      }
+    
+      const cashierNameElement = document.getElementById("cashierName");
+      if (cashierNameElement) {
+        this.selectedCashierName = cashierNameElement.value;
+      } else {
+        console.error('Cashier name element not found.');
+      }
+    
+      const customerNameElement = document.getElementById("customerName");
+      if (customerNameElement) {
+        this.selectedCustomerName = customerNameElement.value;
+      } else {
+        console.error('Customer name element not found.');
+      }
+    
+      updateReceiptNo(newReceiptNo);
       this.receiptDate = this.dateFormat(time);
+      this.isShowModalReceipt = true;
     },
+    
     closeModalReceipt() {
       this.isShowModalReceipt = false;
     },
@@ -182,15 +253,14 @@ function initApp() {
       this.receiptNo = null;
       this.receiptDate = null;
       this.updateChange();
-      this.clearSound();
+      
     },
   
     printAndProceed() {
       const receiptContent = document.getElementById('receipt-content');
       const titleBefore = document.title;
       const printArea = document.getElementById('print-area');
-
-      printArea.innerHTML = receiptContent.innerHTML;
+      printArea.innerHTML = receiptContent.innerHTML;   
       document.title = this.receiptNo;
 
       window.print();
@@ -199,8 +269,6 @@ function initApp() {
       printArea.innerHTML = '';
       document.title = titleBefore;
 
-      // TODO save sale data to database
-
       this.clear();
     }
   };
@@ -208,5 +276,18 @@ function initApp() {
   return app;
 }
 
-const myApp = initApp();
-myApp.initDatabase();
+const dateToday = document.getElementById('currentDate');
+const currentDate = new Date();
+const monthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+const day = currentDate.getDate();
+const month = monthNames[currentDate.getMonth()];
+const year = currentDate.getFullYear();
+const formattedDate = `${day} ${month}, ${year}`;
+dateToday.textContent = formattedDate;
+
+
+

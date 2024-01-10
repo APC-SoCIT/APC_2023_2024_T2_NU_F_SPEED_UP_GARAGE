@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TransactionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -110,6 +111,15 @@ Route::delete('/delete-customer/{id}', [CustomerController::class, 'deleteCustom
 Route::put('/update-customer/{id}', [CustomerController::class, 'updateCustomer']);
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+
+
+Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+Route::post('/add-transaction', [TransactionController::class, 'addTransaction'])->name('transactions.add');
+Route::get('/edit-transaction/{id}', [TransactionController::class, 'editTransaction'])->name('transactions.edit');
+Route::delete('/delete-transaction/{id}', [TransactionController::class, 'deleteTransaction'])->name('transactions.delete');
+Route::put('/update-transaction/{id}', [TransactionController::class, 'updateTransaction']);
+
+
 
 
 Route::middleware('auth')->group(function () {
