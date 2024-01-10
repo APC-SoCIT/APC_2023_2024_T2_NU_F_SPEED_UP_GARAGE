@@ -137,15 +137,14 @@ function editRow(event) {
         currentEditingId = row.getAttribute('data-id');
 
         // Fetch data from the row and populate the modal fields
-        const tagElement = row.querySelector('.tag'); // Use the correct class name
-        const productNameElement = row.querySelector('.product-name'); // Use the correct class name
-        const categoryElement = row.querySelector('.category'); // Use the correct class name
-        const brandElement = row.querySelector('.brand'); // Use the correct class name
+        const tagElement = row.querySelector('.tag');
+        const productNameElement = row.querySelector('.product-name');
+        const categoryElement = row.querySelector('.category');
+        const brandElement = row.querySelector('.brand');
         const quantityElement = row.querySelector('.quantity');
         const priceElement = row.querySelector('.price');
-        const imageElement = row.querySelector('.product-image'); // Use the correct class name for the image
+        const imageElement = row.querySelector('.product-image');
 
-        // Check if elements exist before accessing their textContent
         const tag = tagElement ? tagElement.textContent : '';
         const productName = productNameElement ? productNameElement.textContent : '';
         const category = categoryElement ? categoryElement.textContent : '';
@@ -170,40 +169,7 @@ function editRow(event) {
     }
 }
 
-function saveChanges() {
-    const editedTag = document.getElementById('editedTag').value;
-    const editedProductName = document.getElementById('editedProductName').value;
-    const editedCategory = document.getElementById('editedCategory').value;
-    const editedBrand = document.getElementById('editedBrand').value;
-    const editedQuantity = document.getElementById('editedQuantity').value;
-    const editedPrice = document.getElementById('editedPrice').value;
 
-    // Validate if any field is empty (you can add more validation as needed)
-    if (!editedTag || !editedProductName || !editedCategory || !editedBrand || !editedQuantity || !editedPrice) {
-        alert('Please fill in all fields.');
-        return;
-    }
-
-    // Get the row to be updated
-    const row = document.querySelector(`[data-id="${currentEditingId}"]`);
-
-    // Check if the row is found
-    if (row) {
-        // Update the row with the new values
-        row.querySelector('.tag').textContent = editedTag;
-        row.querySelector('.product-name').textContent = editedProductName;
-        row.querySelector('.category').textContent = editedCategory;
-        row.querySelector('.brand').textContent = editedBrand;
-        row.querySelector('.quantity').textContent = editedQuantity;
-        row.querySelector('.price').textContent = editedPrice;
-
-        // Close the modal
-        closeModal();
-        updateStatusClassForAll();
-    } else {
-        console.error(`Row with data-id "${currentEditingId}" not found.`);
-    }
-}
 
 function EditImageChange(input) {
     const imagePreview = document.getElementById('editedImagePreview');
@@ -225,13 +191,7 @@ function EditImageChange(input) {
 
 
 // Function to handle deleting a row
-function deleteRow(event) {
-    const row = event.target.closest('tr'); // Get the closest <tr> parent of the clicked button
-    const table = document.querySelector('.inventory-table tbody');
-    const id = row.getAttribute('data-id'); // Move this line here to get the 'id'
 
-    table.removeChild(row);
-}
 
 
 
@@ -274,6 +234,12 @@ function closeAddProductModal() {
 
     // Clear the file input value to allow selecting the same file again
     fileInput.value = '';
+    newTag.value = '';
+    newProductName.value = '';
+    newCategory.value = '';
+    newBrand.value = '';
+    newQuantity.value = '';
+    newPrice.value = '';
 
     // Hide the modal
     addProductModal.style.display = 'none';
@@ -283,6 +249,7 @@ function closeAddProductModal() {
 
 
 // this is for status such as out of stock, low and in stock
+
 
 function updateStatusClassForAll() {
     const rows = document.querySelectorAll('tr[data-id]');
@@ -294,7 +261,7 @@ function updateStatusClassForAll() {
         if (quantity === 0) {
             statusCell.className = 'status status-out-of-stock';
             statusCell.textContent = 'Out of Stock';
-        } else if (quantity <= 20) {
+        } else if (quantity <= 25) {
             statusCell.className = 'status status-low-stock';
             statusCell.textContent = 'Low Stock';
         } else {
@@ -389,67 +356,6 @@ function filterTable() {
     }
 }
 
-function addProduct() {
-    var newTag = document.getElementById('newTag');
-    var newProductName = document.getElementById('newProductName');
-    var newCategory = document.getElementById('newCategory');
-    var newBrand = document.getElementById('newBrand');
-    var newQuantity = document.getElementById('newQuantity');
-    var newPrice = document.getElementById('newPrice');
-
-    // Check if elements are found before accessing their values
-    if (newTag && newProductName && newCategory && newBrand && newQuantity && newPrice) {
-        // Continue with the rest of your code...
-        // Send an AJAX request, update UI, etc.
-        $.ajax({
-            url: '/add-product', // Correct route name
-            type: 'POST',  // Replace with the actual URL endpoint for adding a product
-            data: {
-                tag: newTag.value,
-                product_name: newProductName.value,
-                category: newCategory.value,
-                brand: newBrand.value,
-                quantity: newQuantity.value,
-                price: newPrice.value
-            },
-            success: function(response) {
-                console.log('Product added successfully:', response);
-                // Handle success response (update UI, close modal, etc.)
-                closeAddProductModal();
-                updateStatusClassForAll();  // You may need to define this function
-            },
-            error: function(error) {
-                console.error('Error adding product:', error);
-                // Handle error response (display error message, log, etc.)
-            }
-        });
-
-    } else {
-        console.error('One or more elements not found.');
-    }
-}
-
-function handleImageChange(input) {
-    var preview = document.getElementById('newProductImagePreview');
-    var label = document.getElementById('imageInputLabel');
-    var imageContainer = document.getElementById('imagePlaceholderContainer');
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            preview.src = e.target.result;
-            label.innerHTML = 'Change image';
-            imageContainer.classList.add('has-image'); // Add the 'has-image' class
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        preview.src = '#'; // Set placeholder image or empty string
-        label.innerHTML = 'Choose an image';
-        imageContainer.classList.remove('has-image'); // Remove the 'has-image' class
-    }
-}
 
 // this is for the charts
 // this is for the charts

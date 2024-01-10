@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -146,33 +146,31 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Username</th>
-                            <th>Full Name</th>
-                            <th>Role</th>
+                            <th>Name</th>
                             <th>Email</th>
-                            <th>Password</th>
-                            <th>Date Created</th>
-                            <th>Last Login</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="inventoryTableBody">
-                        <tr data-id="1">
-                            <td class="auto-number"></td>
-                            <td class="username">cinnamonesurena</td>
-                            <td class="full-name">James Vincent T. Esurena</td>
-                            <td class="user-role">Cashier</td>
-                            <td class="email">esurenajames@gmail.com</td>
-                            <td>
-                                <input type="password" class="password" value="password" readonly>
-                            </td>
-                            <td class="user-date-creation">December 12, 2023</td>
-                            <td class="user-last-login">January 04, 2024</td>
-                            <td>
-                                <button class="edit-btn" onclick="showEditUserModal(event)">Edit</button>
-                                <button class="delete-btn" onclick="deleteRow()">Delete</button>
-                            </td>
-                        </tr>
+                    <tbody>
+                        @forelse ($users as $user)
+                            <tr data-id="{{ $user->id }}">
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->created_at }}</td>
+                                <td>{{ $user->updated_at }}</td>
+                                <td>
+                                    <button class="edit-btn" onclick="editRow(event)">Edit</button>
+                                    <button class="delete-btn" onclick="deleteRow(event)">Delete</button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6">No users available</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

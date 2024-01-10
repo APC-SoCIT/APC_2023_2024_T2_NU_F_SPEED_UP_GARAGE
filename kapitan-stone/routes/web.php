@@ -4,7 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
+<<<<<<< HEAD
+use App\Http\Controllers\CustomerController;
+=======
+use App\Http\Controllers\UserController;
 
+>>>>>>> 65a77450617282174a243466ff9b471afedc2aca
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,9 +29,15 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/Users', function () {
+<<<<<<< HEAD
+Route::get('/users', function () {
     return view('Users');
-})->middleware(['auth', 'verified'])->name('Users');
+})->middleware(['auth', 'verified'])->name('users');
+=======
+Route::get('/users', [UserController::class, 'showUsers'])
+    ->middleware(['auth', 'verified'])
+    ->name('users');
+>>>>>>> 65a77450617282174a243466ff9b471afedc2aca
 
 Route::get('admin', function () {
     return view('Admin');
@@ -51,10 +62,6 @@ Route::get('reports', function () {
 Route::get('pos', function () {
     return view('POS');
 })->name('pos');
-
-Route::get('users', function () {
-    return view('Users');
-})->name('users');
 
 Route::get('settings', function () {
     return view('Settings');
@@ -89,8 +96,22 @@ Route::get('customers', function () {
 })->name('customers');
 
 // Use ProductController to handle inventory-related functionality
-Route::get('/inventory', [ProductController::class, 'index']);  
-Route::post('/addProduct', [ProductController::class, 'addProduct'])->middleware('auth');
+
+Route::get('/inventory', [ProductController::class, 'index'])->name('inventory.index');
+Route::post('/add-product', [ProductController::class, 'addProduct'])->name('product.add');
+Route::get('/edit-product/{id}', [ProductController::class, 'editProduct'])->name('product.edit');
+Route::delete('/delete-product/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
+Route::put('/update-product/{id}', [ProductController::class, 'updateProduct']);
+
+
+// Use CustomerController to handle customer-related functionality
+
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::post('/add-customer', [CustomerController::class, 'addCustomer'])->name('customer.add');
+Route::get('/edit-customer/{id}', [CustomerController::class, 'editCustomer'])->name('customer.edit');
+Route::delete('/delete-customer/{id}', [CustomerController::class, 'deleteCustomer'])->name('customer.delete');
+Route::put('/update-customer/{id}', [CustomerController::class, 'updateCustomer']);
+
 
 
 Route::middleware('auth')->group(function () {
