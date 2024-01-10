@@ -4,12 +4,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
-<<<<<<< HEAD
+use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CustomerController;
-=======
 use App\Http\Controllers\UserController;
 
->>>>>>> 65a77450617282174a243466ff9b471afedc2aca
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,15 +27,13 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-<<<<<<< HEAD
 Route::get('/users', function () {
     return view('Users');
 })->middleware(['auth', 'verified'])->name('users');
-=======
+
 Route::get('/users', [UserController::class, 'showUsers'])
     ->middleware(['auth', 'verified'])
     ->name('users');
->>>>>>> 65a77450617282174a243466ff9b471afedc2aca
 
 Route::get('admin', function () {
     return view('Admin');
@@ -103,6 +99,7 @@ Route::get('/edit-product/{id}', [ProductController::class, 'editProduct'])->nam
 Route::delete('/delete-product/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
 Route::put('/update-product/{id}', [ProductController::class, 'updateProduct']);
 
+Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
 
 // Use CustomerController to handle customer-related functionality
 

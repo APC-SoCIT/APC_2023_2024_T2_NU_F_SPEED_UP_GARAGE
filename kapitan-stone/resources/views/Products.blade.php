@@ -221,42 +221,18 @@
                         </thead>
                         <tbody id="inventoryTableBody">
                             <!-- Example rows; replace with server-side generated rows -->
-                            <tr data-id="1">
+                            @foreach ($products as $product)
+                            <tr data-id="{{ $product->id }}">
                             <td><span class="status"></span></td>
-                                <td></td>
-                                <td class="tag">0923213412</td>
-                                <td class="product-name">Spongebob</td>
-                                <td class="category">Air Filter</td>
-                                <td class="brand">Mio</td>
-                                <td><span class="quantity">0</span><input type="text" class="edit-quantity"
-                                        style="display:none;"></td>
-                                <td><span class="price">P500.00</span><input type="text" class="edit-price"
-                                        style="display:none;"></td>
+                                <td>{{ $product->id }}</td>
+                                <td class="tag" id="tag{{ $product->id }}">{{ $product->tag }}</td>
+                                <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
+                                <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
+                                <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
+                                <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
+                                <td class="price" id="price_{{ $product->id }}"><span class="price">{{ $product->price }}</span><input type="text" class="edit-price" style="display:none;"></td>
                             </tr>
-                            <tr data-id="2">
-                            <td><span class="status"></span></td>
-                                <td></td>
-                                <td class="tag">0923213412</td>
-                                <td class="product-name">Judge</td>
-                                <td class="category">Belt</td>
-                                <td class="brand">ADV</td>
-                                <td><span class="quantity">8</span><input type="text" class="edit-quantity"
-                                        style="display:none;"></td>
-                                <td><span class="price">P500.00</span><input type="text" class="edit-price"
-                                        style="display:none;"></td>
-                                </tr>
-                            <tr data-id="3">
-                            <td><span class="status"></span></td>
-                                <td></td>
-                                <td class="tag">0923213412</td>
-                                <td class="product-name">Hello Kitty</td>
-                                <td class="category">Battery</td>
-                                <td class="brand">NMAX</td>
-                                <td><span class="quantity">22</span><input type="text" class="edit-quantity"
-                                        style="display:none;"></td>
-                                <td><span class="price">P500.00</span><input type="text" class="edit-price"
-                                        style="display:none;"></td>
-                            </tr>
+                            @endforeach
                             <!-- Add more rows as needed -->
                         </tbody>
                     </table>
