@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 
@@ -98,6 +99,7 @@ Route::get('/edit-product/{id}', [ProductController::class, 'editProduct'])->nam
 Route::delete('/delete-product/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
 Route::put('/update-product/{id}', [ProductController::class, 'updateProduct']);
 
+Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
 
 // Use CustomerController to handle customer-related functionality
 
