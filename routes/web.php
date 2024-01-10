@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +25,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/Users', function () {
-    return view('Users');
-})->middleware(['auth', 'verified'])->name('Users');
+Route::get('/users', [UserController::class, 'showUsers'])
+    ->middleware(['auth', 'verified'])
+    ->name('users');
 
 Route::get('admin', function () {
     return view('Admin');
@@ -51,10 +52,6 @@ Route::get('reports', function () {
 Route::get('pos', function () {
     return view('POS');
 })->name('pos');
-
-Route::get('users', function () {
-    return view('Users');
-})->name('users');
 
 Route::get('settings', function () {
     return view('Settings');
