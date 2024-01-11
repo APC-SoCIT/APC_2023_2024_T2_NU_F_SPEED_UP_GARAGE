@@ -146,7 +146,7 @@
                 <li><i class='bx bx-dollar-circle'></i>
                     <span class="info">
                         <h3>
-                            {{$formattedTodaySales}}
+                            ₱{{$formattedTodaySales}}
                         </h3>
                         <p>Todays Sales</p>
                     </span>
@@ -155,7 +155,7 @@
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            {{$formattedCurrentMonthSales}}
+                            ₱{{$formattedCurrentMonthSales}}
                         </h3>
                         <p>Monthly Sales</p>
                     </span>
@@ -171,7 +171,7 @@
                 <li><i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            {{$formattedAverageDailySales}}
+                            ₱{{$formattedAverageDailySales}}
                         </h3>
                         <p>Average Daily Sales / month</p>
                     </span>
