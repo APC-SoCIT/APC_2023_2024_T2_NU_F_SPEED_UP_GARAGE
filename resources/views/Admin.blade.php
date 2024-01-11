@@ -146,7 +146,7 @@
                 <li><i class='bx bx-dollar-circle'></i>
                     <span class="info">
                         <h3>
-                            P500.00
+                            {{$formattedTodaySales}}
                         </h3>
                         <p>Todays Sales</p>
                     </span>
@@ -155,7 +155,7 @@
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            231,074
+                            {{$formattedCurrentMonthSales}}
                         </h3>
                         <p>Monthly Sales</p>
                     </span>
@@ -163,7 +163,7 @@
                 <li><i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            5
+                            {{$productsSoldToday}}
                         </h3>
                         <p>Product Sold / day</p>
                     </span>
@@ -171,7 +171,7 @@
                 <li><i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            P1,300
+                            {{$formattedAverageDailySales}}
                         </h3>
                         <p>Average Daily Sales / month</p>
                     </span>
@@ -212,7 +212,7 @@
 <div class="orders">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>Recent Orders</h3>
+                        <h3>Recent Transactions</h3>
                         <i class='bx bx-filter'></i>
                         <i class='bx bx-search'></i>
                     </div>
@@ -225,30 +225,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <img src="{{ asset('assets/images/profile-1.jpg') }}">
-                                    <p>James Esurena</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="{{ asset('assets/images/profile-1.jpg') }}">
-                                    <p>James Esurena</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="{{ asset('assets/images/profile-1.jpg') }}">
-                                    <p>James Esurena</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status process">Processing</span></td>
-                            </tr>
+                            @foreach($recentTransactions as $transaction)
+                                <tr>
+                                    <td>
+                                        <p>{{ $transaction->customer_name }}</p>
+                                    </td>
+                                    <td>{{ $transaction->date }}</td>
+                                    <td>
+                                        <span class="status {{ $transaction->status == 'Pending' ? 'pending' : 'process' }}">
+                                            {{ $transaction->status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
