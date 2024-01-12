@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -16,7 +16,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Users</title>
+    
 </head>
 
 <body>
@@ -147,6 +149,7 @@
                         <tr>
                             <th>#</th>
                             <th>Name</th>
+                            <th>Role</th>
                             <th>Email</th>
                             <th>Created At</th>
                             <th>Updated At</th>
@@ -158,12 +161,19 @@
                             <tr data-id="{{ $user->id }}">
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
+                                <td>
+                                    @php
+                                        $roleName = ($user->role == 1) ? 'Admin' : (($user->role == 2) ? 'Inventory Clerk' : (($user->role == 3) ? 'Cashier' : 'Unknown Role'));
+                                    @endphp
+                                    {{ $roleName }}
+                                </td>
+                                
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>{{ $user->updated_at }}</td>
                                 <td>
-                                    <button class="edit-btn" onclick="editRow(event)">Edit</button>
-                                    <button class="delete-btn" onclick="deleteRow(event)">Delete</button>
+                                    <button class="edit-btn" onclick="editUser(event)">Edit</button>
+                                    <button class="delete-btn" onclick="deleteUserRow(event)">Delete</button>
                                 </td>
                             </tr>
                         @empty
@@ -189,18 +199,8 @@
         <div class="edit-user-modal" id="editUserModal">
             <div class="edit-user-modal-content">
                 <h2 class="edit-user-modal-title">Edit User Details</h2>
-                <label for="userUsername">Username:</label>
-                <input type="text" id="userUsername" name="userUsername">
-                <label for="UserFullName">Full Name:</label>
-                <input type="text" id="UserFullName" name="UserFullName">
-                <label for="UserRole">Role</label>
-                <select id="UserRole" name="userRole">
-                    <option value="">Select Role</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Inventory Clerk">Inventory Clerk</option>
-                    <option value="Cashier">Cashier</option>
-                </select>
-
+                <label for="userName">Name:</label>
+                <input type="text" id="userName" name="userName">
                 <label for="userEmail">Email:</label>
                 <input type="text" id="userEmail" name="userEmail">
                 <label for="userPassword">Password:</label>
@@ -216,25 +216,23 @@
         <div class="add-user-modal" id="addUserModal">
             <div class="add-user-modal-content">
                 <h2 class="add-user-modal-title">Create User</h2>
-                <label for="userUsername">Username:</label>
-                <input type="text" id="userUsername" name="userUsername">
-                <label for="UserFullName">Full Name:</label>
-                <input type="text" id="UserFullName" name="UserFullName">
+                <label for="newUserFullName">Full Name:</label>
+                <input type="text" id="newUserFullName" name="newUserFullName">
                 <label for="UserRole">Role</label>
-                <select id="UserRole" name="userRole">
-                    <option value="">Select Role</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Inventory Clerk">Inventory Clerk</option>
-                    <option value="Cashier">Cashier</option>
+                <select id="newUserRole" name="newUserRole">
+                    <option value="0">Select Role</option>
+                    <option value="1">Admin</option>
+                    <option value="2">Inventory Clerk</option>
+                    <option value="3">Cashier</option>
                 </select>
-                <label for="userEmail">Email:</label>
-                <input type="text" id="userEmail" name="userEmail">
-                <label for="userPassword">Password:</label>
-                <input type="password" id="userPassword" name="userPassword">
+                <label for="newUserEmail">Email:</label>
+                <input type="text" id="newUserEmail" name="newUserEmail">
+                <label fdeleteUseror="newUserPassword">Password:</label>
+                <input type="password" id="newUserPassword" name="newUserPassword">
                 <!-- Add more fields as needed -->
                 <div class="modal-button-container">
-                    <button class="modal-save-button" onclick="saveUserChanges()">Save</button>
-                    <button class="modal-close-button" onclick="cancelCreateUserModal()">Cancel</button>
+                    <button class="modal-save-button" onclick="addUser()">Save</button>
+                    <button class="modal-close-button" onclick="cancelAddUserModal()">Cancel</button>
                 </div>
             </div>
         </div>
@@ -246,7 +244,171 @@
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script src="{{ asset('assets/js/users.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+
+        function addUserModal() {
+            const addUserModal = document.getElementById('addUserModal');
+            const editUserModal = document.getElementById('editUserModal');
+
+                // Hide the Edit User modal if it's currently displayed
+            editUserModal.style.display = 'none';
+
+                // Show the Add User modal
+            addUserModal.style.display = 'flex'; // Use 'flex' to center the modal
+        }
+        // Function to close the Add User modal
+        function closeAddUserModal() {
+            const addUserModal = document.getElementById('addUserModal');
+            const newUserFullName = document.getElementById('newUserFullName');
+            const newUserRole = document.getElementById('newUserRole');
+            const newUserEmail = document.getElementById('newUserEmail');
+            const newUserPassword = document.getElementById('newUserPassword');
+
+            // Clear the input fields
+            newUserFullName.value = '';
+            newUserRole.value = '';
+            newUserEmail.value = '';
+            newUserPassword.value = '';
+
+            // Hide the modal
+            addUserModal.style.display = 'none';
+        }
+
+        function addUser() {
+        var newUserFullName = document.getElementById('newUserFullName');
+        var newUserRole = document.getElementById('newUserRole');
+        var newUserEmail = document.getElementById('newUserEmail');
+        var newUserPassword = document.getElementById('newUserPassword');
+
+        if (newUserFullName && newUserRole && newUserEmail && newUserPassword) {
+            // Get the CSRF token from the meta tag
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: '/add-user',
+            type: 'POST',
+            headers: {
+            'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                name: newUserFullName.value,
+                role: newUserRole.value,
+                email: newUserEmail.value,
+                password: newUserPassword.value,
+            },
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            success: function(response) {
+                console.log('User added successfully:', response);
+                // Handle success response (update UI, close modal, etc.)
+                closeAddUserModal();
+            },
+            error: function(error) {
+                console.error('Error adding user:', error);
+                // Handle error response (display error message, log, etc.)
+            }
+        });
+            } else {
+                console.error('One or more elements not found.');
+            }
+        }
+        function deleteUserRow(event) {
+            const row = event.target.closest('tr'); // Get the closest <tr> parent of the clicked button
+            const userID = row.getAttribute('data-id');
+    
+            const confirmed = window.confirm('Are you sure you want to delete this user?');
+    
+            if (!confirmed) {
+                return; // If not confirmed, do nothing
+            }
+    
+            // Include CSRF token in the headers
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+    
+            $.ajax({
+                url: `/delete-user/${userID}`,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function (response) {
+                    console.log('User deleted successfully:', response);
+    
+                    // Handle success response (update UI, etc.)
+                    const table = document.querySelector('.inventory-table tbody');
+                    table.removeChild(row); // Remove the row from the table on successful deletion
+                },
+                error: function (error) {
+                    console.error('Error deleting user:', error);
+    
+                    // Handle error response (display error message, log, etc.)
+                }
+            });
+        }
+
+        let userId; // Declare userId outside the functions
+        
+
+        function editUser(event) {
+            const row = event.target.closest('tr');
+            userId = row.getAttribute('data-id'); // set userId in the same scope
+            showModalWithUserData(userId);
+        }
+
+        function showModalWithUserData(userId) {
+            // Populate modal with current data
+            const userName = $(`#name${userId}`).text();
+            const email = $(`#email${userId}`).text();
+            const password = $(`#password${userId}`).text();
+
+            $('#userName').val(userName);
+            $('#userEmail').val(email);
+            $('#userPassword').val(password);
+
+            // Show the modal
+            $('#editUserModal').show();
+        }
+
+        function saveUserChanges() {
+            const editedName = $('#userName').val();
+            const editedUserEmail = $('#userEmail').val();
+            const editedUserPassword = $('#userPassword').val();
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            // Send AJAX request to update the database
+            $.ajax({
+                url: `/update-user/${userId}`,
+                type: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                data: {
+                    name: editedName,
+                    email: editedUserEmail,
+                    password: editedUserPassword
+                },
+                success: function(response) {
+                    console.log('User updated successfully:', response);
+
+                    // Update UI with the new data
+                    $(`#name${userId}`).text(editedName);
+                    $(`#email${userId}`).text(editedUserEmail);
+                    $(`#password${userId}`).text(editedUserPassword);
+
+                    // Hide the modal
+                    $('#editUserModal').hide();
+                },
+                error: function(error) {
+                    console.error('Error updating user:', error);
+                    // Handle error response (display error message, log, etc.)
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

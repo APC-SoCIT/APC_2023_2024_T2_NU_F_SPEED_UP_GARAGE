@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
-    <link rel="stylesheet" href="../css/app.css">
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
@@ -146,7 +145,7 @@
                 <li><i class='bx bx-dollar-circle'></i>
                     <span class="info">
                         <h3>
-                            P500.00
+                            ₱{{$formattedTodaySales}}
                         </h3>
                         <p>Todays Sales</p>
                     </span>
@@ -155,7 +154,7 @@
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
                         <h3>
-                            231,074
+                            ₱{{$formattedCurrentMonthSales}}
                         </h3>
                         <p>Monthly Sales</p>
                     </span>
@@ -163,7 +162,7 @@
                 <li><i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            5
+                            {{$productsSoldToday}}
                         </h3>
                         <p>Product Sold / day</p>
                     </span>
@@ -171,7 +170,7 @@
                 <li><i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            P1,300
+                            ₱{{$formattedAverageDailySales}}
                         </h3>
                         <p>Average Daily Sales / month</p>
                     </span>
@@ -181,91 +180,80 @@
             <!-- End of Insights -->
 
             <div class="bottom-data">
-                
-
                 <!-- Reminders -->
                 <div class="reminders">
                 <h2>Sales</h2>
-      <p>Month-to-month Comparison</p>
-      <div class="pulse"></div>
-      <div class="chart-area">
-        <div class="grid"></div>
-      </div>
-     
+                <p>Month-to-month Comparison</p>
+                <div class="pulse"></div>
+                <div class="chart-area">
+                    <div class="grid"></div>
+                    <div id="monthToMonthSalesData" data-sales-data='@json($lastSixMonthsSalesData)'></div>
+                </div>
                 </div>
          
-
-              <div class="reminders">
+            <div class="reminders">
                 <h2>Top Products</h2>
-      <p>Top Products This Month</p>
-      <div class="pulse"></div>
-      <div class="bar-chart">
-      <div class="grid"></div>
-      </div>
+                <p>Top Products This Month</p>
+                <div class="pulse"></div>
+                <div class="bar-chart">
+                <div class="grid"></div>
+                </div>
+            </div>
 
-    
-
-      
-      
-</div>
-
-<div class="orders">
-                    <div class="header">
-                        <i class='bx bx-receipt'></i>
-                        <h3>Recent Orders</h3>
-                        <i class='bx bx-filter'></i>
-                        <i class='bx bx-search'></i>
+            <div class="orders">
+                <div class="header">
+                    <i class='bx bx-receipt'></i>
+                    <h3>Recent Transactions</h3>
+                    <i class='bx bx-filter'></i>
+                    <i class='bx bx-search'></i>
                     </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>User</th>
+                                <th>Customer</th>
                                 <th>Order Date</th>
                                 <th>Status</th>
+                                <th>Price</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <img src="{{ asset('assets/images/profile-1.jpg') }}">
-                                    <p>James Esurena</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="{{ asset('assets/images/profile-1.jpg') }}">
-                                    <p>James Esurena</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="{{ asset('assets/images/profile-1.jpg') }}">
-                                    <p>James Esurena</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status process">Processing</span></td>
-                            </tr>
+                            @foreach($recentTransactions as $transaction)
+                                <tr>
+                                    <td>
+                                        <p>{{ $transaction->customer_name }}</p>
+                                    </td>
+                                    <td>{{ $transaction->date }}</td>
+                                    <td>
+                                        <span class="status {{ $transaction->status == 'Pending' ? 'pending' : 'process' }}">
+                                            {{ $transaction->status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{ $transaction->total_amount }}
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
-           
 
+
+            <div>
             <div class="salesreminders">
-                <h2 id="salesForecastTitle">Sales Forecast</h2>
-                <p>Sales Performance Overview</p>
-                <div class="pulse"></div>
-                <div class="sales-chart">
-                    <div class="grid"></div>
+                    <h2 id="salesForecastTitle">Sales Forecast</h2>
+                    <p>Sales Performance Overview</p>
+                    <div class="pulse"></div>
+                    <div id="dailySalesData" data-daily-sales='{!! json_encode($dailySalesData) !!}'></div>
                 </div>
             </div>
+            </div>
+                
+        </main>
 
-      
+
     <script src="{{ asset('assets/js/chart.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>           
     <script src="{{ asset('assets/js/index.js') }}">   
@@ -273,6 +261,7 @@
     window.addEventListener('popstate', function () {
         history.pushState(null, null, document.URL);
     });
+
 
 
     </script>

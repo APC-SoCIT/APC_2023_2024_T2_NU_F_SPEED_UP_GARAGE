@@ -121,12 +121,11 @@
                         <button class="add-product-btn" onclick="showAddProductModal()">+ Add Product</button>
                         <div class="dropdown-container">
                         <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
-                            <option value="" id="defaultOption">Select Status</option>
-                            <option value="Out of Stock" id="outOfStock">Out of Stock</option>
-                            <option value="Low Stock" id="lowStockOption">Low Stock</option>
-                            <option value="In Stock" id="inStock">In Stock</option>
+                            <option value="">Select Status</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                            <option value="Low Stock">Low Stock</option>
+                            <option value="In Stock">In Stock</option>
                         </select>
-
 
                         <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Category</option>
@@ -233,7 +232,7 @@
                                 <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
                                 <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
                                 <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                                <td class="price" id="price_{{ $product->id }}"><span class="price">₱{{ $product->price }}</span><input type="text" class="edit-price" style="display:none;"></td>
+                                <td class="price" id="price_{{ $product->id }}"><span class="price">{{ $product->price }}</span><input type="text" class="edit-price" style="display:none;"></td>
                                 <td>
                                     <button class="edit-btn" onclick="editRow(event)">Edit</button>
                                     <button class="delete-btn" onclick="deleteRow(event)">Delete</button>
@@ -637,34 +636,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Call the function to assign numbers when the page loads
     assignRowNumbers();
   });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    // Function to get query parameter by name
-    function getQueryParam(name) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name);
-    }
-
-    // Get the filter value from the query parameter
-    var filterValue = getQueryParam("filter");
-
-    // Set the value to "Low Stock" if the filter value is "Low Stock"
-    if (filterValue === "Low Stock") {
-        var statusFilter = document.getElementById("statusFilter");
-        statusFilter.value = "Low Stock";
-        filterTable();
-    }
-    if (filterValue === "Out of Stock") {
-        var statusFilter = document.getElementById("statusFilter");
-        statusFilter.value = "Out of Stock";
-        filterTable();
-    }
-});
-
-
-
-
-
 
 
     </script>
