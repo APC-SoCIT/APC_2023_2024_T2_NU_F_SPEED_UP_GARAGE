@@ -432,7 +432,7 @@ body.dark .sidebar .side-menu li:hover a {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 24px;
-    margin-top: 24px;
+    margin-top: 32px;
     width: 100%;
     color: var(--dark);
 }
@@ -464,7 +464,7 @@ body.dark .sidebar .side-menu li:hover a {
 
 .content main .bottom-data .orders{
     flex-grow: 1;
-    flex-basis: 500px;
+    flex-basis: 450px;
 }
 
 .content main .bottom-data .orders table{
@@ -631,9 +631,4 @@ content main .bottom-data .orders table tr td .status.completed{
     }
 
 }
-
-
-
-
-
 
