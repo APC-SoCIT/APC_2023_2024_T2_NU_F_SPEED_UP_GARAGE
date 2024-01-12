@@ -92,6 +92,16 @@ Route::get('customers', function () {
     return view('Customers');
 })->name('customers');
 
+
+// Use UserController to handle inventory-related functionality
+
+
+Route::post('/add-user', [UserController::class, 'addUser'])->name('user.add');
+Route::get('/edit-user/{id}', [UserController::class, 'editUser'])->name('user.edit');
+Route::delete('/delete-user/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
+Route::put('/update-user/{id}', [UserController::class, 'updateUser']);
+
+
 // Use ProductController to handle inventory-related functionality
 
 Route::get('/inventory', [ProductController::class, 'index'])->name('inventory.index');

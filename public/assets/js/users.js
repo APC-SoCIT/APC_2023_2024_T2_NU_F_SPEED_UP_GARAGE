@@ -1,87 +1,109 @@
-function showEditUserModal(event) {
-    const row = event.target.closest('tr');
+// Add these functions to your existing JavaScript file or in a separate file
 
-    if (row) {
-        currentUserEditingId = row.getAttribute('data-id');
-
-        // Fetch data from the row and populate the modal fields
-        const usernameElement = row.querySelector('.username');
-        const fullNameElement = row.querySelector('.full-name');
-        const roleElement = row.querySelector('.user-role');
-        const emailElement = row.querySelector('.email');
-        const passwordElement = row.querySelector('.password input');
-
-        // Check if elements exist before accessing their textContent or value
-        const username = usernameElement ? usernameElement.textContent : '';
-        const fullName = fullNameElement ? fullNameElement.textContent : '';
-        const role = roleElement ? roleElement.textContent : '';
-        const email = emailElement ? emailElement.textContent : '';
-        const password = passwordElement ? passwordElement.value : '';
-
-        // Check if modal fields exist before trying to set their values
-        const userUsernameField = document.getElementById('userUsername');
-        const userFullNameField = document.getElementById('UserFullName');
-        const userRoleField = document.getElementById('UserRole');
-        const userEmailField = document.getElementById('userEmail');
-        const userPasswordField = document.getElementById('userPassword');
-
-        if (userUsernameField && userFullNameField && userRoleField && userEmailField && userPasswordField) {
-            // Populate the modal fields with the fetched data
-            userUsernameField.value = username;
-            userFullNameField.value = fullName;
-
-            // Set the selected attribute for the correct dropdown option
-            const roleOptions = userRoleField.options;
-            for (let i = 0; i < roleOptions.length; i++) {
-                if (roleOptions[i].value === role) {
-                    roleOptions[i].selected = true;
-                    break;
-                }
-            }
-
-            userEmailField.value = email;
-            userPasswordField.value = password;
-
-            openEditUserModal();
-        } else {
-            console.error('One or more modal fields not found.');
-            
-            // Log which field(s) are causing the issue
-            console.log('userUsernameField:', userUsernameField);
-            console.log('userFullNameField:', userFullNameField);
-            console.log('userRoleField:', userRoleField);
-            console.log('userEmailField:', userEmailField);
-            console.log('userPasswordField:', userPasswordField);
-        }
-    }
-}
-
-
-function openEditUserModal() {
-    // Implement the logic to open the edit user modal
-    // For example, you can toggle the visibility of the modal
-    var editUserModal = document.getElementById('editUserModal');
-    if (editUserModal) {
-        editUserModal.style.display = 'flex'; // Adjust the style as per your modal implementation
-    }
-}
-
-
+// Function to open the Add User modal
 function addUserModal() {
-    var modal = document.getElementById("addUserModal");
-    modal.style.display = "flex";
+    var addUserModal = document.getElementById('addUserModal');
+    addUserModal.style.display = 'flex';
 }
 
-// Function to close the edit user modal
+// Function to close the Add User modal
+function cancelAddUserModal() {
+    var addUserModal = document.getElementById('addUserModal');
+    addUserModal.style.display = 'none';
+
+    // Clear input fields when closing the modal
+    document.getElementById('newUserName').value = '';
+    document.getElementById('newUserEmail').value = '';
+    document.getElementById('newUserPassword').value = '';
+    // Add additional input fields as needed
+}
+
+// Function to add a new user (you can customize this function as per your requirements)
+function addNewUser() {
+    // Get input values
+    var UserName = document.getElementById('newUserName').value;
+    var UserEmail = document.getElementById('newUserEmail').value;
+    var UserPassword = document.getElementById('newUserPassword').value;
+    // Add more fields as needed
+
+    // Perform any necessary validation here
+
+    // You can send the data to the server using an AJAX request or handle it as needed
+    // Example: You can log the data to the console for now
+    console.log('New User Data:', { name: userName, email: userEmail, password: userPassword });
+    
+    // Close the modal after saving
+    cancelAddUserModal();
+}
+
+let currentEditingUserId = null; // Initialize to null
+
+
+// Function to open the Edit User modal
+function editUser(event) {
+    var editUserModal = document.getElementById('editUserModal');
+    editUserModal.style.display = 'flex';
+
+    // Get data from the selected row for editing
+    var selectedRow = event.target.closest('tr');
+    var userId = selectedRow.dataset.id;
+    var userName = selectedRow.cells[1].innerText;
+    var userEmail = selectedRow.cells[2].innerText;
+    var userPassword = selectedRow.cells[3].innerText;
+    // Add more fields as needed
+
+    // Populate the input fields in the Edit User modal with the existing data
+    document.getElementById('userName').value = userName;
+    document.getElementById('userEmail').value = userEmail;
+    document.getElementById('userPassword').value = userPassword;
+    // Add more fields as needed
+}
+
+// Function to close the Edit User modal
 function cancelUserEditModal() {
-    var modal = document.getElementById("editUserModal");
-    modal.style.display = "none";
+    var editUserModal = document.getElementById('editUserModal');
+    editUserModal.style.display = 'none';
+
+    // Clear input fields when closing the modal
+    document.getElementById('userName').value = '';
+    document.getElementById('userEmail').value = '';
+    document.getElementById('userPassword').value = '';
+    // Add more fields as needed
 }
 
-function cancelCreateUserModal(){
-    var modal = document.getElementById("addUserModal");
-    modal.style.display = "none";
+// Function to save changes in the Edit User modal
+function saveUserChanges() {
+    // Get updated values from the input fields
+    
+    const updatedUserName = document.getElementById('userName').value;
+    const updatedUserEmail = document.getElementById('userEmail').value;
+    const updatedUserPassword = document.getElementById('userPassword').value;
+
+    // Validate if any field is empty (you can add more validation as needed)
+    if (!updatedUserName || !updatedUserEmail || !updatedUserPassword) {
+        alert('Please fill in all fields.');
+        return;
+    }
+
+    // Get the row to be updated
+    const row = document.querySelector(`[data-id="${currentEditingUserId}"]`);
+
+    // Check if the row is found
+    if (row) {
+        // Update the row with the new values
+        row.querySelector('.user-name').textContent = updatedUserName;
+        row.querySelector('.user-email').textContent = updatedUserEmail;
+        row.querySelector('.user-password').textContent = updatedUserPassword;
+
+        // Close the modal
+        cancelUserEditModal();
+    } else {
+        console.error(`Row with data-id "${currentEditingUserId}" not found.`);
+    }
 }
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
     // Add this function to automatically assign numbers to the # column
@@ -90,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var rows = table.querySelectorAll("tbody tr");
 
         rows.forEach(function (row, index) {
-            var numberCell = row.querySelector("td.auto-number");
+            var numberCell = row.querySelector("td.user-number");
             numberCell.textContent = index + 1;
         });
     }
