@@ -166,42 +166,21 @@
                         </tr>
                         </thead>
                         <tbody id="inventoryTableBody">
-                            <tr data-id="1">
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>0923213412</td>
-                                <td>2024-01-08</td>
-                                <td>Spongebob</td>
-                                <td>0</td>
-                                <td>P500.00</td>
-                                <td>Credit Card</td>
-                                <td>Paid</td>
-                                <td>Cashier 1</td>
-                            </tr>
-                            <tr data-id="2">
-                                <td>2</td>
-                                <td>Jane Doe</td>
-                                <td>0923213412</td>
-                                <td>2024-01-08</td>
-                                <td>Judge</td>
-                                <td>8</td>
-                                <td>P500.00</td>
-                                <td>Cash</td>
-                                <td>Partially Paid</td>
-                                <td>Cashier 2</td>
-                            </tr>
-                            <tr data-id="3">
-                                <td>3</td>
-                                <td>Bob Smith</td>
-                                <td>0923213412</td>
-                                <td>2024-01-08</td>
-                                <td>Hello Kitty</td>
-                                <td>22</td>
-                                <td>P500.00</td>
-                                <td>Debit Card</td>
-                                <td>Not Paid</td>
-                                <td>Cashier 3</td>
-                            </tr>
+                            @foreach ($transactions as $transactions)
+                            <tr data-id="{{ $transactions->id }}">
+                            
+                            <td>{{ $transactions->id }}</td>
+                                <td class="customer-name" id="customer_name{{ $transactions->id }}">{{ $transactions->customer_name}}</td>
+                                <td class="phone" id="phone{{ $transactions->id }}">{{ $transactions->phone }}</td>
+                                <td class="date" id="date{{ $transactions->id }}">{{ $transactions->date }}</td>
+                                <td class="item" id="item{{ $transactions->id }}">{{ $transactions->item }}</td>
+                                <td class="quantity" id="quantity{{ $transactions->id }}"><span class="quantity">{{ $transactions->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
+                                <td class="total-amount" id="total_amount_{{ $transactions->id }}"><span class="total-amount">{{ $transactions->total_amount }}</span><input type="text" class="edit-total-amount" style="display:none;"></td>
+                                <td class="payment-method" id="payment_method{{ $transactions->id }}">{{ $transactions->payment_method }}</td>
+                                <td class="" id="status{{ $transactions->id }}">{{ $transactions->status }}</td>
+                                <td class="cashier-name" id="cashier_name{{ $transactions->id }}">{{ $transactions->cashier_name }}</td>
+            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

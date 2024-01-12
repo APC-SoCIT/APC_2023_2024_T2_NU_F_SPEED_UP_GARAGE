@@ -128,9 +128,9 @@
 
                         <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Status</option>
-                            <option value="Out of Stock">Paid</option>
-                            <option value="Low Stock">Partially Paid</option>
-                            <option value="In Stock">Not Paid</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                            <option value="Low Stock">Low Stock</option>
+                            <option value="In Stock">In Stock</option>
                         </select>
                         
                             <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
@@ -152,56 +152,28 @@
                 <div class="table-container">
                     <table class="inventory-table">
                         <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer Name</th>
-                            <th>Phone</th>
-                            <th>Date</th>
-                            <th>Item</th>
-                            <th>Quantity</th>
-                            <th>Total Amount</th>
-                            <th>Payment Method</th>
-                            <th>Status</th>
-                            <th>Cashier</th>
-                        </tr>
+                            <tr>
+                                <th>Status</th>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Brand</th>
+                                <th>Quantity</th>
+                            </tr>
                         </thead>
                         <tbody id="inventoryTableBody">
-                            <tr data-id="1">
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>0923213412</td>
-                                <td>2024-01-08</td>
-                                <td>Spongebob</td>
-                                <td>0</td>
-                                <td>P500.00</td>
-                                <td>Credit Card</td>
-                                <td>Paid</td>
-                                <td>Cashier 1</td>
+                            <!-- Example rows; replace with server-side generated rows -->
+                            @foreach ($products as $product)
+                            <tr data-id="{{ $product->id }}">
+                            <td><span class="status"></span></td>
+                                <td>{{ $product->id }}</td>
+                                <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
+                                <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
+                                <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
+                                <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
                             </tr>
-                            <tr data-id="2">
-                                <td>2</td>
-                                <td>Jane Doe</td>
-                                <td>0923213412</td>
-                                <td>2024-01-08</td>
-                                <td>Judge</td>
-                                <td>8</td>
-                                <td>P500.00</td>
-                                <td>Cash</td>
-                                <td>Partially Paid</td>
-                                <td>Cashier 2</td>
-                            </tr>
-                            <tr data-id="3">
-                                <td>3</td>
-                                <td>Bob Smith</td>
-                                <td>0923213412</td>
-                                <td>2024-01-08</td>
-                                <td>Hello Kitty</td>
-                                <td>22</td>
-                                <td>P500.00</td>
-                                <td>Debit Card</td>
-                                <td>Not Paid</td>
-                                <td>Cashier 3</td>
-                            </tr>
+                            @endforeach
+                            <!-- Add more rows as needed -->
                         </tbody>
                     </table>
                 </div>

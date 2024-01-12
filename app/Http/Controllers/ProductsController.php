@@ -11,5 +11,12 @@ class ProductsController extends Controller
         $products = Product::all();
         return view('products', ['products' => $products]);
     }
+
+    
+    public function invreport()
+    {
+        $products = Product::all();
+        return view('inventory-reports', ['products' => $products]);
+    }
     
 }
