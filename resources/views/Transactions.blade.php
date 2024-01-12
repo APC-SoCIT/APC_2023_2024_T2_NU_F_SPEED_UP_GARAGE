@@ -292,6 +292,7 @@
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/transactions.js') }}"></script>
     <script> 
     

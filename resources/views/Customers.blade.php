@@ -217,6 +217,7 @@
 
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
