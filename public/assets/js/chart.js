@@ -302,108 +302,138 @@ xaxisCategories = xaxisCategories.map(item => item.label);
   };
   
   document.addEventListener("DOMContentLoaded", function () {
+    let today = new Date();
+    let xaxisCategories = [];
+
+    for (let i = 0; i < 9; i++) {
+        let date = new Date();
+        date.setDate(today.getDate() - i);
+        let dateString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        xaxisCategories.push({
+            date: date,
+            label: dateString
+        });
+    }
+
+    xaxisCategories.sort((a, b) => b.date - a.date);
+
+    let dddefaultOptions = {
+        chart: {
+            toolbar: {
+                show: true,
+            },
+            zoom: {
+                enabled: false,
+            },
+            width: "100%",
+            height: 400,
+            offsetY: 18,
+        },
+        dataLabels: {
+            enabled: true,
+        },
+    };
+
     let lastMonthSales = 54421; // Previous month's sales value (example)
     let currentMonthSales = 60000; // Current month's sales value (example)
-  
+
     let percentageChange = ((currentMonthSales - lastMonthSales) / lastMonthSales) * 100;
-  
+
     let salesForecastTitle = document.getElementById("salesForecastTitle");
     salesForecastTitle.textContent = "Sales Forecast ";
-  
+
     let percentageSpan = document.createElement("span");
     percentageSpan.textContent = `(${percentageChange.toFixed(2)}%)`;
-  
+
     if (percentageChange > 0) {
-      percentageSpan.style.color = "green";
+        percentageSpan.style.color = "green";
     } else if (percentageChange < 0) {
-      percentageSpan.style.color = "red";
+        percentageSpan.style.color = "red";
     } else {
-      percentageSpan.style.color = "black"; // Or any default color for zero change
+        percentageSpan.style.color = "black";
     }
-  
+
     salesForecastTitle.appendChild(percentageSpan);
-      
+
     let salesOptions = {
-      chart: {
-        type: "bar",
-        ...dddefaultOptions.chart, // Merge default options here
-      },
-  
-  tooltip: {
-          enabled: true,
-          style: {
-            fontFamily: fontFamily,
-          },
-          y: {
-            formatter: (value) => `P${value.toLocaleString()}`,
-          },
+        chart: {
+            type: "bar",
+            ...dddefaultOptions.chart,
         },
-      series: [
-        {
-          name: "Sales",
-          data: [60000, 54421, 44421, 34412, 22151, 15551, 55512, 55533, 31212],
+
+        tooltip: {
+            enabled: true,
+            style: {
+                fontFamily: getComputedStyle(document.documentElement).getPropertyValue("--font-family").trim(),
+            },
+            y: {
+                formatter: (value) => `₱${value.toLocaleString()}`,
+            },
         },
-      ],
-        colors: [primaryColor],
+        series: [
+            {
+                name: "Sales",
+                data: $nineDaySalesData 
+            },
+        ],
+        colors: [getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim()],
         fill: {
-          type: "gradient",
-          gradient: {
-            type: "vertical",
-            opacityFrom: 0.8,
-            opacityTo: 0.3,
-            stops: [0, 100],
-            colorStops: [
-              {
-                offset: 0,
-                opacity: 1,
-                color: primaryColor,
-              },
-              {
-                offset: 100,
-                opacity: 0.4,
-                color: primaryColor,
-              },
-            ],
-          },
+            type: "gradient",
+            gradient: {
+                type: "vertical",
+                opacityFrom: 0.8,
+                opacityTo: 0.3,
+                stops: [0, 100],
+                colorStops: [
+                    {
+                        offset: 0,
+                        opacity: 1,
+                        color: getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim(),
+                    },
+                    {
+                        offset: 100,
+                        opacity: 0.4,
+                        color: getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim(),
+                    },
+                ],
+            },
         },
         stroke: {
-          colors: [primaryColor],
-          lineCap: "round",
+            colors: [getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim()],
+            lineCap: "round",
         },
         grid: {
-          borderColor: "rgba(0, 0, 0, 0)",
-          padding: {
-            top: -30,
-            right: 0,
-            bottom: -5.5,
-            left: 12,
-          },
+            borderColor: "rgba(0, 0, 0, 0)",
+            padding: {
+                top: -30,
+                right: 0,
+                bottom: -5.5,
+                left: 12,
+            },
         },
         markers: {
-          strokeColors: primaryColor,
+            strokeColors: getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim(),
         },
         yaxis: {
-          show: true,
+            show: true,
         },
         xaxis: {
-            categories: xaxisCategories,
-          labels: {
-            style: {
-              colors: labelColor,
-              fontFamily: fontFamily,
+            categories: xaxisCategories.map(item => item.label),
+            labels: {
+                style: {
+                    colors: getComputedStyle(document.documentElement).getPropertyValue("--color-label").trim(),
+                    fontFamily: getComputedStyle(document.documentElement).getPropertyValue("--font-family").trim(),
+                },
             },
-          },
-          axisBorder: {
-            show: false,
-          },
-          crosshairs: {
-            show: false,
-          },
+            axisBorder: {
+                show: false,
+            },
+            crosshairs: {
+                show: false,
+            },
         },
-      };
-    
-      let ccchart = new ApexCharts(document.querySelector(".sales-chart"), salesOptions);
-      ccchart.render();
-    });
+    };
 
-    
+    let nineDaySalesChart = new ApexCharts(document.getElementById("nineDaySalesChart"), salesOptions);
+    nineDaySalesChart.render();
+});

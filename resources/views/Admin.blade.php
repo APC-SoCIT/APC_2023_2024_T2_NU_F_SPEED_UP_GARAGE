@@ -219,9 +219,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>User</th>
+                                <th>Customer</th>
                                 <th>Order Date</th>
                                 <th>Status</th>
+                                <th>Price</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -235,6 +236,9 @@
                                         <span class="status {{ $transaction->status == 'Pending' ? 'pending' : 'process' }}">
                                             {{ $transaction->status }}
                                         </span>
+                                    </td>
+                                    <td>
+                                        {{ $transaction->total_amount }}
                                     </td>
                                 </tr>
                             @endforeach

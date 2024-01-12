@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class AdminController extends Controller
@@ -55,6 +56,14 @@ class AdminController extends Controller
 
         $recentTransactions = Transaction::latest()->take(3)->get();
 
+        $nineDaySalesData = [];
+        $dates = Carbon::now()->subDays(9)->format('m/d/Y');
+
+        for ($i = 0; $i < 9; $i++) {
+            $nineDaySalesData[$dates] = isset($nineDaySales[$dates]) ? $nineDaySales[$dates] : 0;
+            $dates = Carbon::parse($dates)->addDay()->format('m/d/Y');
+        }
+
         return view('admin', [
             'products' => $products,
             'formattedTotalInventoryValue' => $formattedTotalInventoryValue,
@@ -66,7 +75,10 @@ class AdminController extends Controller
             'formattedCurrentMonthSales' => $formattedCurrentMonthSales,
             'formattedAverageDailySales' => $formattedAverageDailySales,
             'recentTransactions' => $recentTransactions,
+            'nineDaySalesData' => $nineDaySalesData,
         ]);
     }
+
+    
     
 }
