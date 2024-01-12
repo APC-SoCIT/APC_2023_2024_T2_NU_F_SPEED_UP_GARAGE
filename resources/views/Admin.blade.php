@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
-    <link rel="stylesheet" href="../css/app.css">
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
@@ -190,6 +189,7 @@
       <div class="pulse"></div>
       <div class="chart-area">
         <div class="grid"></div>
+        <div id="monthToMonthSalesData" data-sales-data='@json($lastSixMonthsSalesData)'></div>
       </div>
      
                 </div>
@@ -247,18 +247,18 @@
                 </div>
            
 
-            <div class="salesreminders">
-                <h2 id="salesForecastTitle">Sales Forecast</h2>
-                <p>Sales Performance Overview</p>
-                <div class="pulse"></div>
-                <div class="sales-chart">
-                    <div class="grid"></div>
+                <div class="salesreminders">
+                    <h2 id="salesForecastTitle">Sales Forecast</h2>
+                    <p>Sales Performance Overview</p>
+                    <div class="pulse"></div>
+                    <div id="dailySalesData" data-daily-sales='{!! json_encode($dailySalesData) !!}'></div>
                 </div>
             </div>
-
+        </main>
       
     <script src="{{ asset('assets/js/chart.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>           
     <script src="{{ asset('assets/js/index.js') }}">   
@@ -266,6 +266,7 @@
     window.addEventListener('popstate', function () {
         history.pushState(null, null, document.URL);
     });
+
 
 
     </script>

@@ -56,13 +56,28 @@ class AdminController extends Controller
 
         $recentTransactions = Transaction::latest()->take(3)->get();
 
-        $nineDaySalesData = [];
-        $dates = Carbon::now()->subDays(9)->format('m/d/Y');
+        $dailySalesData = Transaction::select(DB::raw('SUM(total_amount) as total_sales'), DB::raw('DATE_FORMAT(date, "%Y-%m-%d") as day'))
+        ->where('date', '>=', Carbon::now()->subDays(9))
+        ->groupBy('day')
+        ->orderBy('day')
+        ->pluck('total_sales', 'day')
+        ->toArray();
 
-        for ($i = 0; $i < 9; $i++) {
-            $nineDaySalesData[$dates] = isset($nineDaySales[$dates]) ? $nineDaySales[$dates] : 0;
-            $dates = Carbon::parse($dates)->addDay()->format('m/d/Y');
-        }
+        $lastSixMonthsSalesData = Transaction::select(
+            DB::raw('SUM(total_amount) as total_sales'),
+            DB::raw('DATE_FORMAT(date, "%Y-%m") as month_year')
+        )
+            ->where('date', '>=', Carbon::now()->subMonths(5)->startOfMonth())
+            ->groupBy('month_year')
+            ->orderBy('month_year')
+            ->pluck('total_sales', 'month_year')
+            ->toArray();
+
+        // Create an array with sales data for each of the last six months
+        $lastSixMonths = collect(range(5, 0, -1))->map(function ($i) use ($lastSixMonthsSalesData) {
+            $monthYear = Carbon::now()->subMonths($i)->format('Y-m');
+            return $lastSixMonthsSalesData[$monthYear] ?? 0;
+        });
 
         return view('admin', [
             'products' => $products,
@@ -75,10 +90,11 @@ class AdminController extends Controller
             'formattedCurrentMonthSales' => $formattedCurrentMonthSales,
             'formattedAverageDailySales' => $formattedAverageDailySales,
             'recentTransactions' => $recentTransactions,
-            'nineDaySalesData' => $nineDaySalesData,
+            'dailySalesData' => $dailySalesData,
+            'lastSixMonthsSalesData' => $lastSixMonths->toArray(),
         ]);
     }
 
-    
+
     
 }

@@ -244,6 +244,7 @@
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script src="{{ asset('assets/js/users.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
