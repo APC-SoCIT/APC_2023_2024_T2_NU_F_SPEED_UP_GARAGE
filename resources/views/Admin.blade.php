@@ -180,41 +180,32 @@
             <!-- End of Insights -->
 
             <div class="bottom-data">
-                
-
                 <!-- Reminders -->
                 <div class="reminders">
                 <h2>Sales</h2>
-      <p>Month-to-month Comparison</p>
-      <div class="pulse"></div>
-      <div class="chart-area">
-        <div class="grid"></div>
-        <div id="monthToMonthSalesData" data-sales-data='@json($lastSixMonthsSalesData)'></div>
-      </div>
-     
+                <p>Month-to-month Comparison</p>
+                <div class="pulse"></div>
+                <div class="chart-area">
+                    <div class="grid"></div>
+                    <div id="monthToMonthSalesData" data-sales-data='@json($lastSixMonthsSalesData)'></div>
+                </div>
                 </div>
          
-
-              <div class="reminders">
+            <div class="reminders">
                 <h2>Top Products</h2>
-      <p>Top Products This Month</p>
-      <div class="pulse"></div>
-      <div class="bar-chart">
-      <div class="grid"></div>
-      </div>
+                <p>Top Products This Month</p>
+                <div class="pulse"></div>
+                <div class="bar-chart">
+                <div class="grid"></div>
+                </div>
+            </div>
 
-    
-
-      
-      
-</div>
-
-<div class="orders">
-                    <div class="header">
-                        <i class='bx bx-receipt'></i>
-                        <h3>Recent Transactions</h3>
-                        <i class='bx bx-filter'></i>
-                        <i class='bx bx-search'></i>
+            <div class="orders">
+                <div class="header">
+                    <i class='bx bx-receipt'></i>
+                    <h3>Recent Transactions</h3>
+                    <i class='bx bx-filter'></i>
+                    <i class='bx bx-search'></i>
                     </div>
                     <table>
                         <thead>
@@ -245,17 +236,21 @@
                         </tbody>
                     </table>
                 </div>
-           
 
-                <div class="salesreminders">
+
+            <div>
+            <div class="salesreminders">
                     <h2 id="salesForecastTitle">Sales Forecast</h2>
                     <p>Sales Performance Overview</p>
                     <div class="pulse"></div>
                     <div id="dailySalesData" data-daily-sales='{!! json_encode($dailySalesData) !!}'></div>
                 </div>
             </div>
+            </div>
+                
         </main>
-      
+
+
     <script src="{{ asset('assets/js/chart.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
