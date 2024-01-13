@@ -28,9 +28,14 @@
             <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
-            <li class="active"><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
+            <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
             <li class="logout">
-            <a href="/welcome" class="logout"><i class='bx bx-log-out-circle'></i>Logout</a>
+                <a href="{{ route('logout') }}" class="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class='bx bx-log-out-circle'></i> Logout
+                </a>
+                <form id="logout-form" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                </form>
             </li>
         </ul>
     </div>
@@ -67,7 +72,10 @@
                 <div class="profile-menu" id="profileMenu">
                     <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
                     <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
-                    <div class="menu-item" onclick="logout()">Logout</div>
+                    <div class="menu-item" onclick="document.getElementById('logout-form-menu').submit();">Logout</div>
+                    <form id="logout-form-menu" method="POST" action="{{ route('logout') }}" style="display: none;">
+                        @csrf
+                    </form>
                 </div>
             </a>
             <div class="chat-icon" onclick="toggleChat()">
