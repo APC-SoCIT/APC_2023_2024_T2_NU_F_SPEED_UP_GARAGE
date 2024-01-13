@@ -143,9 +143,9 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>name</th>
-                            <th>Phone</th>
-                            <th>Address</th>
+                            <th id="name-header">Name</th>
+                            <th id="phone-header">Phone</th>
+                            <th id="address-header">Address</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -386,6 +386,56 @@
             $('#editCustomerModal').hide();
         }
 
+
+        let sortingOrder = 'default';
+
+    // Add click event listeners to table headers
+    document.getElementById('name-header').addEventListener('click', function() {
+        sortTable('customer-name');
+    });
+
+    document.getElementById('phone-header').addEventListener('click', function() {
+        sortTable('customer-phone');
+    });
+
+    document.getElementById('address-header').addEventListener('click', function() {
+        sortTable('customer-address');
+    });
+
+    function sortTable(column) {
+        const table = document.querySelector('.inventory-table');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+        // Sort the rows based on the specified column
+        rows.sort((a, b) => {
+            const valueA = a.querySelector(`.${column}`).innerText.toLowerCase();
+            const valueB = b.querySelector(`.${column}`).innerText.toLowerCase();
+
+            if (sortingOrder === 'asc') {
+                return valueA.localeCompare(valueB);
+            } else if (sortingOrder === 'desc') {
+                return valueB.localeCompare(valueA);
+            } else {
+                return 0; // Default order, do not change the order
+            }
+        });
+
+        // Update the sorting order for the next click
+        if (sortingOrder === 'asc') {
+            sortingOrder = 'desc';
+        } else if (sortingOrder === 'desc') {
+            sortingOrder = 'default';
+        } else {
+            sortingOrder = 'asc';
+        }
+
+        // Update the table with the sorted rows
+        const tbody = table.querySelector('tbody');
+        tbody.innerHTML = '';
+        rows.forEach(row => {
+            tbody.appendChild(row);
+        });
+    }
     </script>
 </body>
 
