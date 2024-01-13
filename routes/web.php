@@ -9,7 +9,6 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\SalesReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,7 +121,7 @@ Route::delete('/delete-customer/{id}', [CustomerController::class, 'deleteCustom
 Route::put('/update-customer/{id}', [CustomerController::class, 'updateCustomer']);
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-Route::get('/sales-reports', [SalesReportController::class, 'index'])->name('sales-reports.index');
+Route::get('/sales-reports', [TransactionController::class, 'salesrep'])->name('sales-reports.index');
 Route::get('/inventory-reports', [ProductsController::class, 'invreport'])->name('inventory-reports.index');
 
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
