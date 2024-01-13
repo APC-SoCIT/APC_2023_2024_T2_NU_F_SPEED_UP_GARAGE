@@ -645,6 +645,28 @@ document.addEventListener("DOMContentLoaded", function () {
     assignRowNumbers();
   });
 
+  document.addEventListener("DOMContentLoaded", function () {
+    // Function to get query parameter by name
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+    // Get the filter value from the query parameter
+    var filterValue = getQueryParam("filter");
+    // Set the value to "Low Stock" if the filter value is "Low Stock"
+    if (filterValue === "Low Stock") {
+        var statusFilter = document.getElementById("statusFilter");
+        statusFilter.value = "Low Stock";
+        filterTable();
+    }
+    if (filterValue === "Out of Stock") {
+        var statusFilter = document.getElementById("statusFilter");
+        statusFilter.value = "Out of Stock";
+        filterTable();
+    }
+});
+
+
 
     </script>
 
