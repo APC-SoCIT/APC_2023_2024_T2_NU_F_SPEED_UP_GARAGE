@@ -120,11 +120,6 @@
                     <div class="add-product-container">
                         <button class="add-product-btn" onclick="showAddProductModal()">Print Report</button>
                         <div class="dropdown-container">
-                            
-                        <label for="startDate" class="date-filter">From</label>
-                        <input type="date" id="startDate" class="filter-input" onchange="filterTable()">
-                        <label for="endDate" class="date-filter">To</label>
-                        <input type="date" id="endDate" class="filter-input" onchange="filterTable()">
 
                         <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Status</option>

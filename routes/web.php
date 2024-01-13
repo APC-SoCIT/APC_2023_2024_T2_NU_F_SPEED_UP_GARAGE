@@ -22,12 +22,12 @@ use App\Http\Controllers\SalesReportController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return redirect('/admin');
+});
 
 Route::get('/users', function () {
     return view('Users');
