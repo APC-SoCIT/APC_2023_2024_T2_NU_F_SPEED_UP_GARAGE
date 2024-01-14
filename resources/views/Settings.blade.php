@@ -114,10 +114,10 @@
             <div class="tab-container">
                 <div class="tabs">
                     <button class="tablinks" onclick="openCity(event, 'London')">Account</button>
-                    <button class="tablinks" onclick="openCity(event, 'Paris')">Threshold</button>
-                    <button class="tablinks" onclick="openCity(event, 'Tokyo')">Notifications</button>
                     <button class="tablinks" onclick="openCity(event, 'Brands')">Brands</button>
                     <button class="tablinks" onclick="openCity(event, 'Category')">Category</button>
+                    <button class="tablinks" onclick="openCity(event, 'Tokyo')">Notifications</button>
+                    <button class="tablinks" onclick="openCity(event, 'Paris')">Threshold</button>
                 </div>
 
                 <div id="Brands" class="tabcontent">
