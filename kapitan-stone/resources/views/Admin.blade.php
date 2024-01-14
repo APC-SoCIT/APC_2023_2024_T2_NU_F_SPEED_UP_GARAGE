@@ -59,16 +59,13 @@
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
             <a href="#" class="notif" onclick="toggleNotification()">
-            <i class='bx bx-bell'></i>
-            <span class="count">3</span>
-            <!-- Notification bar -->
-            <div class="notification-bar" id="notificationBar">
-                <!-- Notifications go here -->
-                <div class="notification">Notification 1</div>
-                <div class="notification">Notification 2</div>
-                <div class="notification">Notification 3</div>
-                <!-- Add more notifications as needed -->
-            </div>
+                <i class='bx bx-bell'></i>
+                <span class="count"></span>
+                <!-- Notification bar -->
+                <div class="notification-bar" id="notificationBar">
+                    <!-- Notifications go here -->
+                    <!-- Add more notifications as needed -->
+                </div>
             </a>
             <a href="#" class="profile" onclick="toggleProfileMenu()">
                 <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
@@ -270,9 +267,6 @@
     window.addEventListener('popstate', function () {
         history.pushState(null, null, document.URL);
     });
-
-
-
 
     </script>
 </body>

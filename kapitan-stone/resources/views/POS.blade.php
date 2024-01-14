@@ -509,6 +509,7 @@
 
 
     <script src="{{ asset('assets/js/pos.js') }}"></script>
+    <script src="{{ asset('assets/js/inventory.js') }}"></script>
     <script src="{{ asset('assets/js/index.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

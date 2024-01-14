@@ -1,122 +1,212 @@
-// Add these functions to your existing JavaScript file or in a separate file
-
-// Function to open the Add Customer modal
 function addCustomerModal() {
-    var addCustomerModal = document.getElementById('addCustomerModal');
-    addCustomerModal.style.display = 'flex';
+    const addCustomerModal = document.getElementById('addCustomerModal');
+    const editCustomerModal = document.getElementById('editCustomerModal');
+
+        // Hide the Edit Customer modal if it's currently displayed
+    editCustomerModal.style.display = 'none';
+
+        // Show the Add Customer modal
+    addCustomerModal.style.display = 'flex'; // Use 'flex' to center the modal
 }
 
 // Function to close the Add Customer modal
-function cancelAddCustomerModal() {
-    var addCustomerModal = document.getElementById('addCustomerModal');
+function closeAddCustomerModal() {
+    const addCustomerModal = document.getElementById('addCustomerModal');
+    const newCustomerName = document.getElementById('newCustomerName');
+    const newCustomerPhone = document.getElementById('newCustomerPhone');
+    const newCustomerAddress = document.getElementById('newCustomerAddress');
+
+    // Clear the input fields
+    newCustomerName.value = '';
+    newCustomerPhone.value = '';
+    newCustomerAddress.value = '';
+
+    // Hide the modal
     addCustomerModal.style.display = 'none';
-
-    // Clear input fields when closing the modal
-    document.getElementById('newCustomerName').value = '';
-    document.getElementById('newCustomerPhone').value = '';
-    document.getElementById('newCustomerAddress').value = '';
-    // Add additional input fields as needed
 }
 
-// Function to add a new customer (you can customize this function as per your requirements)
-function addNewCustomer() {
-    // Get input values
-    var customerName = document.getElementById('newCustomerName').value;
-    var customerPhone = document.getElementById('newCustomerPhone').value;
-    var customerAddress = document.getElementById('newCustomerAddress').value;
-    // Add more fields as needed
+function addCustomer() {
+var newCustomerName = document.getElementById('newCustomerName');
+var newCustomerPhone = document.getElementById('newCustomerPhone');
+var newCustomerAddress = document.getElementById('newCustomerAddress');
 
-    // Perform any necessary validation here
+if (newCustomerName && newCustomerPhone && newCustomerAddress) {
+    // Get the CSRF token from the meta tag
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    // You can send the data to the server using an AJAX request or handle it as needed
-    // Example: You can log the data to the console for now
-    console.log('New Customer Data:', { name: customerName, phone: customerPhone, address: customerAddress });
-    
-    // Close the modal after saving
-    cancelAddCustomerModal();
-}
-
-let currentEditingCustomerId = null; // Initialize to null
-
-
-// Function to open the Edit Customer modal
-function editCustomer(event) {
-    var editCustomerModal = document.getElementById('editCustomerModal');
-    editCustomerModal.style.display = 'flex';
-
-    // Get data from the selected row for editing
-    var selectedRow = event.target.closest('tr');
-    var customerId = selectedRow.dataset.id;
-    var customerName = selectedRow.cells[1].innerText;
-    var customerPhone = selectedRow.cells[2].innerText;
-    var customerAddress = selectedRow.cells[3].innerText;
-    // Add more fields as needed
-
-    // Populate the input fields in the Edit Customer modal with the existing data
-    document.getElementById('customerName').value = customerName;
-    document.getElementById('customerPhone').value = customerPhone;
-    document.getElementById('customerAddress').value = customerAddress;
-    // Add more fields as needed
-}
-
-// Function to close the Edit Customer modal
-function cancelCustomerEditModal() {
-    var editCustomerModal = document.getElementById('editCustomerModal');
-    editCustomerModal.style.display = 'none';
-
-    // Clear input fields when closing the modal
-    document.getElementById('customerName').value = '';
-    document.getElementById('customerPhone').value = '';
-    document.getElementById('customerAddress').value = '';
-    // Add more fields as needed
-}
-
-// Function to save changes in the Edit Customer modal
-function saveCustomerChanges() {
-    // Get updated values from the input fields
-    
-    const updatedCustomerName = document.getElementById('customerName').value;
-    const updatedCustomerPhone = document.getElementById('customerPhone').value;
-    const updatedCustomerAddress = document.getElementById('customerAddress').value;
-
-    // Validate if any field is empty (you can add more validation as needed)
-    if (!updatedCustomerName || !updatedCustomerPhone || !updatedCustomerAddress) {
-        alert('Please fill in all fields.');
-        return;
+$.ajax({
+    url: '/add-customer',
+    type: 'POST',
+    headers: {
+    'X-CSRF-TOKEN': csrfToken
+    },
+    data: {
+        customer_name: newCustomerName.value,
+        phone: newCustomerPhone.value,
+        address: newCustomerAddress.value,
+    },
+    headers: {
+        'X-CSRF-TOKEN': csrfToken
+    },
+    success: function(response) {
+        console.log('Customer added successfully:', response);
+        // Handle success response (update UI, close modal, etc.)
+        closeAddCustomerModal();
+    },
+    error: function(error) {
+        console.error('Error adding customer:', error);
+        // Handle error response (display error message, log, etc.)
     }
-
-    // Get the row to be updated
-    const row = document.querySelector(`[data-id="${currentEditingCustomerId}"]`);
-
-    // Check if the row is found
-    if (row) {
-        // Update the row with the new values
-        row.querySelector('.customer-name').textContent = updatedCustomerName;
-        row.querySelector('.customer-phone').textContent = updatedCustomerPhone;
-        row.querySelector('.customer-address').textContent = updatedCustomerAddress;
-
-        // Close the modal
-        cancelCustomerEditModal();
-    } else {
-        console.error(`Row with data-id "${currentEditingCustomerId}" not found.`);
-    }
-}
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Add this function to automatically assign numbers to the # column
-    function assignRowNumbers() {
-        var table = document.querySelector(".inventory-table");
-        var rows = table.querySelectorAll("tbody tr");
-
-        rows.forEach(function (row, index) {
-            var numberCell = row.querySelector("td.customer-number");
-            numberCell.textContent = index + 1;
-        });
-    }
-
-    // Call the function to assign numbers when the page loads
-    assignRowNumbers();
 });
+    } else {
+        console.error('One or more elements not found.');
+    }
+}
+
+function deleteCustomerRow(event){
+    const row = event.target.closest('tr'); // Get the closest <tr> parent of the clicked button
+    const customerID = row.getAttribute('data-id');
+
+    const confirmed = window.confirm('Are you sure you want to delete this product?');
+
+    if (!confirmed) {
+        return; // If not confirmed, do nothing
+    }
+
+    // Include CSRF token in the headers
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+        url: `/delete-customer/${customerID}`,
+        type: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        success: function (response) {
+            console.log('Customer deleted successfully:', response);
+
+            // Handle success response (update UI, etc.)
+            const table = document.querySelector('.inventory-table tbody');
+            table.removeChild(row); // Remove the row from the table on successful deletion
+        },
+        error: function (error) {
+            console.error('Error deleting customer:', error);
+
+            // Handle error response (display error message, log, etc.)
+        }
+    });
+}
+
+let customerId; // Declare customerId outside the functions
+
+function editCustomer(event) {
+    const row = event.target.closest('tr');
+    customerId = row.getAttribute('data-id'); // set customerId in the same scope
+    showModalWithCustomerData(customerId);
+}
+
+function showModalWithCustomerData(customerId) {
+    // Populate modal with current data
+    const customerName = $(`#customer_name${customerId}`).text();
+    const phone = $(`#phone${customerId}`).text();
+    const address = $(`#address${customerId}`).text();
+
+    $('#customerName').val(customerName);
+    $('#customerPhone').val(phone);
+    $('#customerAddress').val(address);
+
+    // Show the modal
+    $('#editCustomerModal').show();
+}
+
+function saveCustomerChanges() {
+    const editedCustomerName = $('#customerName').val();
+    const editedCustomerPhone = $('#customerPhone').val();
+    const editedCustomerAddress = $('#customerAddress').val();
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    // Send AJAX request to update the database
+    $.ajax({
+        url: `/update-customer/${customerId}`,
+        type: 'PUT',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: {
+            customer_name: editedCustomerName,
+            phone: editedCustomerPhone,
+            address: editedCustomerAddress
+        },
+        success: function(response) {
+            console.log('Customer updated successfully:', response);
+
+            // Update UI with the new data
+            $(`#customer_name${customerId}`).text(editedCustomerName);
+            $(`#phone${customerId}`).text(editedCustomerPhone);
+            $(`#address${customerId}`).text(editedCustomerAddress);
+
+            // Hide the modal
+            $('#editCustomerModal').hide();
+        },
+        error: function(error) {
+            console.error('Error updating customer:', error);
+            // Handle error response (display error message, log, etc.)
+        }
+    });
+}
+
+function cancelCustomerEditModal() {
+    // Hide the modal without saving changes
+    $('#editCustomerModal').hide();
+}
+
+
+let sortingOrder = 'default';
+
+// Add click event listeners to table headers
+document.getElementById('name-header').addEventListener('click', function() {
+sortTable('customer-name');
+});
+
+document.getElementById('phone-header').addEventListener('click', function() {
+sortTable('customer-phone');
+});
+
+document.getElementById('address-header').addEventListener('click', function() {
+sortTable('customer-address');
+});
+
+function sortTable(column) {
+const table = document.querySelector('.inventory-table');
+const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+// Sort the rows based on the specified column
+rows.sort((a, b) => {
+    const valueA = a.querySelector(`.${column}`).innerText.toLowerCase();
+    const valueB = b.querySelector(`.${column}`).innerText.toLowerCase();
+
+    if (sortingOrder === 'asc') {
+        return valueA.localeCompare(valueB);
+    } else if (sortingOrder === 'desc') {
+        return valueB.localeCompare(valueA);
+    } else {
+        return 0; // Default order, do not change the order
+    }
+});
+
+// Update the sorting order for the next click
+if (sortingOrder === 'asc') {
+    sortingOrder = 'desc';
+} else if (sortingOrder === 'desc') {
+    sortingOrder = 'default';
+} else {
+    sortingOrder = 'asc';
+}
+
+// Update the table with the sorted rows
+const tbody = table.querySelector('tbody');
+tbody.innerHTML = '';
+rows.forEach(row => {
+    tbody.appendChild(row);
+});
+}

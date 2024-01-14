@@ -66,14 +66,9 @@
             <label for="theme-toggle" class="theme-toggle"></label>
             <a href="#" class="notif" onclick="toggleNotification()">
                 <i class='bx bx-bell'></i>
-                <span class="count">12</span>
+                <span class="count"></span>
                 <!-- Notification bar -->
                 <div class="notification-bar" id="notificationBar">
-                    <!-- Notifications go here -->
-                    <div class="notification">Notification 1</div>
-                    <div class="notification">Notification 2</div>
-                    <div class="notification">Notification 3</div>
-                    <!-- Add more notifications as needed -->
                 </div>
             </a>
             <a href="#" class="profile" onclick="toggleProfileMenu()">
@@ -251,7 +246,7 @@
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script src="{{ asset('assets/js/users.js') }}"></script>
-    <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/chat.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -417,6 +412,7 @@
             });
         }
     </script>
+    
 </body>
 
 </html>
