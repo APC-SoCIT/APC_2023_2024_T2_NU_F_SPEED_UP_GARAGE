@@ -6,6 +6,8 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/settings.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <title>Settings</title>
@@ -28,7 +30,7 @@
             <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
             <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
-            <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
+            <li class="active"><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
             <li class="logout">
                 <a href="{{ route('logout') }}" class="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class='bx bx-log-out-circle'></i> Logout
@@ -104,24 +106,63 @@
             <div class="header">
                 <div class="left">
                     <h1>Settings</h1>
-                    <ul class="breadcrumb">
-                        <li><a href='/admin'>Dashboard</a></li>
-                        /
-                        <li><a href='/stocks' class="active">Settings</a></li>
-                    </ul>
+                    <p class="settings-description">Manage your account settings and preference.</p>
+                </div>
+            </div>  
+            
+            <div class="filter-container">
+            <div class="tab-container">
+                <div class="tabs">
+                <button class="tablinks" onclick="openCity(event, 'profile')">Profile</button>
+                    <button class="tablinks" onclick="openCity(event, 'London')">Account</button>
+                    <button class="tablinks" onclick="openCity(event, 'Paris')">Threshold</button>
+                    <button class="tablinks" onclick="openCity(event, 'Tokyo')">Notifications</button>
+                </div>
+
+                <div id="profile" class="tabcontent">
+                    <h3>Profile</h3>
+                    <p>To be added soon</p>
+                </div>
+
+                <div id="London" class="tabcontent">
+                    <h3>Account</h3>
+                    <p>To be added soon</p>
+                </div>
+
+                <div id="Paris" class="tabcontent">
+                    <div class="threshold-container">
+                        <div class="threshold-section">
+                            <p>Threshold Level</p>
+                            <hr>
+                            <label for="thresholdInput">Current Level:</label>
+                            <input type="number" id="thresholdInput" class="threshold-input" value="{{ \App\Models\Threshold::first()->value ?? 20 }}">
+                            <button class="update-btn" onclick="updateThreshold()">Update Threshold</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="Tokyo" class="tabcontent">
+                    <h3>Notifications</h3>
+                    <p>To be added soon</p>
                 </div>
             </div>
+            </div>
 
+            
+
+
+            <!-- Add the threshold input field -->
            
-
+     
         </main>
 
     </div>
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
+    <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
-    
+
 </body>
 
 </html>

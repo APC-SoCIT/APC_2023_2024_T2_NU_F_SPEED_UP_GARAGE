@@ -320,6 +320,7 @@
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
+    <script src="{{ asset('assets/js/inventory.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
 </body>
 
