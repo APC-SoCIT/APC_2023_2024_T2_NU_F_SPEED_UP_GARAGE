@@ -38,7 +38,12 @@
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
             <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
             <li class="logout">
-                <a href="/welcome" class="logout"><i class='bx bx-log-out-circle'></i>Logout</a>
+                <a href="{{ route('logout') }}" class="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class='bx bx-log-out-circle'></i> Logout
+                </a>
+                <form id="logout-form" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                </form>
             </li>
         </ul>
     </div>
@@ -75,7 +80,10 @@
                 <div class="profile-menu" id="profileMenu">
                     <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
                     <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
-                    <div class="menu-item" onclick="logout()">Logout</div>
+                    <div class="menu-item" onclick="document.getElementById('logout-form-menu').submit();">Logout</div>
+                    <form id="logout-form-menu" method="POST" action="{{ route('logout') }}" style="display: none;">
+                        @csrf
+                    </form>
                 </div>
             </a>
             <div class="chat-icon" onclick="toggleChat()">
@@ -143,9 +151,9 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>name</th>
-                            <th>Phone</th>
-                            <th>Address</th>
+                            <th id="name-header">Name</th>
+                            <th id="phone-header">Phone</th>
+                            <th id="address-header">Address</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -217,6 +225,7 @@
 
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
@@ -385,6 +394,56 @@
             $('#editCustomerModal').hide();
         }
 
+
+        let sortingOrder = 'default';
+
+    // Add click event listeners to table headers
+    document.getElementById('name-header').addEventListener('click', function() {
+        sortTable('customer-name');
+    });
+
+    document.getElementById('phone-header').addEventListener('click', function() {
+        sortTable('customer-phone');
+    });
+
+    document.getElementById('address-header').addEventListener('click', function() {
+        sortTable('customer-address');
+    });
+
+    function sortTable(column) {
+        const table = document.querySelector('.inventory-table');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+        // Sort the rows based on the specified column
+        rows.sort((a, b) => {
+            const valueA = a.querySelector(`.${column}`).innerText.toLowerCase();
+            const valueB = b.querySelector(`.${column}`).innerText.toLowerCase();
+
+            if (sortingOrder === 'asc') {
+                return valueA.localeCompare(valueB);
+            } else if (sortingOrder === 'desc') {
+                return valueB.localeCompare(valueA);
+            } else {
+                return 0; // Default order, do not change the order
+            }
+        });
+
+        // Update the sorting order for the next click
+        if (sortingOrder === 'asc') {
+            sortingOrder = 'desc';
+        } else if (sortingOrder === 'desc') {
+            sortingOrder = 'default';
+        } else {
+            sortingOrder = 'asc';
+        }
+
+        // Update the table with the sorted rows
+        const tbody = table.querySelector('tbody');
+        tbody.innerHTML = '';
+        rows.forEach(row => {
+            tbody.appendChild(row);
+        });
+    }
     </script>
 </body>
 

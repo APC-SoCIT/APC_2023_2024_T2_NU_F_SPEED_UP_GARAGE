@@ -251,28 +251,13 @@ function closeAddProductModal() {
 // this is for status such as out of stock, low and in stock
 
 
-function updateStatusClassForAll() {
-    const rows = document.querySelectorAll('tr[data-id]');
+// This will ensure the status is updated when the document is fully loaded
 
-    rows.forEach((row) => {
-        const quantity = parseInt(row.querySelector('.quantity').textContent, 10);
-        const statusCell = row.querySelector('.status');
 
-        if (quantity === 0) {
-            statusCell.className = 'status status-out-of-stock';
-            statusCell.textContent = 'Out of Stock';
-        } else if (quantity <= 25) {
-            statusCell.className = 'status status-low-stock';
-            statusCell.textContent = 'Low Stock';
-        } else {
-            statusCell.className = 'status status-in-stock';
-            statusCell.textContent = 'In Stock';
-        }
-    });
-}
 
-// Call the function to update status for all rows
-updateStatusClassForAll();
+document.addEventListener('DOMContentLoaded', function() {
+    updateStatusClassForAll();
+});
 
 // this is for the numbering in tables
 

@@ -21,12 +21,12 @@ use App\Http\Controllers\TransactionController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return redirect('/admin');
+});
 
 Route::get('/users', function () {
     return view('Users');
@@ -69,7 +69,7 @@ Route::get('inventory-reports', function () {
 })->name('Inventory-reports');
 
 Route::get('sales-reports', function () {
-    return view('Sales-reports');
+    return view('sales-reports');
 })->name('sales-reports');
 
 Route::get('daily-sales', function () {
@@ -121,7 +121,8 @@ Route::delete('/delete-customer/{id}', [CustomerController::class, 'deleteCustom
 Route::put('/update-customer/{id}', [CustomerController::class, 'updateCustomer']);
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-
+Route::get('/sales-reports', [TransactionController::class, 'salesrep'])->name('sales-reports.index');
+Route::get('/inventory-reports', [ProductsController::class, 'invreport'])->name('inventory-reports.index');
 
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 Route::post('/add-transaction', [TransactionController::class, 'addTransaction'])->name('transactions.add');
@@ -129,6 +130,11 @@ Route::get('/edit-transaction/{id}', [TransactionController::class, 'editTransac
 Route::delete('/delete-transaction/{id}', [TransactionController::class, 'deleteTransaction'])->name('transactions.delete');
 Route::put('/update-transaction/{id}', [TransactionController::class, 'updateTransaction']);
 
+
+use App\Http\Controllers\ThresholdController;
+
+Route::get('/threshold', [ThresholdController::class, 'getThreshold']);
+Route::post('/threshold/update', [ThresholdController::class, 'updateThreshold']);
 
 
 

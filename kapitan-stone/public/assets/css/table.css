@@ -1,3 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --light: #f6f6f9;
+    --primary: #1976D2;
+    --red: #b70202;
+    --light-primary: #CFE8FF;
+    --grey: #eee;
+    --dark-grey: #AAAAAA;
+    --dark: #363949;
+    --danger: #D32F2F;
+	--light-danger: #FECDD3;
+    --warning: #FBC02D;
+    --light-warning: #FFF2C6;
+    --success: #3daf43;
+    --light-success: #BBF7D0;
+    --hover: #e0dddd;
+    --dark-hover: #232428;
+    --ai-message: #445264;
+    --dark-chat: #2c2f33;
+    --secodary-dark-char: #363949;
+    --border: #555;
+    --white: #fff;
+}
+
+
 @media screen and (max-width: 768px) {
     .table-container {
         overflow-x: auto;
@@ -53,6 +79,7 @@
     width: 100%;
     font-size: 14px;
     border-collapse: collapse;
+    border: none;
     border-radius: 10px;
     overflow: hidden;
     background-color: var(--light);
@@ -129,7 +156,7 @@
 
 .inventory-table th,
 .inventory-table td {
-    border: 1px solid #ddd;
+    border: none;
     padding: 15px;
     text-align: left;
 }
@@ -137,6 +164,8 @@
 .inventory-table th {
     background-color: #3498db;
     color: white;
+    border: none;
+    cursor: pointer;
 }
 
 .inventory-table td:nth-child(6),
@@ -157,6 +186,14 @@
 .inventory-table td:last-child {
     width: 10%; /* Set a small width for the last column */
     white-space: nowrap; /* Prevent text wrapping */
+}
+
+.inventory-table tr:nth-child(even) {
+    background-color: var(--grey); /* Set the background color for even rows */
+}
+
+.inventory-table tr:nth-child(odd) {
+    background-color: var(--light); /* Set the background color for odd rows */
 }
 
 .edit-btn,
@@ -192,14 +229,14 @@
 body.dark .inventory-table th{
     background-color: var(--border);
     color: white;
-    border: 1px solid #444343;
+    border: none;
     outline: none;
 }
 
 body.dark .inventory-table td {
     background-color: var(--dark-hover);
     color: white;
-    border: 1px solid #444343;
+    border: none;
     outline: none;
 }
 
@@ -209,10 +246,9 @@ body.dark .inventory-table tr:nth-child(odd) {
 }
 
 body.dark .inventory-table tr:nth-child(even) {
-    background-color: var(--dark-chat);
+    background-color: var(--secodary-dark-char);
     color: white;
 }
-
 
 body.dark .edit-btn,
 body.dark .delete-btn,
