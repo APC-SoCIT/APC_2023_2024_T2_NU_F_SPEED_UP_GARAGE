@@ -113,14 +113,20 @@
             <div class="filter-container">
             <div class="tab-container">
                 <div class="tabs">
-                <button class="tablinks" onclick="openCity(event, 'profile')">Profile</button>
                     <button class="tablinks" onclick="openCity(event, 'London')">Account</button>
                     <button class="tablinks" onclick="openCity(event, 'Paris')">Threshold</button>
                     <button class="tablinks" onclick="openCity(event, 'Tokyo')">Notifications</button>
+                    <button class="tablinks" onclick="openCity(event, 'Brands')">Brands</button>
+                    <button class="tablinks" onclick="openCity(event, 'Category')">Category</button>
                 </div>
 
-                <div id="profile" class="tabcontent">
-                    <h3>Profile</h3>
+                <div id="Brands" class="tabcontent">
+                    <h3>Brand</h3>
+                    <p>To be added soon</p>
+                </div>
+
+                <div id="Category" class="tabcontent">
+                    <h3>Category</h3>
                     <p>To be added soon</p>
                 </div>
 
