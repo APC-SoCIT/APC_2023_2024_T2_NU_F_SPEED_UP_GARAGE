@@ -131,7 +131,10 @@ Route::delete('/delete-transaction/{id}', [TransactionController::class, 'delete
 Route::put('/update-transaction/{id}', [TransactionController::class, 'updateTransaction']);
 
 
+use App\Http\Controllers\ThresholdController;
 
+Route::get('/threshold', [ThresholdController::class, 'getThreshold']);
+Route::post('/threshold/update', [ThresholdController::class, 'updateThreshold']);
 
 
 
@@ -144,3 +147,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+

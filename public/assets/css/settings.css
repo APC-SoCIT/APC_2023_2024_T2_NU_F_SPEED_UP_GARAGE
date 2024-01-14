@@ -1,0 +1,138 @@
+.settings-description{
+    color: gray;
+}
+
+.tab-container {
+    margin-top: 20px;
+    border-top: 1px solid #ddd; /* Add a border between filter and table */
+}
+
+.dark .tab-container {
+    margin-top: 20px;
+    border-top: 1px solid #ddd; /* Add a border between filter and table */
+    color: rgb(209, 209, 209);
+}
+
+.tabs {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+    background-color: #3498db;
+    
+}
+
+.dark .tabs {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+    background-color: #555555;
+}
+
+.tablinks {
+    padding: 10px 15px;
+    background-color: #3498db;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: white;
+    text-decoration: none; /* Remove default text decoration */
+    position: relative; /* Relative positioning for the underline */
+}
+
+.dark .tablinks {
+    padding: 10px 15px;
+    background-color: #555555;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: white;
+    text-decoration: none; /* Remove default text decoration */
+    position: relative; /* Relative positioning for the underline */
+}
+
+.tablinks::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    height: 2px; /* Desired height of the underline */
+    background-color: white; /* Color of the underline */
+    transform: scaleX(0); /* Initially hidden */
+    transition: transform 0.3s ease; /* Add a smooth transition effect */
+}
+
+.tablinks:hover::before,
+.tablinks.active::before {
+    transform: scaleX(1); /* Make the underline fully visible on hover and for active tabs */
+}
+
+/* Style the active tab */
+.tablinks.active {
+    /* No need to duplicate the text-decoration property for the active class */
+}
+
+/* Style the tab content */
+.tabcontent {
+    margin-top: 20px;
+    background-color: white;
+    display: none;
+    padding: 20px;
+    border: none;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.dark .tabcontent {
+    background-color: var(--dark-chat);
+    display: none;
+    padding: 20px;
+    border: none;
+    box-shadow: rgba(41, 41, 41, 0.2) 0px 7px 29px 0px;
+}
+
+/* Responsive threshold input */
+.threshold-section {
+    font-size: 14px;
+}
+
+hr{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.threshold-input {
+    padding: 10px;
+    border: solid;
+    border-width: 1px;
+    margin-left: 5px;
+    border-color: #ddd;
+    outline: none;
+    border-radius: 5px;
+}
+
+/* Additional styling for buttons */
+.update-btn {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; /* Added rounded edges for the button */
+}
+
+.update-btn:hover {
+    background-color: #45a049;
+}
+
+.dark .update-btn {
+    background-color: #4b4b4b;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; /* Added rounded edges for the button */
+}
+
+.dark .update-btn:hover {
+    background-color: rgb(85, 85, 85);
+}
