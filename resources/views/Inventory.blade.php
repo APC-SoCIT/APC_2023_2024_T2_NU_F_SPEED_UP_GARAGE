@@ -63,13 +63,10 @@
             <label for="theme-toggle" class="theme-toggle"></label>
             <a href="#" class="notif" onclick="toggleNotification()">
                 <i class='bx bx-bell'></i>
-                <span class="count">12</span>
+                <span class="count"></span>
                 <!-- Notification bar -->
                 <div class="notification-bar" id="notificationBar">
                     <!-- Notifications go here -->
-                    <div class="notification">Notification 1</div>
-                    <div class="notification">Notification 2</div>
-                    <div class="notification">Notification 3</div>
                     <!-- Add more notifications as needed -->
                 </div>
             </a>

@@ -162,7 +162,7 @@ function saveChanges() {
 
             // Hide the modal
             $('#editModal').hide();
-            updateStatusClassForAll();
+            updateUI();
         },
         error: function(error) {
             console.error('Error updating product:', error);
@@ -194,15 +194,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const thresholdUrl = '/threshold';
   const updateThresholdUrl = '/threshold/update';
-  
 
-function updateUI() {
+  function updateUI() {
     // Logic to update UI based on the threshold value
     const rows = document.querySelectorAll('tr[data-id]');
+    const notificationBar = document.getElementById('notificationBar');
+
+    let notificationCount = 0;
 
     rows.forEach((row) => {
         const quantity = parseInt(row.querySelector('.quantity').textContent, 10);
         const statusCell = row.querySelector('.status');
+        const existingNotification = notificationBar.querySelector(`.notification[data-id="${row.dataset.id}"]`);
 
         if (quantity === 0) {
             statusCell.className = 'status status-out-of-stock';
@@ -210,11 +213,30 @@ function updateUI() {
         } else if (quantity <= threshold) {
             statusCell.className = 'status status-low-stock';
             statusCell.textContent = 'Low Stock';
+
+            if (!existingNotification) {
+                // Create a notification
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.setAttribute('data-id', row.dataset.id);
+                notification.textContent = `Low stock for ${row.querySelector('.product-name').textContent}`;
+                notificationBar.appendChild(notification);
+                notificationCount++;
+            }
         } else {
             statusCell.className = 'status status-in-stock';
             statusCell.textContent = 'In Stock';
+
+            if (existingNotification) {
+                // Remove the notification
+                existingNotification.remove();
+            }
         }
     });
+
+    // Update the notification count in the HTML
+    const notificationCountElement = document.querySelector('.count');
+    notificationCountElement.textContent = notificationCount.toString();
 }
 
 function updateThreshold() {
@@ -228,18 +250,16 @@ function updateThreshold() {
             },
             body: JSON.stringify({ value: newThreshold }),
         })
-            .then(response => response.json())
-            .then(data => {
-                threshold = newThreshold;
-                updateUI(); // Call the function to update the UI
-                alert(data.message);
-            })
-            .catch(error => {
-                console.error('Error updating threshold:', error);
-                alert('An error occurred while updating the threshold.');
-            });
-    } else {
-        alert('Please enter a valid number for the threshold.');
+        .then(response => response.json())
+        .then(data => {
+            threshold = newThreshold;
+            updateUI(); // Call the function to update the UI
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error('Error updating threshold:', error);
+            alert('An error occurred while updating the threshold.');
+        });
     }
 }
 
@@ -274,3 +294,138 @@ function openCity(evt, cityName) {
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
   }
+
+  function loadStoredNotifications() {
+    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    const notificationBar = document.getElementById('notificationBar');
+
+    // Update the notification count in the bell logo
+    const notificationCountElement = document.querySelector('.count');
+    notificationCountElement.textContent = storedNotifications.length.toString();
+
+    storedNotifications.forEach((notification) => {
+        const existingNotification = document.querySelector(`.notification[data-id="${notification.id}"]`);
+        if (!existingNotification) {
+            const newNotification = document.createElement('div');
+            newNotification.className = 'notification';
+            newNotification.setAttribute('data-id', notification.id);
+            newNotification.textContent = notification.message;
+            notificationBar.appendChild(newNotification);
+        }
+    });
+}
+
+// Call loadStoredNotifications when the page loads
+window.addEventListener('DOMContentLoaded', loadStoredNotifications);
+
+function addNotification(id, message) {
+    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    const existingNotification = storedNotifications.find(notification => notification.id === id);
+
+    if (!existingNotification) {
+        storedNotifications.push({ id, message });
+        localStorage.setItem('notifications', JSON.stringify(storedNotifications));
+
+        // Update the notification count in the bell logo
+        const notificationCountElement = document.querySelector('.count');
+        notificationCountElement.textContent = storedNotifications.length.toString();
+    }
+}
+
+
+
+function updateThreshold() {
+    const newThreshold = parseInt(document.getElementById('thresholdInput').value, 10);
+    if (!isNaN(newThreshold)) {
+        fetch('/threshold/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({ value: newThreshold }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            threshold = newThreshold;
+            updateUI(); // Call the function to update the UI
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error('Error updating threshold:', error);
+            alert('An error occurred while updating the threshold.');
+        });
+    }
+}
+
+function fetchThreshold() {
+    fetch('/threshold')
+        .then(response => response.json())
+        .then(data => {
+            threshold = data.threshold;
+            updateUI(); // Call the function to update the UI
+        })
+        .catch(error => {
+            console.error('Error fetching threshold:', error);
+            alert('An error occurred while fetching the threshold.');
+        });
+}
+// Call fetchThreshold when the page loads
+window.addEventListener('DOMContentLoaded', fetchThreshold);
+
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
+  function loadStoredNotifications() {
+    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    const notificationBar = document.getElementById('notificationBar');
+
+    // Update the notification count in the bell logo
+    const notificationCountElement = document.querySelector('.count');
+    notificationCountElement.textContent = storedNotifications.length.toString();
+
+    storedNotifications.forEach((notification) => {
+        const existingNotification = document.querySelector(`.notification[data-id="${notification.id}"]`);
+        if (!existingNotification) {
+            const newNotification = document.createElement('div');
+            newNotification.className = 'notification';
+            newNotification.setAttribute('data-id', notification.id);
+            newNotification.textContent = notification.message;
+            notificationBar.appendChild(newNotification);
+        }
+    });
+}
+
+// Call loadStoredNotifications when the page loads
+window.addEventListener('DOMContentLoaded', loadStoredNotifications);
+
+function addNotification(id, message) {
+    const notificationBar = document.getElementById('notificationBar');
+    const existingNotification = notificationBar.querySelector(`.notification[data-id="${id}"]`);
+
+    if (!existingNotification) {
+        // Create a notification
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.setAttribute('data-id', id);
+        notification.textContent = message;
+        notificationBar.appendChild(notification);
+
+        // Update the notification count in the bell icon
+        const notificationCountElement = document.querySelector('.count');
+        notificationCountElement.textContent = notificationBar.children.length.toString();
+    }
+}
+
+
