@@ -67,11 +67,6 @@
     transform: scaleX(1); /* Make the underline fully visible on hover and for active tabs */
 }
 
-/* Style the active tab */
-.tablinks.active {
-    /* No need to duplicate the text-decoration property for the active class */
-}
-
 /* Style the tab content */
 .tabcontent {
     margin-top: 20px;
