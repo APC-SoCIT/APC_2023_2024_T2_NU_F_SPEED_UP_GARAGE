@@ -60,3 +60,4 @@ function appendMessage(sender, message) {
     messageElement.innerText = message;
     chatMessages.appendChild(messageElement);
 }
+
