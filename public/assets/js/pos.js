@@ -1,58 +1,68 @@
-function validateCheckout() {
-  const isCheckoutValid = app.submitable();
-  const checkoutButton = document.getElementById("checkoutButton");
+document.addEventListener("DOMContentLoaded", function () {
+  // Your existing JavaScript code
+});
 
-  if (isCheckoutValid) {
-    checkoutButton.disabled = false; // Enable checkout button if conditions are met
-  } else {
-    checkoutButton.disabled = true; // Disable checkout button otherwise
-  }
-}
+function updateReceiptNo(app, newReceiptNo, time) {
+  console.log('Updating receipt number:', newReceiptNo);
+  app.receiptNo = newReceiptNo;
+  app.receiptDate = app.dateFormat(time);
 
-const app = initApp(); // Initialize the app
-app.initReceiptNo(); // Initialize the receipt number on app start
-
-function updateReceiptNo(receiptNo) {
-  const receiptNoElement = document.getElementById('receiptNo');
+  // Update the receipt number in the order-info section
+  const receiptNoElement = document.getElementById("receiptNo");
   if (receiptNoElement) {
-    receiptNoElement.textContent = `Order #${receiptNo}`;
-  } else {
-    console.error('Receipt number element not found.');
+    receiptNoElement.textContent = `Receipt #${app.receiptNo}`;
+    console.log('Receipt number updated in the DOM:', app.receiptNo);
   }
 }
 
-async function loadDatabase() {
-  const db = await idb.openDB("poop", 1, {
-    upgrade(db, oldVersion, newVersion, transaction) {
-      db.createObjectStore("products", {
-        keyPath: "id",
-        autoIncrement: true,
-      });
-      db.createObjectStore("sales", {
-        keyPath: "id",
-        autoIncrement: true,
-      });
-    },
-  });
+document.getElementById('cashierName').addEventListener('change', function () {
+  app.updateCashierName(this.value);
+ 
+  this.updateChange();
+});
 
-  return {
-    db,
-    getProducts: async () => await db.getAll("products"),
-    addProduct: async (product) => await db.add("products", product),
-    editProduct: async (product) =>
-      await db.put("products", product.id, product),
-    deleteProduct: async (product) => await db.delete("products", product.id),
-  };
-}
+document.getElementById('customerName').addEventListener('change', function () {
+  app.updateCustomerName(this.value);
+
+});
+
+document.getElementById('paymentMethod').addEventListener('change', function () {
+  app.updatePaymentMethod(this.value);
+ 
+});
+
+document.getElementById('phone').addEventListener('change', function () {
+  app.updatePaymentMethod(this.value);
+ 
+});
+
+document.getElementById('status').addEventListener('change', function () {
+  app.updatePaymentMethod(this.value);
+ 
+});
+
+
+
+const app = initApp();
+app.initReceiptNo();
+
+
+// Event listener for checkout validation on page load
+document.addEventListener('DOMContentLoaded', function () {
+
+});
+
 
 function initApp() {
+  
   const app = {
     db: null,
     time: null,
     selectedPaymentMethod: "",
     selectedCustomerName:"",
+    selectedStatus:"",
     selectedCashierName:"",
-    firstTime: localStorage.getItem("") === null,
+    selectedPhone:"",
     activeMenu: 'pos',
     loadingSampleData: true,
     moneys: [1, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000,],
@@ -62,71 +72,67 @@ function initApp() {
     cash: 0,
     change: 0,
     isShowModalReceipt: false,
-    receiptNo: null,
     receiptDate: null,
     
     async initDatabase() {
-      this.db = await loadDatabase();
-      await this.startWithSampleData(); // Load JSON immediately
-      this.loadProducts();
-    },
+      this.db = await this.loadProducts();
+  },
 
-    async loadProducts() {
-      this.products = await this.db.getProducts();
-      console.log("Products loaded", this.products);
-    },
+  async loadProducts() {
+    try {
+      const response = await fetch('/pos1'); // Assuming the endpoint now returns JSON
+      const data = await response.json(); // Parse JSON response
+      this.products = data.products; // Update the products array with the fetched data
+      console.log("Products loaded:", this.products);
+    } catch (error) {
+      console.error('Error loading products:', error);
+    }
+  },
+  
+  initReceiptNo: async function (callback) {
+    try {
+      const response = await fetch('/pos2');
+      const data = await response.json();
+  
+      if (data.latestTransactionId) {
+        app.receiptNo = (parseInt(data.latestTransactionId) + 1).toString();
+      } else {
+        app.receiptNo = '0';
+      }
+  
+      updateReceiptNo(app, app.receiptNo);
+  
+      // Call the callback if provided
+      if (callback) {
+        callback();
+      }
+    } catch (error) {
+      console.error('Error initializing receipt number:', error);
+    }
+  },
 
-    initReceiptNo() {
-  this.receiptNo = '12'; 
-  updateReceiptNo(this.receiptNo);
+getNextReceiptNo() {
+  const currentNumber = parseInt(app.receiptNo.slice(-4)); // Extract the numeric part (last 4 digits)
+  const nextNumber = pad(currentNumber, 4); // Use the same logic as initReceiptNo
+  return `SPDG-POS${nextNumber}`;
 },
 
-    getNextReceiptNo() {
-      const currentNumber = parseInt(this.receiptNo.slice(-4)); // Extract the numeric part (last 4 digits)
-      const nextNumber = pad(currentNumber + 1, 4); // Increment by 1 and pad with zeros to 4 digits
-      return `SPDG-POS${nextNumber}`;
-    },
-  
-
-    async startWithSampleData() {
-      try {
-        const response = await fetch('/assets/css/sample.json');
-        console.log('Response:', response); // Log the response
-
-        const data = await response.json();
-        console.log('Fetched Data:', data); // Log the fetched data
-
-        this.products = data.products;
-
-        for (let product of data.products) {
-          await this.db.addProduct(product);
-        }
 
 
-        console.log('Sample data loaded successfully.'); // Log success
-      } catch (error) {
-        console.error('Error loading sample data:', error); // Log errors
-      }
-    },
-    
-    startBlank() {
-      this.setFirstTime(false);
-    },
-    
-    setFirstTime(firstTime) {
-      this.firstTime = firstTime;
-    },
     filteredProducts() {
       const rg = this.keyword ? new RegExp(this.keyword, "gi") : null;
       return this.products.filter((p) => !rg || p.name.match(rg));
     },
+
+    // Add these lines to the functions where changes occur
+
     addToCart(product) {
       const index = this.findCartIndex(product);
       if (index === -1) {
         this.cart.push({
           productId: product.id,
-          image: product.image,
-          name: product.name,
+          image: product.product_image_path,
+          name: product.product_name,
           price: product.price,
           option: product.option,
           qty: 1,
@@ -172,6 +178,21 @@ function initApp() {
       this.cash = parseFloat(value.replace(/[^0-9]+/g, ""));
       this.updateChange();
     },
+
+    updateCashierName(selectedCashierName) {
+      this.selectedCashierName = selectedCashierName;
+      this.updateChange();
+    },
+
+    updateCustomerName(selectedCustomerName) {
+      this.selectedCustomerName = selectedCustomerName;
+      this.updateChange();
+    },
+
+    updatePaymentMethod(selectedPaymentMethod) {
+      this.selectedPaymentMethod = selectedPaymentMethod;
+      this.updateChange();
+    },
     getTotalPrice() {
       return this.cart.reduce(
         (total, item) => total + item.qty * item.price,
@@ -181,50 +202,76 @@ function initApp() {
     submitable() {
       const cashierNameElement = document.getElementById("cashierName");
       const customerNameElement = document.getElementById("customerName");
+      const phoneElement = document.getElementById("phone");
+      const statusElement = document.getElementById("status")
       const paymentMethodElement = document.getElementById("paymentMethod");
+
+
+      const isPhoneSelected = phoneElement.value !== "Select Phone";
+      const isPaymentsSelected = statusElement.value !== "Payment";
       const isCashierSelected = cashierNameElement.value !== "Select Cashier";
       const isCustomerSelected = customerNameElement.value !== "Select Customer";
       const isPaymentSelected = paymentMethodElement.value !== "";
       const isCashEnough = this.change >= 0; // Cash provided is enough or more than the total amount
     
-      return isCashierSelected && isCustomerSelected && isPaymentSelected && isCashEnough && this.cart.length > 0;
+      return isPaymentsSelected && isPhoneSelected && isCashierSelected && isCustomerSelected && isPaymentSelected && isCashEnough && this.cart.length > 0;
     },
-    submit() {
+    submit: async function () {
       const time = new Date();
-      const newReceiptNo = "1";
-      this.receiptNo = newReceiptNo;
+      
+      // Ensure that initReceiptNo has completed before proceeding
+      await this.initReceiptNo();
+
+
+ 
     
       const paymentMethodElement = document.getElementById("paymentMethod");
       if (paymentMethodElement) {
-        this.selectedPaymentMethod = paymentMethodElement.value;
+          this.selectedPaymentMethod = paymentMethodElement.value;
       } else {
-        console.error('Payment method element not found.');
+          console.error('Payment method element not found.');
       }
     
       const cashierNameElement = document.getElementById("cashierName");
       if (cashierNameElement) {
-        this.selectedCashierName = cashierNameElement.value;
+          this.selectedCashierName = cashierNameElement.value;
       } else {
-        console.error('Cashier name element not found.');
+          console.error('Cashier name element not found.');
       }
     
       const customerNameElement = document.getElementById("customerName");
       if (customerNameElement) {
-        this.selectedCustomerName = customerNameElement.value;
+          this.selectedCustomerName = customerNameElement.value;
       } else {
-        console.error('Customer name element not found.');
+          console.error('Customer name element not found.');
+      }
+
+      const phoneElement = document.getElementById("phone");
+      if (phoneElement) {
+          this.selectedPhone = phoneElement.value;
+      } else {
+          console.error('Phone element not found.');
+      }
+
+      const statusElement = document.getElementById("status");
+      if (statusElement) {
+          this.selectedStatus = statusElement.value;
+      } else {
+          console.error('Phone element not found.');
       }
     
-      updateReceiptNo(newReceiptNo);
-      this.receiptDate = this.dateFormat(time);
-      this.isShowModalReceipt = true;
-    },
+      updateReceiptNo(app, this.receiptNo, time);
+    
+      app.receiptDate = app.dateFormat(time);
+      app.isShowModalReceipt = true;
+  }
+,
     
     closeModalReceipt() {
       this.isShowModalReceipt = false;
     },
     dateFormat(date) {
-      const formatter = new Intl.DateTimeFormat('id', { dateStyle: 'short', timeStyle: 'short'});
+      const formatter = new Intl.DateTimeFormat('id', { dateStyle: 'short'});
       return formatter.format(date);
     },
     numberFormat(number) {
@@ -250,44 +297,130 @@ function initApp() {
     clear() {
       this.cash = 0;
       this.cart = [];
+      this.selectedStatus = "";
+      this.selectedCashierName = ""; // Reset the selected cashier name
+      this.selectedCustomerName = ""; // Reset the selected customer name
+      this.selectedPaymentMethod = ""; // Reset the selected payment method
       this.receiptNo = null;
       this.receiptDate = null;
       this.updateChange();
-      
-    },
+
+      window.location.reload();
+  },
   
-    printAndProceed() {
+  
+    printAndProceed(currentDate) {
+      const receiptData = {
+          customerName: this.selectedCustomerName,
+          cashierName: this.selectedCashierName,
+          status: this.selectedStatus,
+          paymentMethod: this.selectedPaymentMethod,
+          phone:this.selectedPhone,
+          date: this.dateFormat(), // Use the currentDate argument passed to the function
+          items: this.cart.map(item => item.name), // Modify to include only item names
+          qty: this.cart.map(item => item.qty), // Map quantities separately
+          quantity: this.getItemsCount(),
+          customerChange: this.change,
+          paymentTotal: this.getTotalPayment(), // Calculate total payment including change
+          totalAmount: this.getTotalPrice(),
+      };
+    
+      addTransaction(receiptData);
       const receiptContent = document.getElementById('receipt-content');
       const titleBefore = document.title;
       const printArea = document.getElementById('print-area');
-      printArea.innerHTML = receiptContent.innerHTML;   
+      printArea.innerHTML = receiptContent.innerHTML;
       document.title = this.receiptNo;
-
+    
       window.print();
       this.isShowModalReceipt = false;
-
+    
       printArea.innerHTML = '';
       document.title = titleBefore;
-
+    
       this.clear();
-    }
+      window.location.href = window.location.href; // Refresh the page
+      window.location.reload(); // Refresh the page
+      
+    },
+
+    getTotalPayment() {
+      return this.getTotalPrice() + Math.abs(this.change); // Total payment including change
+    },
   };
 
   return app;
 }
 
-const dateToday = document.getElementById('currentDate');
-const currentDate = new Date();
-const monthNames = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-];
+    const dateToday = document.getElementById('currentDate');
+    const currentDate = new Date();
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
 
-const day = currentDate.getDate();
-const month = monthNames[currentDate.getMonth()];
-const year = currentDate.getFullYear();
-const formattedDate = `${day} ${month}, ${year}`;
-dateToday.textContent = formattedDate;
+    const day = currentDate.getDate();
+    const month = monthNames[currentDate.getMonth()];
+    const year = currentDate.getFullYear();
+    const formattedDate = `${day} ${month}, ${year}`;
+    dateToday.textContent = formattedDate;
+
+  
+    function addTransaction(receiptData) {
+      const csrfToken = $('meta[name="csrf-token"]').attr('content');
+  
+      // Send an AJAX request to update product quantities
+      $.ajax({
+        url: '/update-product-quantities',
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+        },
+        data: {
+          product_names: receiptData.items,
+          quantities: receiptData.qty,
+        },
+        success: function (response) {
+            console.log('Product quantities updated successfully:', response);
+        },
+        error: function (error) {
+            console.error('Error updating product quantities:', error);
+        },
+    });
+  
+      // Now, you can proceed with adding the transaction as before
+      $.ajax({
+          url: '/add-transaction',
+          type: 'POST',
+          headers: {
+              'X-CSRF-TOKEN': csrfToken,
+          },
+          data: {
+              customer_name: receiptData.customerName,
+              phone:receiptData.phone,
+              date: receiptData.date,
+              status: receiptData.status,
+              items: receiptData.items.join(', '), // Join item names into a comma-separated string
+              qty: receiptData.qty.join(', '),
+              payment_method: receiptData.paymentMethod,
+              payment_total: receiptData.paymentTotal,
+              customer_change: receiptData.customerChange,
+              cashier_name: receiptData.cashierName,
+              quantity: receiptData.quantity,
+              total_amount: receiptData.totalAmount,
+          },
+          success: function(response) {
+              console.log('Transaction added successfully:', response);
+          },
+          error: function(error) {
+              console.error('Error adding transaction:', error);
+          },
+      });
+  }
+  
+    
+    
 
 
 
+    

@@ -5,22 +5,29 @@ function addProduct() {
     var newBrand = document.getElementById('newBrand');
     var newQuantity = document.getElementById('newQuantity');
     var newPrice = document.getElementById('newPrice');
+    var newProductImage = document.getElementById('newProductImage'); // Add this line
 
     // Check if elements are found before accessing their values
-    if (newTag && newProductName && newCategory && newBrand && newQuantity && newPrice) {
-        // Continue with the rest of your code...
-        // Send an AJAX request, update UI, etc.
+    if (newTag && newProductName && newCategory && newBrand && newQuantity && newPrice && newProductImage) {
+        // Create FormData object to handle file uploads
+        var formData = new FormData();
+
+        // Append form data to FormData object
+        formData.append('tag', newTag.value);
+        formData.append('product_name', newProductName.value);
+        formData.append('category', newCategory.value);
+        formData.append('brand', newBrand.value);
+        formData.append('quantity', newQuantity.value);
+        formData.append('price', newPrice.value);
+        formData.append('product_image', newProductImage.files[0]); // Append the file
+
+        // Send an AJAX request with FormData for file upload
         $.ajax({
             url: '/add-product', // Correct route name
-            type: 'POST',  // Replace with the actual URL endpoint for adding a product
-            data: {
-                tag: newTag.value,
-                product_name: newProductName.value,
-                category: newCategory.value,
-                brand: newBrand.value,
-                quantity: newQuantity.value,
-                price: newPrice.value
-            },
+            type: 'POST',
+            data: formData,
+            processData: false, // Prevent jQuery from processing the data
+            contentType: false, // Prevent jQuery from setting content type
             success: function(response) {
                 console.log('Product added successfully:', response);
                 // Handle success response (update UI, close modal, etc.)
@@ -38,6 +45,7 @@ function addProduct() {
     }
 }
 
+
 function handleImageChange(input) {
     var preview = document.getElementById('newProductImagePreview');
     var label = document.getElementById('imageInputLabel');
@@ -47,10 +55,11 @@ function handleImageChange(input) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            preview.src = e.target.result;
-            label.innerHTML = 'Change image';
-            imageContainer.classList.add('has-image'); // Add the 'has-image' class
-        };
+    console.log('Image Data:', e.target.result);
+    preview.src = e.target.result;
+    label.innerHTML = 'Change image';
+    imageContainer.classList.add('has-image');
+};
 
         reader.readAsDataURL(input.files[0]);
     } else {
@@ -162,7 +171,7 @@ function saveChanges() {
 
             // Hide the modal
             $('#editModal').hide();
-            updateUI();
+            updateStatusClassForAll();
         },
         error: function(error) {
             console.error('Error updating product:', error);

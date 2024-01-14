@@ -158,11 +158,14 @@ return [
     'providers' => ServiceProvider::defaultProviders()->merge([
         /*
          * Package Service Providers...
+         * 
          */
 
         /*
          * Application Service Providers...
          */
+
+        
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -170,19 +173,12 @@ return [
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Class Aliases
-    |--------------------------------------------------------------------------
-    |
-    | This array of class aliases will be registered when this application
-    | is started. However, feel free to register as many as you wish as
-    | the aliases are "lazy" loaded so they don't hinder performance.
-    |
-    */
+
+
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
+
 
 ];

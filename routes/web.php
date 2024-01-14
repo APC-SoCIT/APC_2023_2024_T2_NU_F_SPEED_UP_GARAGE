@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\POSController;
 use App\Http\Controllers\TransactionController;
 /*
 |--------------------------------------------------------------------------
@@ -126,10 +127,26 @@ Route::get('/inventory-reports', [ProductsController::class, 'invreport'])->name
 
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 Route::post('/add-transaction', [TransactionController::class, 'addTransaction'])->name('transactions.add');
-Route::get('/edit-transaction/{id}', [TransactionController::class, 'editTransaction'])->name('transactions.edit');
-Route::delete('/delete-transaction/{id}', [TransactionController::class, 'deleteTransaction'])->name('transactions.delete');
-Route::put('/update-transaction/{id}', [TransactionController::class, 'updateTransaction']);
+Route::get('/edit-transaction/{transaction_id}', [TransactionController::class, 'editTransaction'])->name('transactions.edit');
+Route::delete('/delete-transaction/{transaction_id}', [TransactionController::class, 'deleteTransaction'])->name('transactions.delete');
+Route::put('/update-transaction/{transaction_id}', [TransactionController::class, 'updateTransaction']);
 
+
+// POS IDK BRO 
+
+
+Route::get('/pos1', [ProductsController::class, 'getProducts']);
+Route::get('/transaction1', [TransactionController::class, 'getTransactions']);
+Route::get('/pos2', [TransactionController::class, 'getLatestTransactionId']);
+Route::post('/add-transaction', [POSController::class, 'addTransaction'])->name('transactions.add');
+Route::post('/update-product-quantities', [ProductController::class, 'updateQuantities'])->name('update.product.quantities');
+Route::get('/pos', [POSController::class, 'showPOS']);
+Route::get('/pos/latest-transaction-id', [POSController::class, 'getLatestTransactionId']);
+Route::post('/pos/add-transaction', [POSController::class, 'addTransaction']);
+Route::get('/pos/edit-transaction/{transaction_id}', [POSController::class, 'editTransaction']);
+Route::put('/pos/update-transaction/{transaction_id}', [POSController::class, 'updateTransaction']);
+Route::delete('/pos/delete-transaction/{transaction_id}', [POSController::class, 'deleteTransaction']);
+Route::post('/update-transactions', 'TransactionController@updateTransactions');
 
 use App\Http\Controllers\ThresholdController;
 

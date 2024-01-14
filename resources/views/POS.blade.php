@@ -3,27 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pos.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <script src="https://unpkg.com/idb/build/iife/index-min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <title>Point of Sales</title>
 </head>
 
-<body class="bg-blue-gray-50" x-data="initApp()" x-init="initDatabase()">
+
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -41,12 +44,7 @@
             <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
             <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
             <li class="logout">
-                <a href="{{ route('logout') }}" class="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class='bx bx-log-out-circle'></i> Logout
-                </a>
-                <form id="logout-form" method="POST" action="{{ route('logout') }}">
-                    @csrf
-                </form>
+            <a href="/welcome" class="logout"><i class='bx bx-log-out-circle'></i>Logout</a>
             </li>
         </ul>
     </div>
@@ -67,26 +65,20 @@
             <label for="theme-toggle" class="theme-toggle"></label>
             <a href="#" class="notif" onclick="toggleNotification()">
             <i class='bx bx-bell'></i>
-            <span class="count">12</span>
-            <!-- Notification bar -->
-            <div class="notification-bar" id="notificationBar">
-                <!-- Notifications go here -->
-                <div class="notification">Notification 1</div>
-                <div class="notification">Notification 2</div>
-                <div class="notification">Notification 3</div>
-                <!-- Add more notifications as needed -->
-            </div>
+                <span class="count"></span>
+                <!-- Notification bar -->
+                <div class="notification-bar" id="notificationBar">
+                    <!-- Notifications go here -->
+                    <!-- Add more notifications as needed -->
+                </div>
             </a>
             <a href="#" class="profile" onclick="toggleProfileMenu()">
                 <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
                 <!-- Profile dropdown menu -->
                 <div class="profile-menu" id="profileMenu">
                     <div class="menu-item">Profile</div>
-                    <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
-                    <div class="menu-item" onclick="document.getElementById('logout-form-menu').submit();">Logout</div>
-                    <form id="logout-form-menu" method="POST" action="{{ route('logout') }}" style="display: none;">
-                        @csrf
-                    </form>
+                    <div class="menu-item">Settings</div>
+                    <div class="menu-item" onclick="logout()">Logout</div>
                 </div>
             </a>
             <div class="chat-icon" onclick="toggleChat()">
@@ -122,55 +114,73 @@
       <div class="pos-layout">
 
 
-<div class="order-info">
-  <div class="right-section">
-  <div class="order-no" id="receiptNo"></div>
-  <div class="date-today" id="currentDate"></div>
-</div>
-<div class="left-section">
-  <div class="category-plc">
+      <div class="order-info">
+        <div class="right-section">
+        <div class="order-no" id="receiptNo"></div>
+        <div class="date-today" id="currentDate"></div>
+      </div>
+      <div class="left-section">
+        <div class="category-plc">
 
-    <select id="cashierName" class="category-dropdown1">
-      <option value="Select Cashier">Select Cashier</option>
-      <option value="Rocha">Rocha</option>
-      <option value="Loren B.">Loren B</option>
-      <option value="Loren B">Loren B</option>
-    </select>
+        <select id="phone" class="category-dropdown1" style="display: none;" name="phone" onchange="updatePhoneLabel()">
+                <option value="">Phone</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->phone }}" data-phone="{{ $customer->customer_name }}">{{ $customer->phone }}</option>
+                                @endforeach
+              </select>
+              <select id="cashierName" class="category-dropdown1" >
+                <option value="Select Cashier">Select Cashier</option>
+                @foreach ($customers as $customer)
+                    <option value="{{ $customer->cashier_name }}" data-phone="{{ $customer->phone }}">{{ $customer->cashier_name }}</option>
+                @endforeach
+              </select>
+                <select id="customerName" class="category-dropdown1" name="customerName" onchange="updatePhoneLabel()">
+                <option value="">Customer</option>
+                    @foreach ($customers as $customer)
+                        <option value="{{ $customer->customer_name }}" data-phone="{{ $customer->phone }}">{{ $customer->customer_name }}</option>
+                    @endforeach
+              </select>
 
-    <select id="customerName" class="category-dropdown1">
-      <option value="Select Customer">Select Customer</option>
-      <option value="Art Loren B. Rocha">Art Loren B. Rocha</option>
-      <option value="Art Loren">Art Loren</option>
-      <option value="Art">Art</option>
-    </select>
+              
+              <script>
+        function updatePhoneLabel() {
+        var customerNameDropdown = document.getElementById("customerName");
+        var phoneDropdown = document.getElementById("phone");
+        var selectedCustomerName = customerNameDropdown.value;
+        var selectedPhoneNumber = customerNameDropdown.options[customerNameDropdown.selectedIndex].getAttribute("data-phone");
+
+        for (var i = 0; i < phoneDropdown.options.length; i++) {
+                            if (phoneDropdown.options[i].value === selectedPhoneNumber) {
+                                phoneDropdown.selectedIndex = i;
+                                break;
+                            }
+           }
+    }
+</script>
+
+              
 
     <div class="user-table-container">
             <div class="user-filter-container">
                 <div class="add-user-container">
-                   <button class="add-customer-btn" onclick="addUserModal()">+ New Customer</button>
-                   </div>
+                <button class="add-customer-btn" onclick="addCustomerModal()">+ New Customer</button></div>
 
-        <div class="add-user-modal" id="addUserModal">
-            <div class="edit-user-modal-content">
-                <h2 class="edit-user-modal-title">New Customer</h2>
-                <label for="userUsername">Name</label>
-                <input type="text" id="userUsername" name="userUsername">
-                <label for="UserFullName">Age</label>
-                <input type="text" id="UserFullName" name="UserFullName">
-                <label for="UserRole">Sex</label>
-                <select>
-                  <option value="Admin">Male</option>
-                  <option value="Inventory Clerk">Female</option>
-                  <option value="Inventory Clerk">Other</option> 
-                </select>
-                <label for="userEmail">Address</label>
-                <input type="text" id="userEmail" name="userEmail">
+                <div class="add-customer-modal" id="addCustomerModal">
+                <div class="add-customer-modal-content">
+                <h2 class="add-customer-modal-title">Add New Customer</h2>
+                <label for="newCustomerName">Customer Name:</label>
+                <input type="text" id="newCustomerName" name="newCustomerName">
+                <label for="newCustomerPhone">Phone:</label>
+                <input type="text" id="newCustomerPhone" name="newCustomerPhone">
+                <label for="newCustomerAddress">Address:</label>
+                <input type="text" id="newCustomerAddress" name="newCustomerAddress">
+             
                 <div class="modal-button-container">
-                    <button class="modal-save-button" onclick="saveUserChanges()">Save</button>
-                    <button class="modal-close-button" onclick="cancelCreateUserModal()">Cancel</button>
-                </div>
+                    <button class="modal-save-button" onclick="addCustomer()">Add Customer</button>
+                    <button class="modal-close-button" onclick="closeAddCustomerModal()">Cancel</button>
+              </div>
             </div>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
@@ -212,8 +222,6 @@
                   PLEASE REFRESH
                 </p>
               </div>
-
-             <!-- SECOND PART -->
             </div>
             <div class="search-card" x-show="filteredProducts().length === 0 && keyword.length > 0">
               <div class="w-full text-center">
@@ -228,27 +236,30 @@
               </div>
             </div>
             <div x-show="filteredProducts().length" class="products-product">
-              <template x-for="product in filteredProducts()" :key="product.id">
-                <div
-                  role="button"
-                  class="product-card"
-                  :title="product.name"
-                  x-on:click="addToCart(product)">
-                  <img class="product-image" :src="product.image" :alt="product.name">
-                  <div class="product-card-pad">
-                  <div class="product-details">
-                  <div class="product-brand" x-text="product.brand"></div>
-    <div class="product-name" x-text="product.name"></div>
-    <div class="product-price-quantity">
-      <div class="product-price" x-text=priceFormat(product.price)></div>
-      <div class="product-quantity" x-text=qtyFormat(product.quantity)></div>
-                  </div>
-                </div>
-              </template>
+            <template x-for="product in products" :key="product.id">
+  <div
+    role="button"
+    class="product-card"
+    :title="product.name"
+    x-on:click="product.quantity > 0 ? addToCart(product) : null">
+    <img class="product-image" :src="product.product_image_path" :alt="product.name">
+    <div class="product-card-pad">
+      <div class="product-details">
+        <div class="product-brand" x-text="product.brand"></div>
+        <div class="product-name" x-text="product.product_name"></div>
+        <div class="product-price-quantity">
+          <div class="product-price" x-text="priceFormat(product.price)"></div>
+          <div class="product-quantity" x-text="qtyFormat(product.quantity)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
             </div>
           </div>
         </div>
       </div>
+      
       <!-- end of store menu -->
 
       <!-- right sidebar -->
@@ -259,11 +270,8 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-            <p>
-              CART EMPTY
-            </p>
+            <p> CART EMPTY </p>
           </div>
-
           <!-- cart items -->
           <div x-show="cart.length > 0" class="flex-1 flex flex-col overflow-auto">
             <div class="h-16 text-center flex justify-center">
@@ -293,8 +301,9 @@
                 <div class="cart-image">
                   <img :src="item.image" alt="" class="rounded-lg h-10 w-10 bg-white shadow mr-2">
                   <div class="flex-grow">
-                    <h5 class="text-sm" x-text="item.name"></h5>
+                  <h5 class="text-sm" x-text="item.name"></h5>
                     <p class="text-xs block" x-text="priceFormat(item.price)"></p>
+                    
                   </div>
                   <div class="py-1">
                     <div class="w-28 grid grid-cols-3 gap-2 ml-2">
@@ -328,16 +337,21 @@
               <div class="category-plc1">
               
             <select id="paymentMethod" class="category-dropdown2" >
-      <option value="">Payment Method</option>
+      <option value="">Method</option>
       <option value="CASH">Cash</option>
       <option value="GCASH">GCASH</option>
       </div>
     </select>
+
+    <select id="status" class="category-dropdown2" >
+      <option value="">Payment</option>
+      <option value="Full Payment">Full Payment</option>
+      <option value="Installment">Installment</option>
+      </div>
+    </select>
  
     <div class="text-php">
-      <div class="mr-2 mt-2">
-        PHP
-      </div>
+      <div class="mr-2 mt-2"> PHP </div>
       
                   <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="cash-inner-card">
                 </div>
@@ -366,13 +380,13 @@
             </div>
             <div
               x-show="change == 0 && cart.length > 0"
-              class="yeschange"
-            >
+              class="yeschange">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
               </svg>
             </div>
             <button
+              
               class="text-white text-lg w-full py-3 focus:outline-none"
               style="border-radius:8px;"
               x-bind:class="{
@@ -380,33 +394,13 @@
                 'nosubmit': !submitable()
               }"
               :disabled="!submitable()"
-              x-on:click="submit()"
-            >
-              CHECKOUT
+              x-on:click="submit()"> CHECKOUT
             </button>
           </div>
-          <!-- end of payment info -->
-        </div>
-      </div>
-      <!-- end of right sidebar -->
-    </div>
-
-    <!-- modal first time -->
-    <div x-show="firstTime" class="fixed glass w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24">
-        <div class="text-center">   
-        </div>
-        <div class="text-left">
-          <button x-on:click="startWithSampleData()" class="text-left w-full mb-3 rounded-xl bg-blue-gray-500 text-white focus:outline-none hover:bg-cyan-400 px-4 py-4">
-            LOAD JSON
-          </button>
-          <button x-on:click="startBlank()" class="text-left w-full rounded-xl bg-blue-gray-500 text-white focus:outline-none hover:bg-teal-400 px-4 py-4">
-            EXIT
-          </button>
         </div>
       </div>
     </div>
 
-    <!-- modal receipt -->
     <div
       x-show="isShowModalReceipt"
       class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24"
@@ -438,7 +432,8 @@
             
           </div>
           <div class="flex mt-4 text-xs">
-            <div class="flex-grow">No: <span x-text="receiptNo"></span></div>
+            
+            <div class="flex-grow">Receipt #<span x-text="receiptNo"></span></div>
             <div x-text="receiptDate"></div>
           </div>
           <hr class="my-2">
@@ -483,12 +478,20 @@
               <div x-text="selectedPaymentMethod"></div>
             </div>
             <div class="flex text-xs font-semibold">
+              <div class="flex-grow">PAYMENT</div>
+              <div x-text="selectedStatus"></div>
+            </div>
+            <div class="flex text-xs font-semibold">
               <div class="flex-grow">CASHIER</div>
               <div x-text="selectedCashierName"></div>
             </div>
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">CUSTOMER</div>
               <div x-text="selectedCustomerName"></div>
+            </div>
+            <div class="flex text-xs font-semibold">
+              <div class="flex-grow">PHONE</div>
+              <div x-text="selectedPhone"></div>
             </div>
             <hr class="my-2">
             <div class="flex text-xs font-semibold">
@@ -498,31 +501,89 @@
           </div>
         </div>
         <div class="p-4 w-full">
+          
           <button class="proceed-btn" x-on:click="printAndProceed()">PROCEED</button>
         </div>
       </div>
     </div>
   </div>
-  <!-- end of noprint-area -->
 
   <div id="print-area" class="print-area"></div>
 
-
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{ asset('assets/js/pos.js') }}"></script>
-    <script src="{{ asset('assets/js/inventory.js') }}"></script>
+    <script src="{{ asset('assets/js/navbar.js') }}"></script> 
+    <script src="{{ asset('assets/js/inventory.js') }}"></script> 
     <script src="{{ asset('assets/js/index.js') }}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const currentDateElement = document.getElementById('currentDate');
-        if (currentDateElement) {
-            const currentDate = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const formattedDate = currentDate.toLocaleDateString('en-US', options);
-            currentDateElement.textContent = formattedDate;
-        } else {
-            console.error('Element with ID "currentDate" not found');
-        }
-    });
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentDateElement = document.getElementById('currentDate');
+            if (currentDateElement) {
+                const currentDate = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = currentDate.toLocaleDateString('en-US', options);
+                currentDateElement.textContent = formattedDate;
+            } else {
+                console.error('Element with ID "currentDate" not found');
+            }
+        });
 </script>
+
+<script> 
+
+          function addCustomerModal() {
+            const addCustomerModal = document.getElementById('addCustomerModal');
+          
+
+                // Show the Add Customer modal
+            addCustomerModal.style.display = 'flex'; // Use 'flex' to center the modal
+          }
+
+            function closeAddCustomerModal() {
+            const addCustomerModal = document.getElementById('addCustomerModal');
+            addCustomerModal.style.display = 'none';
+        }
+
+        function addCustomer() {
+        var newCustomerName = document.getElementById('newCustomerName');
+        var newCustomerPhone = document.getElementById('newCustomerPhone');
+        var newCustomerAddress = document.getElementById('newCustomerAddress');
+
+        if (newCustomerName && newCustomerPhone && newCustomerAddress) {
+            // Get the CSRF token from the meta tag
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: '/add-customer',
+            type: 'POST',
+            headers: {
+            'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                customer_name: newCustomerName.value,
+                phone: newCustomerPhone.value,
+                address: newCustomerAddress.value,
+            },
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            success: function(response) {
+                console.log('Customer added successfully:', response);
+                // Handle success response (update UI, close modal, etc.)
+                closeAddCustomerModal();
+                window.location.reload();
+            },
+            error: function(error) {
+                console.error('Error adding customer:', error);
+                // Handle error response (display error message, log, etc.)
+            }
+        });
+            } else {
+                console.error('One or more elements not found.');
+            }
+        }
+</script>
+
 </body>
 </html>

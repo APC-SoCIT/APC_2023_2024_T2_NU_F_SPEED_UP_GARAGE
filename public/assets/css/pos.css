@@ -26,6 +26,13 @@
 
 
 
+.product-card.out-of-stock {
+  cursor: not-allowed;
+  opacity: 0.7; /* You can adjust the opacity or add other styling for out-of-stock products */
+}
+
+
+
 .pos-layout {
     display: flex;
     flex-direction: column;
@@ -103,12 +110,13 @@ body.dark .category-dropdown1{
 }
 
 .category-dropdown2{
-padding: 12px;
-width: 200px; /* Set a fixed width for both category and brand dropdowns */
+padding: 10px;
+width: 120px; /* Set a fixed width for both category and brand dropdowns */
 border: 1px solid #ddd;
+margin-right: 14px;
 border-radius: 8px;
 background-color: #fff;
-font-size: 14px;
+font-size: 12px;
 color: #333;
 transition: border-color 0.3s, box-shadow 0.3s;
 cursor: pointer;
@@ -189,7 +197,7 @@ box-shadow: 0 0 10px rgba(52, 152, 219, 0.2); /* Add a subtle shadow on hover */
   display: flex;
   justify-content: flex-end;
   text-align: right;
-  margin-left: 60px;
+  
   
 }
   .brandpartSelect{
@@ -243,6 +251,7 @@ margin-right: 10px;
   }
   .product-card {
     /* Tailwind CSS classes */
+
     user-select: none;
     cursor: pointer;
     transition: box-shadow 0.3s ease;

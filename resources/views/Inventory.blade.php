@@ -218,6 +218,7 @@
                                 <th>Status</th>
                                 <th>#</th>
                                 <th>Tag</th>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Brand</th>
@@ -233,6 +234,13 @@
                             <td><span class="status"></span></td>
                                 <td>{{ $product->id }}</td>
                                 <td class="tag" id="tag{{ $product->id }}">{{ $product->tag }}</td>
+                                <td class="product-image" id="image{{ $product->id }}">
+                                    @if($product->product_image)
+                                        <img src="{{ asset('storage/product_images/' . $product->product_image) }}" alt="Product Image" style="max-width: 100px; max-height: 100px; width: auto; height: auto;">
+                                    @else
+                                        No Image
+                                    @endif
+                                </td>
                                 <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
                                 <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
                                 <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
