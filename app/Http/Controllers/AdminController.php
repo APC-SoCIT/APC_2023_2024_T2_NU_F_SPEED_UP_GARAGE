@@ -45,13 +45,16 @@ class AdminController extends Controller
         // Calculate the number of products sold today
         $productsSoldToday = $transactions->where('created_at', '>=', Carbon::today())->sum('quantity');
 
-        // Calculate monthly sales
-        $currentMonthSales = $transactions->whereBetween('date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('total_amount');
+        $currentMonthSales = Transaction::whereYear('date', Carbon::now()->year)
+        ->whereMonth('date', Carbon::now()->month)
+        ->sum('total_amount');
+
         $formattedCurrentMonthSales = number_format($currentMonthSales, 2, '.', ',');
 
-        // Calculate the average daily sales for the month
-        $daysInMonth = Carbon::now()->daysInMonth;
-        $averageDailySales = $currentMonthSales / $daysInMonth;
+        // Calculate average daily sales for the current month
+        $daysInCurrentMonth = Carbon::now()->daysInMonth;
+        $averageDailySales = $currentMonthSales / $daysInCurrentMonth;
+
         $formattedAverageDailySales = number_format($averageDailySales, 2, '.', ',');
 
         $recentTransactions = Transaction::latest()->take(3)->get();

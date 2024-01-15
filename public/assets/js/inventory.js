@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const notification = document.createElement('div');
                 notification.className = 'notification';
                 notification.setAttribute('data-id', row.dataset.id);
-                notification.textContent = `Low stock for ${row.querySelector('.product-name').textContent}`;
+                notification.innerHTML = `${row.querySelector('.product-name').textContent} is below threshold.<br>Click this link to reorder`;
                 notificationBar.appendChild(notification);
                 notificationCount++;
             }
