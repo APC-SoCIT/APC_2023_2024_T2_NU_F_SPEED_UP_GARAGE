@@ -1,3 +1,26 @@
+let productId; // Declare productId outside the functions
+let threshold; // Declare threshold globally
+
+// Add this function to automatically assign numbers to the # column
+function assignRowNumbers() {
+    var table = document.querySelector(".inventory-table");
+    var rows = table.querySelectorAll("tbody tr");
+
+    rows.forEach(function (row, index) {
+        var numberCell = row.querySelector("td:nth-child(2)");
+        numberCell.textContent = index + 1;
+    });
+}
+
+// Ensure Document Ready
+document.addEventListener("DOMContentLoaded", function () {
+    // Assign row numbers when the page loads
+    assignRowNumbers();
+
+    // Fetch the threshold when the page loads
+    fetchThreshold();
+});
+
 function addProduct() {
     var newTag = document.getElementById('newTag');
     var newProductName = document.getElementById('newProductName');
@@ -5,46 +28,40 @@ function addProduct() {
     var newBrand = document.getElementById('newBrand');
     var newQuantity = document.getElementById('newQuantity');
     var newPrice = document.getElementById('newPrice');
-    var newProductImage = document.getElementById('newProductImage'); // Add this line
+    var newUpdatedBy = document.getElementById('newUpdatedBy');
+    var newProductImage = document.getElementById('newProductImage'); // Corrected variable name
+    // Create FormData object to handle file uploads
+    var formData = new FormData();
 
-    // Check if elements are found before accessing their values
-    if (newTag && newProductName && newCategory && newBrand && newQuantity && newPrice && newProductImage) {
-        // Create FormData object to handle file uploads
-        var formData = new FormData();
+    // Append form data to FormData object
+    formData.append('tag', newTag.value);
+    formData.append('product_name', newProductName.value);
+    formData.append('category', newCategory.value);
+    formData.append('brand', newBrand.value);
+    formData.append('quantity', newQuantity.value);
+    formData.append('price', newPrice.value);
+    formData.append('updated_by', newUpdatedBy.value);
+    formData.append('product_image', newProductImage.files[0]); // Append the file
 
-        // Append form data to FormData object
-        formData.append('tag', newTag.value);
-        formData.append('product_name', newProductName.value);
-        formData.append('category', newCategory.value);
-        formData.append('brand', newBrand.value);
-        formData.append('quantity', newQuantity.value);
-        formData.append('price', newPrice.value);
-        formData.append('product_image', newProductImage.files[0]); // Append the file
-
-        // Send an AJAX request with FormData for file upload
-        $.ajax({
-            url: '/add-product', // Correct route name
-            type: 'POST',
-            data: formData,
-            processData: false, // Prevent jQuery from processing the data
-            contentType: false, // Prevent jQuery from setting content type
-            success: function(response) {
-                console.log('Product added successfully:', response);
-                // Handle success response (update UI, close modal, etc.)
-                closeAddProductModal();
-                updateStatusClassForAll();  // You may need to define this function
-            },
-            error: function(error) {
-                console.error('Error adding product:', error);
-                // Handle error response (display error message, log, etc.)
-            }
-        });
-
-    } else {
-        console.error('One or more elements not found.');
-    }
+    // Send an AJAX request with FormData for file upload
+    $.ajax({
+        url: '/add-product', // Correct route name
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            console.log('Product added successfully:', response);
+            showSuccessModal('Product added successfully'); // Display success message
+            closeAddProductModal();
+            updateStatusClassForAll(); // You may need to define this function
+            
+        },
+        error: function(error) {
+            console.error('Error adding product:', error);
+        }
+    });
 }
-
 
 function handleImageChange(input) {
     var preview = document.getElementById('newProductImagePreview');
@@ -55,11 +72,11 @@ function handleImageChange(input) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-    console.log('Image Data:', e.target.result);
-    preview.src = e.target.result;
-    label.innerHTML = 'Change image';
-    imageContainer.classList.add('has-image');
-};
+            console.log('Image Data:', e.target.result);
+            preview.src = e.target.result;
+            label.innerHTML = 'Change image';
+            imageContainer.classList.add('has-image');
+        };
 
         reader.readAsDataURL(input.files[0]);
     } else {
@@ -69,8 +86,7 @@ function handleImageChange(input) {
     }
 }
 
-
-    function deleteRow(event) {
+function deleteRow(event) {
     const row = event.target.closest('tr'); // Get the closest <tr> parent of the clicked button
     const productId = row.getAttribute('data-id'); // Get the product ID from the row
 
@@ -96,6 +112,7 @@ function handleImageChange(input) {
             // Handle success response (update UI, etc.)
             const table = document.querySelector('.inventory-table tbody');
             table.removeChild(row); // Remove the row from the table on successful deletion
+            showSuccessModal('Product deleted successfully.'); // Display success message
         },
         error: function (error) {
             console.error('Error deleting product:', error);
@@ -105,32 +122,56 @@ function handleImageChange(input) {
     });
 }
 
-
-let productId; // Declare productId outside the functions
+var editingProductId;  // Declare a variable to store the currently editing product ID
 
 function editRow(event) {
-    const row = event.target.closest('tr');
-    productId = row.getAttribute('data-id'); // set productId in the same scope
-    showModalWithData(productId);
-}
+    // Get the parent row of the clicked button
+    var row = $(event.target).closest('tr');
 
-function showModalWithData(productId) {
-    // Populate modal with current data
-    const quantity = $(`#quantity_${productId} .quantity`).text();
-    const price = $(`#price_${productId} .price`).text();
-    const tag = $(`#tag_${productId} .tag`).text(); // Add this line
-    const product_name = $(`#product_name_${productId} .product_name`).text(); // Add this line
-    const category = $(`#category_${productId} .category`).text(); // Add this line
-    const brand = $(`#brand_${productId} .brand`).text(); // Add this line
+    // Extract data from the row
+    editingProductId = row.data('id');
+    var tag = row.find('.tag').text();
+    var productName = row.find('.product-name').text();
+    var category = row.find('.category').text();
+    var brand = row.find('.brand').text();
+    var quantity = row.find('.quantity span').text();
+    var price = row.find('.price span').text();
+    var updatedBy = row.find('.updated_by span').text();
 
+    // Populate the modal fields with the extracted data
+    $('#editedTag').val(tag);
+    $('#editedProductName').val(productName);
+    $('#editedCategory').val(category);
+    $('#editedBrand').val(brand);
     $('#editedQuantity').val(quantity);
     $('#editedPrice').val(price);
-    $('#editedTag').val(tag); // Add this line
-    $('#editedProductName').val(product_name); // Add this line
-    $('#editedCategory').val(category); // Add this line
-    $('#editedBrand').val(brand); // Add this line
+    $('#editedUpdatedBy').val(updatedBy);
 
-    // Show the modal
+    // You may need to handle the image separately if you have an image field
+    // For example, updating the image preview in the modal
+    // $('#editedImagePreview').attr('src', row.find('.product-image img').attr('src'));
+
+    // Show the edit modal
+    $('#editModal').show();
+}
+
+
+function showModalWithData(productId) {
+    const quantity = $(`#quantity_${productId} .quantity`).text();
+    const price = $(`#price_${productId} .price`).text();
+    const tag = $(`#tag_${productId} .tag`).text();
+    const product_name = $(`#product_name_${productId} .product_name`).text();
+    const category = $(`#category_${productId} .category`).text();
+    const updated_by = $(`#updated_by${productId}`).text().trim();
+    const brand = $(`#brand_${productId} .brand`).text();
+
+    $('#editedTag').val(tag);
+    $('#editedProductName').val(product_name);
+    $('#editedCategory').val(category);
+    $('#editedBrand').val(brand);
+    $('#editedQuantity').val(quantity);
+    $('#editedPrice').val(price);
+    $('#editedUpdatedBy').val(updated_by);
     $('#editModal').show();
 }
 
@@ -141,7 +182,19 @@ function saveChanges() {
     const editedProductName = $('#editedProductName').val();
     const editedCategory = $('#editedCategory').val();
     const editedBrand = $('#editedBrand').val();
+    const editedUpdatedBy = $('#editedUpdatedBy').val();
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    // Check if any required field is empty
+    const requiredFields = [editedQuantity, editedPrice, editedTag, editedProductName, editedCategory, editedBrand, editedUpdatedBy];
+    const emptyFields = requiredFields.filter(field => field.trim() === '');
+
+    // If any required field is empty, display error message
+    if (emptyFields.length > 0) {
+        const errorMessage = 'Please fill out all required fields.';
+        showErrorMessage(errorMessage);
+        return; // Exit the function
+    }
 
     // Send AJAX request to update the database
     $.ajax({
@@ -156,6 +209,7 @@ function saveChanges() {
             tag: editedTag,
             product_name: editedProductName,
             category: editedCategory,
+            updated_by: editedUpdatedBy,
             brand: editedBrand
         },
         success: function(response) {
@@ -168,10 +222,12 @@ function saveChanges() {
             $(`#product_name_${productId} .product_name`).text(editedProductName);
             $(`#category_${productId} .category`).text(editedCategory);
             $(`#brand_${productId} .brand`).text(editedBrand);
+            $(`#updated_by${productId} .updated_by`).text(editedUpdatedBy);
 
             // Hide the modal
             $('#editModal').hide();
             updateStatusClassForAll();
+            showSuccessModal('Product has been edited successfully.'); // Display success message
         },
         error: function(error) {
             console.error('Error updating product:', error);
@@ -181,31 +237,14 @@ function saveChanges() {
 }
 
 function cancelEditModal() {
-    // Hide the modal without saving changes
+    // Hide the modal
     $('#editModal').hide();
+
+    // Reapply event listener for the "Edit" button
+    $(document).on('click', '.edit-button', editRow);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Add this function to automatically assign numbers to the # column
-    function assignRowNumbers() {
-      var table = document.querySelector(".inventory-table");
-      var rows = table.querySelectorAll("tbody tr");
-
-      rows.forEach(function (row, index) {
-        var numberCell = row.querySelector("td:nth-child(2)");
-        numberCell.textContent = index + 1;
-      });
-    }
-
-    // Call the function to assign numbers when the page loads
-    assignRowNumbers();
-  });
-
-  const thresholdUrl = '/threshold';
-  const updateThresholdUrl = '/threshold/update';
-
-  function updateUI() {
-    // Logic to update UI based on the threshold value
+function updateUI() {
     const rows = document.querySelectorAll('tr[data-id]');
     const notificationBar = document.getElementById('notificationBar');
 
@@ -228,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const notification = document.createElement('div');
                 notification.className = 'notification';
                 notification.setAttribute('data-id', row.dataset.id);
-                notification.innerHTML = `${row.querySelector('.product-name').textContent} is below threshold.<br>Click this link to reorder`;
+                notification.textContent = `Low stock for ${row.querySelector('.product-name').textContent}`;
                 notificationBar.appendChild(notification);
                 notificationCount++;
             }
@@ -285,26 +324,21 @@ function fetchThreshold() {
         });
 }
 
-// Call fetchThreshold when the page loads
-window.addEventListener('DOMContentLoaded', fetchThreshold);
-
-
-
 function openCity(evt, cityName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
+        tabcontent[i].style.display = "none";
     }
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
-  }
+}
 
-  function loadStoredNotifications() {
+function loadStoredNotifications() {
     const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
     const notificationBar = document.getElementById('notificationBar');
 
@@ -341,44 +375,6 @@ function addNotification(id, message) {
     }
 }
 
-
-
-function updateThreshold() {
-    const newThreshold = parseInt(document.getElementById('thresholdInput').value, 10);
-    if (!isNaN(newThreshold)) {
-        fetch('/threshold/update', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            },
-            body: JSON.stringify({ value: newThreshold }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            threshold = newThreshold;
-            updateUI(); // Call the function to update the UI
-            alert(data.message);
-        })
-        .catch(error => {
-            console.error('Error updating threshold:', error);
-            alert('An error occurred while updating the threshold.');
-        });
-    }
-}
-
-function fetchThreshold() {
-    fetch('/threshold')
-        .then(response => response.json())
-        .then(data => {
-            threshold = data.threshold;
-            updateUI(); // Call the function to update the UI
-        })
-        .catch(error => {
-            console.error('Error fetching threshold:', error);
-            alert('An error occurred while fetching the threshold.');
-        });
-}
 // Call fetchThreshold when the page loads
 window.addEventListener('DOMContentLoaded', fetchThreshold);
 
@@ -386,17 +382,17 @@ function openCity(evt, cityName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
+        tabcontent[i].style.display = "none";
     }
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
-  }
+}
 
-  function loadStoredNotifications() {
+function loadStoredNotifications() {
     const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
     const notificationBar = document.getElementById('notificationBar');
 
@@ -437,4 +433,14 @@ function addNotification(id, message) {
     }
 }
 
+function showSuccessModal(message) {
+    var successModal = document.getElementById('successModal');
+    var successText = document.getElementById('successText');
+    successText.textContent = message;
+    successModal.style.display = 'flex';
+}
 
+function closeSuccessModal() {
+    var successModal = document.getElementById('successModal');
+    successModal.style.display = 'none';
+}

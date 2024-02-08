@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Customer;
-use App\Models\CartItem;
+use App\Models\User;
 
 class POSController extends Controller
 {
@@ -17,6 +17,7 @@ class POSController extends Controller
         $transactions = Transaction::all();
         $customers = Customer::all();
         $products = Product::all();
+        $users = User::all();
 
         // Check if the request wants JSON
         if (request()->expectsJson()) {
@@ -26,7 +27,7 @@ class POSController extends Controller
         }
 
         // Pass the products to the 'POS' view
-        return view('POS', compact('products', 'customers', 'transactions'));
+        return view('POS', compact('products', 'customers', 'transactions', 'users'));
     }
 
     private function convertArrayEncoding($array)

@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +5,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/filter.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
@@ -19,90 +17,15 @@
 </head>
 
 <body>
-
+    
     <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="/admin" class="logo">
-            <img class="logo-image" src="{{ asset('assets/images/logo.png') }}">
-            <div class="logo-name"><span>SpeedUp</span> Garage</div>
-        </a>
-        <ul class="side-menu">
-            <li><a href="/admin"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
-            <li class="active"><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
-            <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
-            <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
-            <li><a href="/customers"><i class='bx bxs-user-plus'></i>Customers</a></li>
-            <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
-            <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
-            <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
-            <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
-            <li class="logout">
-                <a href="{{ route('logout') }}" class="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class='bx bx-log-out-circle'></i> Logout
-                </a>
-                <form id="logout-form" method="POST" action="{{ route('logout') }}">
-                    @csrf
-                </form>
-            </li>
-        </ul>
-    </div>
+    <x-sidebar />
     <!-- End of Sidebar -->
-
-    <!-- Main Content -->
     <div class="content">
-        <!-- Navbar -->
-        <nav>
-            <i class='bx bx-menu'></i>
-            <form action="#">
-                <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
-                </div>
-            </form>
-            <input type="checkbox" id="theme-toggle" hidden>
-            <label for="theme-toggle" class="theme-toggle"></label>
-            <a href="#" class="notif" onclick="toggleNotification()">
-                <i class='bx bx-bell'></i>
-                <span class="count"></span>
-                <!-- Notification bar -->
-                <div class="notification-bar" id="notificationBar">
-                    <!-- Notifications go here -->
-                    <!-- Add more notifications as needed -->
-                </div>
-            </a>
-            <a href="#" class="profile" onclick="toggleProfileMenu()">
-                <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
-                <!-- Profile dropdown menu -->
-                <div class="profile-menu" id="profileMenu">
-                    <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
-                    <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
-                    <div class="menu-item" onclick="document.getElementById('logout-form-menu').submit();">Logout</div>
-                    <form id="logout-form-menu" method="POST" action="{{ route('logout') }}" style="display: none;">
-                        @csrf
-                    </form>
-                </div>
-            </a>
-            <div class="chat-icon" onclick="toggleChat()">
-                <i class='bx bx-message'></i>
-            </div>
-        </nav>
-
-        <div id="chatWindow" class="chat-window">
-            <div class="chat-header">
-                <span>AI Chat</span>
-                <div class="icons-container">
-                    <span class="minimize-icon">-</span>
-                    <span class="close-icon" onclick="closeChat()">x</span>
-                </div>
-            </div>
-            <div id="chatMessages" class="chat-body"></div>
-            <div class="chat-input">
-                <input type="text" id="userInput" placeholder="Type your message...">
-                <button onclick="askAI()">Send</button>
-            </div>
-        </div>
-
-        <!-- End of Navbar -->
+    <!-- Start of Navbar -->
+        <x-navbar />
+        <x-chatbox />
+    <!-- End of Navbar -->
 
         <main>
             <div class="header">
@@ -134,65 +57,17 @@
 
                         <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Category</option>
-                            <option value="Air Filter">Air Filter</option>
-                            <option value="Battery">Battery</option>
-                            <option value="Bearing">Bearing</option>
-                            <option value="Belt">Belt</option>
-                            <option value="Brake Pads">Brake Pads</option>
-                            <option value="Center Spring">Center Spring</option>
-                            <option value="Clutch">Clutch</option>
-                            <option value="Crank">Crank</option>
-                            <option value="Cylinder">Cylinder</option>
-                            <option value="Disc Brake">Disc Brake</option>
-                            <option value="Engine Oil">Engine Oil</option>
-                            <option value="ECU">ECU</option>
-                            <option value="Flyball">Flyball</option>
-                            <option value="Fuel Filter">Fuel Filter</option>
-                            <option value="Fuel Injector">Fuel Injector</option>
-                            <option value="Fuel Pump">Fuel Pump</option>
-                            <option value="Gasket">Gasket</option>
-                            <option value="Grip">Grip</option>
-                            <option value="ISC">ISC</option>
-                            <option value="MDL Bracket">MDL Bracket</option>
-                            <option value="O Ring">O Ring</option>
-                            <option value="Oil Seal">Oil Seal</option>
-                            <option value="Piston">Piston</option>
-                            <option value="Pulley Set">Pulley Set</option>
-                            <option value="Rectifier">Rectifier</option>
-                            <option value="Rocker Arm">Rocker Arm</option>
-                            <option value="Slider Piece">Slider Piece</option>
-                            <option value="Solenoid Set">Solenoid Set</option>
-                            <option value="Sparkplug">Sparkplug</option>
-                            <option value="Speedometer">Speedometer</option>
-                            <option value="Starter">Starter</option>
-                            <option value="Stator">Stator</option>
-                            <option value="Torque">Torque</option>
-                            <option value="Valve">Valve</option>
-                            <option value="Washer Plate">Washer Plate</option>
-                            <option value="Water Pump">Water Pump</option>
-                            <option value="Wheel">Wheel</option>
-                            <option value="Wheel Speed Sensor">Wheel Speed Sensor</option>
-                            <option value="TPS">TPS</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->name }}">{{ $category->name }}</option>
+                            @endforeach
                         </select>
 
 
                         <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
                             <option value="">Select Brand</option>
-                            <option value="Mio">Mio</option>
-                            <option value="NMAX">NMAX</option>
-                            <option value="AEROX">AEROX</option>
-                            <option value="PCX">PCX</option>
-                            <option value="Click">Click</option>
-                            <option value="ADV">ADV</option>
-                            <option value="Beat">Beat</option>
-                            <option value="Faito">Faito</option>
-                            <option value="M3">M3</option>
-                            <option value="PIAA">PIAA</option>
-                            <option value="Burgman">Burgman</option>
-                            <option value="Legion">Legion</option>
-                            <option value="Error 12">Error 12</option>
-                            <option value="MXI">MXI</option>
-                            <option value="RS8">RS8</option>
+                            @foreach($brands as $brand)
+                                <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                            @endforeach
                         </select>
                         
                             <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
@@ -224,6 +99,7 @@
                                 <th>Brand</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Updated By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -241,11 +117,12 @@
                                         No Image
                                     @endif
                                 </td>
-                                <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
+                                <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name}}</td>
                                 <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
                                 <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
                                 <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
                                 <td class="price" id="price_{{ $product->id }}"><span class="price">{{ $product->price }}</span><input type="text" class="edit-price" style="display:none;"></td>
+                                <td class="updated_by" id="updated_by{{ $product->id }}"><span class="updated_by">{{ $product->updated_by }}</span></td>
                                 <td>
                                     <button class="edit-btn" onclick="editRow(event)">Edit</button>
                                     <button class="delete-btn" onclick="deleteRow(event)">Delete</button>
@@ -269,85 +146,50 @@
             </div>
         </div>
 
-        <div class="modal" id="editModal">
+        <div class="modals" id="editModal" style="display: none;">
             <div class="modal-content">
-                <h2 class="modal-title">Edit Product</h2>
+                <div class="header">Edit Product</div> <!-- Add the header -->
+                <div class="divider"></div> <!-- Add the divider line -->
                 <!-- Add form fields for editing -->
                 <label for="editedProductImage">Product Image:</label>
                 <div class="image-placeholder-edit" id="editedImagePlaceholderContainer">
                     <img src="#" id="editedImagePreview" class="image-preview-edit">
                 </div>
-                <input type="file" id="editedProductImage" name="editedProductImage" onchange="EditImageChange(this)">
+                <input type="file" id="editedProductImage" name="editedProductImage" onchange="EditImageChange(this)" accept="image/*">
+
                 <label for="editedTag">Tag:</label>
-                <input type="text" id="editedTag" name="editedTag">
+                <input type="text" id="editedTag" name="editedTag" placeholder="Enter tag" required>
+
                 <label for="editedProductName">Product Name:</label>
-                <input type="text" id="editedProductName" name="editedProductName">
+                <input type="text" id="editedProductName" name="editedProductName" placeholder="Enter product name" required>
+
                 <label for="editedCategory">Category:</label>
-                <select id="editedCategory" name="editedCategory">
-                    <option value="">Select Category</option>
-                    <option value="Air Filter">Air Filter</option>
-                    <option value="Battery">Battery</option>
-                    <option value="Bearing">Bearing</option>
-                    <option value="Belt">Belt</option>
-                    <option value="Brake Pads">Brake Pads</option>
-                    <option value="Center Spring">Center Spring</option>
-                    <option value="Clutch">Clutch</option>
-                    <option value="Crank">Crank</option>
-                    <option value="Cylinder">Cylinder</option>
-                    <option value="Disc Brake">Disc Brake</option>
-                    <option value="Engine Oil">Engine Oil</option>
-                    <option value="ECU">ECU</option>
-                    <option value="Flyball">Flyball</option>
-                    <option value="Fuel Filter">Fuel Filter</option>
-                    <option value="Fuel Injector">Fuel Injector</option>
-                    <option value="Fuel Pump">Fuel Pump</option>
-                    <option value="Gasket">Gasket</option>
-                    <option value="Grip">Grip</option>
-                    <option value="ISC">ISC</option>
-                    <option value="MDL Bracket">MDL Bracket</option>
-                    <option value="O Ring">O Ring</option>
-                    <option value="Oil Seal">Oil Seal</option>
-                    <option value="Piston">Piston</option>
-                    <option value="Pulley Set">Pulley Set</option>
-                    <option value="Rectifier">Rectifier</option>
-                    <option value="Rocker Arm">Rocker Arm</option>
-                    <option value="Slider Piece">Slider Piece</option>
-                    <option value="Solenoid Set">Solenoid Set</option>
-                    <option value="Sparkplug">Sparkplug</option>
-                    <option value="Speedometer">Speedometer</option>
-                    <option value="Starter">Starter</option>
-                    <option value="Stator">Stator</option>
-                    <option value="Torque">Torque</option>
-                    <option value="Valve">Valve</option>
-                    <option value="Washer Plate">Washer Plate</option>
-                    <option value="Water Pump">Water Pump</option>
-                    <option value="Wheel">Wheel</option>
-                    <option value="Wheel Speed Sensor">Wheel Speed Sensor</option>
-                    <option value="TPS">TPS</option>
-                </select>
+                    <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
+                            <option value="">Select Category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
                 <label for="editedBrand">Brand:</label>
-                    <select id="editedBrand" name="editedBrand">
-                        <option value="">Select Brand</option>
-                        <option value="Mio">Mio</option>
-                        <option value="NMAX">NMAX</option>
-                        <option value="AEROX">AEROX</option>
-                        <option value="PCX">PCX</option>
-                        <option value="Click">Click</option>
-                        <option value="ADV">ADV</option>
-                        <option value="Beat">Beat</option>
-                        <option value="Faito">Faito</option>
-                        <option value="M3">M3</option>
-                        <option value="PIAA">PIAA</option>
-                        <option value="Burgman">Burgman</option>
-                        <option value="Legion">Legion</option>
-                        <option value="Error 12">Error 12</option>
-                        <option value="MXI">MXI</option>
-                        <option value="RS8">RS8</option>
+                    <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
+                            <option value="">Select Brand</option>
+                        @foreach($brands as $brand)
+                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                        @endforeach
                     </select>
                 <label for="editedQuantity">Quantity:</label>
                 <input type="text" id="editedQuantity" name="editedQuantity">
                 <label for="editedPrice">Price:</label>
-                <input type="text" id="editedPrice" name="editedPrice">
+                    <input type="text" id="editedPrice" name="editedPrice">
+                <label for="editedUpdatedBy">Updated By:</label>
+                <select id="editedUpdatedBy" name="editedUpdatedBy">
+                    <option value="">Select Inventory Clerk</option>
+                    @foreach ($users as $user)
+                        @if ($user->role === 2)
+                            <option value="{{ $user->name }}">{{ $user->name }}</option>
+                        @endif
+                    @endforeach
+                </select>
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="saveChanges()">Save</button>
                     <button class="modal-close-button" onclick="cancelEditModal()">Cancel</button>
@@ -357,83 +199,48 @@
 
         <div class="add-modal" id="addProductModal">
             <div class="add-product-modal-content">
-                <h2 class="modal-title">Add Product</h2>
+                <div class="header">Add Product</div> <!-- Add the header -->
+                <div class="divider"></div>
                 <label for="newProductImage">Product Image:</label>
-            <div class="image-placeholder" id="imagePlaceholderContainer">
-                <img src="#" id="newProductImagePreview" class="image-preview">
-                <label for="newProductImage" id="imageInputLabel">Choose an image</label>
-            </div>
-                <input type="file" id="newProductImage" name="newProductImage" onchange="handleImageChange(this)">
+                <div class="image-placeholder" id="imagePlaceholderContainer">
+                    <img src="#" id="newProductImagePreview" class="image-preview">
+                    <label for="newProductImage" id="imageInputLabel">Choose an image</label>
+                </div>
+                <input type="file" id="newProductImage" name="newProductImage" onchange="handleImageChange(this)" accept="image/*">
+
                 <label for="newTag">Tag:</label>
-                <input type="text" id="newTag" name="newTag">
+                    <input type="text" id="newTag" name="newTag" placeholder="Enter tag" required>
+
                 <label for="newProductName">Product Name:</label>
-                <input type="text" id="newProductName" name="newProductName">
+                    <input type="text" id="newProductName" name="newProductName" placeholder="Enter product name" required>
+
                 <label for="editedCategory">Category:</label>
-                <select id="newCategory" name="newCategory">
-                    <option value="">Select Category</option>
-                    <option value="Air Filter">Air Filter</option>
-                    <option value="Battery">Battery</option>
-                    <option value="Bearing">Bearing</option>
-                    <option value="Belt">Belt</option>
-                    <option value="Brake Pads">Brake Pads</option>
-                    <option value="Center Spring">Center Spring</option>
-                    <option value="Clutch">Clutch</option>
-                    <option value="Crank">Crank</option>
-                    <option value="Cylinder">Cylinder</option>
-                    <option value="Disc Brake">Disc Brake</option>
-                    <option value="Engine Oil">Engine Oil</option>
-                    <option value="ECU">ECU</option>
-                    <option value="Flyball">Flyball</option>
-                    <option value="Fuel Filter">Fuel Filter</option>
-                    <option value="Fuel Injector">Fuel Injector</option>
-                    <option value="Fuel Pump">Fuel Pump</option>
-                    <option value="Gasket">Gasket</option>
-                    <option value="Grip">Grip</option>
-                    <option value="ISC">ISC</option>
-                    <option value="MDL Bracket">MDL Bracket</option>
-                    <option value="O Ring">O Ring</option>
-                    <option value="Oil Seal">Oil Seal</option>
-                    <option value="Piston">Piston</option>
-                    <option value="Pulley Set">Pulley Set</option>
-                    <option value="Rectifier">Rectifier</option>
-                    <option value="Rocker Arm">Rocker Arm</option>
-                    <option value="Slider Piece">Slider Piece</option>
-                    <option value="Solenoid Set">Solenoid Set</option>
-                    <option value="Sparkplug">Sparkplug</option>
-                    <option value="Speedometer">Speedometer</option>
-                    <option value="Starter">Starter</option>
-                    <option value="Stator">Stator</option>
-                    <option value="Torque">Torque</option>
-                    <option value="Valve">Valve</option>
-                    <option value="Washer Plate">Washer Plate</option>
-                    <option value="Water Pump">Water Pump</option>
-                    <option value="Wheel">Wheel</option>
-                    <option value="Wheel Speed Sensor">Wheel Speed Sensor</option>
-                    <option value="TPS">TPS</option>
-                </select>
+                    <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
+                            <option value="">Select Category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
                 <label for="editedBrand">Brand:</label>
-                <select id="newBrand" name="newBrand">
-                        <option value="">Select Brand</option>
-                        <option value="Mio">Mio</option>
-                        <option value="NMAX">NMAX</option>
-                        <option value="AEROX">AEROX</option>
-                        <option value="PCX">PCX</option>
-                        <option value="Click">Click</option>
-                        <option value="ADV">ADV</option>
-                        <option value="Beat">Beat</option>
-                        <option value="Faito">Faito</option>
-                        <option value="M3">M3</option>
-                        <option value="PIAA">PIAA</option>
-                        <option value="Burgman">Burgman</option>
-                        <option value="Legion">Legion</option>
-                        <option value="Error 12">Error 12</option>
-                        <option value="MXI">MXI</option>
-                        <option value="RS8">RS8</option>
+                    <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
+                            <option value="">Select Brand</option>
+                        @foreach($brands as $brand)
+                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                        @endforeach
                     </select>
                 <label for="newQuantity">Quantity:</label>
-                <input type="text" id="newQuantity" name="newQuantity">
+                    <input id="newQuantity" name="newQuantity" placeholder="Enter quantity" required>
                 <label for="newPrice">Price:</label>
-                <input type="text" id="newPrice" name="newPrice">
+                    <input id="newPrice" name="newPrice" placeholder="Enter price" required>
+                <label for="newUpdatedBy">Updated By:</label>
+                    <select id="newUpdatedBy" name="newUpdatedBy" required>
+                    <option value="">Select Inventory Clerk</option>
+                    @foreach ($users as $user)
+                        @if ($user->role === 2)
+                            <option value="{{ $user->name }}">{{ $user->name }}</option>
+                        @endif
+                    @endforeach
+                </select>
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="addProduct()">Add</button>
                     <button class="modal-close-button" onclick="closeAddProductModal()">Cancel</button>
@@ -441,11 +248,19 @@
             </div>
         </div>
 
+        <div id="successModal" class="success-modal">
+            <div class="success-modal-content">
+                <div class="header">Successful</div> <!-- Add the header -->
+                <div class="divider"></div> <!-- Add the divider line -->
+                <p id="successText"></p>
+                <button class="modal-close-button" onclick="closeSuccessModal()">Ok</button>
+            </div>
+        </div>
+
     </main>
 
-
-    <script src="{{ asset('assets/js/index.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
+    <script src="{{ asset('assets/js/try.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>
     <script src="{{ asset('assets/js/inventory.js') }}"></script>    

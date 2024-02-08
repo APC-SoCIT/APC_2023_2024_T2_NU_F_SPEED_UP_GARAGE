@@ -3,16 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use App\Models\Brand;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
     public function index()
     {
         $products = Product::all();
-        return view('inventory', ['products' => $products]);
+        $users = User::all();
+        $brands = Brand::all();
+        $categories = Category::all();
+    
+        return view('inventory', [
+            'products' => $products,
+            'brands' => $brands,
+            'categories' => $categories,
+            'users' => $users
+        ]);
     }
+
 
     public function addProduct(Request $request)
     {
@@ -24,6 +38,7 @@ class ProductController extends Controller
             'brand' => 'required|string',
             'quantity' => 'required|numeric',
             'price' => 'required|numeric',
+            'updated_by' => 'required|string',
             'product_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules for the image
         ]);
     
@@ -35,6 +50,7 @@ class ProductController extends Controller
         $product->brand = $request->input('brand');
         $product->quantity = $request->input('quantity');
         $product->price = $request->input('price');
+        $product->updated_by = $request->input('updated_by');
     
         // Handle file upload
         if ($request->hasFile('product_image')) {
@@ -77,6 +93,7 @@ class ProductController extends Controller
             'product_name' => 'required|string',
             'category' => 'required|string',
             'brand' => 'required|string',
+            'updated_by' => 'required|string',
             'product_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules for the image
         ]);
 
@@ -92,6 +109,7 @@ class ProductController extends Controller
         $product->price = $validatedData['price'];
         $product->tag = $validatedData['tag'];
         $product->product_name = $validatedData['product_name'];
+        $product->updated_by = $validatedData['updated_by'];
         $product->category = $validatedData['category'];
         $product->brand = $validatedData['brand'];
 
@@ -106,7 +124,7 @@ class ProductController extends Controller
         $product->save();
 
         return response()->json(['message' => 'Product updated successfully']);
-    }
+    } 
 
     public function deleteProduct($id)
     {
@@ -146,18 +164,18 @@ class ProductController extends Controller
                     $product->save();
                 } else {
                     // Handle the case where the provided quantity is greater than the current stock
-                    \Log::warning('Insufficient stock for product: ' . $productName);
+                    Log::warning('Insufficient stock for product: ' . $productName);
                 }
             } else {
                 // Handle the case where the product is not found
-                \Log::warning('Product not found: ' . $productName);
+                Log::warning('Product not found: ' . $productName);
             }
         }
 
         return response()->json(['message' => 'Product quantities updated successfully']);
     } else {
         // Handle the case where product_names or quantities are null
-        \Log::error('Invalid request. Please provide product_names and quantities.');
+        Log::error('Invalid request. Please provide product_names and quantities.');
         return response()->json(['error' => 'Invalid request. Please provide product_names and quantities.'], 400);
     }
 }

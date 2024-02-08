@@ -10,6 +10,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BrandController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -112,6 +114,12 @@ Route::delete('/delete-product/{id}', [ProductController::class, 'deleteProduct'
 Route::put('/update-product/{id}', [ProductController::class, 'updateProduct']);
 
 Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
+
+// Use SettingsController to handle brand/category related functionality
+
+Route::post('/brands', [BrandController::class, 'addBrand'])->name('brands.add');
+Route::post('/categories', [CategoryController::class, 'addCategory'])->name('categories.add');
+
 
 // Use CustomerController to handle customer-related functionality
 

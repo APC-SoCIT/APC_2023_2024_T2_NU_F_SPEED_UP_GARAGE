@@ -10,7 +10,7 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::all();
-
+        
 
         return view('products', ['products' => $products]);
     }
@@ -18,8 +18,6 @@ class ProductsController extends Controller
     public function getProducts()
     {
         $products = Product::all();
-
-
         return response()->json(['products' => $products]);
     }
 

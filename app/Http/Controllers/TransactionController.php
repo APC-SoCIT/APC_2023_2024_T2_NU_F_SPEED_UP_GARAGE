@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\CartItem;
+use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
@@ -31,7 +32,29 @@ class TransactionController extends Controller
     public function salesrep()
     {
         $transactions = Transaction::all();
-        return view('sales-reports', ['transactions' => $transactions]);
+    
+        // Group transactions by date
+        $groupedTransactions = $transactions->groupBy(function ($transaction) {
+            return Carbon::parse($transaction->created_at)->toDateString();
+        });
+    
+        // Initialize arrays to store aggregated data
+        $dates = [];
+        $todaySales = [];
+        $todayTransactions = [];
+    
+        // Calculate aggregated data for each date
+        foreach ($groupedTransactions as $date => $group) {
+            $dates[] = $date;
+            $todaySales[] = number_format($group->sum('total_amount'), 2, '.', ',');
+            $todayTransactions[] = $group->count();
+        }
+    
+        return view('sales-reports', [
+            'dates' => $dates,
+            'todaySales' => $todaySales,
+            'todayTransactions' => $todayTransactions
+        ]);
     }
 
 

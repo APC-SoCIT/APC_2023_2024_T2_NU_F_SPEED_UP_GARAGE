@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,89 +16,21 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <title>Point of Sales</title>
-</head>
-
-
-
+    
+  </head>
     <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="/admin" class="logo">
-            <img class="logo-image" src="{{ asset('assets/images/logo.png') }}">
-            <div class="logo-name"><span>SpeedUp</span> Garage</div>
-        </a>
-        <ul class="side-menu">
-            <li><a href="/admin"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
-            <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
-            <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
-            <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
-            <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
-            <li class="active"><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
-            <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
-            <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
-            <li class="logout">
-            <a href="/welcome" class="logout"><i class='bx bx-log-out-circle'></i>Logout</a>
-            </li>
-        </ul>
-    </div>
+    <x-sidebar />
     <!-- End of Sidebar -->
-
-    <!-- Main Content -->
     <div class="content">
-        <!-- Navbar -->
-        <nav>
-            <i class='bx bx-menu'></i>
-            <form action="#">
-                <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
-                </div>
-            </form>
-            <input type="checkbox" id="theme-toggle" hidden>
-            <label for="theme-toggle" class="theme-toggle"></label>
-            <a href="#" class="notif" onclick="toggleNotification()">
-            <i class='bx bx-bell'></i>
-                <span class="count"></span>
-                <!-- Notification bar -->
-                <div class="notification-bar" id="notificationBar">
-                    <!-- Notifications go here -->
-                    <!-- Add more notifications as needed -->
-                </div>
-            </a>
-            <a href="#" class="profile" onclick="toggleProfileMenu()">
-                <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
-                <!-- Profile dropdown menu -->
-                <div class="profile-menu" id="profileMenu">
-                    <div class="menu-item">Profile</div>
-                    <div class="menu-item">Settings</div>
-                    <div class="menu-item" onclick="logout()">Logout</div>
-                </div>
-            </a>
-            <div class="chat-icon" onclick="toggleChat()">
-                <i class='bx bx-message'></i>
-            </div>
-        </nav>
-
-        <div id="chatWindow" class="chat-window">
-            <div class="chat-header">
-                <span>AI Chat</span>
-                <div class="icons-container">
-                    <span class="minimize-icon">-</span>
-                    <span class="close-icon" onclick="closeChat()">x</span>
-                </div>
-            </div>
-            <div id="chatMessages" class="chat-body"></div>
-            <div class="chat-input">
-                <input type="text" id="userInput" placeholder="Type your message...">
-                <button onclick="askAI()">Send</button>
-            </div>
-        </div>
-        <!-- End of Navbar -->
+    <!-- Start of Navbar -->
+        <x-navbar />
+        <x-chatbox />
+    <!-- End of Navbar -->
 
         <!-- Start of POS -->
         <body x-data="initApp()" x-init="initDatabase()">
@@ -128,11 +58,13 @@
                                     <option value="{{ $customer->phone }}" data-phone="{{ $customer->customer_name }}">{{ $customer->phone }}</option>
                                 @endforeach
               </select>
-              <select id="cashierName" class="category-dropdown1" >
-                <option value="Select Cashier">Select Cashier</option>
-                @foreach ($customers as $customer)
-                    <option value="{{ $customer->cashier_name }}" data-phone="{{ $customer->phone }}">{{ $customer->cashier_name }}</option>
-                @endforeach
+              <select id="cashierName" class="category-dropdown1">
+                <option value="">Cashier</option>
+                  @foreach ($users as $user)
+                      @if ($user->role === 3)
+                          <option value="{{ $user->name }}">{{ $user->name }}</option>
+                      @endif
+                  @endforeach
               </select>
                 <select id="customerName" class="category-dropdown1" name="customerName" onchange="updatePhoneLabel()">
                 <option value="">Customer</option>
