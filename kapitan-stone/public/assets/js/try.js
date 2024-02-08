@@ -190,19 +190,6 @@ function EditImageChange(input) {
 }
 
 
-// Function to handle deleting a row
-
-
-
-
-// Attach click event listeners to the "Edit" and "Delete" buttons in each row
-document.querySelectorAll('.edit-btn').forEach(btn => {
-    btn.addEventListener('click', editRow);
-});
-
-document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', deleteRow);
-});
 
 function showAddProductModal() {
     const addProductModal = document.getElementById('addProductModal');
@@ -253,11 +240,6 @@ function closeAddProductModal() {
 
 // This will ensure the status is updated when the document is fully loaded
 
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    updateStatusClassForAll();
-});
 
 // this is for the numbering in tables
 
@@ -365,7 +347,7 @@ window.onload = function () {
         } else if (userRole === '3') {  // Cashier
             // Show only specific items
             hideSidebarItems(["inventory", "settings", "users"]);
-        }
+        } 
     }
 
     // Function to show all items in the sidebar

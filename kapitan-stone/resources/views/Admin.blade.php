@@ -1,106 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/chart.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
-<body>
+<body data-user-role="{{ $userRole ?? 'null' }}">
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="#" class="logo">
-            <img class="logo-image" src="{{ asset('assets/images/logo.png') }}">
-            <div class="logo-name"><span>SpeedUp</span> Garage</div>
-        </a>
-        <ul class="side-menu">
-            <li class="active"><a href="#"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
-            <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
-            <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
-            <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
-            <li><a href="/customers"><i class='bx bxs-user-plus'></i>Customers</a></li>
-            <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
-            <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
-            <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
-            <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
-            <li class="logout">
-                <a href="{{ route('logout') }}" class="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class='bx bx-log-out-circle'></i> Logout
-                </a>
-                <form id="logout-form" method="POST" action="{{ route('logout') }}">
-                    @csrf
-                </form>
-            </li>
-            
-        </ul>
-    </div>
+        <x-sidebar />
     <!-- End of Sidebar -->
-
-    <!-- Main Content -->
     <div class="content">
-        <!-- Navbar -->
-        <nav>
-            <i class='bx bx-menu'></i>
-            <form action="#">
-                <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
-                </div>
-            </form>
-            <input type="checkbox" id="theme-toggle" hidden>
-            <label for="theme-toggle" class="theme-toggle"></label>
-            <a href="#" class="notif" onclick="toggleNotification()">
-                <i class='bx bx-bell'></i>
-                <span class="count"></span>
-                <!-- Notification bar -->
-                <div class="notification-bar" id="notificationBar">
-                    <!-- Notifications go here -->
-                    <!-- Add more notifications as needed -->
-                </div>
-            </a>
-            <a href="#" class="profile" onclick="toggleProfileMenu()">
-                <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
-                <!-- Profile dropdown menu -->
-                <div class="profile-menu" id="profileMenu">
-                    <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
-                    <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
-                    <div class="menu-item" onclick="document.getElementById('logout-form-menu').submit();">Logout</div>
-                    <form id="logout-form-menu" method="POST" action="{{ route('logout') }}" style="display: none;">
-                        @csrf
-                    </form>
-                </div>
-            </a>
-            <div class="chat-icon" onclick="toggleChat()">
-                <i class='bx bx-message'></i>
-            </div>
-        </nav>
-
-        <div id="chatWindow" class="chat-window">
-            <div class="chat-header">
-                <span>AI Chat</span>
-                <div class="icons-container">
-                    <span class="minimize-icon">-</span>
-                    <span class="close-icon" onclick="closeChat()">x</span>
-                </div>
-            </div>
-            <div id="chatMessages" class="chat-body"></div>
-            <div class="chat-input">
-                <input type="text" id="userInput" placeholder="Type your message...">
-                <button onclick="askAI()">Send</button>
-            </div>
-        </div>
-
-        <!-- End of Navbar -->
-
+    <!-- Start of Navbar -->
+        <x-navbar />
+        <x-chatbox />
+    <!-- End of Navbar -->
         <main>
             <div class="header">
                 <div class="left">
@@ -133,7 +51,7 @@
                         <h3>
                             {{ count($outOfStockItems) }}
                         </h3>
-                        <a href="/inventory?filter=Out of Stock">Low Stock Items</a>
+                        <a href="/inventory?filter=Out of Stock">Out of stock Items</a>
                     </span>
                 </li>
                 <li>
@@ -228,7 +146,7 @@
                                     <td>
                                         <p>{{ $transaction->customer_name }}</p>
                                     </td>
-                                    <td>{{ $transaction->date }}</td>
+                                    <td>{{ $transaction->created_at }}</td>
                                     <td>
                                         <span class="status {{ $transaction->status == 'Pending' ? 'pending' : 'process' }}">
                                             {{ $transaction->status }}
@@ -262,12 +180,15 @@
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>           
-    <script src="{{ asset('assets/js/index.js') }}">   
+    <script src="{{ asset('assets/js/index.js') }}"></script>
+    <script>    
     history.pushState(null, null, document.URL);
     window.addEventListener('popstate', function () {
         history.pushState(null, null, document.URL);
     });
 
+    
+    
     </script>
 </body>
 

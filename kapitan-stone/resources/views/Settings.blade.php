@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/settings.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
@@ -16,86 +15,13 @@
 <body>
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="/admin" class="logo">
-            <img class="logo-image" src="{{ asset('assets/images/logo.png') }}">
-            <div class="logo-name"><span>SpeedUp</span> Garage</div>
-        </a>
-        <ul class="side-menu">
-            <li><a href="/admin"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
-            <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
-            <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
-            <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
-            <li><a href="/customers"><i class='bx bxs-user-plus'></i>Customers</a></li>
-            <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
-            <li><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
-            <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
-            <li class="active"><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
-            <li class="logout">
-                <a href="{{ route('logout') }}" class="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class='bx bx-log-out-circle'></i> Logout
-                </a>
-                <form id="logout-form" method="POST" action="{{ route('logout') }}">
-                    @csrf
-                </form>
-            </li>
-        </ul>
-    </div>
+    <x-sidebar />
     <!-- End of Sidebar -->
-
-    <!-- Main Content -->
     <div class="content">
-        <!-- Navbar -->
-        <nav>
-            <i class='bx bx-menu'></i>
-            <form action="#">
-                <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
-                </div>
-            </form>
-            <input type="checkbox" id="theme-toggle" hidden>
-            <label for="theme-toggle" class="theme-toggle"></label>
-            <a href="#" class="notif" onclick="toggleNotification()">
-            <i class='bx bx-bell'></i>
-            <span class="count">12</span>
-            <!-- Notification bar -->
-            <div class="notification-bar" id="notificationBar">
-            </div>
-            </a>
-            <a href="#" class="profile" onclick="toggleProfileMenu()">
-                <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
-                <!-- Profile dropdown menu -->
-                <div class="profile-menu" id="profileMenu">
-                    <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
-                    <div class="menu-item" onclick="navigateTo('/settings')">Settings</div>
-                    <div class="menu-item" onclick="document.getElementById('logout-form-menu').submit();">Logout</div>
-                    <form id="logout-form-menu" method="POST" action="{{ route('logout') }}" style="display: none;">
-                        @csrf
-                    </form>
-                </div>
-            </a>
-            <div class="chat-icon" onclick="toggleChat()">
-                <i class='bx bx-message'></i>
-            </div>
-        </nav>
-
-        <div id="chatWindow" class="chat-window">
-            <div class="chat-header">
-                <span>AI Chat</span>
-                <div class="icons-container">
-                    <span class="minimize-icon">-</span>
-                    <span class="close-icon" onclick="closeChat()">x</span>
-                </div>
-            </div>
-            <div id="chatMessages" class="chat-body"></div>
-            <div class="chat-input">
-                <input type="text" id="userInput" placeholder="Type your message...">
-                <button onclick="askAI()">Send</button>
-            </div>
-        </div>
-
-        <!-- End of Navbar -->
+    <!-- Start of Navbar -->
+        <x-navbar />
+        <x-chatbox />
+    <!-- End of Navbar -->
 
         <main>
             <div class="header">
@@ -110,19 +36,8 @@
                 <div class="tabs">
                     <button class="tablinks" onclick="openCity(event, 'London')">Account</button>
                     <button class="tablinks" onclick="openCity(event, 'Brands')">Brands</button>
-                    <button class="tablinks" onclick="openCity(event, 'Category')">Category</button>
-                    <button class="tablinks" onclick="openCity(event, 'Tokyo')">Notifications</button>
+                    <button class="tablinks" onclick="openCity(event, 'Category')">Categories</button>
                     <button class="tablinks" onclick="openCity(event, 'Paris')">Threshold</button>
-                </div>
-
-                <div id="Brands" class="tabcontent">
-                    <h3>Brand</h3>
-                    <p>To be added soon</p>
-                </div>
-
-                <div id="Category" class="tabcontent">
-                    <h3>Category</h3>
-                    <p>To be added soon</p>
                 </div>
 
                 <div id="London" class="tabcontent">
@@ -130,10 +45,34 @@
                     <p>To be added soon</p>
                 </div>
 
+                <div id="Brands" class="tabcontent">
+                    <div class="threshold-container">
+                        <div class="threshold-section">
+                            <h3>Brands</h3>
+                            <hr>
+                            <label for="brandName">Add Brand:</label>
+                            <input type="text" id="brandName" class="threshold-input" name="brandName" placeholder="NMAX">
+                            <button type="submit" class="update-btn" onclick="addBrand()">Add New Brand</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="Category" class="tabcontent">
+                    <div class="threshold-container">
+                        <div class="threshold-section">
+                            <h3>Categories</h3>
+                            <hr>
+                            <label for="brandName">Add Category:</label>
+                            <input type="text" id="categoryName" class="threshold-input" name="categoryName" placeholder="Oil Filter">
+                            <button type="submit" class="update-btn" onclick="addCategory()">Add New Category</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="Paris" class="tabcontent">
                     <div class="threshold-container">
                         <div class="threshold-section">
-                            <p>Threshold Level</p>
+                            <h3>Threshold Level</h3>
                             <hr>
                             <label for="thresholdInput">Current Level:</label>
                             <input type="number" id="thresholdInput" class="threshold-input" value="{{ \App\Models\Threshold::first()->value ?? 20 }}">
@@ -142,10 +81,6 @@
                     </div>
                 </div>
 
-                <div id="Tokyo" class="tabcontent">
-                    <h3>Notifications</h3>
-                    <p>To be added soon</p>
-                </div>
             </div>
             </div>
 
@@ -163,7 +98,8 @@
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
-
+    <script src="{{ asset('assets/js/settings.js') }}"></script>
+    
 </body>
 
 </html>

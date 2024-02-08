@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class AdminController extends Controller
@@ -16,6 +17,9 @@ class AdminController extends Controller
         // Retrieve all products and transactions
         $products = Product::all();
         $transactions = Transaction::all();
+
+        $user = Auth::user();
+        $userRole = $user ? $user->role : null;
 
         $totalItemsOnHand = $products->sum('quantity');
         $formattedItemsOnHand = number_format($totalItemsOnHand, 0, '.', ',');
@@ -45,19 +49,22 @@ class AdminController extends Controller
         // Calculate the number of products sold today
         $productsSoldToday = $transactions->where('created_at', '>=', Carbon::today())->sum('quantity');
 
-        // Calculate monthly sales
-        $currentMonthSales = $transactions->whereBetween('date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('total_amount');
+        $currentMonthSales = Transaction::whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->sum('total_amount');
+
         $formattedCurrentMonthSales = number_format($currentMonthSales, 2, '.', ',');
 
-        // Calculate the average daily sales for the month
-        $daysInMonth = Carbon::now()->daysInMonth;
-        $averageDailySales = $currentMonthSales / $daysInMonth;
+        // Calculate average daily sales for the current month
+        $daysInCurrentMonth = Carbon::now()->daysInMonth;
+        $averageDailySales = $currentMonthSales / $daysInCurrentMonth;
+
         $formattedAverageDailySales = number_format($averageDailySales, 2, '.', ',');
 
         $recentTransactions = Transaction::latest()->take(3)->get();
 
-        $dailySalesData = Transaction::select(DB::raw('SUM(total_amount) as total_sales'), DB::raw('DATE_FORMAT(date, "%Y-%m-%d") as day'))
-        ->where('date', '>=', Carbon::now()->subDays(9))
+        $dailySalesData = Transaction::select(DB::raw('SUM(total_amount) as total_sales'), DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as day'))
+        ->where('created_at', '>=', Carbon::now()->subDays(9))
         ->groupBy('day')
         ->orderBy('day')
         ->pluck('total_sales', 'day')
@@ -65,14 +72,14 @@ class AdminController extends Controller
 
         $lastSixMonthsSalesData = Transaction::select(
             DB::raw('SUM(total_amount) as total_sales'),
-            DB::raw('DATE_FORMAT(date, "%Y-%m") as month_year')
+            DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month_year')
         )
-            ->where('date', '>=', Carbon::now()->subMonths(5)->startOfMonth())
+            ->where('created_at', '>=', Carbon::now()->subMonths(5)->startOfMonth())
             ->groupBy('month_year')
             ->orderBy('month_year')
             ->pluck('total_sales', 'month_year')
             ->toArray();
-
+        
         // Create an array with sales data for each of the last six months
         $lastSixMonths = collect(range(5, 0, -1))->map(function ($i) use ($lastSixMonthsSalesData) {
             $monthYear = Carbon::now()->subMonths($i)->format('Y-m');
@@ -92,6 +99,7 @@ class AdminController extends Controller
             'recentTransactions' => $recentTransactions,
             'dailySalesData' => $dailySalesData,
             'lastSixMonthsSalesData' => $lastSixMonths->toArray(),
+            'userRole' => $userRole,
         ]);
     }
 
