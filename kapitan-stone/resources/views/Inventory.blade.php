@@ -164,14 +164,14 @@
                 <input type="text" id="editedProductName" name="editedProductName" placeholder="Enter product name" required>
 
                 <label for="editedCategory">Category:</label>
-                    <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
+                    <select id="editedCategory">
                             <option value="">Select Category</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->name }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
                 <label for="editedBrand">Brand:</label>
-                    <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
+                    <select id="editedBrand" >
                             <option value="">Select Brand</option>
                         @foreach($brands as $brand)
                             <option value="{{ $brand->name }}">{{ $brand->name }}</option>
@@ -214,15 +214,15 @@
                 <label for="newProductName">Product Name:</label>
                     <input type="text" id="newProductName" name="newProductName" placeholder="Enter product name" required>
 
-                <label for="editedCategory">Category:</label>
-                    <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
+                <label for="newCategory">Category:</label>
+                    <select id="newCategory">
                             <option value="">Select Category</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->name }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
-                <label for="editedBrand">Brand:</label>
-                    <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
+                <label for="newBrand">Brand:</label>
+                    <select id="newBrand">
                             <option value="">Select Brand</option>
                         @foreach($brands as $brand)
                             <option value="{{ $brand->name }}">{{ $brand->name }}</option>
@@ -257,6 +257,19 @@
             </div>
         </div>
 
+        <div id="confirmationModal" class="confirmation-modal">
+            <div class="confirmation-modal-content">
+                <div class="header">Confirm Deletion</div>
+                <div class="divider"></div>
+                <p>Are you sure you want to delete this product?</p>
+                <div class="modal-button-container">
+                    <button class="modal-save-button" id="confirmDeleteButton">Delete</button>
+                    <button class="modal-close-button" id="cancelDeleteButton">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+
     </main>
 
     
@@ -265,7 +278,9 @@
     <script src="{{ asset('assets/js/chat.js') }}"></script>
     <script src="{{ asset('assets/js/inventory.js') }}"></script>    
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
-
+    <script>
+        
+    </script>
     
 </body>
 

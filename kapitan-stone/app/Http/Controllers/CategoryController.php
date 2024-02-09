@@ -21,4 +21,14 @@ class CategoryController extends Controller
 
         return response()->json(['message' => 'Category added successfully']);
     }
+    
+    public function checkCategory(Request $request)
+    {
+        $name = $request->input('name');
+
+        // Check if the category name already exists (case-insensitive)
+        $category = Category::where('name', 'ILIKE', $name)->first();
+
+        return response()->json(['exists' => $category ? true : false]);
+    }
 }

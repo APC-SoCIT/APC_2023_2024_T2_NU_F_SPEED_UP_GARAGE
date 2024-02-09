@@ -51,7 +51,7 @@
                             <h3>Brands</h3>
                             <hr>
                             <label for="brandName">Add Brand:</label>
-                            <input type="text" id="brandName" class="threshold-input" name="brandName" placeholder="NMAX">
+                            <input type="text" id="brandName" class="threshold-input" name="brandName" placeholder="NMAX" required>
                             <button type="submit" class="update-btn" onclick="addBrand()">Add New Brand</button>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                             <h3>Categories</h3>
                             <hr>
                             <label for="brandName">Add Category:</label>
-                            <input type="text" id="categoryName" class="threshold-input" name="categoryName" placeholder="Oil Filter">
+                            <input type="text" id="categoryName" class="threshold-input" name="categoryName" placeholder="Oil Filter" required>
                             <button type="submit" class="update-btn" onclick="addCategory()">Add New Category</button>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                             <h3>Threshold Level</h3>
                             <hr>
                             <label for="thresholdInput">Current Level:</label>
-                            <input type="number" id="thresholdInput" class="threshold-input" value="{{ \App\Models\Threshold::first()->value ?? 20 }}">
+                            <input type="number" id="thresholdInput" class="threshold-input" value="{{ \App\Models\Threshold::first()->value ?? 20 }}" required>
                             <button class="update-btn" onclick="updateThreshold()">Update Threshold</button>
                         </div>
                     </div>
@@ -84,12 +84,27 @@
             </div>
             </div>
 
-            
 
+            <!-- Success Modal -->
+            <div class="success-modal" id="successModal">
+                <div class="success-modal-content">
+                    <p class="message-header">Success</p>
+                    <div class="divider"></div>
+                    <p id="successText"></p>
+                    <button class="modal-close-button" onclick="closeSuccessModal()">Continue</button>
+                </div>
+            </div>
 
-            <!-- Add the threshold input field -->
-           
-     
+            <!-- Error Modal -->
+            <div class="error-modal" id="errorModal">
+                <div class="error-modal-content">
+                    <p class="message-header">Error</p>
+                    <div class="divider"></div>
+                    <p id="errorText"></p>
+                    <button class="modal-close-button" onclick="closeErrorModal()">Close</button>
+                </div>
+            </div>
+    
         </main>
 
     </div>

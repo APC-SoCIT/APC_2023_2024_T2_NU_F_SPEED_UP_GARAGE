@@ -155,10 +155,7 @@ Route::put('/pos/update-transaction/{transaction_id}', [POSController::class, 'u
 Route::delete('/pos/delete-transaction/{transaction_id}', [POSController::class, 'deleteTransaction']);
 Route::post('/update-transactions', 'TransactionController@updateTransactions');
 
-use App\Http\Controllers\ThresholdController;
 
-Route::get('/threshold', [ThresholdController::class, 'getThreshold']);
-Route::post('/threshold/update', [ThresholdController::class, 'updateThreshold']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
