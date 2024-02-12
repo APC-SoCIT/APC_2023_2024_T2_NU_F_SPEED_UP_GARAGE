@@ -42,6 +42,28 @@ class POSController extends Controller
         return $array;
     }
 
+    public function addCustomer(Request $request)
+    {
+
+        $customers = new Customer;
+        $customers->fname = $request->input('fname');
+        $customers->lname = $request->input('lname');
+        $customers->mname = $request->input('mname');
+        $customers->suffix = $request->input('suffix');
+        $customers->sex = $request->input('sex');
+        $customers->phone = $request->input('phone');
+        $customers->birthday = $request->input('birthday');
+        $customers->unit = $request->input('unit');
+        $customers->street = $request->input('street');
+        $customers->village = $request->input('village');
+        $customers->province = $request->input('province');
+        $customers->city = $request->input('city');
+        $customers->zipcode = $request->input('zipcode');
+        $customers->save();
+
+        return response()->json(['message' => 'Customer added successfully']);
+    }
+
     public function index()
     {
         $customers = Customer::all();

@@ -168,19 +168,13 @@
     cursor: pointer;
 }
 
-.inventory-table td:nth-child(6),
-.inventory-table th:nth-child(6) {
+.inventory-table td:nth-child(),
+.inventory-table th:nth-child() {
     /* Your styles for the seventh column here */
     width: 10%;
     white-space: nowrap;
 }
 
-.inventory-table td:nth-child(1),
-.inventory-table th:nth-child(1) {
-    /* Your styles for the seventh column here */
-    width: 10%;
-    white-space: nowrap;
-}
 
 .inventory-table th:last-child,
 .inventory-table td:last-child {

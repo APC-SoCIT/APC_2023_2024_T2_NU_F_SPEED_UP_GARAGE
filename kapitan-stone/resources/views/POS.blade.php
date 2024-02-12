@@ -96,17 +96,108 @@
             <div class="user-filter-container">
                 <div class="add-user-container">
                 <button class="add-customer-btn" onclick="addCustomerModal()">+ New Customer</button></div>
-
                 <div class="add-customer-modal" id="addCustomerModal">
-                <div class="add-customer-modal-content">
-                <h2 class="add-customer-modal-title">Add New Customer</h2>
-                <label for="newCustomerName">Customer Name:</label>
-                <input type="text" id="newCustomerName" name="newCustomerName">
-                <label for="newCustomerPhone">Phone:</label>
-                <input type="text" id="newCustomerPhone" name="newCustomerPhone">
-                <label for="newCustomerAddress">Address:</label>
-                <input type="text" id="newCustomerAddress" name="newCustomerAddress">
-             
+        <div class="add-customer-modal-content">
+        <h2 class="add-customer-modal-title">Add Customer</h2>
+        <h7>Customer Information</h7>
+         
+        <div class="form-row">
+    <div class="form-row-container">
+        <label for="newFirstName">First Name</label>
+        <input type="text" id="newFirstName" name="newFirstName" placeholder="John">
+    </div>
+    <div class="form-row-container">
+        <label for="newLastName">Last Name</label>
+        <input type="text" id="newLastName" name="newLastName" placeholder="Doe">
+    </div>
+</div>
+
+            <div class="form-row">
+            <div class="form-row-container">
+            <label for="newMiddleName">Middle Name</label>
+            <input type="text" id="newMiddleName" name="newMiddleName" placeholder="Smith">
+            </div>
+            <div class="form-row-container">
+            <label for="newSuffix">Suffix</label>
+            <input type="text" id="newSuffix" name="newSuffix" placeholder="Jr.">
+            </div>
+
+        </div>
+
+        <div class="form-row">
+        <div class="form-row-container">
+            <label for="newSex">Gender</label>
+            <select id="newSex" name="newSex">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+            </select>
+            </div>
+            <div class="form-row-container">
+            <label for="newBirthday">Birthday</label>
+            <input type="text" id="newBirthday" name="newBirthday" placeholder="2002-09-29">
+
+            <script>
+                $(function () {
+                    $("#newBirthday").datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        changeMonth: true,
+                        changeYear: true
+                    });
+                });
+                </script>
+        </div>
+        </div>
+
+        <div class="form-row">
+        <div class="form-row-container">
+        <label for="newPhone">Phone</label>
+        <input type="text" id="newPhone" name="newPhone" placeholder="639748204142" onfocus="addCountryCode()" oninput="preventCountryCodeDeletion(this)" maxlength="12">
+        </div>
+        </div>
+
+        <h7>Customer Address</h7>
+        <div class="form-row">
+        <div class="form-row-container">
+        <label for="newUnit">Address Line 1</label>
+        <input type="text" id="newUnit" name="newUnit" placeholder="Address Line 1">
+        </div>
+        <div class="form-row-container">
+        <label for="newStreet">Address Line 2</label>
+        <input type="text" id="newStreet" name="newStreet" placeholder="Address Line 2">
+        </div>
+        </div>
+
+        <div class="form-row">
+        
+            <div class="form-row-container">
+            <label for="newVillage">Village/Subdivision:</label>
+            <input type="text" id="newVillage" name="newVillage" placeholder="Greenbreeze Residence">
+            </div>
+        </div>
+
+        <div class="form-row">
+        <div class="form-row-container">
+        <label for="newProvince">Province</label>
+        <select id="newProvince" name="newProvince">
+        </select>
+        </div>
+        <div class="form-row-container">
+        <label for="newCity">City/Municipality</label>
+        <select id="newCity" name="newCity">
+        </select>
+        </div>
+        </div>
+
+        <div class="form-row">
+        <div class="form-row-container">
+        <label for="newZipCode">Zip Code</label>
+        <input type="text" id="newZipCode" name="newZipCode" placeholder="1960"> 
+        </div>
+        </div>
+
+                
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="addCustomer()">Add Customer</button>
                     <button class="modal-close-button" onclick="closeAddCustomerModal()">Cancel</button>
@@ -462,59 +553,36 @@
         });
 </script>
 
-<script> 
 
-          function addCustomerModal() {
-            const addCustomerModal = document.getElementById('addCustomerModal');
-          
+<script>	
+    window.onload = function() {	
 
-                // Show the Add Customer modal
-            addCustomerModal.style.display = 'flex'; // Use 'flex' to center the modal
-          }
+	var $ = new City();
+	$.showProvinces("#newProvince");
+	$.showCities("#newCity");
+    $.showProvinces("#customerProvince");
+	$.showCities("#customerCity");
+	
+}
+</script> 
 
-            function closeAddCustomerModal() {
-            const addCustomerModal = document.getElementById('addCustomerModal');
-            addCustomerModal.style.display = 'none';
-        }
+<script>
 
-        function addCustomer() {
-        var newCustomerName = document.getElementById('newCustomerName');
-        var newCustomerPhone = document.getElementById('newCustomerPhone');
-        var newCustomerAddress = document.getElementById('newCustomerAddress');
+function addCountryCode() {
+    var newPhoneInput = document.getElementById('newPhone');
+    if (!newPhoneInput.value.startsWith('63')) {
+        newPhoneInput.value = '63' + newPhoneInput.value;
+    }
+}
 
-        if (newCustomerName && newCustomerPhone && newCustomerAddress) {
-            // Get the CSRF token from the meta tag
-            const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        $.ajax({
-            url: '/add-customer',
-            type: 'POST',
-            headers: {
-            'X-CSRF-TOKEN': csrfToken
-            },
-            data: {
-                customer_name: newCustomerName.value,
-                phone: newCustomerPhone.value,
-                address: newCustomerAddress.value,
-            },
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            success: function(response) {
-                console.log('Customer added successfully:', response);
-                // Handle success response (update UI, close modal, etc.)
-                closeAddCustomerModal();
-                window.location.reload();
-            },
-            error: function(error) {
-                console.error('Error adding customer:', error);
-                // Handle error response (display error message, log, etc.)
-            }
-        });
-            } else {
-                console.error('One or more elements not found.');
-            }
-        }
+function preventCountryCodeDeletion(input) {
+    var countryCode = '63';
+    if (input.value.length < countryCode.length) {
+        input.value = countryCode;
+    } else if (!input.value.startsWith(countryCode)) {
+        input.value = countryCode + input.value.substring(countryCode.length);
+    }
+}
 </script>
 
 </body>

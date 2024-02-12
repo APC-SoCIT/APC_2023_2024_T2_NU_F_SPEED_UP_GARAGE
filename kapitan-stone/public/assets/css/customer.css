@@ -1,5 +1,12 @@
 /* Add this CSS at the end of your existing CSS or in a separate CSS file */
 
+
+label.required::before {
+    content: " *";
+    color: red;
+}
+
+
 .add-customer-modal, .edit-customer-modal {
     display: none;
     position: fixed;
@@ -18,13 +25,15 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    max-width: 450px;
+    max-width: 500px;
     width: 100%;
-    overflow-y: auto;
+    overflow-y: hidden; /* Add this line to hide the scroll wheel */
     max-height: 80vh;
     scrollbar-color: #ddd rgba(0, 0, 0, 0);
     scrollbar-width: thin;
 }
+
+
 
 .dark .add-customer-modal-content, .dark .edit-customer-modal-content {
     background-color: #333;
@@ -49,6 +58,8 @@
 .add-customer-modal-content h2, .edit-customer-modal-content h2 {
     margin-bottom: 20px;
     text-align: center;
+    font-weight: 500;
+    font-size: 20px;
     color: #333;
 }
 
@@ -56,10 +67,59 @@
     color: white;
 }
 
+
+.add-customer-modal-content h6, .edit-customer-modal-content h6 {
+    
+    margin-bottom: 2px;
+    font-weight: 500;
+    font-size: 15px;
+    color: #333;
+}
+
+.dark .add-customer-modal-content h6, .dark .edit-customer-modal-content h6 {
+    color: white;
+}
+
+
+.add-customer-modal-content h7, .edit-customer-modal-content h7 {
+    
+    margin-bottom: 2px;
+    margin-left:-6px;
+    font-weight: 500;
+    font-size: 15px;
+    color: #333;
+}
+
+.dark .add-customer-modal-content h7, .dark .edit-customer-modal-content h7 {
+    color: white;
+}
+
+
+
+
+.add-customer-modal-content h5, .edit-customer-modal-content h5 {
+    
+    margin-bottom: 2px;
+    font-weight: 500;
+    font-size: 10px;
+    color: #333;
+}
+.add-customer-modal-content input[required]::after, 
+.add-customer-modal-content select[required]::after {
+  content: "*";
+  color: red;
+}
+
+
+
+.dark .add-customer-modal-content h5, .dark .edit-customer-modal-content h5 {
+    color: white;
+}
+
 .add-customer-modal-content label, .edit-customer-modal-content label {
     display: block;
     margin-bottom: 5px;
-    font-size: 14px;
+    font-size: 10px;
     color: #333;
 }
 
@@ -67,13 +127,53 @@
     color: white;
 }
 
-.add-customer-modal-content input, .edit-customer-modal-content input, .add-customer-modal-content select, .edit-customer-modal-content select {
-    width: 100%;
-    padding: 8px;
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
     margin-bottom: 10px;
-    border: 1px solid #ddd;
-    outline: none;
-    border-radius: 4px;
+}
+
+.form-row-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 10px; /* Adjust spacing between pairs */
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 10Wpx;
+    color: #333;
+    width: 100px; /* Set a fixed width for the labels */
+}
+
+.form-row input[type="text"],
+.form-row select {
+    flex: 1; /* Allow inputs to expand and fill available space */
+    padding: 5px;
+    font-size: 12px;
+    
+}
+
+.dark .form-row label {
+    color: white;
+}
+
+
+
+
+
+/* Remove the width property from the following rule to avoid conflicts: */
+.add-customer-modal-content input,
+.edit-customer-modal-content input,
+.add-customer-modal-content select,
+.edit-customer-modal-content select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+  border-radius: 4px;
 }
 
 .dark .add-customer-modal-content select, .dark .add-customer-modal-content input, .dark .edit-customer-modal-content select, .dark .edit-customer-modal-content input {
