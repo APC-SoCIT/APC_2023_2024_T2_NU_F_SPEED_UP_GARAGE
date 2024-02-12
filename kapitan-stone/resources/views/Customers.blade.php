@@ -24,7 +24,6 @@
     <div class="content">
         <x-navbar />
         <x-chatbox />
-
         <main>
             <div class="header">
                 <div class="left">
@@ -126,9 +125,10 @@
         </div>
 
         <div class="modals" id="editCustomerModal" style="display:none;">
-            <div class="edit-customer-modal-content">
-                <h2 class="edit-customer-modal-title">Edit Customer Details</h2>
-                <h6>Customer Information</h6>
+            <div class="modal-content">
+                <h2 class="add-customer-modal-title">Edit Customer Details</h2>
+                <div class="divider"></div> <!-- Add the divider line -->
+                <div class="form-row-title">Customer Information</div>
                 <div class="form-row">
                 <div class="form-row-container">
                 <label for="customerFirstName">First Name</label>
@@ -182,7 +182,7 @@
                 <input type="input" id="customerPhone" name="customerPhone" placeholder="Phone Number">
                 </div>
                 </div>
-                <h6>Customer Address</h6>
+                <div class="form-row-title">Customer Address</div>
                 <div class="form-row">
                 <div class="form-row-container">
                 <label for="customerSuffix">Address Line 1</label>
@@ -229,9 +229,10 @@
         </div>
 
         <div class="add-customer-modal" id="addCustomerModal">
-        <div class="add-customer-modal-content">
+        <div class="modal-content">
         <h2 class="add-customer-modal-title">Add Customer</h2>
-        <h6>Customer Information</h6>
+        <div class="divider"></div> <!-- Add the divider line -->
+        <div class="form-row-title">Customer Information</div>
          
         <div class="form-row">
     <div class="form-row-container">
@@ -289,7 +290,7 @@
         </div>
         </div>
 
-        <h6>Customer Address</h6>
+        <div class="form-row-title">Customer Address</div>
         <div class="form-row">
         <div class="form-row-container">
         <label for="newUnit">Address Line 1</label>
@@ -376,6 +377,9 @@ function preventCountryCodeDeletion(input) {
     }
 }
 
+</script>
+
+<script>
 function addCountryCode() {
     var newPhoneInput = document.getElementById('Phone');
     if (!newPhoneInput.value.startsWith('63')) {

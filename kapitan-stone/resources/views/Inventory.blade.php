@@ -123,7 +123,7 @@
                                 <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
                                 <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
                                 <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                                <td class="price" id="price_{{ $product->id }}"><span class="price">{{ $product->price }}</span><input type="text" class="edit-price" style="display:none;"></td>
+                                <td class="price" id="price_{{ $product->id }}"><span class="price">₱{{ $product->price }}.00</span><input type="text" class="edit-price" style="display:none;"></td>
                                 <td class="updated_by" id="updated_by{{ $product->id }}"><span class="updated_by">{{ $product->updated_by }}</span></td>
                                 <td>
                                     <button class="edit-btn" onclick="editRow(event)">Edit</button>
@@ -150,40 +150,57 @@
 
         <div class="modals" id="editModal" style="display: none;">
             <div class="modal-content">
-                <div class="header">Edit Product</div> <!-- Add the header -->
+                <div class="add-customer-modal-title">Edit Product</div> <!-- Add the header -->
                 <div class="divider"></div> <!-- Add the divider line -->
                 <!-- Add form fields for editing -->
-                <label for="editedProductImage">Product Image:</label>
+                <label for="editedProductImage">Product Image</label>
                 <div class="image-placeholder-edit" id="editedImagePlaceholderContainer">
                     <img src="#" id="editedImagePreview" class="image-preview-edit">
                 </div>
                 <input type="file" id="editedProductImage" name="editedProductImage" onchange="EditImageChange(this)" accept="image/*">
-
-                <label for="editedTag">Tag:</label>
+                <div class="form-row">
+                <div class="form-row-container"> 
+                <label for="editedTag">Tag</label>
                 <input type="text" id="editedTag" name="editedTag" placeholder="Enter tag" required>
-
-                <label for="editedProductName">Product Name:</label>
+                </div>  
+                </div>  
+                <div class="form-row">
+                <div class="form-row-container"> 
+                <label for="editedProductName">Product Name</label>
                 <input type="text" id="editedProductName" name="editedProductName" placeholder="Enter product name" required>
-
-                <label for="editedCategory">Category:</label>
+                </div>  
+                <div class="form-row-container"> 
+                <label for="editedQuantity">Quantity</label>
+                <input type="text" id="editedQuantity" name="editedQuantity">
+                </div>  
+                </div>  
+                <div class="form-row">
+                <div class="form-row-container"> 
+                <label for="editedCategory">Category</label>
                     <select id="editedCategory">
                             <option value="">Select Category</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->name }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
-                <label for="editedBrand">Brand:</label>
+                    </div>  
+                    <div class="form-row-container"> 
+                <label for="editedBrand">Brand</label>
                     <select id="editedBrand" >
                             <option value="">Select Brand</option>
                         @foreach($brands as $brand)
                             <option value="{{ $brand->name }}">{{ $brand->name }}</option>
                         @endforeach
                     </select>
-                <label for="editedQuantity">Quantity:</label>
-                <input type="text" id="editedQuantity" name="editedQuantity">
-                <label for="editedPrice">Price:</label>
+                    </div>  
+                    </div>  
+                    <div class="form-row">
+                <div class="form-row-container"> 
+                <label for="editedPrice">Price</label>
                     <input type="text" id="editedPrice" name="editedPrice">
-                <label for="editedUpdatedBy">Updated By:</label>
+                    </div>  
+                    <div class="form-row-container"> 
+                <label for="editedUpdatedBy">Updated By</label>
                 <select id="editedUpdatedBy" name="editedUpdatedBy">
                     <option value="">Select Inventory Clerk</option>
                     @foreach ($users as $user)
@@ -192,6 +209,8 @@
                         @endif
                     @endforeach
                 </select>
+                </div>  
+                    </div>  
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="saveChanges()">Save</button>
                     <button class="modal-close-button" onclick="cancelEditModal()">Cancel</button>
@@ -200,41 +219,65 @@
         </div>
 
         <div class="add-modal" id="addProductModal">
-            <div class="add-product-modal-content">
-                <div class="header">Add Product</div> <!-- Add the header -->
+            <div class="modal-content">
+                
+                <div class="add-customer-modal-title">Add Product</div> <!-- Add the header -->
                 <div class="divider"></div>
-                <label for="newProductImage">Product Image:</label>
+                <label for="newProductImage">Product Image</label>
                 <div class="image-placeholder" id="imagePlaceholderContainer">
                     <img src="#" id="newProductImagePreview" class="image-preview">
                     <label for="newProductImage" id="imageInputLabel">Choose an image</label>
                 </div>
+                <div class="form-row">
+                <div class="form-row-container">
                 <input type="file" id="newProductImage" name="newProductImage" onchange="handleImageChange(this)" accept="image/*">
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="form-row-container">
+                <label for="newTag">Tag</label>
+                <input type="text" id="newTag" name="newTag" placeholder="8512731" required>
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="form-row-container">
+                <label for="newProductName">Product Name</label>
+                    <input type="text" id="newProductName" name="newProductName" placeholder="Drive - Oil Filter" required>
+                </div>  
+                <div class="form-row-container">
+                <label for="newQuantity">Quantity</label>
+                    <input id="newQuantity" name="newQuantity" placeholder="27" required>
+                    </div>
+                    </div>
 
-                <label for="newTag">Tag:</label>
-                    <input type="text" id="newTag" name="newTag" placeholder="Enter tag" required>
-
-                <label for="newProductName">Product Name:</label>
-                    <input type="text" id="newProductName" name="newProductName" placeholder="Enter product name" required>
-
-                <label for="newCategory">Category:</label>
-                    <select id="newCategory">
-                            <option value="">Select Category</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->name }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                <label for="newBrand">Brand:</label>
+                <div class="form-row">
+                <div class="form-row-container">
+                <label for="newBrand">Brand</label>
                     <select id="newBrand">
                             <option value="">Select Brand</option>
                         @foreach($brands as $brand)
                             <option value="{{ $brand->name }}">{{ $brand->name }}</option>
                         @endforeach
                     </select>
-                <label for="newQuantity">Quantity:</label>
-                    <input id="newQuantity" name="newQuantity" placeholder="Enter quantity" required>
-                <label for="newPrice">Price:</label>
-                    <input id="newPrice" name="newPrice" placeholder="Enter price" required>
-                <label for="newUpdatedBy">Updated By:</label>
+                    </div>
+                    <div class="form-row-container">
+                    <label for="newCategory">Category</label>
+                    <select id="newCategory">
+                            <option value="">Select Category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                    </div>
+
+                <div class="form-row">
+                <div class="form-row-container">
+                <label for="newPrice">Price</label>
+                    <input id="newPrice" name="newPrice" placeholder="500" required>
+                    </div>
+                    <div class="form-row-container">
+                <label for="newUpdatedBy">Updated By</label>
                     <select id="newUpdatedBy" name="newUpdatedBy" required>
                     <option value="">Select Inventory Clerk</option>
                     @foreach ($users as $user)
@@ -243,6 +286,8 @@
                         @endif
                     @endforeach
                 </select>
+                </div>
+                    </div>
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="addProduct()">Add</button>
                     <button class="modal-close-button" onclick="closeAddProductModal()">Cancel</button>

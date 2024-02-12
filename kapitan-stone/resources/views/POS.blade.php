@@ -15,7 +15,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -99,7 +99,8 @@
                 <div class="add-customer-modal" id="addCustomerModal">
         <div class="add-customer-modal-content">
         <h2 class="add-customer-modal-title">Add Customer</h2>
-        <h7>Customer Information</h7>
+        <div class="divider"></div> <!-- Add the divider line -->
+        <div class="form-row-title">Customer Information</div>
          
         <div class="form-row">
     <div class="form-row-container">
@@ -531,13 +532,15 @@
     </div>
   </div>
 
-  <div id="print-area" class="print-area"></div>
+  </main>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <div id="print-area" class="print-area"></div>
+    <script src="{{ asset('assets/js/city.js') }}"></script>
     <script src="{{ asset('assets/js/pos.js') }}"></script>
     <script src="{{ asset('assets/js/navbar.js') }}"></script> 
     <script src="{{ asset('assets/js/inventory.js') }}"></script> 
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -551,8 +554,8 @@
                 console.error('Element with ID "currentDate" not found');
             }
         });
-</script>
 
+</script>
 
 <script>	
     window.onload = function() {	

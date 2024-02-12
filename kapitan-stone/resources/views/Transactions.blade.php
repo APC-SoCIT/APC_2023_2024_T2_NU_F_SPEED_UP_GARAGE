@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/filter.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/transactions.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/entries.css') }}">
@@ -227,8 +228,12 @@
         </div>
 
         <div class="add-modal" id="addTransactionModal">
-            <div class="add-product-modal-content">
-            <h2 class="modal-title">Add Transactions</h2>
+            <div class="modal-content">
+            <h2 class="add-customer-modal-title">Add Transactions</h2>
+            <div class="divider"></div>
+            <div class="form-row-title">Transaction Information</div>       
+                <div class="form-row">
+                <div class="form-row-container">
                 <label for="newCustomerName">Customer Name:</label>
                 <select id="newCustomerName" name="newCustomerName" onchange="updatePhoneLabel()">
                     <option value="">Select Customer</option>
@@ -236,7 +241,8 @@
                         <option value="{{ $customer->customer_name }}" data-phone="{{ $customer->phone }}">{{ $customer->customer_name }}</option>
                     @endforeach
                 </select>
-
+                </div>
+                <div class="form-row-container">
                 <label for="newPhone">Phone:</label>
                 <select id="newPhone" name="newPhone" disabled>
                     <option value="">Select Customer</option>
@@ -244,7 +250,7 @@
                         <option value="{{ $customer->phone }}" data-customer-name="{{ $customer->customer_name }}">{{ $customer->phone }}</option>
                     @endforeach
                 </select>
-
+               
                 <script>
                     function updatePhoneLabel() {
                         var customerNameDropdown = document.getElementById("newCustomerName");
@@ -260,42 +266,71 @@
                         }
                     }
                 </script>
-                <label for="newDate">Date:</label>
-                <input type="date" id="newDate" name="newDate" >
-                <label for="newItems">Item:</label>
-                <input type="text" id="newItems" name="newItems">
-                <label for="newQuantity">Quantity:</label>
-                <input type="text" id="newQuantity" name="newQuantity">
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="form-row-container">
+                <label for="newItems">Item</label>
+                <input type="text" id="newItems" name="newItems" placeholder="Burgman - Oil Filter(4pcs)">
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="form-row-container">
+                <label for="newDate">Date</label>
+                <input type="" id="newDate" name="newDate" placeholder="2024-02-13">
+                </div>
+                <div class="form-row-container">
+                <label for="newQuantity">Quantity</label>
+                <input type="text" id="newQuantity" name="newQuantity" placeholder="4">
+                </div>
+                </div>
 
-                <label for="newPaymentTotal">Payment Total:</label>
-                <input type="text" id="newPaymentTotal" name="newPaymentTotal">
-                <label for="newCustomerChange">Customer Change:</label>
-                <input type="text" id="newCustomerChange" name="newCustomerChange">
 
+                <div class="form-row">
+                <div class="form-row-container">
+                <label for="newPaymentTotal">Payment Total</label>
+                <input type="text" id="newPaymentTotal" name="newPaymentTotal"placeholder="₱5000.00" >
+                </div>
+                <div class="form-row-container">
                 <label for="newTotalAmount">Total Amount:</label>
-                <input type="text" id="newTotalAmount" name="newTotalAmount">
+                <input type="text" id="newTotalAmount" name="newTotalAmount" placeholder="₱4500.00">
                 
-                <label for="newPaymentMethod">Payment Payment Method:</label>
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="form-row-container">
+                <label for="newCustomerChange">Customer Change</label>
+                <input type="text" id="newCustomerChange" name="newCustomerChange" placeholder="₱500.00">
+                </div>
+                <div class="form-row-container">
+                <label for="newPaymentMethod">Payment Method</label>
                     <select id="newPaymentMethod" name="newPaymentMethod">
                         <option value="">Select Payment Method</option>
                         <option value="CASH">CASH</option>
                         <option value="GCASH">GCASH</option>
                     </select>  
-                <label for="newStatus">Payment Status:</label>
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="form-row-container">
+                <label for="newStatus">Payment Status</label>
                     <select id="newStatus" name="newStatus">
                         <option value="">Select Payment Status</option>
                         <option value="Paid">Paid</option>
                         <option value="Partially Paid">Partially Paid</option>
                         <option value="Not Paid">Not Paid</option>
-                    </select>   
-                    <label for="newCashierName">Payment Payment Method:</label>
+                    </select>  
+                    </div>
+                    <div class="form-row-container">
+                    <label for="newCashierName">Cashier</label>
                     <select id="newCashierName" name="newCashierName">
                         <option value="">Select Cashier</option>
                         <option value="Cashier 1">Cashier 1</option>
                         <option value="Cashier 2">Cashier 2</option>
                         <option value="Cashier 3">Cashier 3</option>
                     </select>  
-        
+                    </div>
+                </div>
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="addTransaction()">Add</button>
                     <button class="modal-close-button" onclick="closeAddTransactionModal()">Cancel</button>
