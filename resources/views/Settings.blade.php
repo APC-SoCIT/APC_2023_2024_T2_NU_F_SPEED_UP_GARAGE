@@ -42,8 +42,31 @@
 
                 <div id="London" class="tabcontent">
                     <h3>Account</h3>
-                    <p>To be added soon</p>
+                    <form id="accountForm">
+                        <div class="form-group">
+                            <label for="profilePicture">Profile Picture:</label>
+                            <input type="file" id="profilePicture" name="profilePicture">
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">First Name:</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="text" id="phoneNumber" name="phoneNumber">
+                        </div>
+                        <button type="submit" class="update-btn" onclick="updateAccount()">Update Account</button>
+                    </form>
                 </div>
+
 
                 <div id="Brands" class="tabcontent">
                     <div class="threshold-container">
@@ -51,7 +74,7 @@
                             <h3>Brands</h3>
                             <hr>
                             <label for="brandName">Add Brand:</label>
-                            <input type="text" id="brandName" class="threshold-input" name="brandName" placeholder="NMAX">
+                            <input type="text" id="brandName" class="threshold-input" name="brandName" placeholder="NMAX" required>
                             <button type="submit" class="update-btn" onclick="addBrand()">Add New Brand</button>
                         </div>
                     </div>
@@ -63,7 +86,7 @@
                             <h3>Categories</h3>
                             <hr>
                             <label for="brandName">Add Category:</label>
-                            <input type="text" id="categoryName" class="threshold-input" name="categoryName" placeholder="Oil Filter">
+                            <input type="text" id="categoryName" class="threshold-input" name="categoryName" placeholder="Oil Filter" required>
                             <button type="submit" class="update-btn" onclick="addCategory()">Add New Category</button>
                         </div>
                     </div>
@@ -75,7 +98,7 @@
                             <h3>Threshold Level</h3>
                             <hr>
                             <label for="thresholdInput">Current Level:</label>
-                            <input type="number" id="thresholdInput" class="threshold-input" value="{{ \App\Models\Threshold::first()->value ?? 20 }}">
+                            <input type="number" id="thresholdInput" class="threshold-input" value="{{ \App\Models\Threshold::first()->value ?? 20 }}" required>
                             <button class="update-btn" onclick="updateThreshold()">Update Threshold</button>
                         </div>
                     </div>
@@ -84,12 +107,27 @@
             </div>
             </div>
 
-            
 
+            <!-- Success Modal -->
+            <div class="success-modal" id="successModal">
+                <div class="success-modal-content">
+                    <p class="message-header">Success</p>
+                    <div class="divider"></div>
+                    <p id="successText"></p>
+                    <button class="modal-close-button" onclick="closeSuccessModal()">Continue</button>
+                </div>
+            </div>
 
-            <!-- Add the threshold input field -->
-           
-     
+            <!-- Error Modal -->
+            <div class="error-modal" id="errorModal">
+                <div class="error-modal-content">
+                    <p class="message-header">Error</p>
+                    <div class="divider"></div>
+                    <p id="errorText"></p>
+                    <button class="modal-close-button" onclick="closeErrorModal()">Close</button>
+                </div>
+            </div>
+    
         </main>
 
     </div>
@@ -99,58 +137,6 @@
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/settings.js') }}"></script>
-    <script>
-        // Function to add a new brand
-function addBrand() {
-    var brandName = $('#brandName').val(); // Get the brand name from the input field
-
-    // Make an AJAX request to submit the form data
-    $.ajax({
-        url: 'brands', // Route to handle brand form submission
-        method: 'POST',
-        data: {
-            '_token': $('meta[name="csrf-token"]').attr('content'),
-            'name': brandName
-        },
-        success: function(response) {
-            // Handle success response
-            alert('Brand "' + brandName + '" added successfully!');
-            // You can also clear the input field or update the brand list on success
-            $('#brandName').val('');
-        },
-        error: function(xhr, status, error) {
-            // Handle error response
-            alert('An error occurred while adding the brand.');
-        }
-    });
-}
-
-// Function to add a new category
-function addCategory() {
-    var categoryName = $('#categoryName').val(); // Get the category name from the input field
-
-    // Make an AJAX request to submit the form data
-    $.ajax({
-        url: 'categories', // Route to handle category form submission
-        method: 'POST',
-        data: {
-            '_token': $('meta[name="csrf-token"]').attr('content'),
-            'name': categoryName
-        },
-        success: function(response) {
-            // Handle success response
-            alert('Category "' + categoryName + '" added successfully!');
-            // You can also clear the input field or update the category list on success
-            $('#categoryName').val('');
-        },
-        error: function(xhr, status, error) {
-            // Handle error response
-            alert('An error occurred while adding the category.');
-        }
-    });
-}
-
-    </script>
     
 </body>
 

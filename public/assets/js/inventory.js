@@ -129,7 +129,7 @@ function editRow(event) {
     var row = $(event.target).closest('tr');
 
     // Extract data from the row
-    editingProductId = row.data('id');
+    productId = row.data('id'); // Assign productId to the global variable
     var tag = row.find('.tag').text();
     var productName = row.find('.product-name').text();
     var category = row.find('.category').text();
@@ -236,11 +236,30 @@ function saveChanges() {
     });
 }
 
-function cancelEditModal() {
-    // Hide the modal
-    $('#editModal').hide();
+function updateStatusClassForAll() {
+    var rows = document.querySelectorAll('.inventory-table tbody tr');
 
-    // Reapply event listener for the "Edit" button
+    rows.forEach(function(row) {
+        var quantity = parseInt(row.querySelector('.quantity span').textContent);
+        var statusCell = row.querySelector('.status');
+
+        if (quantity === 0) {
+            statusCell.className = 'status status-out-of-stock';
+            statusCell.textContent = 'Out of Stock';
+        } else if (quantity <= threshold) {
+            statusCell.className = 'status status-low-stock';
+            statusCell.textContent = 'Low Stock';
+        } else {
+            statusCell.className = 'status status-in-stock';
+            statusCell.textContent = 'In Stock';
+        }
+    });
+}
+
+
+function cancelEditModal() {
+
+    $('#editModal').hide();
     $(document).on('click', '.edit-button', editRow);
 }
 
@@ -444,3 +463,47 @@ function closeSuccessModal() {
     var successModal = document.getElementById('successModal');
     successModal.style.display = 'none';
 }
+
+function deleteRow(event) {
+    const row = event.target.closest('tr'); // Get the closest <tr> parent of the clicked button
+    const productId = row.getAttribute('data-id'); // Get the product ID from the row
+
+    // Show the confirmation modal
+    const confirmationModal = document.getElementById('confirmationModal');
+    confirmationModal.style.display = 'block';
+
+    // Handle confirm delete button click
+    const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+    confirmDeleteButton.onclick = function() {
+        // Include CSRF token in the headers
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: `/delete-product/${productId}`,
+            type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            success: function (response) {
+                console.log('Product deleted successfully:', response);
+
+                // Handle success response (update UI, etc.)
+                const table = document.querySelector('.inventory-table tbody');
+                table.removeChild(row); // Remove the row from the table on successful deletion
+                showSuccessModal('Product deleted successfully.'); // Display success message
+                confirmationModal.style.display = 'none'; // Close the confirmation modal
+            },
+            error: function (error) {
+                console.error('Error deleting product:', error);
+
+                // Handle error response (display error message, log, etc.)
+                confirmationModal.style.display = 'none'; // Close the confirmation modal
+            }
+        });
+    }
+}
+
+const cancelDeleteButton = document.getElementById('cancelDeleteButton');
+    cancelDeleteButton.onclick = function() {
+        confirmationModal.style.display = 'none'; // Close the confirmation modal
+    };

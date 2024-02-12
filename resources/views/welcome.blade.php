@@ -32,7 +32,7 @@
         <p class="title-text">Speed Up Garage Inventory<br />and POS System</p>
         <div>
           <label for="uname" class="login-label">Username</label>
-          <input type="text" placeholder="Username" name="uname" class="login-input" required />
+          <input type="text" placeholder="juan_delacruz@gmail.com" name="uname" class="login-input" required />
           <label for="psw" class="login-label">Password</label>
           <input type="password" placeholder="Password" name="psw" class="login-password-input" required />
           <button class="login-button">Login</button>

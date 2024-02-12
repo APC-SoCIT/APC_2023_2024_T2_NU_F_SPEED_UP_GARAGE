@@ -369,3 +369,76 @@ body.dark .success-modal-content .modal-close-button {
 body.dark .success-modal-content .modal-close-button:hover {
     background-color: #2980b9; /* Close button hover background color in dark mode */
 }
+
+
+/* Confirmation Modal */
+.confirmation-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.confirmation-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(209, 209, 209, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.confirmation-modal-content .header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.confirmation-modal-content .divider {
+    margin: 15px 0;
+    border-bottom: 1px solid var(--dark-grey);
+}
+
+.confirmation-modal-content p {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Dark Mode for Confirmation Modal */
+body.dark .confirmation-modal-content {
+    background-color: #333; /* Background color in dark mode */
+    color: white; /* Text color in dark mode */
+    box-shadow: 0 0 5px rgba(209, 209, 209, 0.2); /* Adjust box shadow for dark mode */
+    border: 1px solid #444343; /* Border color in dark mode */
+}
+
+body.dark .confirmation-modal-content .header {
+    color: white; /* Header text color in dark mode */
+}
+
+body.dark .confirmation-modal-content .divider {
+    border-color: #555; /* Divider line color in dark mode */
+}
+
+body.dark .confirmation-modal-content p {
+    color: white; /* Paragraph text color in dark mode */
+}
+
+body.dark .confirmation-modal-content .modal-save-button {
+    background-color: var(--primary); /* Save button background color in dark mode */
+    color: white; /* Save button text color in dark mode */
+}
+
+body.dark .confirmation-modal-content .modal-close-button {
+    background-color: var(--red); /* Close button background color in dark mode */
+    color: white; /* Close button text color in dark mode */
+}

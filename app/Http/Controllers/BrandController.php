@@ -21,4 +21,6 @@ class BrandController extends Controller {
 
         return response()->json(['message' => 'Brand added successfully']);
     }
+
+
 }

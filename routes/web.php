@@ -142,7 +142,6 @@ Route::put('/update-transaction/{transaction_id}', [TransactionController::class
 
 // POS IDK BRO 
 
-
 Route::get('/pos1', [ProductsController::class, 'getProducts']);
 Route::get('/transaction1', [TransactionController::class, 'getTransactions']);
 Route::get('/pos2', [TransactionController::class, 'getLatestTransactionId']);
@@ -155,11 +154,6 @@ Route::get('/pos/edit-transaction/{transaction_id}', [POSController::class, 'edi
 Route::put('/pos/update-transaction/{transaction_id}', [POSController::class, 'updateTransaction']);
 Route::delete('/pos/delete-transaction/{transaction_id}', [POSController::class, 'deleteTransaction']);
 Route::post('/update-transactions', 'TransactionController@updateTransactions');
-
-use App\Http\Controllers\ThresholdController;
-
-Route::get('/threshold', [ThresholdController::class, 'getThreshold']);
-Route::post('/threshold/update', [ThresholdController::class, 'updateThreshold']);
 
 
 

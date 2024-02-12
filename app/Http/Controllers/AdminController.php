@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Customer;
+use App\Models\Threshold; // Add this line
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,9 @@ class AdminController extends Controller
             return $product->quantity == 0;
         });
 
-        $lowStockThreshold = 25;
+        // Retrieve the current threshold dynamically
+        $threshold = Threshold::first();
+        $lowStockThreshold = $threshold ? $threshold->value : 0;
 
         // Retrieve low-stock items (quantity is less than the threshold)
         $lowStockItems = $products->filter(function ($product) use ($lowStockThreshold) {
@@ -102,7 +105,4 @@ class AdminController extends Controller
             'userRole' => $userRole,
         ]);
     }
-
-
-    
 }

@@ -14,6 +14,14 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
+        // Check if the category already exists
+        $existingCategory = Category::where('name', $request->input('name'))->first();
+
+        // If the category already exists, return an error message
+        if ($existingCategory) {
+            return response()->json(['error' => 'Category already exists'], 409); // 409 Conflict
+        }
+
         // Insert the category into the database
         Category::create([
             'name' => $request->input('name'),
