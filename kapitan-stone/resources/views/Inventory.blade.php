@@ -76,6 +76,7 @@
                 </div>
 
                 <div class="entries-dropdown">
+                    <div>
                     <label class="entries-label" for="entries-per-page">Show</label>
                     <select class="entries-per-page" id="entries-per-page">
                         <option class="entries-option" value="5">5</option>
@@ -84,6 +85,7 @@
                         <option class="entries-option" value="50">50</option>
                     </select>
                     <label class="entries-label" for="entries-per-page">entries</label>
+                    </div>
                 </div>
 
                 <div class="table-container">

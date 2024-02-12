@@ -71,11 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateEntriesPerPage();
     });
 
-    // Event listener for "Show entries" button click
-    document.querySelector('.entries-dropdown').addEventListener('click', function () {
-        updateEntriesPerPage();
-    });
-
     // Initialize on page load
     updateTable();
     updatePagination();

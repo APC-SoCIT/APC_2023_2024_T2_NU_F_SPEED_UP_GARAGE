@@ -14,21 +14,19 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
+        // Check if the category already exists
+        $existingCategory = Category::where('name', $request->input('name'))->first();
+
+        // If the category already exists, return an error message
+        if ($existingCategory) {
+            return response()->json(['error' => 'Category already exists'], 409); // 409 Conflict
+        }
+
         // Insert the category into the database
         Category::create([
             'name' => $request->input('name'),
         ]);
 
         return response()->json(['message' => 'Category added successfully']);
-    }
-    
-    public function checkCategory(Request $request)
-    {
-        $name = $request->input('name');
-
-        // Check if the category name already exists (case-insensitive)
-        $category = Category::where('name', 'ILIKE', $name)->first();
-
-        return response()->json(['exists' => $category ? true : false]);
     }
 }
