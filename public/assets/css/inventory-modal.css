@@ -36,13 +36,33 @@
     align-items: center;
     z-index: 1000; /* Set a higher z-index value for modals */
 }
+<<<<<<< HEAD:public/assets/css/inventory-modal.css
+=======
+.modal-content{ 
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 100%;
+    overflow-y: hidden; /* Add this line to hide the scroll wheel */
+    max-height: 100vh;
+    scrollbar-color: #ddd rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
+}
+
+>>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/inventory-modal.css
 
 .modal-content .header {
     font-size: 20px;
     font-weight: bold;
     color: var(--dark);
     text-align: center;
+<<<<<<< HEAD:public/assets/css/inventory-modal.css
     margin-bottom: 10px;
+=======
+   
+>>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/inventory-modal.css
 }
 
 /* Divider line style */
@@ -73,7 +93,11 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(209, 209, 209, 0.2); /* Adjust box shadow for dark mode */
+<<<<<<< HEAD:public/assets/css/inventory-modal.css
     max-width: 450px;
+=======
+    max-width: 500px;
+>>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/inventory-modal.css
     width: 100%;
     overflow-y: auto; /* Add overflow-y property to enable scroll when content exceeds height */
     max-height: 80vh; /* Set a maximum height to ensure modal fits within the viewport */
@@ -442,3 +466,48 @@ body.dark .confirmation-modal-content .modal-close-button {
     background-color: var(--red); /* Close button background color in dark mode */
     color: white; /* Close button text color in dark mode */
 }
+<<<<<<< HEAD:public/assets/css/inventory-modal.css
+=======
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+
+.form-row-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 7px; /* Adjust spacing between pairs */
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #333;
+    width: 150px; /* Set a fixed width for the labels */
+}
+
+.form-row input[type="text"],
+.form-row select {
+    flex: 1; /* Allow inputs to expand and fill available space */
+    padding: 8px;
+    font-size: 13px;
+    
+}
+
+.dark .form-row label {
+    color: white;
+}
+
+
+.add-customer-modal-title{
+    text-align: center;
+    font-size:20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    
+    }
+>>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/inventory-modal.css

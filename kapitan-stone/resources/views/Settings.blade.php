@@ -43,26 +43,30 @@
                 <div id="London" class="tabcontent">
                     <h3>Account</h3>
                     <form id="accountForm">
-                        <!-- Your form fields -->
+                        <div class="form-group">
+                            <label for="profilePicture">Profile Picture:</label>
+                            <input type="file" id="profilePicture" name="profilePicture">
+                        </div>
                         <div class="form-group">
                             <label for="firstName">First Name:</label>
-                            <input type="text" id="firstName" name="firstName" required value="{{ auth()->user()->name }}">
+                            <input type="text" id="firstName" name="firstName" required>
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last Name:</label>
-                            <input type="text" id="lastName" name="lastName" required value="{{ auth()->user()->password }}">
+                            <input type="text" id="lastName" name="lastName" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address:</label>
-                            <input type="email" id="email" name="email" required value="{{ auth()->user()->email }}">
+                            <input type="email" id="email" name="email" required>
                         </div>
                         <div class="form-group">
                             <label for="phoneNumber">Phone Number:</label>
-                            <input type="text" id="phoneNumber" name="phoneNumber" value="{{ auth()->user()->created_at }}">
+                            <input type="text" id="phoneNumber" name="phoneNumber">
                         </div>
                         <button type="submit" class="update-btn" onclick="updateAccount()">Update Account</button>
                     </form>
                 </div>
+
 
                 <div id="Brands" class="tabcontent">
                     <div class="threshold-container">
