@@ -172,7 +172,7 @@ getNextReceiptNo() {
       return this.cart.reduce((count, item) => count + item.qty, 0);
     },
     updateChange() {
-      this.change = this.cash - this.getTotalPrice();
+      this.change = this.cash - this.getVatable();
     },
     updateCash(value) {
       this.cash = parseFloat(value.replace(/[^0-9]+/g, ""));
@@ -199,6 +199,38 @@ getNextReceiptNo() {
         0
       );
     },
+
+    getVatable() {
+      // Calculate the total price of all items without tax
+      const totalPrice = this.cart.reduce(
+          (total, item) => total + (item.qty * item.price),
+          0
+      );
+  
+      // Calculate the VAT amount
+      const vat = totalPrice * 0.12;
+  
+      // Calculate the total price excluding VAT
+      const vatable = totalPrice - vat;
+  
+      return vatable;
+  },
+  
+  getVAT() {
+      // Calculate the total price of all items without tax
+      const totalPrice = this.cart.reduce(
+          (total, item) => total + (item.qty * item.price),
+          0
+      );
+  
+      // Calculate the VAT amount
+      const vat = totalPrice * 0.12;
+  
+      return vat;
+  },
+  
+    
+    
     submitable() {
       const cashierNameElement = document.getElementById("cashierName");
       const customerNameElement = document.getElementById("customerName");
@@ -288,10 +320,10 @@ getNextReceiptNo() {
         .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1");
     },
     priceFormat(number) {
-      return number ? `PHP ${this.numberFormat(number)}` : `PHP 0`;
+      return number ? `₱${this.numberFormat(number)}.00` : `₱0`;
     },
     qtyFormat(number) {
-      return number ? `STOCK: ${this.numberFormat1(number)}` : `Qty: 0`;
+      return number ? `STOCK: ${this.numberFormat1(number)}` : `STOCK: 0`;
     },
 
     clear() {
@@ -417,6 +449,20 @@ getNextReceiptNo() {
           },
       });
   }
+
+
+  function scanProductModal() {
+    const scanProductModal = document.getElementById('scanProductModal');
+    scanProductModal.style.display = 'flex'; // Use 'flex' to center the modal
+}
+
+
+function closeScanProductModal() {
+  var scanProductModal = document.getElementById('scanProductModal');
+  scanProductModal.style.display = 'none';
+}
+
+
 
   function addCustomerModal() {
     const addCustomerModal = document.getElementById('addCustomerModal');

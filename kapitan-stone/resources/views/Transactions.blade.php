@@ -98,7 +98,6 @@
                             <th>Payment Method</th>
                             <th>Payment</th>
                             <th>Cashier</th>
-                            <th>Action</th>
                         </tr>
                         </thead>
 
@@ -124,16 +123,12 @@
     @endforeach
 </td>
                                 <td class="quantity" id="quantity{{ $transaction->transaction_id }}"><span class="quantity">{{ $transaction->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                                <td class="payment-total" id="payment_total_{{ $transaction->transaction_id }}"><span class="payment-total">{{ $transaction->payment_total }}</span><input type="text" class="edit-payment-total" style="display:none;"></td>
-                                <td class="customer-change" id="customer_change_{{ $transaction->transaction_id }}"><span class="customer-change">{{ $transaction->customer_change }}</span><input type="text" class="edit-customer-change" style="display:none;"></td>
-                                <td class="total-amount" id="total_amount_{{ $transaction->transaction_id }}"><span class="total-amount">{{ $transaction->total_amount }}</span><input type="text" class="edit-total-amount" style="display:none;"></td>
+                                <td class="payment-total" id="payment_total_{{ $transaction->transaction_id }}"><span class="payment-total">₱{{ $transaction->payment_total }}.00</span><input type="text" class="edit-payment-total" style="display:none;"></td>
+                                <td class="customer-change" id="customer_change_{{ $transaction->transaction_id }}"><span class="customer-change">₱{{ $transaction->customer_change }}.00</span><input type="text" class="edit-customer-change" style="display:none;"></td>
+                                <td class="total-amount" id="total_amount_{{ $transaction->transaction_id }}"><span class="total-amount">₱{{ $transaction->total_amount }}.00</span><input type="text" class="edit-total-amount" style="display:none;"></td>
                                 <td class="payment-method" id="payment_method{{ $transaction->transaction_id }}">{{ $transaction->payment_method }}</td>
                                 <td class="" id="status{{ $transaction->transaction_id }}">{{ $transaction->status }}</td>
                                 <td class="cashier-name" id="cashier_name{{ $transaction->transaction_id }}">{{ $transaction->cashier_name }}</td>
-                                <td>
-                <button class="edit-btn" onclick="editTransactionRow(event)">Edit</button>
-                <button class="delete-btn" onclick="deleteTransactionRow(event)">Delete</button>
-            </td>
             </tr>
                             @endforeach
                         </tbody>
@@ -152,192 +147,7 @@
             </div>
         </div>
 
-        <div class="modals" id="editTransactionModal" style="display: none;">
-            <div class="modal-content">
-                <h2 class="modal-title">Edit Transaction</h2>
-                <label for="editedCustomerName">Customer Name:</label>
-                <select id="editedCustomerName" name="editedCustomerName" onchange="updatePhoneLabel2()">
-                    <option value="">Select Customer</option>
-                    @foreach ($customers as $customer)
-                        <option value="{{ $customer->customer_name }}" data-phone="{{ $customer->phone }}">{{ $customer->customer_name }}</option>
-                    @endforeach
-                </select>
-
-                <label for="editedPhone">Phone:</label>
-                <select id="editedPhone" name="editedPhone" disabled>
-                    <option value="">Select Customer</option>
-                    @foreach ($customers as $customer)
-                        <option value="{{ $customer->phone }}" data-customer-name="{{ $customer->customer_name }}">{{ $customer->phone }}</option>
-                    @endforeach
-                </select>
-
-                <script>
-                    function updatePhoneLabel2() {
-                        var customerNameDropdown = document.getElementById("editedCustomerName");
-                        var editedPhone = document.getElementById("editedPhone");
-                        var selectedOption = customerNameDropdown.options[customerNameDropdown.selectedIndex];
-                        editedPhone.value = selectedOption.value;
-                        editedPhone.disabled = false;
-
-                        for (var i = 0; i < editedPhone.options.length; i++) {
-                            if (editedPhone.options[i].getAttribute("data-customer-name") === selectedOption.value + '') {
-                                editedPhone.selectedIndex = i;
-                                break;
-                            }
-                        }
-                        editedPhone.disabled = true;
-                    }
-                </script>
-                <label for="editedDate">Date:</label>
-                <input type="text" id="editedDate" name="editedDate">
-                <label for="editedItems">Item:</label>
-                <input type="text" id="editedItems" name="editedItems">
-                <label for="editedQuantity">Quantity:</label>
-                <input type="text" id="editedQuantity" name="editedQuantity">
-                <label for="editedTotalAmount">Total Amount:</label>
-                <input type="text" id="editedTotalAmount" name="editedTotalAmount">
-                <label for="editedPaymentTotal">Payment Total:</label>
-                <input type="text" id="editedPaymentTotal" name="editedPaymentTotal">
-                <label for="editedCustomerChange">Customer Change:</label>
-                <input type="text" id="editedCustomerChange" name="editedCustomerChange">
-                <label for="editedMethod">Payment Payment Method:</label>
-                    <select id="editedPaymentMethod" name="editedPaymentMethod">
-                        <option value="">Select Payment Method</option>
-                        <option value="CASH">CASH</option>
-                        <option value="GCASH">GCASH</option>
-                    </select>  
-                <label for="editedStatus">Payment Status:</label>
-                    <select id="editedStatus" name="editedStatus">
-                        <option value="">Select Payment Status</option>
-                        <option value="Paid">Paid</option>
-                        <option value="Partially Paid">Partially Paid</option>
-                        <option value="Not Paid">Not Paid</option>
-                    </select>   
-                    <label for="editedCashierName">Payment Payment Method:</label>
-                    <select id="editedCashierName" name="editedCashierName">
-                        <option value="">Select Cashier</option>    
-                        <option value="Cashier 1">Cashier 1</option>
-                        <option value="Cashier 2">Cashier 2</option>
-                        <option value="Cashier 3">Cashier 3</option>
-                    </select>  
-                <div class="modal-button-container">
-                    <button class="modal-save-button" onclick="saveChanges()">Save</button>
-                    <button class="modal-close-button" onclick="cancelTransactionEditModal()">Cancel</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="add-modal" id="addTransactionModal">
-            <div class="modal-content">
-            <h2 class="add-customer-modal-title">Add Transactions</h2>
-            <div class="divider"></div>
-            <div class="form-row-title">Transaction Information</div>       
-                <div class="form-row">
-                <div class="form-row-container">
-                <label for="newCustomerName">Customer Name:</label>
-                <select id="newCustomerName" name="newCustomerName" onchange="updatePhoneLabel()">
-                    <option value="">Select Customer</option>
-                    @foreach ($customers as $customer)
-                        <option value="{{ $customer->customer_name }}" data-phone="{{ $customer->phone }}">{{ $customer->customer_name }}</option>
-                    @endforeach
-                </select>
-                </div>
-                <div class="form-row-container">
-                <label for="newPhone">Phone:</label>
-                <select id="newPhone" name="newPhone" disabled>
-                    <option value="">Select Customer</option>
-                    @foreach ($customers as $customer)
-                        <option value="{{ $customer->phone }}" data-customer-name="{{ $customer->customer_name }}">{{ $customer->phone }}</option>
-                    @endforeach
-                </select>
-               
-                <script>
-                    function updatePhoneLabel() {
-                        var customerNameDropdown = document.getElementById("newCustomerName");
-                        var phoneDropdown = document.getElementById("newPhone");
-                        var selectedCustomerName = customerNameDropdown.value;
-                        var selectedPhoneNumber = customerNameDropdown.options[customerNameDropdown.selectedIndex].getAttribute("data-phone");
-
-                        for (var i = 0; i < phoneDropdown.options.length; i++) {
-                            if (phoneDropdown.options[i].value === selectedPhoneNumber) {
-                                phoneDropdown.selectedIndex = i;
-                                break;
-                            }
-                        }
-                    }
-                </script>
-                </div>
-                </div>
-                <div class="form-row">
-                <div class="form-row-container">
-                <label for="newItems">Item</label>
-                <input type="text" id="newItems" name="newItems" placeholder="Burgman - Oil Filter(4pcs)">
-                </div>
-                </div>
-                <div class="form-row">
-                <div class="form-row-container">
-                <label for="newDate">Date</label>
-                <input type="" id="newDate" name="newDate" placeholder="2024-02-13">
-                </div>
-                <div class="form-row-container">
-                <label for="newQuantity">Quantity</label>
-                <input type="text" id="newQuantity" name="newQuantity" placeholder="4">
-                </div>
-                </div>
-
-
-                <div class="form-row">
-                <div class="form-row-container">
-                <label for="newPaymentTotal">Payment Total</label>
-                <input type="text" id="newPaymentTotal" name="newPaymentTotal"placeholder="₱5000.00" >
-                </div>
-                <div class="form-row-container">
-                <label for="newTotalAmount">Total Amount:</label>
-                <input type="text" id="newTotalAmount" name="newTotalAmount" placeholder="₱4500.00">
-                
-                </div>
-                </div>
-                <div class="form-row">
-                <div class="form-row-container">
-                <label for="newCustomerChange">Customer Change</label>
-                <input type="text" id="newCustomerChange" name="newCustomerChange" placeholder="₱500.00">
-                </div>
-                <div class="form-row-container">
-                <label for="newPaymentMethod">Payment Method</label>
-                    <select id="newPaymentMethod" name="newPaymentMethod">
-                        <option value="">Select Payment Method</option>
-                        <option value="CASH">CASH</option>
-                        <option value="GCASH">GCASH</option>
-                    </select>  
-                </div>
-                </div>
-                <div class="form-row">
-                <div class="form-row-container">
-                <label for="newStatus">Payment Status</label>
-                    <select id="newStatus" name="newStatus">
-                        <option value="">Select Payment Status</option>
-                        <option value="Paid">Paid</option>
-                        <option value="Partially Paid">Partially Paid</option>
-                        <option value="Not Paid">Not Paid</option>
-                    </select>  
-                    </div>
-                    <div class="form-row-container">
-                    <label for="newCashierName">Cashier</label>
-                    <select id="newCashierName" name="newCashierName">
-                        <option value="">Select Cashier</option>
-                        <option value="Cashier 1">Cashier 1</option>
-                        <option value="Cashier 2">Cashier 2</option>
-                        <option value="Cashier 3">Cashier 3</option>
-                    </select>  
-                    </div>
-                </div>
-                <div class="modal-button-container">
-                    <button class="modal-save-button" onclick="addTransaction()">Add</button>
-                    <button class="modal-close-button" onclick="closeAddTransactionModal()">Cancel</button>
-                </div>
-            </div>
-        </div>
-
+        
     </main>
 
     <script src="{{ asset('assets/js/try.js') }}"></script>
