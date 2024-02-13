@@ -144,7 +144,7 @@
                             @foreach($recentTransactions as $transaction)
                                 <tr>
                                     <td>
-                                        <p>{{ $transaction->customer_name }}</p>
+                                        <p>{{ $transaction->customer_name}}</p>
                                     </td>
                                     <td>{{ $transaction->created_at }}</td>
                                     <td>

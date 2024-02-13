@@ -157,16 +157,11 @@
 .inventory-table th,
 .inventory-table td {
     border: none;
-    padding: 15px;
-    text-align: left;
+    padding: 12px;
+    text-align: center;
 }
 
-.inventory-table th {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
+
 
 .inventory-table td:nth-child(),
 .inventory-table th:nth-child() {

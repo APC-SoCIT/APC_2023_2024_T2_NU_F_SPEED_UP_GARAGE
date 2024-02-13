@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,29 +11,102 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pos.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <title>Point of Sales</title>
-    
-  </head>
+</head>
+
+
+
     <!-- Sidebar -->
-    <x-sidebar />
+    <div class="sidebar">
+        <a href="/admin" class="logo">
+            <img class="logo-image" src="{{ asset('assets/images/logo.png') }}">
+            <div class="logo-name"><span>SpeedUp</span> Garage</div>
+        </a>
+        <ul class="side-menu">
+            <li><a href="/admin"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+            <li><a href="/inventory"><i class='bx bxs-archive'></i>Inventory</a></li>
+            <li><a href="/products"><i class='bx bxs-cart'></i>Products</a></li>
+            <li><a href="/transactions"><i class='bx bxs-blanket'></i>Transactions</a></li>
+            <li><a href="/customers"><i class='bx bxs-user-plus'></i>Customers</a></li>
+            <li><a href="/reports"><i class='bx bxs-chart'></i>Reports</a></li>
+            <li class="active"><a href="/pos"><i class='bx bx-store-alt'></i>Point of Sales</a></li>
+            <li><a href="/users"><i class='bx bx-group'></i>Users</a></li>
+            <li><a href="/settings"><i class='bx bx-cog'></i>Settings</a></li>
+            <li class="logout">
+                <a href="{{ route('logout') }}" class="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class='bx bx-log-out-circle'></i> Logout
+                </a>
+                <form id="logout-form" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                </form>
+            </li>
+        </ul>
+    </div>
     <!-- End of Sidebar -->
+
+    <!-- Main Content -->
     <div class="content">
-    <!-- Start of Navbar -->
-        <x-navbar />
-        <x-chatbox />
-    <!-- End of Navbar -->
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+            <a href="#" class="notif" onclick="toggleNotification()">
+            <i class='bx bx-bell'></i>
+                <span class="count"></span>
+                <!-- Notification bar -->
+                <div class="notification-bar" id="notificationBar">
+                    <!-- Notifications go here -->
+                    <!-- Add more notifications as needed -->
+                </div>
+            </a>
+            <a href="#" class="profile" onclick="toggleProfileMenu()">
+                <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
+                <!-- Profile dropdown menu -->
+                <div class="profile-menu" id="profileMenu">
+                    <div class="menu-item">Profile</div>
+                    <div class="menu-item">Settings</div>
+                    <div class="menu-item" onclick="logout()">Logout</div>
+                </div>
+            </a>
+            <div class="chat-icon" onclick="toggleChat()">
+                <i class='bx bx-message'></i>
+            </div>
+        </nav>
+
+        <div id="chatWindow" class="chat-window">
+            <div class="chat-header">
+                <span>AI Chat</span>
+                <div class="icons-container">
+                    <span class="minimize-icon">-</span>
+                    <span class="close-icon" onclick="closeChat()">x</span>
+                </div>
+            </div>
+            <div id="chatMessages" class="chat-body"></div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Type your message...">
+                <button onclick="askAI()">Send</button>
+            </div>
+        </div>
+        <!-- End of Navbar -->
 
         <!-- Start of POS -->
         <body x-data="initApp()" x-init="initDatabase()">
@@ -43,6 +118,8 @@
     <div class="flex-grow flex">
       <!-- store menu -->
       <div class="pos-layout">
+
+
       <div class="order-info">
         <div class="right-section">
         <div class="order-no" id="receiptNo"></div>
@@ -54,7 +131,7 @@
         <select id="phone" class="category-dropdown1" style="display: none;" name="phone" onchange="updatePhoneLabel()">
                 <option value="">Phone</option>
                                 @foreach ($customers as $customer)
-                                    <option value="{{ $customer->phone }}" data-phone="{{ $customer->customer_name }}">{{ $customer->phone }}</option>
+                                    <option value="{{ $customer->phone }}" data-phone="{{ $customer->fname }}">{{ $customer->phone }}</option>
                                 @endforeach
               </select>
               <select id="cashierName" class="category-dropdown1">
@@ -68,7 +145,7 @@
                 <select id="customerName" class="category-dropdown1" name="customerName" onchange="updatePhoneLabel()">
                 <option value="">Customer</option>
                     @foreach ($customers as $customer)
-                    <option value="{{ $customer->fname }} {{ $customer->lname }}" data-phone="{{ $customer->phone }}">{{ $customer->fname }} {{ $customer->lname }}</option>
+                    <option value="{{ $customer->fname . ' ' . $customer->lname }}" data-phone="{{ $customer->phone }}">{{ $customer->fname }} {{ $customer->lname }}</option>
 
                     @endforeach
               </select>
@@ -92,7 +169,7 @@
 
               
 
-    <div class="user-table-container">
+<div class="user-table-container">
             <div class="user-filter-container">
                 <div class="add-user-container">
                 <button class="add-customer-btn" onclick="addCustomerModal()">+ New Customer</button></div>
@@ -233,27 +310,8 @@
               <option value="Brake Kit">Brake Kit</option>
               <option value="Radiator">Radiator</option>
             </select>
+</div>
 
-
-            <button class="scan-product" onclick="scanProductModal()">+ Scan Product</button>
-          </div>
-
-
-
-                <div class="add-customer-modal" id="scanProductModal">
-                <div class="add-customer-modal-content">
-                  <div class="add-customer-modal-title">Scan Product</div>
-                  <div class="divider"></div>
-      
-              Barcode:
-                
-                
-                <div class="modal-button-container">
-                  <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>
-              </div>
-            </div>
-           </div> 
-              
         <div class="product-container">
         <div class="product-inner-container">
         <div class="products" x-show="products.length === 0">
@@ -291,7 +349,7 @@
         <div class="product-brand" x-text="product.brand"></div>
         <div class="product-name" x-text="product.product_name"></div>
         <div class="product-price-quantity">
-        <div class="product-price" x-text="priceFormat(product.price)"></div>
+          <div class="product-price" x-text="priceFormat(product.price * 1.12)"></div>
           <div class="product-quantity" x-text="qtyFormat(product.quantity)"></div>
         </div>
       </div>
@@ -345,7 +403,7 @@
                   <img :src="item.image" alt="" class="rounded-lg h-10 w-10 bg-white shadow mr-2">
                   <div class="flex-grow">
                   <h5 class="text-sm" x-text="item.name"></h5>
-                    <p class="text-xs block" x-text="priceFormat(item.price)"></p>
+                    <p class="text-xs block" x-text="priceFormat(item.price * 1.12)"></p>
                     
                   </div>
                   <div class="py-1">
@@ -371,26 +429,21 @@
 
           <!-- payment info -->
           <div class="select-none h-auto w-full text-center pt-3 pb-4 px-4">
-            <div class="total-text">
-              <div>Vatable</div>
+
+          <div class="total-text">
+              <div>VATable</div>
               <div class="text-right w-full" x-text="priceFormat(getVatable())"></div>
             </div>
 
-            <div class="total-text">
+          <div class="total-text">
               <div>VAT</div>
               <div class="text-right w-full" x-text="priceFormat(getVAT())"></div>
             </div>
-
             <div class="total-text">
-              <div>Total</div>
-              <div class="text-right w-full" x-text="priceFormat(getTotalPrice())"></div>
+              <div>TOTAL</div>
+              <div class="text-right w-full" x-text="priceFormat(getTotalPayment())"></div>
             </div>
-
-
-
             <div class="cash-text">
-
-            
             
               <div class="category-plc1">
               
@@ -409,7 +462,7 @@
     </select>
  
     <div class="text-php">
-      <div class="mr-2 mt-2"> PHP </div>
+      <div class="mr-2 mt-2">₱</div>
       
                   <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="cash-inner-card">
                 </div>
@@ -512,20 +565,17 @@
                     <td class="py-2 text-left">
                       <span x-text="item.name"></span>
                       <br/>
-                      <small x-text="priceFormat(item.price)"></small>
+                      <small x-text="priceFormat(item.price * 1.12)"></small>
                     </td>
                     <td class="py-2 text-center" x-text="item.qty"></td>
-                    <td class="py-2 text-right" x-text="priceFormat(item.qty * item.price)"></td>
+                    <td class="py-2 text-right" x-text="priceFormat(item.qty * item.price * 1.12)"></td>
                   </tr>
                 </template>
               </tbody>
             </table>
           </div>
           <hr class="my-2">
-            <div class="flex text-xs font-semibold">
-              <div class="flex-grow">PAY AMOUNT</div>
-              <div x-text="priceFormat(cash)"></div>
-            </div>
+          <div>
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">PAYMENT METHOD</div>
               <div x-text="selectedPaymentMethod"></div>
@@ -547,22 +597,23 @@
               <div x-text="selectedPhone"></div>
             </div>
             <hr class="my-2">
-
-            <div>
-            <div class="flex font-semibold">
-              <div class="flex-grow">Vatable</div>
-              <div x-text="priceFormat(getTotalPrice())"></div>
+            <div class="flex text-xs font-semibold">
+              <div class="flex-grow">VATABLE</div>
+              <div x-text="priceFormat(getVatable())"></div>
             </div>
-            <div>
-            <div class="flex font-semibold">
+            <div class="flex text-xs font-semibold">
               <div class="flex-grow">VAT</div>
               <div x-text="priceFormat(getVAT())"></div>
             </div>
-            <div class="flex font-semibold">
-              <div class="flex-grow">Total</div>
-              <div x-text="priceFormat(getVatable())"></div>
+            <div class="flex text-xs font-semibold">
+              <div class="flex-grow">TOTAL</div>
+              <div x-text="priceFormat(getTotalPayment())"></div>
             </div>
-            <div class="flex font-semibold">
+            <div class="flex text-xs font-semibold">
+              <div class="flex-grow">PAID AMOUNT</div>
+              <div x-text="priceFormat(cash)"></div>
+            </div>
+            <div class="flex text-xs font-semibold">
               <div class="flex-grow">CHANGE</div>
               <div x-text="priceFormat(change)"></div>
             </div>
@@ -576,15 +627,13 @@
     </div>
   </div>
 
-  </main>
-
   <div id="print-area" class="print-area"></div>
-    <script src="{{ asset('assets/js/city.js') }}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{ asset('assets/js/pos.js') }}"></script>
     <script src="{{ asset('assets/js/navbar.js') }}"></script> 
     <script src="{{ asset('assets/js/inventory.js') }}"></script> 
     <script src="{{ asset('assets/js/index.js') }}"></script>
-    
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -598,39 +647,9 @@
                 console.error('Element with ID "currentDate" not found');
             }
         });
-
 </script>
 
-<script>	
-    window.onload = function() {	
 
-	var $ = new City();
-	$.showProvinces("#newProvince");
-	$.showCities("#newCity");
-    $.showProvinces("#customerProvince");
-	$.showCities("#customerCity");
-	
-}
-</script> 
-
-<script>
-
-function addCountryCode() {
-    var newPhoneInput = document.getElementById('newPhone');
-    if (!newPhoneInput.value.startsWith('63')) {
-        newPhoneInput.value = '63' + newPhoneInput.value;
-    }
-}
-
-function preventCountryCodeDeletion(input) {
-    var countryCode = '63';
-    if (input.value.length < countryCode.length) {
-        input.value = countryCode;
-    } else if (!input.value.startsWith(countryCode)) {
-        input.value = countryCode + input.value.substring(countryCode.length);
-    }
-}
-</script>
 
 </body>
 </html>

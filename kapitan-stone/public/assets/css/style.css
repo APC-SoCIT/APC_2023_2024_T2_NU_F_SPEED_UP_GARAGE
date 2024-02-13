@@ -344,6 +344,10 @@ body.dark .sidebar .side-menu li:hover a {
     margin-bottom: 10px;
     color: var(--dark);
 }
+.orders tr{
+    color: var(--dark);
+}
+
 
 .content main .header .left .breadcrumb{
     display: flex;

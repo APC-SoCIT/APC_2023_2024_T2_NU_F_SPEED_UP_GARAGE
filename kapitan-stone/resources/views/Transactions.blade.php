@@ -50,8 +50,9 @@
 
             <div class="maintable-container">
                 <div class="filter-container">
+                    
                     <div class="add-product-container">
-                        <button class="add-product-btn" onclick="addTransactionModal()">+ Add Transactions</button>
+                        <span></span>
                         <div class="dropdown-container">
                             
                         <label for="startDate" class="date-filter">From</label>
@@ -92,9 +93,11 @@
                             <th>Date</th>
                             <th>Items</th>
                             <th>Quantity</th>
-                            <th>Payment Total</th>
-                            <th>Customer Change</th>
+                            <th>VATable</th>
+                            <th>VAT</th>
                             <th>Total Amount</th>
+                            <th>Paid Amount</th>
+                            <th>Change</th>
                             <th>Payment Method</th>
                             <th>Payment</th>
                             <th>Cashier</th>
@@ -109,23 +112,26 @@
                                 <td class="phone" id="phone{{ $transaction->transaction_id }}">{{ $transaction->phone }}</td>
                                 <td class="date" id="date{{ $transaction->transaction_id }}">{{ $transaction->created_at }}</td>
                                 <td class="items" id="items{{ $transaction->transaction_id }}">
-    @php
-        $items = explode(', ', $transaction->items);
-        $quantities = explode(', ', $transaction->qty);
-    @endphp
+                                    @php
+                                        $items = explode(', ', $transaction->items);
+                                        $quantities = explode(', ', $transaction->qty);
+                                    @endphp
 
-    @foreach ($items as $key => $item)
-        @if (isset($quantities[$key]))
-            {{ $item }} ({{ $quantities[$key] }}pcs)@if (!$loop->last),
-            @endif
-            <br>
-        @endif
-    @endforeach
-</td>
-                                <td class="quantity" id="quantity{{ $transaction->transaction_id }}"><span class="quantity">{{ $transaction->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                                <td class="payment-total" id="payment_total_{{ $transaction->transaction_id }}"><span class="payment-total">₱{{ $transaction->payment_total }}.00</span><input type="text" class="edit-payment-total" style="display:none;"></td>
-                                <td class="customer-change" id="customer_change_{{ $transaction->transaction_id }}"><span class="customer-change">₱{{ $transaction->customer_change }}.00</span><input type="text" class="edit-customer-change" style="display:none;"></td>
-                                <td class="total-amount" id="total_amount_{{ $transaction->transaction_id }}"><span class="total-amount">₱{{ $transaction->total_amount }}.00</span><input type="text" class="edit-total-amount" style="display:none;"></td>
+                                    @foreach ($items as $key => $item)
+                                        @if (isset($quantities[$key]))
+                                            {{ $item }} ({{ $quantities[$key] }}pcs)@if (!$loop->last),
+                                            @endif
+                                            <br>
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td class="quantity" id="quantity{{ $transaction->transaction_id }}"><span class="quantity">{{ $transaction->quantity }}</span><input type="text"style="display:none;"></td>
+                                <td class="vatable" id="vatable{{ $transaction->transaction_id }}"><span class="vatable">₱{{ $transaction->vatable }}</span><input type="text" style="display:none;"></td>
+                                <td class="vat" id="vatable{{ $transaction->transaction_id }}"><span class="vat">₱{{ $transaction->vat}}</span><input type="text" style="display:none;"></td>
+                                <td class="total_amount" id="ttotal_amount_{{ $transaction->transaction_id }}"><span class="total_amount">₱{{ $transaction->total_amount}}</span><input type="text" style="display:none;"></td>
+                                <td class="paid_amount" id="paid_amount_{{ $transaction->transaction_id }}"><span class="paid_amount">₱{{ $transaction->paid_amount}}</span><input type="text" style="display:none;"></td>
+                                <td class="customer-change" id="customer_change_{{ $transaction->transaction_id }}"><span class="customer-change">₱{{ $transaction->customer_change }}</span><input type="text" class="edit-customer-change" style="display:none;"></td>
+
                                 <td class="payment-method" id="payment_method{{ $transaction->transaction_id }}">{{ $transaction->payment_method }}</td>
                                 <td class="" id="status{{ $transaction->transaction_id }}">{{ $transaction->status }}</td>
                                 <td class="cashier-name" id="cashier_name{{ $transaction->transaction_id }}">{{ $transaction->cashier_name }}</td>
@@ -154,229 +160,6 @@
     <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/transactions.js') }}"></script>
-    <script> 
-    
-    function addTransactionModal() {
-    const addTransactionModal = document.getElementById('addTransactionModal');
-    addTransactionModal.style.display = 'flex'; // Display the modal
-    
-    const editTransactionModal = document.getElementById('editTransactionModal');
-
-                // Hide the Edit Customer modal if it's currently displayed
-            editTransactionModal.style.display = 'none';
-            
-}
-
-// Function to close the modal for adding a transaction
-function closeAddTransactionModal() {
-    const addTransactionModal = document.getElementById('addTransactionModal');
-    // Hide the modal and clear input fields
-    addTransactionModal.style.display = 'none';
-
-}
-
-// Function to add a new transaction
-function addTransaction() {
-    // Retrieve values from input fields
-    var customerName = $('#newCustomerName').val();
-    var phone = $('#newPhone').val();
-    var date = $('#newDate').val();
-    var items = $('#newItems').val();
-    var quantity = $('#newQuantity').val();
-    var paymentTotal = $('#newPaymentTotal').val();
-    var customerChange = $('#newCustomerChange').val();
-    var totalAmount = $('#newTotalAmount').val();
-    var paymentMethod = $('#newPaymentMethod').val();
-    var status = $('#newStatus').val();
-    var cashierName = $('#newCashierName').val();
-
-
-    // Perform validation if needed
-
-    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-    // Send AJAX request to add the transaction
-    $.ajax({
-        url: '/add-transaction',
-        type: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken,
-        },
-        data: {
-            customer_name: customerName,
-            phone: phone,
-            date: date,
-            items: items,
-            quantity: quantity,
-            total_amount: totalAmount,
-            payment_total: paymentTotal,
-            customer_change: customerChange,
-            payment_method: paymentMethod,
-            status: status,
-            cashier_name: cashierName
-        },
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        
-        },
-        success: function(response) {
-            console.log('Transaction added successfully:', response);
-            closeAddTransactionModal(); // Close the modal on success
-            updateStatusClassForAll(true);
-            location.reload();
-           
-        },
-        error: function(error) {
-            console.error('Error adding transaction:', error);
-            // Handle error response (display error message, etc.)
-        }
-    });
-}
-
-
-function deleteTransactionRow(event) {
-    const row = $(event.target).closest('tr');
-    const transactionId = row.data('id');
-    const confirmed = window.confirm('Are you sure you want to delete this transaction?');
-
-    if (!confirmed) {
-        return;
-    }
-
-    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-    // Send AJAX request to delete the transaction
-    $.ajax({
-        url: `/delete-transaction/${transactionId}`,
-        type: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        },
-        success: function(response) {
-            console.log('Transaction deleted successfully:', response);
-            row.remove(); // Remove the row from the UI on successful deletion
-        },
-        error: function(error) {
-            console.error('Error deleting transaction:', error);
-            // Handle error response (display error message, etc.)
-        }
-    });
-}
-let transactionId; // Declare transactionId outside the functions
-
-function editTransactionRow(event) {
-    const row = $(event.target).closest('tr');
-    const transactionId = row.data('id');
-
-    // Fetch data from the row
-    const customerName = row.find('.customer-name').text();
-    const phone = row.find('.phone').text();
-    const date = row.find('.date').text();
-    const items = row.find('.items').text();
-    const quantity = row.find('.quantity').text();
-    const paymentTotal = row.find('.payment-total').text();
-    const customerChange = row.find('.customer-change').text();
-    const totalAmount = row.find('.total-amount').text();
-    const paymentMethod = row.find('.payment-method').text();
-    const status = row.find('.status').text();
-    const cashierName = row.find('.cashier-name').text();
-
-    // Populate the modal fields with the fetched data
-    $('#editedCustomerName').val(customerName);
-    $('#editedPhone').val(phone);
-    $('#editedDate').val(date);
-    $('#editedItems').val(items);
-    $('#editedQuantity').val(quantity);
-    $('#editedPaymentTotal').val(paymentTotal);
-    $('#editedCustomerChange').val(customerChange);
-    $('#editedTotalAmount').val(totalAmount);
-    $('#editedPaymentMethod').val(paymentMethod);
-    $('#editedStatus').val(status);
-    $('#editedCashierName').val(cashierName);
-
-    // Show the modal
-    $('#editTransactionModal').show();
-}
-
-
-
-
-function saveChanges(transactionId) {
-    if (!transactionId) {
-        console.error('Transaction ID not set.');
-        return;
-    }
-
-    const editedCustomerName = $('#editedCustomerName').val();
-    const editedPhone = $('#editedPhone').val();
-    const editedDate = $('#editedDate').val();
-    const editedItems = $('#editedItems').val();
-    const editedQuantity = $('#editedQuantity').val();
-    const editedPaymentTotal = $('#editedPaymentTotal').val();
-    const editedCustomerChange = $('#editedCustomerChange').val();
-    const editedTotalAmount = $('#editedTotalAmount').val();
-    const editedPaymentMethod = $('#editedPaymentMethod').val();
-    const editedStatus = $('#editedStatus').val();
-    const editedCashierName = $('#editedCashierName').val();
-
-    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-    $.ajax({
-        url: `/update-transaction/${transactionId}`,
-        method: 'PUT',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        },
-        data: {
-            customer_name: editedCustomerName,
-            phone: editedPhone,
-            date: editedDate,
-            items: editedItems,
-            quantity: editedQuantity,
-            payment_total: editedPaymentTotal,
-            customer_change: editedCustomerChange,
-            total_amount: editedTotalAmount,
-            payment_method: editedPaymentMethod,
-            status: editedStatus,
-            cashier_name: editedCashierName
-        },
-        success: function (response) {
-            console.log('Transaction updated successfully:', response);
-
-            $(`#customer_name${transactionId}`).text(editedCustomerName);
-            $(`#phone${transactionId}`).text(editedPhone);
-            $(`#date${transactionId}`).text(editedDate);
-            $(`#items${transactionId}`).text(editedItems);
-            $(`#quantity${transactionId}`).text(editedQuantity);
-            $(`#payment_total_${transactionId}`).text(editedPaymentTotal);
-            $(`#customer_change_${transactionId}`).text(editedCustomerChange);
-            $(`#total_amount_${transactionId}`).text(editedTotalAmount);
-            $(`#payment_method${transactionId}`).text(editedPaymentMethod);
-            $(`#status${transactionId}`).text(editedStatus);
-            $(`#cashier_name${transactionId}`).text(editedCashierName);
-
-            $('#editTransactionModal').hide();
-            updateStatusClassForAll();
-            reloadPage();
-        },
-        error: function (error) {
-            console.error('Error updating transaction:', error);
-        }
-    });
-}
-
-function cancelTransactionEditModal() {
-    $('#editTransactionModal').hide();
-}
-
-
-
-function reloadPage() {
-        // Reload the current page
-        location.reload();
-    }
-</script>
-
 
 </body>
 
