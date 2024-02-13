@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pos.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -42,8 +43,6 @@
     <div class="flex-grow flex">
       <!-- store menu -->
       <div class="pos-layout">
-
-
       <div class="order-info">
         <div class="right-section">
         <div class="order-no" id="receiptNo"></div>
@@ -69,7 +68,8 @@
                 <select id="customerName" class="category-dropdown1" name="customerName" onchange="updatePhoneLabel()">
                 <option value="">Customer</option>
                     @foreach ($customers as $customer)
-                        <option value="{{ $customer->customer_name }}" data-phone="{{ $customer->phone }}">{{ $customer->customer_name }}</option>
+                    <option value="{{ $customer->fname }} {{ $customer->lname }}" data-phone="{{ $customer->phone }}">{{ $customer->fname }} {{ $customer->lname }}</option>
+
                     @endforeach
               </select>
 
@@ -100,8 +100,8 @@
         <div class="add-customer-modal-content">
         <h2 class="add-customer-modal-title">Add Customer</h2>
         <div class="divider"></div> <!-- Add the divider line -->
-        <div class="form-row-title">Customer Information</div>
-         
+        <div class="add-customer-modal-title">Customer Information</div>
+         <div class="divider"></div>
         <div class="form-row">
     <div class="form-row-container">
         <label for="newFirstName">First Name</label>
@@ -233,8 +233,27 @@
               <option value="Brake Kit">Brake Kit</option>
               <option value="Radiator">Radiator</option>
             </select>
-</div>
 
+
+            <button class="scan-product" onclick="scanProductModal()">+ Scan Product</button>
+          </div>
+
+
+
+                <div class="add-customer-modal" id="scanProductModal">
+                <div class="add-customer-modal-content">
+                  <div class="add-customer-modal-title">Scan Product</div>
+                  <div class="divider"></div>
+      
+              Barcode:
+                
+                
+                <div class="modal-button-container">
+                  <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>
+              </div>
+            </div>
+           </div> 
+              
         <div class="product-container">
         <div class="product-inner-container">
         <div class="products" x-show="products.length === 0">
@@ -272,7 +291,7 @@
         <div class="product-brand" x-text="product.brand"></div>
         <div class="product-name" x-text="product.product_name"></div>
         <div class="product-price-quantity">
-          <div class="product-price" x-text="priceFormat(product.price)"></div>
+        <div class="product-price" x-text="priceFormat(product.price)"></div>
           <div class="product-quantity" x-text="qtyFormat(product.quantity)"></div>
         </div>
       </div>
@@ -353,10 +372,25 @@
           <!-- payment info -->
           <div class="select-none h-auto w-full text-center pt-3 pb-4 px-4">
             <div class="total-text">
-              <div>TOTAL</div>
+              <div>Vatable</div>
+              <div class="text-right w-full" x-text="priceFormat(getVatable())"></div>
+            </div>
+
+            <div class="total-text">
+              <div>VAT</div>
+              <div class="text-right w-full" x-text="priceFormat(getVAT())"></div>
+            </div>
+
+            <div class="total-text">
+              <div>Total</div>
               <div class="text-right w-full" x-text="priceFormat(getTotalPrice())"></div>
             </div>
+
+
+
             <div class="cash-text">
+
+            
             
               <div class="category-plc1">
               
@@ -488,11 +522,6 @@
             </table>
           </div>
           <hr class="my-2">
-          <div>
-            <div class="flex font-semibold">
-              <div class="flex-grow">TOTAL</div>
-              <div x-text="priceFormat(getTotalPrice())"></div>
-            </div>
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">PAY AMOUNT</div>
               <div x-text="priceFormat(cash)"></div>
@@ -518,7 +547,22 @@
               <div x-text="selectedPhone"></div>
             </div>
             <hr class="my-2">
-            <div class="flex text-xs font-semibold">
+
+            <div>
+            <div class="flex font-semibold">
+              <div class="flex-grow">Vatable</div>
+              <div x-text="priceFormat(getTotalPrice())"></div>
+            </div>
+            <div>
+            <div class="flex font-semibold">
+              <div class="flex-grow">VAT</div>
+              <div x-text="priceFormat(getVAT())"></div>
+            </div>
+            <div class="flex font-semibold">
+              <div class="flex-grow">Total</div>
+              <div x-text="priceFormat(getVatable())"></div>
+            </div>
+            <div class="flex font-semibold">
               <div class="flex-grow">CHANGE</div>
               <div x-text="priceFormat(change)"></div>
             </div>

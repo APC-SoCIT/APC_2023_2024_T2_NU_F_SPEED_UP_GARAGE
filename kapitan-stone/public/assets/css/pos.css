@@ -856,6 +856,19 @@ margin-right: 10px;
   }
 }
 
+.scan-product{
+    padding: 8px 14px;
+    background-color: #2ecc71; /* Green color, you can change it */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left:712px;
+    text-align: right;
+   
+  }
+
 
 
 
