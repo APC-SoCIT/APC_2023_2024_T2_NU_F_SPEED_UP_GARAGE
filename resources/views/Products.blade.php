@@ -88,15 +88,15 @@
                     <table class="inventory-table">
                         <thead>
                             <tr>
-                                <th>Status</th>
+                                <th >Status</th>
                                 <th>#</th>
-                                <th>Tag</th>
+                                <th class="tag">Tag</th>
                                 <th>Image</th>
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Brand</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
+                                <th class="quantity">Quantity</th>
+                                <th class="price">Price</th>
                             </tr>
                         </thead>
                         <tbody id="inventoryTableBody">
@@ -117,7 +117,10 @@
                                 <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
                                 <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
                                 <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                                <td class="price" id="price_{{ $product->id }}"><span class="price">₱{{ $product->price }}.00</span><input type="text" class="edit-price" style="display:none;"></td>
+                                <td class="price" id="price_{{ $product->id }}">
+                                    <span class="price">{{ number_format($product->price, 2) }}</span>
+                                    <input type="text" class="edit-price" style="display:none;">
+                                </td>
                             </tr>
                             @endforeach
                             <!-- Add more rows as needed -->
@@ -135,62 +138,6 @@
                     <span class="pagination-link" onclick="changePage(1)">></span>
                 </div>
 
-            </div>
-        </div>
-
-        <div class="modal" id="editModal">
-            <div class="modal-content">
-                <h2 class="modal-title">Edit Product</h2>
-                <!-- Add form fields for editing -->
-                <label for="editedProductImage">Product Image:</label>
-                <div class="image-placeholder-edit" id="editedImagePlaceholderContainer">
-                    <img src="#" id="editedImagePreview" class="image-preview-edit">
-                </div>
-                <input type="file" id="editedProductImage" name="editedProductImage" onchange="EditImageChange(this)">
-                <label for="editedTag">Tag:</label>
-                <input type="text" id="editedTag" name="editedTag">
-                <label for="editedProductName">Product Name:</label>
-                <input type="text" id="editedProductName" name="editedProductName">
-                <label for="editedCategory">Category:</label>
-                <input type="text" id="editedCategory" name="editedCategory">
-                <label for="editedBrand">Brand:</label>
-                <input type="text" id="editedBrand" name="editedBrand">
-                <label for="editedQuantity">Quantity:</label>
-                <input type="text" id="editedQuantity" name="editedQuantity">
-                <label for="editedPrice">Price:</label>
-                <input type="text" id="editedPrice" name="editedPrice">
-                <div class="modal-button-container">
-                    <button class="modal-save-button" onclick="saveChanges()">Save</button>
-                    <button class="modal-close-button" onclick="cancelEditModal()">Cancel</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="add-modal" id="addProductModal">
-            <div class="add-product-modal-content">
-                <h2 class="modal-title">Add Product</h2>
-                <label for="newProductImage">Product Image:</label>
-            <div class="image-placeholder" id="imagePlaceholderContainer">
-                <img src="#" id="newProductImagePreview" class="image-preview">
-                <label for="newProductImage" id="imageInputLabel">Choose an image</label>
-            </div>
-                <input type="file" id="newProductImage" name="newProductImage" onchange="handleImageChange(this)">
-                <label for="newTag">Tag:</label>
-                <input type="text" id="newTag" name="newTag">
-                <label for="newProductName">Product Name:</label>
-                <input type="text" id="newProductName" name="newProductName">
-                <label for="newCategory">Category:</label>
-                <input type="text" id="newCategory" name="newCategory">
-                <label for="newBrand">Brand:</label>
-                <input type="text" id="newBrand" name="newBrand">
-                <label for="newQuantity">Quantity:</label>
-                <input type="text" id="newQuantity" name="newQuantity">
-                <label for="newPrice">Price:</label>
-                <input type="text" id="newPrice" name="newPrice">
-                <div class="modal-button-container">
-                    <button class="modal-save-button" onclick="addProduct()">Add</button>
-                    <button class="modal-close-button" onclick="closeAddProductModal()">Cancel</button>
-                </div>
             </div>
         </div>
 

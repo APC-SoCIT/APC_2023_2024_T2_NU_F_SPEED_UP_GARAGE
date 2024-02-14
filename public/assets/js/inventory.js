@@ -176,8 +176,9 @@ function showModalWithData(productId) {
 }
 
 function saveChanges() {
-    const editedQuantity = $('#editedQuantity').val();
-    const editedPrice = $('#editedPrice').val();
+    // Get the edited values from the input fields
+    const editedQuantity = parseNumericalValue($('#editedQuantity').val());
+    const editedPrice = parseNumericalValue($('#editedPrice').val()).toFixed(2); // Format to two decimal places
     const editedTag = $('#editedTag').val();
     const editedProductName = $('#editedProductName').val();
     const editedCategory = $('#editedCategory').val();
@@ -185,11 +186,11 @@ function saveChanges() {
     const editedUpdatedBy = $('#editedUpdatedBy').val();
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    // Check if any required field is empty
-    const requiredFields = [editedQuantity, editedPrice, editedTag, editedProductName, editedCategory, editedBrand, editedUpdatedBy];
-    const emptyFields = requiredFields.filter(field => field.trim() === '');
-
+    // Ensure all values are strings before calling trim
+    const requiredFields = [editedQuantity, editedPrice, editedTag, editedProductName, editedCategory, editedBrand, editedUpdatedBy].map(String);
+    
     // If any required field is empty, display error message
+    const emptyFields = requiredFields.filter(field => field.trim() === '');
     if (emptyFields.length > 0) {
         const errorMessage = 'Please fill out all required fields.';
         showErrorMessage(errorMessage);
@@ -216,8 +217,8 @@ function saveChanges() {
             console.log('Product updated successfully:', response);
 
             // Update UI with the new data
-            $(`#quantity_${productId} .quantity`).text(editedQuantity);
-            $(`#price_${productId} .price`).text(editedPrice);
+            $(`#quantity_${productId} .quantity`).text(addCommas(editedQuantity));
+            $(`#price_${productId} .price`).text(addCommas(editedPrice));
             $(`#tag_${productId} .tag`).text(editedTag);
             $(`#product_name_${productId} .product_name`).text(editedProductName);
             $(`#category_${productId} .category`).text(editedCategory);
@@ -228,6 +229,7 @@ function saveChanges() {
             $('#editModal').hide();
             updateStatusClassForAll();
             showSuccessModal('Product has been edited successfully.'); // Display success message
+            updateDisplayedValues(); // Call a function to update displayed values
         },
         error: function(error) {
             console.error('Error updating product:', error);
@@ -506,4 +508,28 @@ function deleteRow(event) {
 const cancelDeleteButton = document.getElementById('cancelDeleteButton');
     cancelDeleteButton.onclick = function() {
         confirmationModal.style.display = 'none'; // Close the confirmation modal
-    };
+};
+
+function onlyNumbers(event) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode === 46) {
+        // Check if the dot (.) has already been entered
+        if (event.target.value.includes('.')) {
+            event.preventDefault();
+            return false;
+        }
+    } else if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+function addCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function parseNumericalValue(value) {
+    // Remove commas and parse the value as a float
+    return parseFloat(value.replace(/,/g, ''));
+}

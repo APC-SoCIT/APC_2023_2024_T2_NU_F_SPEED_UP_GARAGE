@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pos.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -42,8 +43,6 @@
     <div class="flex-grow flex">
       <!-- store menu -->
       <div class="pos-layout">
-
-
       <div class="order-info">
         <div class="right-section">
         <div class="order-no" id="receiptNo"></div>
@@ -69,7 +68,8 @@
                 <select id="customerName" class="category-dropdown1" name="customerName" onchange="updatePhoneLabel()">
                 <option value="">Customer</option>
                     @foreach ($customers as $customer)
-                        <option value="{{ $customer->customer_name }}" data-phone="{{ $customer->phone }}">{{ $customer->customer_name }}</option>
+                    <option value="{{ $customer->fname }} {{ $customer->lname }}" data-phone="{{ $customer->phone }}">{{ $customer->fname }} {{ $customer->lname }}</option>
+
                     @endforeach
               </select>
 
@@ -96,17 +96,109 @@
             <div class="user-filter-container">
                 <div class="add-user-container">
                 <button class="add-customer-btn" onclick="addCustomerModal()">+ New Customer</button></div>
-
                 <div class="add-customer-modal" id="addCustomerModal">
-                <div class="add-customer-modal-content">
-                <h2 class="add-customer-modal-title">Add New Customer</h2>
-                <label for="newCustomerName">Customer Name:</label>
-                <input type="text" id="newCustomerName" name="newCustomerName">
-                <label for="newCustomerPhone">Phone:</label>
-                <input type="text" id="newCustomerPhone" name="newCustomerPhone">
-                <label for="newCustomerAddress">Address:</label>
-                <input type="text" id="newCustomerAddress" name="newCustomerAddress">
-             
+        <div class="add-customer-modal-content">
+        <h2 class="add-customer-modal-title">Add Customer</h2>
+        <div class="divider"></div> <!-- Add the divider line -->
+        <div class="add-customer-modal-title">Customer Information</div>
+         <div class="divider"></div>
+        <div class="form-row">
+    <div class="form-row-container">
+        <label for="newFirstName">First Name</label>
+        <input type="text" id="newFirstName" name="newFirstName" placeholder="John">
+    </div>
+    <div class="form-row-container">
+        <label for="newLastName">Last Name</label>
+        <input type="text" id="newLastName" name="newLastName" placeholder="Doe">
+    </div>
+</div>
+
+            <div class="form-row">
+            <div class="form-row-container">
+            <label for="newMiddleName">Middle Name</label>
+            <input type="text" id="newMiddleName" name="newMiddleName" placeholder="Smith">
+            </div>
+            <div class="form-row-container">
+            <label for="newSuffix">Suffix</label>
+            <input type="text" id="newSuffix" name="newSuffix" placeholder="Jr.">
+            </div>
+
+        </div>
+
+        <div class="form-row">
+        <div class="form-row-container">
+            <label for="newSex">Gender</label>
+            <select id="newSex" name="newSex">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+            </select>
+            </div>
+            <div class="form-row-container">
+            <label for="newBirthday">Birthday</label>
+            <input type="text" id="newBirthday" name="newBirthday" placeholder="2002-09-29">
+
+            <script>
+                $(function () {
+                    $("#newBirthday").datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        changeMonth: true,
+                        changeYear: true
+                    });
+                });
+                </script>
+        </div>
+        </div>
+
+        <div class="form-row">
+        <div class="form-row-container">
+        <label for="newPhone">Phone</label>
+        <input type="text" id="newPhone" name="newPhone" placeholder="639748204142" onfocus="addCountryCode()" oninput="preventCountryCodeDeletion(this)" maxlength="12">
+        </div>
+        </div>
+
+        <h7>Customer Address</h7>
+        <div class="form-row">
+        <div class="form-row-container">
+        <label for="newUnit">Address Line 1</label>
+        <input type="text" id="newUnit" name="newUnit" placeholder="Address Line 1">
+        </div>
+        <div class="form-row-container">
+        <label for="newStreet">Address Line 2</label>
+        <input type="text" id="newStreet" name="newStreet" placeholder="Address Line 2">
+        </div>
+        </div>
+
+        <div class="form-row">
+        
+            <div class="form-row-container">
+            <label for="newVillage">Village/Subdivision:</label>
+            <input type="text" id="newVillage" name="newVillage" placeholder="Greenbreeze Residence">
+            </div>
+        </div>
+
+        <div class="form-row">
+        <div class="form-row-container">
+        <label for="newProvince">Province</label>
+        <select id="newProvince" name="newProvince">
+        </select>
+        </div>
+        <div class="form-row-container">
+        <label for="newCity">City/Municipality</label>
+        <select id="newCity" name="newCity">
+        </select>
+        </div>
+        </div>
+
+        <div class="form-row">
+        <div class="form-row-container">
+        <label for="newZipCode">Zip Code</label>
+        <input type="text" id="newZipCode" name="newZipCode" placeholder="1960"> 
+        </div>
+        </div>
+
+                
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="addCustomer()">Add Customer</button>
                     <button class="modal-close-button" onclick="closeAddCustomerModal()">Cancel</button>
@@ -141,8 +233,27 @@
               <option value="Brake Kit">Brake Kit</option>
               <option value="Radiator">Radiator</option>
             </select>
-</div>
 
+
+            <button class="scan-product" onclick="scanProductModal()">+ Scan Product</button>
+          </div>
+
+
+
+                <div class="add-customer-modal" id="scanProductModal">
+                <div class="add-customer-modal-content">
+                  <div class="add-customer-modal-title">Scan Product</div>
+                  <div class="divider"></div>
+      
+              Barcode:
+                
+                
+                <div class="modal-button-container">
+                  <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>
+              </div>
+            </div>
+           </div> 
+              
         <div class="product-container">
         <div class="product-inner-container">
         <div class="products" x-show="products.length === 0">
@@ -180,7 +291,7 @@
         <div class="product-brand" x-text="product.brand"></div>
         <div class="product-name" x-text="product.product_name"></div>
         <div class="product-price-quantity">
-          <div class="product-price" x-text="priceFormat(product.price)"></div>
+        <div class="product-price" x-text="priceFormat(product.price)"></div>
           <div class="product-quantity" x-text="qtyFormat(product.quantity)"></div>
         </div>
       </div>
@@ -261,10 +372,25 @@
           <!-- payment info -->
           <div class="select-none h-auto w-full text-center pt-3 pb-4 px-4">
             <div class="total-text">
-              <div>TOTAL</div>
+              <div>Vatable</div>
+              <div class="text-right w-full" x-text="priceFormat(getVatable())"></div>
+            </div>
+
+            <div class="total-text">
+              <div>VAT</div>
+              <div class="text-right w-full" x-text="priceFormat(getVAT())"></div>
+            </div>
+
+            <div class="total-text">
+              <div>Total</div>
               <div class="text-right w-full" x-text="priceFormat(getTotalPrice())"></div>
             </div>
+
+
+
             <div class="cash-text">
+
+            
             
               <div class="category-plc1">
               
@@ -396,11 +522,6 @@
             </table>
           </div>
           <hr class="my-2">
-          <div>
-            <div class="flex font-semibold">
-              <div class="flex-grow">TOTAL</div>
-              <div x-text="priceFormat(getTotalPrice())"></div>
-            </div>
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">PAY AMOUNT</div>
               <div x-text="priceFormat(cash)"></div>
@@ -426,7 +547,22 @@
               <div x-text="selectedPhone"></div>
             </div>
             <hr class="my-2">
-            <div class="flex text-xs font-semibold">
+
+            <div>
+            <div class="flex font-semibold">
+              <div class="flex-grow">Vatable</div>
+              <div x-text="priceFormat(getTotalPrice())"></div>
+            </div>
+            <div>
+            <div class="flex font-semibold">
+              <div class="flex-grow">VAT</div>
+              <div x-text="priceFormat(getVAT())"></div>
+            </div>
+            <div class="flex font-semibold">
+              <div class="flex-grow">Total</div>
+              <div x-text="priceFormat(getVatable())"></div>
+            </div>
+            <div class="flex font-semibold">
               <div class="flex-grow">CHANGE</div>
               <div x-text="priceFormat(change)"></div>
             </div>
@@ -440,13 +576,15 @@
     </div>
   </div>
 
-  <div id="print-area" class="print-area"></div>
+  </main>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <div id="print-area" class="print-area"></div>
+    <script src="{{ asset('assets/js/city.js') }}"></script>
     <script src="{{ asset('assets/js/pos.js') }}"></script>
     <script src="{{ asset('assets/js/navbar.js') }}"></script> 
     <script src="{{ asset('assets/js/inventory.js') }}"></script> 
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -460,61 +598,38 @@
                 console.error('Element with ID "currentDate" not found');
             }
         });
+
 </script>
 
-<script> 
+<script>	
+    window.onload = function() {	
 
-          function addCustomerModal() {
-            const addCustomerModal = document.getElementById('addCustomerModal');
-          
+	var $ = new City();
+	$.showProvinces("#newProvince");
+	$.showCities("#newCity");
+    $.showProvinces("#customerProvince");
+	$.showCities("#customerCity");
+	
+}
+</script> 
 
-                // Show the Add Customer modal
-            addCustomerModal.style.display = 'flex'; // Use 'flex' to center the modal
-          }
+<script>
 
-            function closeAddCustomerModal() {
-            const addCustomerModal = document.getElementById('addCustomerModal');
-            addCustomerModal.style.display = 'none';
-        }
+function addCountryCode() {
+    var newPhoneInput = document.getElementById('newPhone');
+    if (!newPhoneInput.value.startsWith('63')) {
+        newPhoneInput.value = '63' + newPhoneInput.value;
+    }
+}
 
-        function addCustomer() {
-        var newCustomerName = document.getElementById('newCustomerName');
-        var newCustomerPhone = document.getElementById('newCustomerPhone');
-        var newCustomerAddress = document.getElementById('newCustomerAddress');
-
-        if (newCustomerName && newCustomerPhone && newCustomerAddress) {
-            // Get the CSRF token from the meta tag
-            const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        $.ajax({
-            url: '/add-customer',
-            type: 'POST',
-            headers: {
-            'X-CSRF-TOKEN': csrfToken
-            },
-            data: {
-                customer_name: newCustomerName.value,
-                phone: newCustomerPhone.value,
-                address: newCustomerAddress.value,
-            },
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            success: function(response) {
-                console.log('Customer added successfully:', response);
-                // Handle success response (update UI, close modal, etc.)
-                closeAddCustomerModal();
-                window.location.reload();
-            },
-            error: function(error) {
-                console.error('Error adding customer:', error);
-                // Handle error response (display error message, log, etc.)
-            }
-        });
-            } else {
-                console.error('One or more elements not found.');
-            }
-        }
+function preventCountryCodeDeletion(input) {
+    var countryCode = '63';
+    if (input.value.length < countryCode.length) {
+        input.value = countryCode;
+    } else if (!input.value.startsWith(countryCode)) {
+        input.value = countryCode + input.value.substring(countryCode.length);
+    }
+}
 </script>
 
 </body>

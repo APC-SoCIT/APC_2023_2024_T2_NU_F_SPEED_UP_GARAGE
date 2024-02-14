@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Call the function to assign numbers when the page loads
-    assignRowNumbers();
+    
   });
 
   function searchTable() {

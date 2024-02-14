@@ -92,6 +92,7 @@
     color: var(--light);
     border-radius: 20px;
     font-weight: 600;
+    white-space: nowrap; 
 }
 
 .status-out-of-stock {
@@ -154,12 +155,36 @@
     outline: none; 
 }
 
-.inventory-table th,
+.inventory-table th{
+    border: none;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: left;
+
+}
+
 .inventory-table td {
     border: none;
-    padding: 15px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
     text-align: left;
+    
 }
+
+.inventory-table td.price, .inventory-table td.quantity, .inventory-table td.tag {
+    text-align: right;
+    padding-right: 50px;
+}
+
+.inventory-table th.price, .inventory-table th.quantity, .inventory-table th.tag  {
+    text-align: right;
+    padding-right: 50px;
+}
+
 
 .inventory-table th {
     background-color: #3498db;
@@ -168,27 +193,13 @@
     cursor: pointer;
 }
 
-<<<<<<< HEAD:public/assets/css/table.css
-.inventory-table td:nth-child(6),
-.inventory-table th:nth-child(6) {
-=======
 .inventory-table td:nth-child(),
 .inventory-table th:nth-child() {
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/table.css
     /* Your styles for the seventh column here */
     width: 10%;
     white-space: nowrap;
 }
 
-<<<<<<< HEAD:public/assets/css/table.css
-.inventory-table td:nth-child(1),
-.inventory-table th:nth-child(1) {
-    /* Your styles for the seventh column here */
-    width: 10%;
-    white-space: nowrap;
-}
-=======
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/table.css
 
 .inventory-table th:last-child,
 .inventory-table td:last-child {

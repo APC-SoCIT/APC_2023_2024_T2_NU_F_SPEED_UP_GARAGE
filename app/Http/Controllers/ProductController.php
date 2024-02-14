@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Models\Brand;
-use App\Models\Category;
+use App\Models\Category; 
 
 class ProductController extends Controller
 {

@@ -23,7 +23,7 @@
     --white: #fff;
 }
 
-.modal,
+.edit-modal,
 .add-modal {
     display: none;
     position: fixed;
@@ -36,8 +36,6 @@
     align-items: center;
     z-index: 1000; /* Set a higher z-index value for modals */
 }
-<<<<<<< HEAD:public/assets/css/inventory-modal.css
-=======
 .modal-content{ 
     background-color: #fff;
     padding: 20px;
@@ -51,18 +49,13 @@
     scrollbar-width: thin;
 }
 
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/inventory-modal.css
 
 .modal-content .header {
     font-size: 20px;
     font-weight: bold;
     color: var(--dark);
     text-align: center;
-<<<<<<< HEAD:public/assets/css/inventory-modal.css
-    margin-bottom: 10px;
-=======
    
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/inventory-modal.css
 }
 
 /* Divider line style */
@@ -93,11 +86,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(209, 209, 209, 0.2); /* Adjust box shadow for dark mode */
-<<<<<<< HEAD:public/assets/css/inventory-modal.css
-    max-width: 450px;
-=======
     max-width: 500px;
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/inventory-modal.css
     width: 100%;
     overflow-y: auto; /* Add overflow-y property to enable scroll when content exceeds height */
     max-height: 80vh; /* Set a maximum height to ensure modal fits within the viewport */
@@ -466,8 +455,6 @@ body.dark .confirmation-modal-content .modal-close-button {
     background-color: var(--red); /* Close button background color in dark mode */
     color: white; /* Close button text color in dark mode */
 }
-<<<<<<< HEAD:public/assets/css/inventory-modal.css
-=======
 
 .form-row {
     display: flex;
@@ -509,5 +496,4 @@ body.dark .confirmation-modal-content .modal-close-button {
     margin-bottom: 10px;
     font-weight: 500;
     
-    }
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/inventory-modal.css
+}

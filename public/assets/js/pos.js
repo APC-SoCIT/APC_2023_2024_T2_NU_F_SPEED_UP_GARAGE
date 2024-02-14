@@ -172,7 +172,7 @@ getNextReceiptNo() {
       return this.cart.reduce((count, item) => count + item.qty, 0);
     },
     updateChange() {
-      this.change = this.cash - this.getTotalPrice();
+      this.change = this.cash - this.getVatable();
     },
     updateCash(value) {
       this.cash = parseFloat(value.replace(/[^0-9]+/g, ""));
@@ -199,6 +199,38 @@ getNextReceiptNo() {
         0
       );
     },
+
+    getVatable() {
+      // Calculate the total price of all items without tax
+      const totalPrice = this.cart.reduce(
+          (total, item) => total + (item.qty * item.price),
+          0
+      );
+  
+      // Calculate the VAT amount
+      const vat = totalPrice * 0.12;
+  
+      // Calculate the total price excluding VAT
+      const vatable = totalPrice - vat;
+  
+      return vatable;
+  },
+  
+  getVAT() {
+      // Calculate the total price of all items without tax
+      const totalPrice = this.cart.reduce(
+          (total, item) => total + (item.qty * item.price),
+          0
+      );
+  
+      // Calculate the VAT amount
+      const vat = totalPrice * 0.12;
+  
+      return vat;
+  },
+  
+    
+    
     submitable() {
       const cashierNameElement = document.getElementById("cashierName");
       const customerNameElement = document.getElementById("customerName");
@@ -288,10 +320,10 @@ getNextReceiptNo() {
         .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1");
     },
     priceFormat(number) {
-      return number ? `PHP ${this.numberFormat(number)}` : `PHP 0`;
+      return number ? `₱${this.numberFormat(number)}.00` : `₱0`;
     },
     qtyFormat(number) {
-      return number ? `STOCK: ${this.numberFormat1(number)}` : `Qty: 0`;
+      return number ? `STOCK: ${this.numberFormat1(number)}` : `STOCK: 0`;
     },
 
     clear() {
@@ -417,7 +449,206 @@ getNextReceiptNo() {
           },
       });
   }
+
+
+  function scanProductModal() {
+    const scanProductModal = document.getElementById('scanProductModal');
+    scanProductModal.style.display = 'flex'; // Use 'flex' to center the modal
+}
+
+
+function closeScanProductModal() {
+  var scanProductModal = document.getElementById('scanProductModal');
+  scanProductModal.style.display = 'none';
+}
+
+
+
+  function addCustomerModal() {
+    const addCustomerModal = document.getElementById('addCustomerModal');
+    addCustomerModal.style.display = 'flex'; // Use 'flex' to center the modal
+}
+
+// Function to close the Add Customer modal
+function closeAddCustomerModal() {
+    const addCustomerModal = document.getElementById('addCustomerModal');
+    const newFirstName = document.getElementById('newFirstName');
+    const newLastName = document.getElementById('newLastName');
+    const newMiddleName = document.getElementById('newMiddleName');
+    const newSuffix = document.getElementById('newSuffix');
+    const newSex = document.getElementById('newSex');
+    const newPhone = document.getElementById('newPhone');
+    const newBirthday = document.getElementById('newBirthday');
+    const newStreet = document.getElementById('newStreet');
+    const newVillage = document.getElementById('newVillage');
+    const newProvince = document.getElementById('province');
+    const newCity = document.getElementById('city');
+    const newZipCode = document.getElementById('newZipCode');
+    
+
+    // Clear the input fields
+    newFirstName.value = '';
+    newLastName.value = '';
+    newMiddleName.value = '';
+    newSuffix.value = '';
+    newPhone.value = '';
+    newBirthday.value = '';
+    newStreet.value = '';
+    newVillage.value = '';
+    newZipCode.value = '';
+
+    // Hide the modal
+    addCustomerModal.style.display = 'none';
+}
+
+function addCustomer() {
+   
   
+  var newFirstName = document.getElementById('newFirstName');
+  var newLastName = document.getElementById('newLastName');
+  var newMiddleName = document.getElementById('newMiddleName');
+  var newSuffix = document.getElementById('newSuffix');
+  var newSex = document.getElementById('newSex');
+  var newPhone = document.getElementById('newPhone');
+  var newBirthday = document.getElementById('newBirthday');
+  var newUnit = document.getElementById('newUnit');
+  var newStreet = document.getElementById('newStreet');
+  var newVillage = document.getElementById('newVillage');
+  var newProvince = document.getElementById('newProvince');
+  var newCity = document.getElementById('newCity');
+  var newZipCode = document.getElementById('newZipCode');
+
+    if (newFirstName.value.trim() === '') {
+          newFirstName.setCustomValidity('Please fill out this field.');
+          newFirstName.reportValidity();
+          return; // Exit the function
+      }
+
+    if (newLastName.value.trim() === '') {
+      newLastName.setCustomValidity('Please fill out this field.');
+      newLastName.reportValidity();
+      return; // Exit the function
+    }
+
+    if (newMiddleName.value.trim() === '') {
+      newMiddleName.setCustomValidity('Please fill out this field.');
+      newMiddleName.reportValidity();
+      return; // Exit the function
+    }
+
+    if (newSex.value.trim() === '') {
+      newSex.setCustomValidity('Please Select Your Gender.');
+      newSex.reportValidity();
+      return; // Exit the function
+    }
+
+    if (newBirthday.value.trim() === '') {
+      newBirthday.setCustomValidity('Please  Select Your Birthday.');
+      newBirthday.reportValidity();
+      return; // Exit the function
+    }
+
+    if (newPhone.value.trim() === '') {
+      newPhone.setCustomValidity('Please fill out this field.');
+      newPhone.reportValidity();
+      return; // Exit the function
+    }
+
+ 
+      if (newUnit.value.trim() === '' && newStreet.value.trim() === '') {
+          // If both newUnit and newStreet are empty, prompt the user to input in either one
+          newUnit.setCustomValidity('Please fill out either Unit or Street.');
+          newStreet.setCustomValidity('Please fill out either Unit or Street.');
+          newUnit.reportValidity();
+          return; // Exit the function
+      } else {
+          // Reset custom validity if one of newUnit or newStreet is filled
+          newUnit.setCustomValidity('');
+          newStreet.setCustomValidity('');
+      }
+  
+      if (newProvince.value === 'Select Province') {
+      newProvince.setCustomValidity('Please select a province.');
+      newProvince.reportValidity();
+      return; // Exit the function
+      }
+
+      // Trigger validation for city if it's in its default state
+      if (newCity.value === 'Select City / Municipality') {
+      newCity.setCustomValidity('Please select a city/municipality.');
+      newCity.reportValidity();
+      return; // Exit the function
+      }
+  
+      // Trigger validation for zipcode if it's in its default state
+      if (newZipCode.value.trim() === '') {
+      newZipCode.setCustomValidity('Please fill out this field.');
+      newZipCode.reportValidity();
+      return; // Exit the function
+      }
+
+
+
+  if (newFirstName && newLastName && newMiddleName && newSuffix && newSex && newPhone && newUnit && newStreet && newVillage && newProvince && newCity && newZipCode ) {
+    // Get the CSRF token from the meta tag
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+      url: '/add-customer',
+      type: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      },
+      data: {
+        fname: newFirstName.value,
+        lname: newLastName.value,
+        mname: newMiddleName.value,
+        suffix: newSuffix.value,
+        sex: newSex.value,
+        phone: newPhone.value, 
+        birthday: newBirthday.value, 
+        unit: newUnit.value,
+        street: newStreet.value,
+        village: newVillage.value,
+        province: newProvince.value,
+        city: newCity.value,
+        zipcode: newZipCode.value,
+         
+      },
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      },
+      success: function(response) {
+        console.log('Customer added successfully:', response);
+        // Handle success response (update UI, close modal, etc.)
+        closeAddCustomerModal();
+      },
+      error: function(error) {
+        console.error('Error adding customer:', error);
+        // Handle error response (display error message, log, etc.)
+      }
+    });
+  } else {
+    console.error('One or more elements not found.');
+  }
+}
+  
+
+function addCountryCode() {
+  var newPhoneInput = document.getElementById('newPhone');
+  if (!newPhoneInput.value.startsWith('63')) {
+      newPhoneInput.value = '63' + newPhoneInput.value;
+  }
+}
+
+function preventCountryCodeDeletion(input) {
+  var countryCode = '63';
+  if (input.value.length < countryCode.length) {
+      input.value = countryCode;
+  } else if (!input.value.startsWith(countryCode)) {
+      input.value = countryCode + input.value.substring(countryCode.length);
+  }
+}
     
     
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\POSController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ThresholdController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -119,7 +120,8 @@ Route::get('/products', [ProductsController::class, 'index'])->name('products.in
 
 Route::post('/brands', [BrandController::class, 'addBrand'])->name('brands.add');
 Route::post('/categories', [CategoryController::class, 'addCategory'])->name('categories.add');
-
+Route::get('/threshold', [ThresholdController::class, 'getThreshold']);
+Route::post('/threshold/update', [ThresholdController::class, 'updateThreshold']);
 
 // Use CustomerController to handle customer-related functionality
 

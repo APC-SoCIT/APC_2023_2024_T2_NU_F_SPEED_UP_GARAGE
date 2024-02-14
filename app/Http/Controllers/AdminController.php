@@ -42,7 +42,7 @@ class AdminController extends Controller
 
         // Retrieve low-stock items (quantity is less than the threshold)
         $lowStockItems = $products->filter(function ($product) use ($lowStockThreshold) {
-            return $product->quantity > 0 && $product->quantity < $lowStockThreshold;
+            return $product->quantity > 0 && $product->quantity <= $lowStockThreshold;
         });
 
         // Calculate today's sales

@@ -42,8 +42,6 @@ class POSController extends Controller
         return $array;
     }
 
-<<<<<<< HEAD:app/Http/Controllers/POSController.php
-=======
     public function addCustomer(Request $request)
     {
 
@@ -66,7 +64,6 @@ class POSController extends Controller
         return response()->json(['message' => 'Customer added successfully']);
     }
 
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/app/Http/Controllers/POSController.php
     public function index()
     {
         $customers = Customer::all();

@@ -1,7 +1,5 @@
 /* Add this CSS at the end of your existing CSS or in a separate CSS file */
 
-<<<<<<< HEAD:public/assets/css/customer.css
-=======
 
 label.required::before {
     content: " *";
@@ -9,7 +7,6 @@ label.required::before {
 }
 
 
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/customer.css
 .add-customer-modal, .edit-customer-modal {
     display: none;
     position: fixed;
@@ -23,32 +20,19 @@ label.required::before {
     z-index: 1000;
 }
 
-<<<<<<< HEAD:public/assets/css/customer.css
-.add-customer-modal-content, .edit-customer-modal-content {
-=======
 .modal-content{ 
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/customer.css
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-<<<<<<< HEAD:public/assets/css/customer.css
-    max-width: 450px;
-    width: 100%;
-    overflow-y: auto;
-    max-height: 80vh;
-=======
     max-width: 500px;
     width: 100%;
     overflow-y: hidden; /* Add this line to hide the scroll wheel */
     max-height: 100vh;
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/customer.css
     scrollbar-color: #ddd rgba(0, 0, 0, 0);
     scrollbar-width: thin;
 }
 
-<<<<<<< HEAD:public/assets/css/customer.css
-=======
 
 .add-customer-modal-title{
 text-align: center;
@@ -72,7 +56,6 @@ margin-bottom: 10px;
 
 
 
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/customer.css
 .dark .add-customer-modal-content, .dark .edit-customer-modal-content {
     background-color: #333;
     color: white;
@@ -96,11 +79,8 @@ margin-bottom: 10px;
 .add-customer-modal-content h2, .edit-customer-modal-content h2 {
     margin-bottom: 20px;
     text-align: center;
-<<<<<<< HEAD:public/assets/css/customer.css
-=======
     font-weight: 500;
     font-size: 20px;
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/customer.css
     color: #333;
 }
 
@@ -108,12 +88,6 @@ margin-bottom: 10px;
     color: white;
 }
 
-<<<<<<< HEAD:public/assets/css/customer.css
-.add-customer-modal-content label, .edit-customer-modal-content label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-=======
 
 .add-customer-modal-content h6, .edit-customer-modal-content h6 {
     
@@ -165,7 +139,6 @@ margin-bottom: 10px;
     display: block;
     margin-bottom: 5px;
     font-size: 10px;
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/customer.css
     color: #333;
 }
 
@@ -173,15 +146,6 @@ margin-bottom: 10px;
     color: white;
 }
 
-<<<<<<< HEAD:public/assets/css/customer.css
-.add-customer-modal-content input, .edit-customer-modal-content input, .add-customer-modal-content select, .edit-customer-modal-content select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    outline: none;
-    border-radius: 4px;
-=======
 
 .form-row {
     display: flex;
@@ -237,7 +201,6 @@ margin-bottom: 10px;
   border: 1px solid #ddd;
   outline: none;
   border-radius: 4px;
->>>>>>> 032d422ca8b3b30a298408ee57af512675042574:kapitan-stone/public/assets/css/customer.css
 }
 
 .dark .add-customer-modal-content select, .dark .add-customer-modal-content input, .dark .edit-customer-modal-content select, .dark .edit-customer-modal-content input {

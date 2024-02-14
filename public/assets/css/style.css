@@ -529,6 +529,8 @@ body.dark .sidebar .side-menu li:hover a {
     color: var(--light);
     border-radius: 20px;
     font-weight: 700;
+    white-space: nowrap; 
+    margin-right: 10px;
 }
 
 content main .bottom-data .orders table tr td .status.completed{

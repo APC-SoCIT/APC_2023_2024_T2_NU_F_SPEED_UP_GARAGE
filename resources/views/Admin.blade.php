@@ -116,7 +116,7 @@
                 </div>
          
             <div class="reminders">
-                <h2>Top Products</h2>
+                <h2>Top Moving Products</h2>
                 <p>Top Products This Month</p>
                 <div class="pulse"></div>
                 <div class="bar-chart">
@@ -144,7 +144,7 @@
                             @foreach($recentTransactions as $transaction)
                                 <tr>
                                     <td>
-                                        <p>{{ $transaction->customer_name }}</p>
+                                        <p>{{ $transaction-> customer_name}}</p>
                                     </td>
                                     <td>{{ $transaction->created_at }}</td>
                                     <td>
