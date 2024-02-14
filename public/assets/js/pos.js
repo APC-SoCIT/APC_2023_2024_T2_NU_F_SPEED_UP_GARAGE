@@ -69,6 +69,8 @@ function initApp() {
     products: [],
     keyword: "",
     cart: [],
+    vat: 0,
+    paidAmount: 0,
     cash: 0,
     change: 0,
     isShowModalReceipt: false,
@@ -172,7 +174,7 @@ getNextReceiptNo() {
       return this.cart.reduce((count, item) => count + item.qty, 0);
     },
     updateChange() {
-      this.change = this.cash - this.getVatable();
+      this.change = this.cash - this.getTotalPayment();
     },
     updateCash(value) {
       this.cash = parseFloat(value.replace(/[^0-9]+/g, ""));
@@ -199,38 +201,6 @@ getNextReceiptNo() {
         0
       );
     },
-
-    getVatable() {
-      // Calculate the total price of all items without tax
-      const totalPrice = this.cart.reduce(
-          (total, item) => total + (item.qty * item.price),
-          0
-      );
-  
-      // Calculate the VAT amount
-      const vat = totalPrice * 0.12;
-  
-      // Calculate the total price excluding VAT
-      const vatable = totalPrice - vat;
-  
-      return vatable;
-  },
-  
-  getVAT() {
-      // Calculate the total price of all items without tax
-      const totalPrice = this.cart.reduce(
-          (total, item) => total + (item.qty * item.price),
-          0
-      );
-  
-      // Calculate the VAT amount
-      const vat = totalPrice * 0.12;
-  
-      return vat;
-  },
-  
-    
-    
     submitable() {
       const cashierNameElement = document.getElementById("cashierName");
       const customerNameElement = document.getElementById("customerName");
@@ -306,13 +276,27 @@ getNextReceiptNo() {
       const formatter = new Intl.DateTimeFormat('id', { dateStyle: 'short'});
       return formatter.format(date);
     },
-    numberFormat(number) {
-      return (number || "")
-        .toString()
-        .replace(/^0|\./g, "")
-        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    },
 
+    numberFormat(number) {
+      let formattedNumber = (number || "").toString().replace(/^0+|\.0*$/g, "");
+      
+      if (formattedNumber !== "") {
+        const parts = formattedNumber.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        
+        // Limit numbers to two decimal places
+        if (parts.length > 1) {
+          parts[1] = parts[1].substring(0, 2);
+        }
+    
+        formattedNumber = parts.join(".");
+      }
+      
+      return formattedNumber;
+    },
+    
+    
+    
     numberFormat1(number) {
       return (number || "")
         .toString()
@@ -320,7 +304,7 @@ getNextReceiptNo() {
         .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1");
     },
     priceFormat(number) {
-      return number ? `₱${this.numberFormat(number)}.00` : `₱0`;
+      return number ? `₱${this.numberFormat(number)}` : `₱0`;
     },
     qtyFormat(number) {
       return number ? `STOCK: ${this.numberFormat1(number)}` : `STOCK: 0`;
@@ -352,9 +336,12 @@ getNextReceiptNo() {
           items: this.cart.map(item => item.name), // Modify to include only item names
           qty: this.cart.map(item => item.qty), // Map quantities separately
           quantity: this.getItemsCount(),
+          vatable: this.getVatable(),
+          vat: this.getVAT(),
+          totalAmount: this.getTotalPayment(),
+          paidAmount: this.cash,
           customerChange: this.change,
-          paymentTotal: this.getTotalPayment(), // Calculate total payment including change
-          totalAmount: this.getTotalPrice(),
+          
       };
     
       addTransaction(receiptData);
@@ -371,13 +358,33 @@ getNextReceiptNo() {
       document.title = titleBefore;
     
       this.clear();
-      window.location.href = window.location.href; // Refresh the page
+      
       window.location.reload(); // Refresh the page
       
     },
 
+    getVatable() {
+      // Calculate the total price of all items with 12% increase in price
+      const totalPrice = this.cart.reduce(
+        (total, item) => total + (item.qty * item.price),
+        0
+      );
+      return totalPrice;
+    },
+
+    getVAT() {
+      // Calculate the total price of all items without tax
+      const totalPrice = this.getTotalPrice();
+    
+      // Calculate 12% tax
+      const vat = totalPrice * 0.12;
+    
+      return vat;
+    },
+    
     getTotalPayment() {
-      return this.getTotalPrice() + Math.abs(this.change); // Total payment including change
+   
+      return this.getVAT() + this.getVatable(); // Total payment including change
     },
   };
 
@@ -435,11 +442,13 @@ getNextReceiptNo() {
               items: receiptData.items.join(', '), // Join item names into a comma-separated string
               qty: receiptData.qty.join(', '),
               payment_method: receiptData.paymentMethod,
-              payment_total: receiptData.paymentTotal,
+              vatable: receiptData.vatable,
+              vat: receiptData.vat,
+              total_amount: receiptData.totalAmount,
+              paid_amount: receiptData.paidAmount,
               customer_change: receiptData.customerChange,
               cashier_name: receiptData.cashierName,
               quantity: receiptData.quantity,
-              total_amount: receiptData.totalAmount,
           },
           success: function(response) {
               console.log('Transaction added successfully:', response);
@@ -449,8 +458,8 @@ getNextReceiptNo() {
           },
       });
   }
-
-
+  
+  
   function scanProductModal() {
     const scanProductModal = document.getElementById('scanProductModal');
     scanProductModal.style.display = 'flex'; // Use 'flex' to center the modal
@@ -649,7 +658,6 @@ function preventCountryCodeDeletion(input) {
       input.value = countryCode + input.value.substring(countryCode.length);
   }
 }
-    
     
 
 

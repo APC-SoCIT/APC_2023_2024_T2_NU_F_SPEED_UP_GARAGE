@@ -16,7 +16,7 @@ class TransactionController extends Controller
         $products = Product::all(); // Assuming you have a Product model
     
 
-        $transactions = Transaction::all();
+        $transactions = Transaction::latest('transaction_id')->get();
 
         $customers = Customer::all();
     
