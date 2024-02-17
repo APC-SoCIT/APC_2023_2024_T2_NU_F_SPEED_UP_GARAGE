@@ -104,3 +104,52 @@ function fetchThreshold() {
             showErrorModal('An error occurred while fetching the threshold.'); // Display error modal
         });
 }
+
+// Wrap the script in a self-executing anonymous function to create a separate scope
+
+$(document).ready(function() {
+    // Function to handle edit button click
+    function handleEditButtonClick() {
+        $('.edit-btn').click(function() {
+            $(this).hide();
+            $('.save-btn').show();
+            $('.cancel-btn').show();
+            // Target input fields only within the account section
+            $('.account-input').removeAttr('readonly');
+
+            // Store original values
+            $('.account-input[type="text"]').each(function() {
+                $(this).data('original-value', $(this).val());
+            });
+        });
+    }
+
+    // Function to handle cancel button click
+    function handleCancelButtonClick() {
+        $('.cancel-btn').click(function() {
+            $('.edit-btn').show();
+            $('.save-btn').hide();
+            $('.cancel-btn').hide();
+            // Target input fields only within the account section
+            $('.account-input').attr('readonly', 'readonly');
+
+            // Restore original values
+            $('.account-input[type="text"]').each(function() {
+                $(this).val($(this).data('original-value'));
+            });
+        });
+    }
+
+    // Initialize input fields as readonly
+    $('.account-input').attr('readonly', 'readonly');
+
+    // Function to initialize event handlers
+    function init() {
+        handleEditButtonClick();
+        handleCancelButtonClick();
+    }
+
+    // Call the initialization function
+    init();
+});
+

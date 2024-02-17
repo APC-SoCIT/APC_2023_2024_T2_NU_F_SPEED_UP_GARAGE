@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Employee;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -18,12 +20,18 @@ class UserController extends Controller
         // Validate request data (add your own validation logic here)
 
         // Insert the user into the database
-        $users = new User;
-        $users->name = $request->input('name');
-        $users->role = $request->input('role');
-        $users->email = $request->input('email');
-        $users->password = $request->input('password');
-        $users->save();
+        $user = new User;
+        $user->name = $request->input('name');
+        $user->role = $request->input('role');
+        $user->email = $request->input('email');
+        $user->password = $request->input('password');
+        $user->save();
+
+        // Create associated employee
+        $employee = new Employee;
+        $employee->user_id = $user->id; // Set the user_id in the employee record
+        // Add other fields as needed
+        $employee->save();
 
         return response()->json(['message' => 'User added successfully']);
     }
@@ -69,20 +77,87 @@ class UserController extends Controller
         return response()->json(['message' => 'User updated successfully']);
     }
     
-    
-
     public function deleteUser($id)
     {
+        // Find the user with the given ID along with their associated employee record if it exists
+        $user = User::with('employee')->find($id);
 
-        $users = User::find($id);
-    
-        if ($users) {
-            $users->delete();
-            return response()->json(['message' => 'User deleted successfully']);
-        } else {
+        if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
+
+        // If the user has an associated employee record, delete it first
+        if ($user->employee) {
+            $user->employee->delete();
+        }
+
+        // Now delete the user
+        $user->delete();
+
+        return response()->json(['message' => 'User and associated employee deleted successfully']);
+    }
+    
+    public function updateProfile(Request $request, $id)
+{
+    // Validate request data
+    $validatedData = $request->validate([
+        'firstName' => 'required|string',
+        'lastName' => 'required|string',
+        'email' => 'required|email',
+        'contactNumber' => 'nullable|string',
+        'address' => 'nullable|string',
+        'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate avatar upload
+    ]);
+
+    // Find the user by ID
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
     }
 
+    // Update user data
+    $user->email = $validatedData['email'];
+    $user->save();
+
+    // Update associated employee data if available
+    if ($user->employee) {
+        $employee = $user->employee;
+        $employee->fname = $validatedData['firstName'];
+        $employee->lname = $validatedData['lastName'];
+        $employee->contact_number = $validatedData['contactNumber'];
+        $employee->address = $validatedData['address'];
+
+        // Handle profile picture upload if provided
+        if ($request->hasFile('avatar')) {
+            // Get the uploaded file
+            $avatarFile = $request->file('avatar');
+            
+            // Generate a unique filename
+            $avatarFilename = time() . '_' . $avatarFile->getClientOriginalName();
+            
+            // Move the uploaded file to the public/avatars directory
+            $avatarFile->move(storage_path('avatars'), $avatarFilename);
+            
+            // Update employee's profile picture path
+            $employee->profile_picture = 'avatars/' . $avatarFilename;
+
+            // Log success message
+            Log::info('Avatar uploaded successfully: ' . $avatarFilename);
+        } else {
+            // Log message if no avatar was uploaded
+            Log::info('No avatar uploaded');
+        }
+
+        $employee->save();
+    } else {
+        // Log message if employee data is not available
+        Log::info('Employee data not available');
+    }
+
+    return redirect()->back()->with('success', 'Profile updated successfully');
+}
 
 }
+
+

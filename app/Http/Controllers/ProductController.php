@@ -58,13 +58,13 @@ class ProductController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             
             // Store in the public disk under 'product_images' folder
-            $image->storeAs('public/product_images', $imageName);
+            $image->storeAs('public/storage/product_images', $imageName);
     
             // Set the image name
             $product->product_image = $imageName;
     
             // Set the full path
-            $product->product_image_path = asset('storage/product_images/' . $imageName);
+            $product->product_image_path = asset('public/storage/product_images/' . $imageName);
         }
     
         $product->save();

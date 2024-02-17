@@ -269,3 +269,124 @@ body.dark .success-modal-content .modal-close-button:hover, body.dark .error-mod
     background-color: #2980b9; /* Close button hover background color in dark mode */
 }
 
+.account-container {
+    margin-bottom: 20px; /* Keep some margin at the bottom */
+}
+
+.avatar-container {
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center; /* Vertically align items */
+}
+
+.avatar-wrapper {
+    margin-right: 20px; /* Add some space between the avatar and buttons */
+}
+
+.avatar-button-container {
+    display: flex;
+    flex-direction: column; /* Arrange buttons vertically */
+}
+
+.upload-btn {
+    background-color: #3498db;
+    color: #fff;
+    font-size: 13px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px; /* Add some space between buttons */
+}
+
+.delete-btn {
+    background-color: white;
+    color: black;
+    border-style: solid;
+    padding: 10px 20px;
+    font-size: 13px;
+    border-width: 1px;
+    border-color: #9c9c9c;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px; /* Add some space between buttons */
+}
+
+.upload-btn:hover {
+    background-color: #2980b9;
+}
+
+.delete-btn:hover {
+    background-color: rgb(247, 247, 247);
+}
+
+.avatar-wrapper img {
+    border-radius: 50%;
+    width: 150px; /* Adjust the size as needed */
+    height: 150px; /* Adjust the size as needed */
+    object-fit: cover;
+}
+
+.name-group, .form-group {
+    margin-bottom: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.name-group label, .form-group label {
+    margin-bottom: 10px;
+    font-size: 14px;
+    width: 120px; /* Adjust label width */
+    margin-right: 20px; /* Add some space between label and input */
+}
+
+.name-group input[type="text"], .name-group input[type="email"],
+.form-group input[type="text"], .form-group input[type="email"] {
+    flex: .40; /* Allow input fields to grow and fill available space */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+
+h4 {
+    margin-bottom: 20px;
+}
+
+form .edit-btn, form .save-btn  {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form .update-btn:hover {
+    background-color: #2980b9;
+}
+
+form .cancel-btn {
+    background-color: white;
+    color: black;
+    border-style: solid;    
+    border-width: 1px;
+    border-color: #9c9c9c;
+    border-radius: 5px;
+    padding: 9px 20px;
+    cursor: pointer;
+}
+
+form .cancel-btn:hover {
+    background-color: rgb(247, 247, 247);
+}
+
+.button-container{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    text-align: left;
+}

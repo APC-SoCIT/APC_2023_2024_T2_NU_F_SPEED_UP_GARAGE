@@ -103,8 +103,6 @@ function saveUserChanges() {
 }
 
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
     // Add this function to automatically assign numbers to the # column
     function assignRowNumbers() {

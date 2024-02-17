@@ -13,6 +13,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ThresholdController;
+use App\Http\Controllers\SettingsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,6 +123,9 @@ Route::post('/brands', [BrandController::class, 'addBrand'])->name('brands.add')
 Route::post('/categories', [CategoryController::class, 'addCategory'])->name('categories.add');
 Route::get('/threshold', [ThresholdController::class, 'getThreshold']);
 Route::post('/threshold/update', [ThresholdController::class, 'updateThreshold']);
+Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+Route::post('/update-profile/{id}', [UserController::class, 'updateProfile'])->name('update.profile');
+
 
 // Use CustomerController to handle customer-related functionality
 

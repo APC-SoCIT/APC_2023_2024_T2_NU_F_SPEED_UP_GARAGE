@@ -40,32 +40,55 @@
                     <button class="tablinks" onclick="openCity(event, 'Paris')">Threshold</button>
                 </div>
 
-                <div id="London" class="tabcontent">
-                    <h3>Account</h3>
-                    <form id="accountForm">
-                        <div class="form-group">
-                            <label for="profilePicture">Profile Picture:</label>
-                            <input type="file" id="profilePicture" name="profilePicture">
-                        </div>
-                        <div class="form-group">
-                            <label for="firstName">First Name:</label>
-                            <input type="text" id="firstName" name="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name:</label>
-                            <input type="text" id="lastName" name="lastName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address:</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phoneNumber">Phone Number:</label>
-                            <input type="text" id="phoneNumber" name="phoneNumber">
-                        </div>
-                        <button type="submit" class="update-btn" onclick="updateAccount()">Update Account</button>
-                    </form>
+                @if(auth()->user()->employee)
+<div class="account-container">
+    <div id="London" class="tabcontent">
+        <h3>Account Information</h3>
+        <hr>
+        <form id="accountForm" action="{{ route('update.profile', ['id' => auth()->user()->id]) }}" method="POST" enctype="multipart/form-data">
+            @csrf <!-- Add CSRF token field -->
+            <div class="avatar-container">
+                <div class="avatar-wrapper">
+          
+                    <!-- Display current user avatar -->
+                    <img id="avatarPreview" src="{{ Storage::url('/storage/avatars/' . auth()->user()->employee->profile_picture) }}" alt="Avatar">
                 </div>
+                <div class="avatar-button-container">
+                    <label for="profilePictureInput" class="upload-btn">Upload a new avatar</label>
+                    <input type="file" id="profilePictureInput" name="profile_picture" accept="image/*" style="display: none;">
+                    <button type="button" class="delete-btn">Delete avatar</button>
+                </div>
+            </div>
+            <h4>Personal Details:</h4>
+            <div class="name-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" class="account-input" required value="{{ auth()->user()->employee->fname }}">
+            </div>
+            <div class="name-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" class="account-input" required value="{{ auth()->user()->employee->lname }}">
+            </div>
+            <div class="form-group">
+                <label for="email">Birth Date:</label>
+                <input type="email" id="email" name="email" class="account-input" required value="{{ auth()->user()->email }}">
+            </div>
+            <div class="form-group">
+                <label for="contactNumber">Contact:</label>
+                <input type="text" id="contactNumber" name="contactNumber" class="account-input" value="{{ auth()->user()->employee->contact_number }}">
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
+            </div>
+            <div class="button-container">
+                <button type="button" class="edit-btn">Edit Profile</button>
+                <button type="submit" class="save-btn" style="display: none;">Save</button>
+                <button type="button" class="cancel-btn" style="display: none;">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endif
 
 
                 <div id="Brands" class="tabcontent">
@@ -137,7 +160,65 @@
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/settings.js') }}"></script>
+    <script>
+        
+        $(document).ready(function() {
+    // Attach event listener to file input for avatar preview
+    $('#profilePictureInput').change(updateAvatarPreview);
+
+    // Function to handle form submission
+    $('#accountForm').submit(function(event) {
+        // Prevent default form submission
+        event.preventDefault();
+
+        // Create FormData object to store form data including file
+        var formData = new FormData($(this)[0]);
+
+        // Get the CSRF token value
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        // Append CSRF token to form data
+        formData.append('_token', csrfToken);
+
+        // Submit the form data via AJAX
+        $.ajax({
+            url: $(this).attr('action'), // URL to submit the form data
+            type: 'POST', // HTTP method
+            data: formData, // Form data including file
+            processData: false, // Prevent jQuery from automatically processing data
+            contentType: false, // Prevent jQuery from automatically setting content type
+            success: function(response) {
+                // Handle successful response (if needed)
+                console.log(response);
+                // Optionally, you can display a success message to the user
+                alert('Profile updated successfully');
+            },
+            error: function(xhr, status, error) {
+                // Handle error response (if needed)
+                console.error(xhr.responseText);
+                // Optionally, you can display an error message to the user
+                alert('An error occurred. Please try again later.');
+            }
+        });
+    });
+});
+
+function updateAvatarPreview(event) {
+    // Get the selected file
+    const selectedFile = event.target.files[0];
     
+    // Check if a file is selected
+    if (selectedFile) {
+        // Read the selected file as a URL
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Update the image source in the avatar container
+            $('#avatarPreview').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(selectedFile);
+    }
+}
+    </script>
 </body>
 
 </html>
