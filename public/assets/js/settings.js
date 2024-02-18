@@ -116,11 +116,9 @@ $(document).ready(function() {
             $('.cancel-btn').show();
             // Target input fields only within the account section
             $('.account-input').removeAttr('readonly');
-
-            // Store original values
-            $('.account-input[type="text"]').each(function() {
-                $(this).data('original-value', $(this).val());
-            });
+            // Show upload and delete buttons
+            $('.upload-btn').show();
+            $('.delete-btn').show();
         });
     }
 
@@ -132,7 +130,9 @@ $(document).ready(function() {
             $('.cancel-btn').hide();
             // Target input fields only within the account section
             $('.account-input').attr('readonly', 'readonly');
-
+            // Hide upload and delete buttons
+            $('.upload-btn').hide();
+            $('.delete-btn').hide();
             // Restore original values
             $('.account-input[type="text"]').each(function() {
                 $(this).val($(this).data('original-value'));
@@ -140,8 +140,10 @@ $(document).ready(function() {
         });
     }
 
-    // Initialize input fields as readonly
+    // Initialize input fields as readonly and buttons as hidden
     $('.account-input').attr('readonly', 'readonly');
+    $('.upload-btn').hide();
+    $('.delete-btn').hide();
 
     // Function to initialize event handlers
     function init() {

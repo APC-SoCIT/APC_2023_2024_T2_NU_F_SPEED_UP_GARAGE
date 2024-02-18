@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -96,7 +98,7 @@ class UserController extends Controller
 
         return response()->json(['message' => 'User and associated employee deleted successfully']);
     }
-    
+
     public function updateProfile(Request $request, $id)
 {
     // Validate request data
@@ -132,13 +134,13 @@ class UserController extends Controller
         if ($request->hasFile('avatar')) {
             // Get the uploaded file
             $avatarFile = $request->file('avatar');
-            
+
             // Generate a unique filename
             $avatarFilename = time() . '_' . $avatarFile->getClientOriginalName();
-            
-            // Move the uploaded file to the public/avatars directory
-            $avatarFile->move(storage_path('avatars'), $avatarFilename);
-            
+
+            // Store the uploaded file to the storage/avatars directory
+            $avatarPath = $avatarFile->storeAs('public/avatars', $avatarFilename);
+
             // Update employee's profile picture path
             $employee->profile_picture = 'avatars/' . $avatarFilename;
 
@@ -157,7 +159,6 @@ class UserController extends Controller
 
     return redirect()->back()->with('success', 'Profile updated successfully');
 }
-
 }
 
 

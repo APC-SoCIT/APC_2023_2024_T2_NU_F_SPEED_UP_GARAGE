@@ -124,8 +124,8 @@ Route::post('/categories', [CategoryController::class, 'addCategory'])->name('ca
 Route::get('/threshold', [ThresholdController::class, 'getThreshold']);
 Route::post('/threshold/update', [ThresholdController::class, 'updateThreshold']);
 Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
-Route::post('/update-profile/{id}', [UserController::class, 'updateProfile'])->name('update.profile');
-
+Route::post('/update-profile/{id}', [SettingsController::class, 'updateProfile'])->name('update.profile');
+Route::get('/avatars/{filename}', [SettingsController::class, 'getAvatar'])->name('avatar');
 
 // Use CustomerController to handle customer-related functionality
 

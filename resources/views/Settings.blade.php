@@ -41,55 +41,52 @@
                 </div>
 
                 @if(auth()->user()->employee)
-<div class="account-container">
-    <div id="London" class="tabcontent">
-        <h3>Account Information</h3>
-        <hr>
-        <form id="accountForm" action="{{ route('update.profile', ['id' => auth()->user()->id]) }}" method="POST" enctype="multipart/form-data">
-            @csrf <!-- Add CSRF token field -->
-            <div class="avatar-container">
-                <div class="avatar-wrapper">
-          
-                    <!-- Display current user avatar -->
-                    <img id="avatarPreview" src="{{ Storage::url('/storage/avatars/' . auth()->user()->employee->profile_picture) }}" alt="Avatar">
+                <div class="account-container">
+                    <div id="London" class="tabcontent">
+                        <h3>Account Information</h3>
+                        <hr>
+                        <form id="accountForm" action="{{ route('update.profile', ['id' => auth()->user()->id]) }}" method="POST" enctype="multipart/form-data">
+                            @csrf <!-- Add CSRF token field -->
+                            <div class="avatar-container">
+                                <div class="avatar-wrapper">
+                                    <img id="avatarPreview" src="{{ Storage::url('/' . auth()->user()->employee->profile_picture) }}" onerror="this.onerror=null; this.src='https://i.stack.imgur.com/l60Hf.png'">
+                                </div>
+                                <div class="avatar-button-container">
+                                    <label for="profilePictureInput" class="upload-btn" style="display: none;">Upload a new avatar</label>
+                                    <input type="file" id="profilePictureInput" name="avatar" accept="image/*" style="display: none;">
+                                    <button type="button" class="delete-btn" style="display: none;">Delete avatar</button>
+                                </div>
+                            </div>
+                            <h4>Personal Details:</h4>
+                            <div class="name-group">
+                                <label for="firstName">First Name:</label>
+                                <input type="text" id="firstName" name="firstName" class="account-input" required value="{{ auth()->user()->employee->fname }}">
+                            </div>
+                            <div class="name-group">
+                                <label for="lastName">Last Name:</label>
+                                <input type="text" id="lastName" name="lastName" class="account-input" required value="{{ auth()->user()->employee->lname }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Birth Date:</label>
+                                <input type="email" id="email" name="email" class="account-input" required value="{{ auth()->user()->email }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactNumber">Contact:</label>
+                                <input type="text" id="contactNumber" name="contactNumber" class="account-input" value="{{ auth()->user()->employee->contact_number }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address:</label>
+                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
+                            </div>
+                            <div class="button-container">
+                                <button type="button" class="edit-btn">Edit Profile</button>
+                                <button type="submit" class="save-btn" style="display: none;">Save</button>
+                                <button type="button" class="cancel-btn" style="display: none;">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="avatar-button-container">
-                    <label for="profilePictureInput" class="upload-btn">Upload a new avatar</label>
-                    <input type="file" id="profilePictureInput" name="profile_picture" accept="image/*" style="display: none;">
-                    <button type="button" class="delete-btn">Delete avatar</button>
-                </div>
-            </div>
-            <h4>Personal Details:</h4>
-            <div class="name-group">
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" class="account-input" required value="{{ auth()->user()->employee->fname }}">
-            </div>
-            <div class="name-group">
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" class="account-input" required value="{{ auth()->user()->employee->lname }}">
-            </div>
-            <div class="form-group">
-                <label for="email">Birth Date:</label>
-                <input type="email" id="email" name="email" class="account-input" required value="{{ auth()->user()->email }}">
-            </div>
-            <div class="form-group">
-                <label for="contactNumber">Contact:</label>
-                <input type="text" id="contactNumber" name="contactNumber" class="account-input" value="{{ auth()->user()->employee->contact_number }}">
-            </div>
-            <div class="form-group">
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
-            </div>
-            <div class="button-container">
-                <button type="button" class="edit-btn">Edit Profile</button>
-                <button type="submit" class="save-btn" style="display: none;">Save</button>
-                <button type="button" class="cancel-btn" style="display: none;">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
-@endif
-
+                @endif
 
                 <div id="Brands" class="tabcontent">
                     <div class="threshold-container">
@@ -161,63 +158,102 @@
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script>
-        
-        $(document).ready(function() {
-    // Attach event listener to file input for avatar preview
-    $('#profilePictureInput').change(updateAvatarPreview);
 
-    // Function to handle form submission
-    $('#accountForm').submit(function(event) {
-        // Prevent default form submission
-        event.preventDefault();
+    $(document).ready(function() {
+        // Store original values when the page loads
+        var originalValues = {};
+        $('.account-input').each(function() {
+            originalValues[$(this).attr('name')] = $(this).val();
+        });
 
-        // Create FormData object to store form data including file
-        var formData = new FormData($(this)[0]);
+        // Attach event listener to file input for avatar preview
+        $('#profilePictureInput').change(updateAvatarPreview);
 
-        // Get the CSRF token value
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // Function to handle form submission
+        $('#accountForm').submit(function(event) {
+            // Prevent default form submission
+            event.preventDefault();
 
-        // Append CSRF token to form data
-        formData.append('_token', csrfToken);
+            // Get the CSRF token value
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-        // Submit the form data via AJAX
-        $.ajax({
-            url: $(this).attr('action'), // URL to submit the form data
-            type: 'POST', // HTTP method
-            data: formData, // Form data including file
-            processData: false, // Prevent jQuery from automatically processing data
-            contentType: false, // Prevent jQuery from automatically setting content type
-            success: function(response) {
-                // Handle successful response (if needed)
-                console.log(response);
-                // Optionally, you can display a success message to the user
-                alert('Profile updated successfully');
-            },
-            error: function(xhr, status, error) {
-                // Handle error response (if needed)
-                console.error(xhr.responseText);
-                // Optionally, you can display an error message to the user
-                alert('An error occurred. Please try again later.');
-            }
+            // Create FormData object to store form data including file
+            var formData = new FormData($(this)[0]);
+            formData.append('_token', csrfToken);
+
+            // Submit the form data via AJAX
+            $.ajax({
+                url: $(this).attr('action'), // URL to submit the form data
+                type: 'POST', // HTTP method
+                data: formData, // Form data including file
+                processData: false, // Prevent jQuery from automatically processing data
+                contentType: false, // Prevent jQuery from automatically setting content type
+                success: function(response) {
+                    // Handle successful response
+                    showSuccessModal('Profile updated successfully');
+                    $('.edit-btn').show();
+                    $('.save-btn').hide();
+                    $('.cancel-btn').hide();
+                    $('.account-input').attr('readonly', 'readonly'); // Make input fields readonly
+                    console.log(response); // Log the response if needed
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    showErrorModal('An error occurred. Please try again later.');
+                    console.error(xhr.responseText); // Log the error response if needed
+                }
+            });
+        });
+
+        // Function to handle cancel button click
+        $('.cancel-btn').click(function() {
+            $('.edit-btn').show();
+            $('.save-btn').hide();
+            $('.cancel-btn').hide();
+            // Target input fields only within the account section
+            $('.account-input').each(function() {
+                // Restore original values
+                $(this).val(originalValues[$(this).attr('name')]);
+            });
+            // Make input fields readonly
+            $('.account-input').attr('readonly', 'readonly');
+            // Hide upload and delete buttons
+            $('.upload-btn').hide();
+            $('.delete-btn').hide();
+            // Reset the avatar preview to original image
+            $('#avatarPreview').attr('src', '/avatars/default-image.png');
+        });
+
+        // Function to handle delete avatar button click
+        $('.delete-btn').click(function() {
+            $('#avatarPreview').attr('src', 'C:\\Programming Projects\\APC_2023_2024_T2_NU_F_SPEED_UP_GARAGE\\kapitan-stone\\storage\\app\\public\\avatars\\default-image.png');
+            // Clear the file input
+            $('#profilePictureInput').val('');
+            // Add the delete_avatar parameter
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'delete_avatar',
+                name: 'delete_avatar'
+            }).appendTo('#accountForm');
         });
     });
-});
 
-function updateAvatarPreview(event) {
-    // Get the selected file
-    const selectedFile = event.target.files[0];
-    
-    // Check if a file is selected
-    if (selectedFile) {
-        // Read the selected file as a URL
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            // Update the image source in the avatar container
-            $('#avatarPreview').attr('src', e.target.result);
+    function updateAvatarPreview(event) {
+        // Get the selected file
+        const selectedFile = event.target.files[0];
+        
+        // Check if a file is selected
+        if (selectedFile) {
+            // Read the selected file as a URL
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Update the image source in the avatar container
+                $('#avatarPreview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(selectedFile);
         }
-        reader.readAsDataURL(selectedFile);
     }
-}
+
     </script>
 </body>
 

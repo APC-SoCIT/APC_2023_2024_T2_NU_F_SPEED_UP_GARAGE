@@ -19,7 +19,8 @@
         </div>
     </a>
     <a href="#" class="profile" onclick="toggleProfileMenu()">
-        <img src="{{ asset('assets/images/profile-1.jpg') }}" alt="Profile Image">
+        <img src="{{ Storage::url('/' . auth()->user()->employee->profile_picture) }}" onerror="this.onerror=null; this.src='https://i.stack.imgur.com/l60Hf.png'">
+       
         <!-- Profile dropdown menu -->
         <div class="profile-menu" id="profileMenu">
             <div class="menu-item" onclick="navigateTo('/profile')">Profile</div>
@@ -34,4 +35,3 @@
         <i class='bx bx-message'></i>
     </div>
 </nav>
-
