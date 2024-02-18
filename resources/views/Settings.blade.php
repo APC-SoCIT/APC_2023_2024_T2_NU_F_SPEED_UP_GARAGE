@@ -159,84 +159,86 @@
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script>
 
-    $(document).ready(function() {
-        // Store original values when the page loads
-        var originalValues = {};
-        $('.account-input').each(function() {
-            originalValues[$(this).attr('name')] = $(this).val();
-        });
+$(document).ready(function() {
+    // Store original values when the page loads
+    var originalValues = {};
+    var originalAvatarSrc = $('#avatarPreview').attr('src'); // Store original avatar source
+    
+    $('.account-input').each(function() {
+        originalValues[$(this).attr('name')] = $(this).val();
+    });
 
-        // Attach event listener to file input for avatar preview
-        $('#profilePictureInput').change(updateAvatarPreview);
+    // Attach event listener to file input for avatar preview
+    $('#profilePictureInput').change(updateAvatarPreview);
 
-        // Function to handle form submission
-        $('#accountForm').submit(function(event) {
-            // Prevent default form submission
-            event.preventDefault();
+    // Function to handle form submission
+    $('#accountForm').submit(function(event) {
+        // Prevent default form submission
+        event.preventDefault();
 
-            // Get the CSRF token value
-            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // Get the CSRF token value
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-            // Create FormData object to store form data including file
-            var formData = new FormData($(this)[0]);
-            formData.append('_token', csrfToken);
+        // Create FormData object to store form data including file
+        var formData = new FormData($(this)[0]);
+        formData.append('_token', csrfToken);
 
-            // Submit the form data via AJAX
-            $.ajax({
-                url: $(this).attr('action'), // URL to submit the form data
-                type: 'POST', // HTTP method
-                data: formData, // Form data including file
-                processData: false, // Prevent jQuery from automatically processing data
-                contentType: false, // Prevent jQuery from automatically setting content type
-                success: function(response) {
-                    // Handle successful response
-                    showSuccessModal('Profile updated successfully');
-                    $('.edit-btn').show();
-                    $('.save-btn').hide();
-                    $('.cancel-btn').hide();
-                    $('.account-input').attr('readonly', 'readonly'); // Make input fields readonly
-                    console.log(response); // Log the response if needed
-                },
-                error: function(xhr, status, error) {
-                    // Handle error response
-                    showErrorModal('An error occurred. Please try again later.');
-                    console.error(xhr.responseText); // Log the error response if needed
-                }
-            });
-        });
-
-        // Function to handle cancel button click
-        $('.cancel-btn').click(function() {
-            $('.edit-btn').show();
-            $('.save-btn').hide();
-            $('.cancel-btn').hide();
-            // Target input fields only within the account section
-            $('.account-input').each(function() {
-                // Restore original values
-                $(this).val(originalValues[$(this).attr('name')]);
-            });
-            // Make input fields readonly
-            $('.account-input').attr('readonly', 'readonly');
-            // Hide upload and delete buttons
-            $('.upload-btn').hide();
-            $('.delete-btn').hide();
-            // Reset the avatar preview to original image
-            $('#avatarPreview').attr('src', '/avatars/default-image.png');
-        });
-
-        // Function to handle delete avatar button click
-        $('.delete-btn').click(function() {
-            $('#avatarPreview').attr('src', 'C:\\Programming Projects\\APC_2023_2024_T2_NU_F_SPEED_UP_GARAGE\\kapitan-stone\\storage\\app\\public\\avatars\\default-image.png');
-            // Clear the file input
-            $('#profilePictureInput').val('');
-            // Add the delete_avatar parameter
-            $('<input>').attr({
-                type: 'hidden',
-                id: 'delete_avatar',
-                name: 'delete_avatar'
-            }).appendTo('#accountForm');
+        // Submit the form data via AJAX
+        $.ajax({
+            url: $(this).attr('action'), // URL to submit the form data
+            type: 'POST', // HTTP method
+            data: formData, // Form data including file
+            processData: false, // Prevent jQuery from automatically processing data
+            contentType: false, // Prevent jQuery from automatically setting content type
+            success: function(response) {
+                // Handle successful response
+                showSuccessModal('Profile updated successfully');
+                $('.edit-btn').show();
+                $('.save-btn').hide();
+                $('.cancel-btn').hide();
+                $('.account-input').attr('readonly', 'readonly'); // Make input fields readonly
+                console.log(response); // Log the response if needed
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                showErrorModal('An error occurred. Please try again later.');
+                console.error(xhr.responseText); // Log the error response if needed
+            }
         });
     });
+
+    // Function to handle cancel button click
+    $('.cancel-btn').click(function() {
+        $('.edit-btn').show();
+        $('.save-btn').hide();
+        $('.cancel-btn').hide();
+        // Target input fields only within the account section
+        $('.account-input').each(function() {
+            // Restore original values
+            $(this).val(originalValues[$(this).attr('name')]);
+        });
+        // Make input fields readonly
+        $('.account-input').attr('readonly', 'readonly');
+        // Hide upload and delete buttons
+        $('.upload-btn').hide();
+        $('.delete-btn').hide();
+        // Reset the avatar preview to original image
+        $('#avatarPreview').attr('src', originalAvatarSrc); // Restore original avatar source
+    });
+
+    // Function to handle delete avatar button click
+    $('.delete-btn').click(function() {
+        $('#avatarPreview').attr('src', 'C:\\Programming Projects\\APC_2023_2024_T2_NU_F_SPEED_UP_GARAGE\\kapitan-stone\\storage\\app\\public\\avatars\\default-image.png');
+        // Clear the file input
+        $('#profilePictureInput').val('');
+        // Add the delete_avatar parameter
+        $('<input>').attr({
+            type: 'hidden',
+            id: 'delete_avatar',
+            name: 'delete_avatar'
+        }).appendTo('#accountForm');
+    });
+});
 
     function updateAvatarPreview(event) {
         // Get the selected file
