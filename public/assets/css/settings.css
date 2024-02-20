@@ -343,8 +343,8 @@ body.dark .success-modal-content .modal-close-button:hover, body.dark .error-mod
     margin-right: 20px; /* Add some space between label and input */
 }
 
-.name-group input[type="text"], .name-group input[type="email"],
-.form-group input[type="text"], .form-group input[type="email"] {
+.name-group input[type="text"], .name-group input[type="date"], .name-group input[type="text"]
+.form-group input[type="text"], .form-group input[type="date"], .form-group input[type="text"] {
     flex: .40; /* Allow input fields to grow and fill available space */
     padding: 10px;
     border: 1px solid #ccc;

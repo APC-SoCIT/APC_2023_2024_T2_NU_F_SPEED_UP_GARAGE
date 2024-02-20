@@ -63,12 +63,16 @@
                                 <input type="text" id="firstName" name="firstName" class="account-input" required value="{{ auth()->user()->employee->fname }}">
                             </div>
                             <div class="name-group">
+                                <label for="middleName">Middle Name:</label>
+                                <input type="text" id="middleName" name="middleName" class="account-input" required value="{{ auth()->user()->employee->mname }}">
+                            </div>
+                            <div class="name-group">
                                 <label for="lastName">Last Name:</label>
                                 <input type="text" id="lastName" name="lastName" class="account-input" required value="{{ auth()->user()->employee->lname }}">
                             </div>
                             <div class="form-group">
-                                <label for="email">Birth Date:</label>
-                                <input type="email" id="email" name="email" class="account-input" required value="{{ auth()->user()->email }}">
+                                <label for="birthDate">Birth Date:</label>
+                                <input type="date" id="birthDate" name="birthDate" class="account-input" required value="{{ auth()->user()->employee->birthdate }}">
                             </div>
                             <div class="form-group">
                                 <label for="contactNumber">Contact:</label>
@@ -159,86 +163,125 @@
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script>
 
-$(document).ready(function() {
-    // Store original values when the page loads
-    var originalValues = {};
-    var originalAvatarSrc = $('#avatarPreview').attr('src'); // Store original avatar source
-    
-    $('.account-input').each(function() {
-        originalValues[$(this).attr('name')] = $(this).val();
+    $(document).ready(function() {
+        // Get the current date
+        var currentDate = new Date().toISOString().split('T')[0];
+        
+        // Set the max attribute for the birthdate input field
+        $('#birthDate').attr('max', currentDate);
+        
+        // Attach event listener to contact number input for validation
+        $('#contactNumber').on('input', function() {
+            // Remove any non-numeric characters
+            var sanitizedInput = $(this).val().replace(/\D/g, '');
+            
+            // Limit the input to 11 digits
+            var maxLength = 11;
+            var trimmedInput = sanitizedInput.slice(0, maxLength);
+            
+            // Update the input field value
+            $(this).val(trimmedInput);
+        });
     });
 
-    // Attach event listener to file input for avatar preview
-    $('#profilePictureInput').change(updateAvatarPreview);
 
-    // Function to handle form submission
-    $('#accountForm').submit(function(event) {
-        // Prevent default form submission
-        event.preventDefault();
+    $(document).ready(function() {
+        // Store original values when the page loads
+        var originalValues = {};
+        $('.account-input').each(function() {
+            originalValues[$(this).attr('name')] = $(this).val();
+        });
 
-        // Get the CSRF token value
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // Attach event listener to file input for avatar preview
+        $('#profilePictureInput').change(updateAvatarPreview);
 
-        // Create FormData object to store form data including file
-        var formData = new FormData($(this)[0]);
-        formData.append('_token', csrfToken);
+        // Function to handle form submission
+        $('#accountForm').submit(function(event) {
+            // Prevent default form submission
+            event.preventDefault();
 
-        // Submit the form data via AJAX
-        $.ajax({
-            url: $(this).attr('action'), // URL to submit the form data
-            type: 'POST', // HTTP method
-            data: formData, // Form data including file
-            processData: false, // Prevent jQuery from automatically processing data
-            contentType: false, // Prevent jQuery from automatically setting content type
-            success: function(response) {
-                // Handle successful response
-                showSuccessModal('Profile updated successfully');
-                $('.edit-btn').show();
-                $('.save-btn').hide();
-                $('.cancel-btn').hide();
-                $('.account-input').attr('readonly', 'readonly'); // Make input fields readonly
-                console.log(response); // Log the response if needed
-            },
-            error: function(xhr, status, error) {
-                // Handle error response
-                showErrorModal('An error occurred. Please try again later.');
-                console.error(xhr.responseText); // Log the error response if needed
+            // Get the CSRF token value
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            // Create FormData object to store form data including file
+            var formData = new FormData($(this)[0]);
+            formData.append('_token', csrfToken);
+
+            // Submit the form data via AJAX
+            $.ajax({
+                url: $(this).attr('action'), // URL to submit the form data
+                type: 'POST', // HTTP method
+                data: formData, // Form data including file
+                processData: false, // Prevent jQuery from automatically processing data
+                contentType: false, // Prevent jQuery from automatically setting content type
+                success: function(response) {
+                    // Handle successful response
+                    showSuccessModal('Profile updated successfully');
+                    $('.edit-btn').show();
+                    $('.save-btn').hide();
+                    $('.cancel-btn').hide();
+                    $('.account-input').attr('readonly', 'readonly'); // Make input fields readonly
+                    $('.upload-btn').hide(); // Hide the upload button
+                    $('.delete-btn').hide(); // Hide the delete button
+                    console.log(response); // Log the response if needed
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    showErrorModal('An error occurred. Please try again later.');
+                    console.error(xhr.responseText); // Log the error response if needed
+                }
+            });
+        });
+
+        // Function to handle cancel button click
+        // Function to handle cancel button click
+        $('.cancel-btn').click(function() {
+            $('.edit-btn').show();
+            $('.save-btn').hide();
+            $('.cancel-btn').hide();
+            // Target input fields only within the account section
+            $('.account-input').each(function() {
+                // Restore original values
+                $(this).val(originalValues[$(this).attr('name')]);
+            });
+            // Make input fields readonly
+            $('.account-input').attr('readonly', 'readonly');
+            // Hide upload and delete buttons
+            $('.upload-btn').hide();
+            $('.delete-btn').hide();
+            
+            // Check if a new avatar has been selected
+            const profilePictureInput = $('#profilePictureInput')[0];
+            if (!profilePictureInput.files || !profilePictureInput.files[0]) {
+                // If no new avatar selected, restore the original image source
+                $('#avatarPreview').attr('src', '{{ Storage::url('/' . auth()->user()->employee->profile_picture) }}');
             }
         });
     });
 
-    // Function to handle cancel button click
-    $('.cancel-btn').click(function() {
-        $('.edit-btn').show();
-        $('.save-btn').hide();
-        $('.cancel-btn').hide();
-        // Target input fields only within the account section
-        $('.account-input').each(function() {
-            // Restore original values
-            $(this).val(originalValues[$(this).attr('name')]);
+    $(document).ready(function() {
+        // Function to handle delete avatar button click
+        $('.delete-btn').click(function() {
+            // Get the current image source
+            var currentSrc = $('#avatarPreview').attr('src');
+            // Check if the current image source is not the default image
+            if (currentSrc !== '/assets/default/default-image.png') {
+                // Set the image source to the default image
+                $('#avatarPreview').attr('src', '/assets/default/default-image.png');
+                // Clear the file input
+                $('#profilePictureInput').val('');
+                // Add a hidden input field to indicate deletion of the avatar
+                $('<input>').attr({
+                    type: 'hidden',
+                    id: 'delete_avatar',
+                    name: 'delete_avatar'
+                }).appendTo('#accountForm');
+            } else {
+                // Show error modal indicating that it's already the default image
+                showErrorModal('Avatar is already set to default.');
+            }
         });
-        // Make input fields readonly
-        $('.account-input').attr('readonly', 'readonly');
-        // Hide upload and delete buttons
-        $('.upload-btn').hide();
-        $('.delete-btn').hide();
-        // Reset the avatar preview to original image
-        $('#avatarPreview').attr('src', originalAvatarSrc); // Restore original avatar source
     });
-
-    // Function to handle delete avatar button click
-    $('.delete-btn').click(function() {
-        $('#avatarPreview').attr('src', 'C:\\Programming Projects\\APC_2023_2024_T2_NU_F_SPEED_UP_GARAGE\\kapitan-stone\\storage\\app\\public\\avatars\\default-image.png');
-        // Clear the file input
-        $('#profilePictureInput').val('');
-        // Add the delete_avatar parameter
-        $('<input>').attr({
-            type: 'hidden',
-            id: 'delete_avatar',
-            name: 'delete_avatar'
-        }).appendTo('#accountForm');
-    });
-});
 
     function updateAvatarPreview(event) {
         // Get the selected file

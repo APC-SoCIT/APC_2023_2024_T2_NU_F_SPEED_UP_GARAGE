@@ -1,51 +1,56 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
-
     public function showUsers()
     {
         $users = User::all();
         return view('users', ['users' => $users]);
     }
-
     public function addUser(Request $request)
     {
         // Validate request data (add your own validation logic here)
-
+    
         // Insert the user into the database
         $user = new User;
-        $user->name = $request->input('name');
         $user->role = $request->input('role');
         $user->email = $request->input('email');
         $user->password = $request->input('password');
         $user->save();
-
+    
         // Create associated employee
         $employee = new Employee;
         $employee->user_id = $user->id; // Set the user_id in the employee record
-        // Add other fields as needed
+        
+        // Set employee fields
+        $employee->fname = $request->input('fname');
+        $employee->mname = $request->input('mname');
+        $employee->lname = $request->input('lname');
+        $employee->birthdate = $request->input('birthdate');
+        $employee->contact_number = $request->input('contact_number');
+        $employee->address = $request->input('address');
+        
         $employee->save();
-
+    
         return response()->json(['message' => 'User added successfully']);
     }
 
     public function editUser($id)
     {
-        $users = User::find($id);
+        $user = User::find($id);
 
-        if ($users) {
-            return response()->json(['user' => $users]);
+        if ($user) {
+            return response()->json(['user' => $user]);
         } else {
-            return response()->json(['error' => 'user not found'], 404);
+            return response()->json(['error' => 'User not found'], 404);
         }
     }
 
@@ -53,9 +58,15 @@ class UserController extends Controller
     {
         // Validate request data
         $validatedData = $request->validate([
-            'name' => 'required|string',
+            'fname' => 'required|string',
+            'mname' => 'nullable|string',
+            'lname' => 'required|string',
+            'birthdate' => 'required|date',
+            'contact_number' => 'required|string',
+            'address' => 'required|string',
             'email' => 'required|string',
-            'password' => 'nullable|string|min:8',  // Adjust validation rules
+            'password' => 'nullable|string|min:8', // Adjust validation rules
+            'role' => 'required|in:1,2,3', // Assuming role can only be 1, 2, or 3
         ]);
     
         // Find the user by ID
@@ -66,15 +77,20 @@ class UserController extends Controller
         }
     
         // Update user data
-        $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
-    
-        // Check if the password is provided and update it
-        if ($request->filled('password')) {
-            $user->password = bcrypt($validatedData['password']);  // Hash the password
-        }
-    
+        $user->password = bcrypt($validatedData['password']); // Always update the password if provided
+        $user->role = $validatedData['role'];
         $user->save();
+    
+        // Update associated employee data
+        $employee = Employee::where('user_id', $user->id)->first();
+        $employee->fname = $validatedData['fname'];
+        $employee->mname = $validatedData['mname'];
+        $employee->lname = $validatedData['lname'];
+        $employee->birthdate = $validatedData['birthdate'];
+        $employee->contact_number = $validatedData['contact_number'];
+        $employee->address = $validatedData['address'];
+        $employee->save();
     
         return response()->json(['message' => 'User updated successfully']);
     }
@@ -99,66 +115,4 @@ class UserController extends Controller
         return response()->json(['message' => 'User and associated employee deleted successfully']);
     }
 
-    public function updateProfile(Request $request, $id)
-{
-    // Validate request data
-    $validatedData = $request->validate([
-        'firstName' => 'required|string',
-        'lastName' => 'required|string',
-        'email' => 'required|email',
-        'contactNumber' => 'nullable|string',
-        'address' => 'nullable|string',
-        'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate avatar upload
-    ]);
-
-    // Find the user by ID
-    $user = User::find($id);
-
-    if (!$user) {
-        return response()->json(['error' => 'User not found'], 404);
-    }
-
-    // Update user data
-    $user->email = $validatedData['email'];
-    $user->save();
-
-    // Update associated employee data if available
-    if ($user->employee) {
-        $employee = $user->employee;
-        $employee->fname = $validatedData['firstName'];
-        $employee->lname = $validatedData['lastName'];
-        $employee->contact_number = $validatedData['contactNumber'];
-        $employee->address = $validatedData['address'];
-
-        // Handle profile picture upload if provided
-        if ($request->hasFile('avatar')) {
-            // Get the uploaded file
-            $avatarFile = $request->file('avatar');
-
-            // Generate a unique filename
-            $avatarFilename = time() . '_' . $avatarFile->getClientOriginalName();
-
-            // Store the uploaded file to the storage/avatars directory
-            $avatarPath = $avatarFile->storeAs('public/avatars', $avatarFilename);
-
-            // Update employee's profile picture path
-            $employee->profile_picture = 'avatars/' . $avatarFilename;
-
-            // Log success message
-            Log::info('Avatar uploaded successfully: ' . $avatarFilename);
-        } else {
-            // Log message if no avatar was uploaded
-            Log::info('No avatar uploaded');
-        }
-
-        $employee->save();
-    } else {
-        // Log message if employee data is not available
-        Log::info('Employee data not available');
-    }
-
-    return redirect()->back()->with('success', 'Profile updated successfully');
 }
-}
-
-

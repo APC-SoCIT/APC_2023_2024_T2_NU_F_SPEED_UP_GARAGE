@@ -74,45 +74,55 @@
             </div>
 
             <div class="table-container">
+                <!-- Table -->
                 <table class="inventory-table">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
                             <th>Role</th>
                             <th>Email</th>
-                            <th>Created At</th>
-                            <th>Updated At</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Birth Date</th>
+                            <th>Contact Number</th>
+                            <th>Address</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($users as $user)
+                            @php
+                                $employee = App\Models\Employee::where('user_id', $user->id)->first();
+                            @endphp
                             <tr data-id="{{ $user->id }}">
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>
+                            <td>{{ $user->id }}</td>
+                            <td>
                                     @php
                                         $roleName = ($user->role == 1) ? 'Admin' : (($user->role == 2) ? 'Inventory Clerk' : (($user->role == 3) ? 'Cashier' : 'Unknown Role'));
                                     @endphp
                                     {{ $roleName }}
                                 </td>
-                                
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->created_at }}</td>
-                                <td>{{ $user->updated_at }}</td>
-                                <td>
-                                    <button class="edit-btn" onclick="editUser(event)">Edit</button>
-                                    <button class="delete-btn" onclick="deleteUserRow(event)">Delete</button>
-                                </td>
-                            </tr>
+                            <td id="email{{ $user->id }}">{{ $user->email }}</td>
+                            <td id="fname{{ $user->id }}">{{ $employee->fname }}</td>
+                            <td id="mname{{ $user->id }}">{{ $employee->mname }}</td>
+                            <td id="lname{{ $user->id }}">{{ $employee->lname }}</td>
+                            <td id="birthdate{{ $user->id }}">{{ $employee->birthdate }}</td>
+                            <td id="contact_number{{ $user->id }}">{{ $employee->contact_number }}</td>
+                            <td id="address{{ $user->id }}">{{ $employee->address }}</td>
+                            <td>
+                                <button class="edit-btn" onclick="editUser(event)">Edit</button>
+                                <button class="delete-btn" onclick="deleteUserRow(event)">Delete</button>
+                            </td>
+                        </tr>
                         @empty
                             <tr>
-                                <td colspan="6">No users available</td>
+                                <td colspan="13">No users available</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
+
             </div>
 
             <div class="pagination">
@@ -126,15 +136,32 @@
             </div>
         </div>
 
+                <!-- Edit User Modal -->
         <div class="modals" id="editUserModal" style="display:none;">
             <div class="edit-user-modal-content">
                 <h2 class="edit-user-modal-title">Edit User Details</h2>
-                <label for="userName">Name:</label>
-                <input type="text" id="userName" name="userName">
+                <label for="userFirstName">First Name:</label>
+                <input type="text" id="userFirstName" name="userFirstName">
+                <label for="userMiddleName">Middle Name:</label>
+                <input type="text" id="userMiddleName" name="userMiddleName">
+                <label for="userLastName">Last Name:</label>
+                <input type="text" id="userLastName" name="userLastName">
+                <label for="userBirthDate">Birth Date:</label>
+                <input type="date" id="userBirthDate" name="userBirthDate">
+                <label for="userContactNumber">Contact Number:</label>
+                <input type="text" id="userContactNumber" name="userContactNumber">
+                <label for="userAddress">Address:</label>
+                <input type="text" id="userAddress" name="userAddress">
                 <label for="userEmail">Email:</label>
                 <input type="text" id="userEmail" name="userEmail">
                 <label for="userPassword">Password:</label>
                 <input type="password" id="userPassword" name="userPassword">
+                <label for="userRole">Role:</label>
+                <select id="userRole" name="userRole">
+                    <option value="1">Admin</option>
+                    <option value="2">Inventory Clerk</option>
+                    <option value="3">Cashier</option>
+                </select>
                 <!-- Add more fields as needed -->
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="saveUserChanges()">Save</button>
@@ -143,22 +170,32 @@
             </div>
         </div>
 
+        <!-- Add User Modal -->
         <div class="add-user-modal" id="addUserModal">
             <div class="add-user-modal-content">
                 <h2 class="add-user-modal-title">Create User</h2>
-                <label for="newUserFullName">Full Name:</label>
-                <input type="text" id="newUserFullName" name="newUserFullName">
-                <label for="UserRole">Role</label>
+                <label for="newUserFirstName">First Name:</label>
+                <input type="text" id="newUserFirstName" name="newUserFirstName">
+                <label for="newUserMiddleName">Middle Name:</label>
+                <input type="text" id="newUserMiddleName" name="newUserMiddleName">
+                <label for="newUserLastName">Last Name:</label>
+                <input type="text" id="newUserLastName" name="newUserLastName">
+                <label for="newUserBirthDate">Birth Date:</label>
+                <input type="date" id="newUserBirthDate" name="newUserBirthDate">
+                <label for="newUserContactNumber">Contact Number:</label>
+                <input type="text" id="newUserContactNumber" name="newUserContactNumber">
+                <label for="newUserAddress">Address:</label>
+                <input type="text" id="newUserAddress" name="newUserAddress">
+                <label for="newUserEmail">Email:</label>
+                <input type="text" id="newUserEmail" name="newUserEmail">
+                <label for="newUserPassword">Password:</label>
+                <input type="password" id="newUserPassword" name="newUserPassword">
+                <label for="newUserRole">Role:</label>
                 <select id="newUserRole" name="newUserRole">
-                    <option value="0">Select Role</option>
                     <option value="1">Admin</option>
                     <option value="2">Inventory Clerk</option>
                     <option value="3">Cashier</option>
                 </select>
-                <label for="newUserEmail">Email:</label>
-                <input type="text" id="newUserEmail" name="newUserEmail">
-                <label fdeleteUseror="newUserPassword">Password:</label>
-                <input type="password" id="newUserPassword" name="newUserPassword">
                 <!-- Add more fields as needed -->
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="addUser()">Save</button>
@@ -208,44 +245,55 @@
         }
 
         function addUser() {
-        var newUserFullName = document.getElementById('newUserFullName');
-        var newUserRole = document.getElementById('newUserRole');
-        var newUserEmail = document.getElementById('newUserEmail');
-        var newUserPassword = document.getElementById('newUserPassword');
+            var newUserFirstName = document.getElementById('newUserFirstName');
+            var newUserMiddleName = document.getElementById('newUserMiddleName'); // Add this line
+            var newUserLastName = document.getElementById('newUserLastName');
+            var newUserBirthDate = document.getElementById('newUserBirthDate'); // Add this line
+            var newUserContactNumber = document.getElementById('newUserContactNumber'); // Add this line
+            var newUserAddress = document.getElementById('newUserAddress'); // Add this line
+            var newUserEmail = document.getElementById('newUserEmail');
+            var newUserPassword = document.getElementById('newUserPassword');
+            var newUserRole = document.getElementById('newUserRole');
 
-        if (newUserFullName && newUserRole && newUserEmail && newUserPassword) {
-            // Get the CSRF token from the meta tag
-            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+            if (newUserFirstName && newUserMiddleName && newUserLastName && newUserBirthDate && newUserContactNumber && newUserAddress && newUserEmail && newUserPassword && newUserRole) {
+                // Get the CSRF token from the meta tag
+                const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-        $.ajax({
-            url: '/add-user',
-            type: 'POST',
-            headers: {
-            'X-CSRF-TOKEN': csrfToken
-            },
-            data: {
-                name: newUserFullName.value,
-                role: newUserRole.value,
-                email: newUserEmail.value,
-                password: newUserPassword.value,
-            },
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            success: function(response) {
-                console.log('User added successfully:', response);
-                // Handle success response (update UI, close modal, etc.)
-                closeAddUserModal();
-            },
-            error: function(error) {
-                console.error('Error adding user:', error);
-                // Handle error response (display error message, log, etc.)
-            }
-        });
+                $.ajax({
+                    url: '/add-user',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    data: {
+                        name: newUserFirstName.value + ' ' + newUserMiddleName.value + ' ' + newUserLastName.value, // Concatenate first, middle, and last names
+                        role: newUserRole.value,
+                        email: newUserEmail.value,
+                        password: newUserPassword.value,
+                        // Add employee fields
+                        fname: newUserFirstName.value,
+                        mname: newUserMiddleName.value,
+                        lname: newUserLastName.value,
+                        birthdate: newUserBirthDate.value,
+                        contact_number: newUserContactNumber.value,
+                        address: newUserAddress.value
+                    },
+                    success: function(response) {
+                        console.log('User added successfully:', response);
+                        // Handle success response (update UI, close modal, etc.)
+                        closeAddUserModal();
+                    },
+                    error: function(error) {
+                        console.error('Error adding user:', error);
+                        // Handle error response (display error message, log, etc.)
+                    }
+                });
             } else {
                 console.error('One or more elements not found.');
             }
         }
+
+
         function deleteUserRow(event) {
             const row = event.target.closest('tr'); // Get the closest <tr> parent of the clicked button
             const userID = row.getAttribute('data-id');
@@ -291,22 +339,40 @@
 
         function showModalWithUserData(userId) {
             // Populate modal with current data
-            const userName = $(`#name${userId}`).text();
             const email = $(`#email${userId}`).text();
+            const fname = $(`#fname${userId}`).text();
+            const mname = $(`#mname${userId}`).text();
+            const lname = $(`#lname${userId}`).text();
+            const birthdate = $(`#birthdate${userId}`).text();
+            const contact_number = $(`#contact_number${userId}`).text();
             const password = $(`#password${userId}`).text();
+            const address = $(`#address${userId}`).text();
 
-            $('#userName').val(userName);
             $('#userEmail').val(email);
-            $('#userPassword').val(password);
+            $('#userFirstName').val(fname);
+            $('#userMiddleName').val(mname);
+            $('#userLastName').val(lname);
+            $('#userBirthDate').val(birthdate);
+            $('#userContactNumber').val(contact_number);
+            $('#userPassword').val(password); // Corrected line
+            $('#userAddress').val(address);
 
             // Show the modal
             $('#editUserModal').show();
         }
 
+
         function saveUserChanges() {
-            const editedName = $('#userName').val();
+            const editedFirstName = $('#userFirstName').val();
+            const editedMiddleName = $('#userMiddleName').val();
+            const editedLastName = $('#userLastName').val();
+            const editedBirthDate = $('#userBirthDate').val();
+            const editedContactNumber = $('#userContactNumber').val();
+            const editedAddress = $('#userAddress').val();
             const editedUserEmail = $('#userEmail').val();
             const editedUserPassword = $('#userPassword').val();
+            const editedUserRole = $('#userRole').val(); // Assuming you have a role field in your modal
+
             const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
             // Send AJAX request to update the database
@@ -317,17 +383,20 @@
                     'X-CSRF-TOKEN': csrfToken
                 },
                 data: {
-                    name: editedName,
+                    fname: editedFirstName,
+                    mname: editedMiddleName,
+                    lname: editedLastName,
+                    birthdate: editedBirthDate,
+                    contact_number: editedContactNumber,
+                    address: editedAddress,
                     email: editedUserEmail,
-                    password: editedUserPassword
+                    password: editedUserPassword,
+                    role: editedUserRole
                 },
                 success: function(response) {
                     console.log('User updated successfully:', response);
 
-                    // Update UI with the new data
-                    $(`#name${userId}`).text(editedName);
-                    $(`#email${userId}`).text(editedUserEmail);
-                    $(`#password${userId}`).text(editedUserPassword);
+                    // Update UI with the new data if needed
 
                     // Hide the modal
                     $('#editUserModal').hide();
@@ -338,6 +407,7 @@
                 }
             });
         }
+
     </script>
     
 </body>

@@ -49,8 +49,9 @@ class SettingsController extends Controller
         // Validate request data
         $validatedData = $request->validate([
             'firstName' => 'required|string',
+            'middleName' => 'required|string',
             'lastName' => 'required|string',
-            'email' => 'required|email',
+            'birthDate' => 'required|date',
             'contactNumber' => 'required|string',
             'address' => 'required|string',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate avatar upload
@@ -63,15 +64,14 @@ class SettingsController extends Controller
             return response()->json(['error' => 'User not found'], 404);
         }
     
-        // Update user data
-        $user->email = $validatedData['email'];
-        $user->save();
     
         // Update associated employee data if available
         if ($user->employee) {
             $employee = $user->employee;
             $employee->fname = $validatedData['firstName'];
+            $employee->mname = $validatedData['middleName'];
             $employee->lname = $validatedData['lastName'];
+            $employee->birthdate = $validatedData['birthDate'];
             $employee->contact_number = $validatedData['contactNumber'];
             $employee->address = $validatedData['address'];
     
