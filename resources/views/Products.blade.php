@@ -104,7 +104,7 @@
                             @foreach ($products as $product)
                             <tr data-id="{{ $product->id }}">
                             <td><span class="status"></span></td>
-                                <td>{{ $product->id }}</td>
+                                <td>{{ $loop->index + 1 }}</td>
                                 <td class="tag" id="tag{{ $product->id }}">{{ $product->tag }}</td>
                                 <td class="product-image" id="image{{ $product->id }}">
                                     @if($product->product_image)

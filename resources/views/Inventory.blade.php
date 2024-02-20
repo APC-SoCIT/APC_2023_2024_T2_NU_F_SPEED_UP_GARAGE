@@ -110,7 +110,7 @@
                             @foreach ($products as $product)
                             <tr data-id="{{ $product->id }}">
                             <td><span class="status"></span></td>
-                                <td>{{ $product->id }}</td>
+                                <td>{{ $loop->index + 1 }}</td>
                                 <td class="tag" id="tag{{ $product->id }}">{{ $product->tag }}</td>
                                 <td class="product-image" id="image{{ $product->id }}">
                                     @if($product->product_image)
@@ -323,10 +323,8 @@
     <script src="{{ asset('assets/js/chat.js') }}"></script>
     <script src="{{ asset('assets/js/inventory.js') }}"></script>    
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
-    <script>
-        
-    </script>
-    
+    <script src="{{ asset('assets/js/filter.js') }}"></script>
+
 </body>
 
 </html>
