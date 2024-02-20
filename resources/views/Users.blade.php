@@ -49,7 +49,7 @@
                 <div class="add-user-container">
                     <button class="add-user-btn" onclick="addUserModal()">+ Add User</button>
                     <div class="dropdown-container">
-                        <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
+                        <select id="roleFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Role</option>
                             <option value="Admin">Admin</option>
                             <option value="Inventory Clerk">Inventory Clerk</option>
@@ -248,34 +248,6 @@
     <script src="{{ asset('assets/js/chat.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
-
-    <script>       
-
-        // Function to search the table based on input text
-        function searchTable() {
-            var input, filter, table, tr, td, i, j, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementsByClassName("inventory-table")[0];
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                for (j = 0; j < tr[i].getElementsByTagName("td").length; j++) {
-                    td = tr[i].getElementsByTagName("td")[j];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                            break; // If match found in any column, show the row and break the loop
-                        } else {
-                            tr[i].style.display = "none";
-                        }
-                    }
-                }
-            }
-        }
-
-
-    </script>
     
 </body>
 

@@ -105,95 +105,6 @@ searchBtn.addEventListener('click', function (e) {
     }
 });
 
-function openModal() {
-    const modal = document.getElementById('editModal');
-    modal.style.display = 'flex'; // Use 'flex' to center the modal
-}
-
-// Function to close the modal
-function closeModal() {
-    const modal = document.getElementById('editModal');
-    modal.style.display = 'none';
-}
-
-function cancelEditModal() {
-    // Reset the file input
-    document.getElementById('editedProductImage').value = '';
-
-    // Reset the image preview
-    const imagePreview = document.getElementById('editedImagePreview');
-    imagePreview.src = '';
-
-    // Close the modal
-    closeModal();
-}
-
-let currentEditingId;
-
-function editRow(event) {
-    const row = event.target.closest('tr');
-
-    if (row) {
-        currentEditingId = row.getAttribute('data-id');
-
-        // Fetch data from the row and populate the modal fields
-        const tagElement = row.querySelector('.tag');
-        const productNameElement = row.querySelector('.product-name');
-        const categoryElement = row.querySelector('.category');
-        const brandElement = row.querySelector('.brand');
-        const quantityElement = row.querySelector('.quantity');
-        const priceElement = row.querySelector('.price');
-        const imageElement = row.querySelector('.product-image');
-
-        const tag = tagElement ? tagElement.textContent : '';
-        const productName = productNameElement ? productNameElement.textContent : '';
-        const category = categoryElement ? categoryElement.textContent : '';
-        const brand = brandElement ? brandElement.textContent : '';
-        const quantity = quantityElement ? quantityElement.textContent : '';
-        const price = priceElement ? priceElement.textContent : '';
-        const imageUrl = imageElement ? imageElement.getAttribute('src') : '';
-
-        // Populate the modal fields with the fetched data
-        document.getElementById('editedTag').value = tag;
-        document.getElementById('editedProductName').value = productName;
-        document.getElementById('editedCategory').value = category;
-        document.getElementById('editedBrand').value = brand;
-        document.getElementById('editedQuantity').value = quantity;
-        document.getElementById('editedPrice').value = price;
-
-        // Set the current image in the preview
-        const imagePreview = document.getElementById('editedImagePreview');
-        imagePreview.src = imageUrl;
-
-        openModal();
-    }
-}
-
-
-
-function EditImageChange(input) {
-    const imagePreview = document.getElementById('editedImagePreview');
-    const imageInputLabel = document.getElementById('editedImageInputLabel');
-
-    const file = input.files[0];
-
-    if (file) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            imagePreview.src = e.target.result;
-            imageInputLabel.textContent = 'Change image';
-        };
-
-        reader.readAsDataURL(file);
-    }
-}
-
-
-// Function to handle deleting a row
-
-
-
 
 // Attach click event listeners to the "Edit" and "Delete" buttons in each row
 document.querySelectorAll('.edit-btn').forEach(btn => {
@@ -259,23 +170,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateStatusClassForAll();
 });
 
-// this is for the numbering in tables
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Add this function to automatically assign numbers to the # column
-    function assignRowNumbers() {
-      var table = document.querySelector(".inventory-table");
-      var rows = table.querySelectorAll("tbody tr");
-
-      rows.forEach(function (row, index) {
-        var numberCell = row.querySelector("td:nth-child(2)");
-        numberCell.textContent = index + 1;
-      });
-    }
-
-    // Call the function to assign numbers when the page loads
-    assignRowNumbers();
-  });
 
   function searchTable() {
     // Get the search input value

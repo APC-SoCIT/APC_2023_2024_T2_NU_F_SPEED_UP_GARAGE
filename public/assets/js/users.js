@@ -1,4 +1,48 @@
-// Add these functions to your existing JavaScript file or in a separate file
+function searchTable() {
+    var input, filter, table, tr, td, i, j, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementsByClassName("inventory-table")[0];
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        for (j = 0; j < tr[i].getElementsByTagName("td").length; j++) {
+            td = tr[i].getElementsByTagName("td")[j];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    break; // If match found in any column, show the row and break the loop
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+}
+
+function filterTable() {
+    var roleFilter = document.getElementById("roleFilter").value;
+    var entriesPerPage = parseInt(document.getElementById("entries-per-page").value);
+    var currentPage = parseInt(document.querySelector(".pagination .pagination-link.active").textContent);
+
+    var startIndex = (currentPage - 1) * entriesPerPage;
+    var endIndex = startIndex + entriesPerPage;
+
+    var tableRows = document.querySelectorAll(".inventory-table tbody tr");
+
+    tableRows.forEach(function(row, index) {
+        var roleCell = row.querySelector("td:nth-child(2)");
+        var roleName = roleCell.textContent.trim();
+
+        if ((roleFilter === "" || roleName === roleFilter) && (index >= startIndex && index < endIndex)) {
+            row.style.display = "table-row";
+        } else {
+            row.style.display = "none";
+        }
+    });
+}
+
+
 
 // Function to open the Add User modal
 function addUserModal() {
