@@ -8,6 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/filter.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/inventory.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/entries.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
@@ -46,8 +47,9 @@
             <div class="maintable-container">
                 <div class="filter-container">
                     <div class="add-product-container">
-                        <button class="add-product-btn" onclick="showAddProductModal()">+ Add Product</button>
-                        <div class="dropdown-container">
+                       <button class="add-product-btn" onclick="showAddProductModal()">+ Add Product</button>
+                       <button class="add-product-btn" onclick="showScanProductModal()">+ Scan Product</button>
+                       <div class="dropdown-container">
                         <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Status</option>
                             <option value="Out of Stock">Out of Stock</option>
@@ -316,8 +318,100 @@
         </div>
 
 
+        
+        <div class="add-modal" id="scanProductModal">
+    <div class="modal-content">
+        
+    <div class="add-customer-modal-title">Scan Product</div> <!-- Add the header -->
+<div class="divider"></div>
+
+<div class="product-image" id="productImageContainer">
+    <img id="productImage" src="#" alt="">
+</div>
+
+
+<div class="form-row">
+<div class="form-row-container">
+<label for="Barcode">Barcode</label>
+<input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" required>
+</div>
+</div>
+<div class="form-row">
+<div class="form-row-container">
+<label for="Product">Product Name</label>
+<input type="text" id="scanProduct" name="scanProduct" placeholder="Oil Filter" readonly>
+</div>
+</div>
+<div class="form-row">
+<div class="form-row-container">
+<label for="Category">Category</label>
+<input type="text" id="scanCategory" name="scanCategory" placeholder="500" readonly>
+</div>
+<div class="form-row-container">
+<label for="Brand">Brand</label>
+<input type="text" id="scanBrand" name="scanBrand" placeholder="1" readonly>
+</div>
+</div>
+<div class="form-row">
+<div class="form-row-container">
+<label for="Price">Price</label>
+<input type="text" id="scanPrice" name="scanPrice" placeholder="500" readonly>
+</div>
+<div class="form-row-container">
+<label for="Quantity">Quantity</label>
+<input type="text" id="scanQuantity" name="scanQuantity" placeholder="1" readonly>
+</div>
+</div>
+
+
+<script>
+    // Function to handle barcode scanning
+    document.getElementById('scanBarcode').addEventListener('change', function() {
+        var barcode = this.value; // Get the scanned barcode
+
+        // Make an AJAX request to fetch product data based on the scanned barcode
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get-product-by-barcode?barcode=' + barcode, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.product_name) {
+                        document.getElementById('scanProduct').value = response.product_name;
+                        document.getElementById('scanCategory').value = response.category;
+                         document.getElementById('scanBrand').value = response.brand;
+                        // Calculate the total quantity (original quantity + 1)
+                        var originalQuantity = parseInt(response.quantity);
+                        var addedQuantity = 1;
+                        var totalQuantity = originalQuantity + addedQuantity;
+                        
+                        // Display the total quantity with the added quantity
+                        document.getElementById('scanQuantity').value = originalQuantity + ' (+' + addedQuantity + ')';
+                        document.getElementById('scanPrice').value = '₱' + response.price;
+                       
+                        // Display the scanned product image
+                        var productImage = document.getElementById('productImage');
+                        var productImageContainer = document.getElementById('productImageContainer');
+                        productImage.src = response.product_image; // Use the corrected product image URL
+                        productImageContainer.style.display = 'block';
+
+                        // Clear the scanned barcode
+                        document.getElementById('scanBarcode').value = '';
+                    }
+                } else {
+                    alert('Error fetching product data');
+                    document.getElementById('scanBarcode').value = '';
+                }
+            }
+        };
+        xhr.send();
+    });
+</script>
+<div class="modal-button-container">
+    <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>
+</div>
     </main>
-    
+
     <script src="{{ asset('assets/js/try.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/chat.js') }}"></script>

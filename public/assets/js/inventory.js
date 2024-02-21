@@ -21,6 +21,40 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchThreshold();
 });
 
+
+function showScanProductModal() {
+    const scanProductModal = document.getElementById('scanProductModal');
+    scanProductModal.style.display = 'flex'; 
+    focusOnBarcode();
+}
+
+function focusOnBarcode() {
+    document.getElementById('scanBarcode').focus();
+}
+
+
+function closeScanProductModal() {
+    const scanProductModal = document.getElementById('scanProductModal');
+    const scanBarcode = document.getElementById('scanBarcode');
+    const scanBrand = document.getElementById('scanBrand');
+    const scanCategory = document.getElementById('scanCategory');
+    const scanPrice = document.getElementById('scanPrice');
+    const scanProduct = document.getElementById('scanProduct');
+    const scanQuantity = document.getElementById('scanQuantity');
+    const productImage = document.getElementById('productImage');
+
+    scanBrand.value = '';
+    scanCategory.value = '';
+    scanQuantity.value = '';
+    scanPrice.value = '';
+    scanBarcode.value = '';
+    scanProduct.value = '';
+    productImage.src = ''; // Clear the image
+    scanProductModal.style.display = 'none';
+}
+
+
+
 function addProduct() {
     var newTag = document.getElementById('newTag');
     var newProductName = document.getElementById('newProductName');
@@ -533,3 +567,4 @@ function parseNumericalValue(value) {
     // Remove commas and parse the value as a float
     return parseFloat(value.replace(/,/g, ''));
 }
+

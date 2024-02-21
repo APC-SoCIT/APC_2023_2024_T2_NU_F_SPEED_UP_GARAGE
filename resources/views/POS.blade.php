@@ -124,6 +124,7 @@
         <div class="right-section">
         <div class="order-no" id="receiptNo"></div>
         <div class="date-today" id="currentDate"></div>
+        <input type="text" class="barcodeScan" id="barcodeInput" onkeypress="toggleDot(event)" />
       </div>
       <div class="left-section">
         <div class="category-plc">
@@ -251,7 +252,7 @@
         
             <div class="form-row-container">
             <label for="newVillage">Village/Subdivision:</label>
-            <input type="text" id="newVillage" name="newVillage" placeholder="Greenbreeze Residence">
+            <input type="text" id="newVillage" name="newVillage" placeW13BW1holder="Greenbreeze Residence">
             </div>
         </div>
 
@@ -274,8 +275,7 @@
         <input type="text" id="newZipCode" name="newZipCode" placeholder="1960"> 
         </div>
         </div>
-
-                
+  
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="addCustomer()">Add Customer</button>
                     <button class="modal-close-button" onclick="closeAddCustomerModal()">Cancel</button>
@@ -296,70 +296,101 @@
           <input type="text" class="search-bar1" placeholder="Enter item name..." x-model="keyword"/>
         </div>
 
-          <div class="brandpartSelect">
-            <select id="Brands" class="category-dropdown2">
-              <option value="Brands">All Brand</option>
-              <option value="Athena">Athena</option>
-              <option value="Acerbic">Acerbic</option>
-              <option value="Twin Air<">Twin Air</option>
-            </select>
+        
+ 
+<div class="brandpartSelect">
+          <select class="category-dropdown2" x-model="selectedBrand">
+          <option value="">Select Brand</option>
+        @foreach($brands as $brand)
+            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+        @endforeach 
+</select>
 
-            <select id="Parts" class="category-dropdown2">
-              <option value="Parts">All Parts</option>
-              <option value="Oil Filter">Oil Filter</option>
-              <option value="Brake Kit">Brake Kit</option>
-              <option value="Radiator">Radiator</option>
-            </select>
+<select class="category-dropdown3" x-model="selectedCategory">
+<option value="">Select Category</option>
+        @foreach($categories as $category)
+            <option value="{{ $category->name }}">{{ $category->name }}</option>
+        @endforeach
+    </select>
+
+
+   
 </div>
 
-        <div class="product-container">
-        <div class="product-inner-container">
+
+
+
+<div class="product-container">
+    <div class="product-inner-container">
+        <!-- Show DB error message if products array is empty -->
         <div class="products" x-show="products.length === 0">
-              <div class="db-info">
-                
+            <div class="db-info">
                 <p class="text-xl">
-                  DB ERROR!
-                  <br/>
-                  PLEASE REFRESH
+                    DB ERROR!
+                    <br/>
+                    PLEASE REFRESH
                 </p>
-              </div>
             </div>
-            <div class="search-card" x-show="filteredProducts().length === 0 && keyword.length > 0">
-              <div class="w-full text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <p class="text-xl">
-                  EMPTY SEARCH RESULT
-                  <br/>
-                  "<span x-text="keyword" class="font-semibold"></span>"
-                </p>
-              </div>
-            </div>
-            <div x-show="filteredProducts().length" class="products-product">
-            <template x-for="product in products" :key="product.id">
-  <div
-    role="button"
-    class="product-card"
-    :title="product.name"
-    x-on:click="product.quantity > 0 ? addToCart(product) : null">
-    <img class="product-image" :src="product.product_image_path" :alt="product.name">
-    <div class="product-card-pad">
-      <div class="product-details">
-        <div class="product-brand" x-text="product.brand"></div>
-        <div class="product-name" x-text="product.product_name"></div>
-        <div class="product-price-quantity">
-          <div class="product-price" x-text="priceFormat(product.price * 1.12)"></div>
-          <div class="product-quantity" x-text="qtyFormat(product.quantity)"></div>
         </div>
-      </div>
-    </div>
+        
+        <div class="search-card" x-show="filteredProducts().length === 0">
+  <div class="w-full text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+    <p class="text-xl">
+      EMPTY SEARCH RESULT
+      <br />
+      "
+      <span x-text="keyword ? keyword : 'no keyword selected'" class="font-semibold"></span>
+      "
+    </p>
+    <template x-if="selectedBrand">
+      <p class="text-xl">
+        EMPTY BRAND RESULT
+        <br />
+        "
+        <span x-text="selectedBrand" class="font-semibold"></span>
+        "
+      </p>
+    </template>
+    <template x-if="selectedCategory">
+      <p class="text-xl">
+        EMPTY CATEGORY RESULT
+        <br />
+        "
+        <span x-text="selectedCategory" class="font-semibold"></span>
+        "
+      </p>
+    </template>
   </div>
-</template>
-            </div>
-          </div>
+</div>
+
+
+      
+        <!-- Show products that match the search keyword -->
+        <div class="products-product" x-show="filteredProducts().length > 0">
+            <template x-for="product in filteredProducts()" :key="product.id">
+                <div role="button" class="product-card" :title="product.product_name" x-on:click="product.quantity > 0 ? addToCart(product) : null">
+                    <img class="product-image" :src="product.product_image_path" :alt="product.product_name">
+                    <div class="product-card-pad">
+                        <div class="product-details">
+                            <div class="product-brand" x-text="product.brand"></div>
+                            <div class="product-name" x-text="product.product_name"></div>
+                            <div class="product-price-quantity">
+                                <div class="product-price" x-text="priceFormat(product.price * 1.12)"></div>
+                                <div class="product-quantity" x-text="qtyFormat(product.quantity)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
         </div>
-      </div>
+    </div>
+</div>
+</div>
+
+
       
       <!-- end of store menu -->
 
@@ -430,19 +461,8 @@
           <!-- payment info -->
           <div class="select-none h-auto w-full text-center pt-3 pb-4 px-4">
 
-          <div class="total-text">
-              <div>VATable</div>
-              <div class="text-right w-full" x-text="priceFormat(getVatable())"></div>
-            </div>
 
-          <div class="total-text">
-              <div>VAT</div>
-              <div class="text-right w-full" x-text="priceFormat(getVAT())"></div>
-            </div>
-            <div class="total-text">
-              <div>TOTAL</div>
-              <div class="text-right w-full" x-text="priceFormat(getTotalPayment())"></div>
-            </div>
+
             <div class="cash-text">
             
               <div class="category-plc1">
@@ -474,6 +494,24 @@
                 </template>
               </div>
             </div>
+                
+          <div class="summary-card" >
+  <div class="total-text" >
+    <div>VATable</div>
+    <div class="text-right" x-text="priceFormat(getVatable())"></div>
+  </div>
+
+  <div class="total-text">
+    <div>VAT</div>
+    <div class="text-right" x-text="priceFormat(getVAT())"></div>
+  </div>
+
+  <div class="total-text" >
+    <div>TOTAL</div>
+    <div class="text-right" x-text="priceFormat(getTotalPayment())"></div>
+  </div>
+</div>
+            
             <div x-show="change > 0" class="change-card">
               <div class="change-text">CHANGE</div>
               <div

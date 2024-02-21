@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Models\Brand;
-use App\Models\Category; 
+use App\Models\Category;
+use Illuminate\Http\UploadedFile; 
+use Illuminate\Support\Str;
+
 
 class ProductController extends Controller
 {
@@ -58,20 +61,19 @@ class ProductController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             
             // Store in the public disk under 'product_images' folder
-            $image->storeAs('public/storage/product_images', $imageName);
+            $image->storeAs('public/product_images', $imageName);
     
             // Set the image name
             $product->product_image = $imageName;
     
             // Set the full path
-            $product->product_image_path = asset('public/storage/product_images/' . $imageName);
+            $product->product_image_path = asset('storage/product_images/' . $imageName);
         }
     
         $product->save();
     
         return response()->json(['message' => 'Product added successfully']);
-    }
-
+    } 
     public function editProduct($id)
     {
         $product = Product::find($id);
@@ -82,6 +84,32 @@ class ProductController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
     }
+
+    public function getProductByBarcode(Request $request)
+{
+    $tag = $request->input('barcode'); // Retrieve the scanned tag (barcode)
+    $product = Product::where('tag', $tag)->first(); // Query the Product table using the tag
+    
+    if ($product) {
+        // Increment the quantity of the product by 1
+        $product->quantity += 1;
+        $product->save();
+
+        return response()->json([
+            'product_name' => $product->product_name,
+            'quantity' => $product->quantity,
+            'price' => $product->price,
+            'category' => $product->category,
+            'brand' => $product->price,
+            'product_image' => asset('storage/product_images/' . $product->product_image)
+        ]);
+    } else {
+        return response()->json(['error' => 'Product not found for the given barcode'], 404);
+    }
+}
+
+
+
 
     public function updateProduct(Request $request, $id)
     {
@@ -180,3 +208,4 @@ class ProductController extends Controller
     }
 }
 }
+

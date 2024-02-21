@@ -7,6 +7,9 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Customer;
 use App\Models\User;
+use App\Models\Brand;
+use App\Models\Category;
+
 
 class POSController extends Controller
 {
@@ -18,6 +21,8 @@ class POSController extends Controller
         $customers = Customer::all();
         $products = Product::all();
         $users = User::all();
+        $brands = Brand::all();
+        $categories = Category::all();
 
         // Check if the request wants JSON
         if (request()->expectsJson()) {
@@ -27,7 +32,7 @@ class POSController extends Controller
         }
 
         // Pass the products to the 'POS' view
-        return view('POS', compact('products', 'customers', 'transactions', 'users'));
+        return view('POS', compact('products', 'customers', 'transactions', 'users', 'brands', 'categories',));
     }
 
     private function convertArrayEncoding($array)

@@ -1,0 +1,16 @@
+#productImageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 220px; /* Set container width */
+    height: 220px; /* Set container height */
+    border: 1px solid #ccc; /* Optional: Add border */
+    margin: 0 auto; /* Center the container horizontally */
+    margin-bottom: 10px;
+}
+
+#productImage {
+    max-width: 100%; /* Ensure the image fits within the container */
+    max-height: 100%; /* Ensure the image fits within the container */
+}
+

@@ -1,6 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Your existing JavaScript code
-});
+
 
 function updateReceiptNo(app, newReceiptNo, time) {
   console.log('Updating receipt number:', newReceiptNo);
@@ -45,12 +43,10 @@ document.getElementById('status').addEventListener('change', function () {
 
 const app = initApp();
 app.initReceiptNo();
-
-
-// Event listener for checkout validation on page load
 document.addEventListener('DOMContentLoaded', function () {
 
 });
+
 
 
 function initApp() {
@@ -58,6 +54,8 @@ function initApp() {
   const app = {
     db: null,
     time: null,
+    selectedBrand: "",
+    selectedCategory: "",
     selectedPaymentMethod: "",
     selectedCustomerName:"",
     selectedStatus:"",
@@ -121,12 +119,22 @@ getNextReceiptNo() {
 
 
 
-    filteredProducts() {
-      const rg = this.keyword ? new RegExp(this.keyword, "gi") : null;
-      return this.products.filter((p) => !rg || p.name.match(rg));
-    },
 
-    // Add these lines to the functions where changes occur
+filteredProducts() {
+  const rg = this.keyword ? new RegExp(this.keyword, "gi") : null;
+  const brandFilter = this.selectedBrand ? (p) => p.brand === this.selectedBrand : () => true;
+  const categoryFilter = this.selectedCategory ? (p) => p.category === this.selectedCategory : () => true;
+  
+  const filtered = this.products.filter((p) => {
+    return (!rg || p.product_name.match(rg)) && brandFilter(p) && categoryFilter(p);
+  });
+
+  return this.keyword && filtered.length === 0 ? [] : filtered;
+},
+
+
+
+
 
     addToCart(product) {
       const index = this.findCartIndex(product);
@@ -294,7 +302,6 @@ getNextReceiptNo() {
       
       return formattedNumber;
     },
-    
     
     
     numberFormat1(number) {
@@ -660,6 +667,106 @@ function preventCountryCodeDeletion(input) {
 }
     
 
+function isNumeric(evt) {
+    // Get the event key code
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+
+    // Allow only numeric digits and specific control keys (e.g., backspace, delete, arrow keys)
+    if (charCode > 31 && (charCode < 48 || charCode > 57) && (charCode !== 8 && charCode !== 9 && charCode !== 37 && charCode !== 39 && charCode !== 46)) {
+        return false;
+    }
+
+    return true;
+}
+
+  
+document.addEventListener("DOMContentLoaded", function () {
+    const barcodeInput = document.querySelector('.barcodeScan');
+
+    barcodeInput.addEventListener('change', async (event) => {
+        const scannedBarcode = event.target.value;
+
+        try {
+            // Fetch product data from the /pos1 endpoint
+            const response = await fetch('http://127.0.0.1:8000/pos1');
+            const data = await response.json();
+
+            console.log('Fetched product data:', data);
+
+            // Display all the data of the currently displayed product cards
+            const productCards = document.querySelectorAll('.product-card');
+            productCards.forEach(productCard => {
+                const title = productCard.getAttribute('title');
+                console.log('Product card title:', title);
+            });
+
+            // Initialize app with the fetched product data
+            const app = initApp(data);
+
+            console.log('Scanned Barcode:', scannedBarcode);
+
+            // Find the product with the scanned barcode
+            const product = data.products.find(p => p.tag === scannedBarcode);
+
+            console.log('Found Product:', product);
+
+            if (product) {
+                // Find the product card element by its title attribute
+                const productCard = document.querySelector(`[title="${product.product_name}"]`);
+
+                if (productCard) {
+                    // Dispatch a click event on the product card element
+                    productCard.click();
+                    console.log('Product clicked:', product);
+                } else {
+                    console.log('Product card not found for product:', product);
+                }
+            } else {
+                console.log('Product not found for barcode:', scannedBarcode);
+            }
+
+        } catch (error) {
+            console.error('Error searching for product:', error);
+        }
+
+        // Clear the input field after scanning
+        event.target.value = '';
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Function to check if the Shift key and the plus key are pressed simultaneously
+  const handleHotkeyPress = (event) => {
+      if (event.shiftKey && event.keyCode === 187) {
+          // Focus on the barcode input field
+          const barcodeInput = document.querySelector('.barcodeScan');
+          barcodeInput.focus();
+          return false; // Prevent the default action of the plus key
+      }
+  };
+
+  // Event listener for keydown event to detect hotkey press
+  document.addEventListener('keydown', handleHotkeyPress);
+  
+  // Function to allow only numeric input
+  window.isNumeric = (event) => {
+      const charCode = (event.which) ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+          return false;
+      }
+      return true;
+  };
+});
+
+function toggleDot(event) {
+  const dot = document.getElementById("dot");
+  if (event.keyCode !== 13) {
+    dot.style.display = "none";
+  } else {
+    dot.style.display = "block";
+  }
+}
 
 
-    
+
+

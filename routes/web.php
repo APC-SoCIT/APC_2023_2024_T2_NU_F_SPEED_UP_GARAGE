@@ -161,6 +161,7 @@ Route::put('/pos/update-transaction/{transaction_id}', [POSController::class, 'u
 Route::delete('/pos/delete-transaction/{transaction_id}', [POSController::class, 'deleteTransaction']);
 Route::post('/update-transactions', 'TransactionController@updateTransactions');
 
+Route::get('/get-product-by-barcode', [ProductController::class, 'getProductByBarcode']);
 
 
 Route::middleware('auth')->group(function () {
