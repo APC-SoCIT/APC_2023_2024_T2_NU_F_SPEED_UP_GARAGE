@@ -357,7 +357,8 @@ function editUser(event) {
     const fname = names[0];
     const mname = names.length > 2 ? names.slice(1, -1).join(' ') : ''; // If there's a middle name, concatenate it
     const lname = names[names.length - 1];
-    const birthdate = $(`#birthdate${userId}`).text();
+    const birthdateCell = $(`#birthdate${userId}`);
+    const birthdate = birthdateCell.text().trim() !== 'N/A' ? birthdateCell.text().trim() : ''; // Check if birthdate is "N/A"
     const contact_number = $(`#contact_number${userId}`).text();
     const address = $(`#address${userId}`).text();
 
@@ -373,6 +374,7 @@ function editUser(event) {
     // Show the modal
     $('#editUserModal').show();
 }
+
 
 function showModalWithUserData(userId) {
     // Populate modal with current data
@@ -397,6 +399,7 @@ function showModalWithUserData(userId) {
     // Show the modal
     $('#editUserModal').show();
 }
+
 
 function saveUserChanges() {
     const editedFirstName = $('#userFirstName').val();
@@ -425,12 +428,6 @@ function saveUserChanges() {
     if (editedLastName.trim() === '') {
         $('#userLastName').get(0).setCustomValidity('Please fill out the Last Name field.');
         $('#userLastName').get(0).reportValidity();
-        return;
-    }
-
-    if (editedBirthDate.trim() === '') {
-        $('#userBirthDate').get(0).setCustomValidity('Please select a Birth Date.');
-        $('#userBirthDate').get(0).reportValidity();
         return;
     }
 

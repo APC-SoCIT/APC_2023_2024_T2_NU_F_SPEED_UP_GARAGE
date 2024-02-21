@@ -248,7 +248,9 @@
     <script src="{{ asset('assets/js/chat.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
-    
+    <script>
+
+    </script>
 </body>
 
 </html>

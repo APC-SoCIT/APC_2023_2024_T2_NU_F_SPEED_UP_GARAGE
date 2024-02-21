@@ -74,7 +74,7 @@ class UserController extends Controller
         'fname' => 'required|string',
         'mname' => 'nullable|string',
         'lname' => 'required|string',
-        'birthdate' => 'required|date',
+        'birthdate' => 'nullable|date',
         'contact_number' => 'required|string',
         'address' => 'required|string',
         'email' => 'required|string',
