@@ -74,11 +74,12 @@
                             <th>Sex</th>
                             <th>Birthday</th>
                             <th>Phone</th>
-                            <th>Unit No./Building No.</th>
-                            <th>Street</th>
+                            <th>Address Line 1</th>
+                            <th>Address Line 2</th>
                             <th>Village/Subdivision</th>
                             <th>Province</th>
-                            <th>City</th>
+                            <th>City/Municipality</th>
+                            <th>Barangay</th>
                             <th>Zipcode</th>
                             <th>Action</th>
                         </tr>
@@ -99,6 +100,7 @@
             <td class="customer-address" id="village{{ $customer->id }}">{{ $customer->village }}</td>
             <td class="customer-address" id="province{{ $customer->id }}">{{ $customer->province }}</td>
             <td class="customer-address" id="city{{ $customer->id }}">{{ $customer->city }}</td>
+            <td class="customer-address" id="barangay{{ $customer->id }}">{{ $customer->barangay }}</td>
             <td class="customer-address" id="zipcode{{ $customer->id }}">{{ $customer->zipcode }}</td>
             <!-- Add more columns based on your data -->
             <td>
@@ -196,7 +198,7 @@
 
                 <div class="form-row">
                 <div class="form-row-container">
-                <label for="customerSuffix">Village/Subdivision</label>
+                <label for="customerVillage">Village/Subdivision</label>
                 <input type="text" id="customerVillage" name="customerVillage" placeholder="Village/Subdivision">
                 </div>
                 </div>
@@ -209,15 +211,19 @@
                 </div>
                 <div class="form-row-container">
                 <label for="customerSuffix">City/Municipality</label>
-                <select id="customerCity" name="customerCity">
+                <input type="text" id="customerCity" name="customerCity" placeholder="City/Municipality">
                 </select>
                 </div>
                 </div>
 
                 <div class="form-row">
                 <div class="form-row-container">
+                <label for="customerBarangay">Barangay</label>
+                <input type="text" id="customerBarangay" name="customerBarangay">
+                </div>
+                <div class="form-row-container">
                 <label for="customerSuffix">Zip Code</label>
-                <input type="text" id="customerZipCode" name="customerZipCode" placeholder="Zip Code">
+                <input type="text" id="customerZipCode" name="customerZipCode">
                 </div>
                 </div>
                 
@@ -303,7 +309,6 @@
         </div>
 
         <div class="form-row">
-        
             <div class="form-row-container">
             <label for="newVillage">Village/Subdivision:</label>
             <input type="text" id="newVillage" name="newVillage" placeholder="Greenbreeze Residence">
@@ -324,6 +329,10 @@
         </div>
 
         <div class="form-row">
+        <div class="form-row-container">
+        <label for="newBarangay">Barangay</label>
+        <input type="text" id="newBarangay" name="newBarangay" placeholder="San Isidro"> 
+        </div>
         <div class="form-row-container">
         <label for="newZipCode">Zip Code</label>
         <input type="text" id="newZipCode" name="newZipCode" placeholder="1960"> 
@@ -379,25 +388,6 @@ function preventCountryCodeDeletion(input) {
 
 </script>
 
-<script>
-function addCountryCode() {
-    var newPhoneInput = document.getElementById('Phone');
-    if (!newPhoneInput.value.startsWith('63')) {
-        newPhoneInput.value = '63' + newPhoneInput.value;
-    }
-}
-
-function preventCountryCodeDeletion(input) {
-    var countryCode = '63';
-    if (input.value.length < countryCode.length) {
-        input.value = countryCode;
-    } else if (!input.value.startsWith(countryCode)) {
-        input.value = countryCode + input.value.substring(countryCode.length);
-    }
-}
-
-
-        </script>
 </body>
 
 </html>

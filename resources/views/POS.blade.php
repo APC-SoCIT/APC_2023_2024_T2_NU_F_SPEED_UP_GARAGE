@@ -271,6 +271,10 @@
 
         <div class="form-row">
         <div class="form-row-container">
+        <label for="newBarangay">Barangay</label>
+        <input type="text" id="newBarangay" name="newBarangay" placeholder="San Isidro"> 
+        </div>
+        <div class="form-row-container">
         <label for="newZipCode">Zip Code</label>
         <input type="text" id="newZipCode" name="newZipCode" placeholder="1960"> 
         </div>
@@ -670,8 +674,43 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{ asset('assets/js/pos.js') }}"></script>
     <script src="{{ asset('assets/js/navbar.js') }}"></script> 
+    <script src="{{ asset('assets/js/city.js') }}"></script>
     <script src="{{ asset('assets/js/inventory.js') }}"></script> 
     <script src="{{ asset('assets/js/index.js') }}"></script>
+
+
+    <script>	
+    window.onload = function() {	
+
+	var $ = new City();
+	$.showProvinces("#newProvince");
+	$.showCities("#newCity");
+    $.showProvinces("#customerProvince");
+	$.showCities("#customerCity");
+	
+}
+    </script> 
+
+    <script>
+function addCountryCode() {
+    var newPhoneInput = document.getElementById('newPhone');
+    if (!newPhoneInput.value.startsWith('63')) {
+        newPhoneInput.value = '63' + newPhoneInput.value;
+    }
+}
+
+function preventCountryCodeDeletion(input) {
+    var countryCode = '63';
+    if (input.value.length < countryCode.length) {
+        input.value = countryCode;
+    } else if (!input.value.startsWith(countryCode)) {
+        input.value = countryCode + input.value.substring(countryCode.length);
+    }
+}
+
+</script>
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

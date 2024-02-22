@@ -499,6 +499,7 @@ function closeAddCustomerModal() {
     const newVillage = document.getElementById('newVillage');
     const newProvince = document.getElementById('province');
     const newCity = document.getElementById('city');
+    const newBarangay = document.getElementById('newBarangay');
     const newZipCode = document.getElementById('newZipCode');
     
 
@@ -511,6 +512,7 @@ function closeAddCustomerModal() {
     newBirthday.value = '';
     newStreet.value = '';
     newVillage.value = '';
+    newBarangay.value = '';
     newZipCode.value = '';
 
     // Hide the modal
@@ -532,6 +534,7 @@ function addCustomer() {
   var newVillage = document.getElementById('newVillage');
   var newProvince = document.getElementById('newProvince');
   var newCity = document.getElementById('newCity');
+  var newBarangay = document.getElementById('newBarangay');
   var newZipCode = document.getElementById('newZipCode');
 
     if (newFirstName.value.trim() === '') {
@@ -595,6 +598,13 @@ function addCustomer() {
       newCity.reportValidity();
       return; // Exit the function
       }
+
+      // Trigger validation for zipcode if it's in its default state
+      if (newBarangay.value.trim() === '') {
+        newBarangay.setCustomValidity('Please fill out this field.');
+        newBarangay.reportValidity();
+        return; // Exit the function
+        }
   
       // Trigger validation for zipcode if it's in its default state
       if (newZipCode.value.trim() === '') {
@@ -605,7 +615,7 @@ function addCustomer() {
 
 
 
-  if (newFirstName && newLastName && newMiddleName && newSuffix && newSex && newPhone && newUnit && newStreet && newVillage && newProvince && newCity && newZipCode ) {
+  if (newFirstName && newLastName && newMiddleName && newSuffix && newSex && newPhone && newUnit && newStreet && newVillage && newProvince && newCity && newBarangay && newZipCode) {
     // Get the CSRF token from the meta tag
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -628,6 +638,7 @@ function addCustomer() {
         village: newVillage.value,
         province: newProvince.value,
         city: newCity.value,
+        barangay: newBarangay.value,
         zipcode: newZipCode.value,
          
       },

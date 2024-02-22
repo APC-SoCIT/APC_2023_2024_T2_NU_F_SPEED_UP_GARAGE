@@ -22,6 +22,7 @@ function closeAddCustomerModal() {
     const newUnit = document.getElementById('newUnit');
     const newStreet = document.getElementById('newStreet');
     const newVillage = document.getElementById('newVillage');
+    const newBarangay = document.getElementById('newBarangay');
     const newZipCode = document.getElementById('newZipCode');
     
 
@@ -37,6 +38,7 @@ function closeAddCustomerModal() {
     newStreet.value = '';
     newVillage.value = '';
     newProvince.value = 'Select Province';
+    newBarangay.value = '';
     newZipCode.value = '';
 
     // Hide the modal
@@ -58,6 +60,7 @@ function addCustomer() {
     var newVillage = document.getElementById('newVillage');
     var newProvince = document.getElementById('newProvince');
     var newCity = document.getElementById('newCity');
+    var newBarangay = document.getElementById('newBarangay');
     var newZipCode = document.getElementById('newZipCode');
   
       if (newFirstName.value.trim() === '') {
@@ -128,6 +131,13 @@ function addCustomer() {
         newCity.reportValidity();
         return; // Exit the function
         }
+
+        // Trigger validation for zipcode if it's in its default state
+        if (newBarangay.value.trim() === '') {
+            newBarangay.setCustomValidity('Please fill out this field.');
+            newBarangay.reportValidity();
+            return; // Exit the function
+            }
     
         // Trigger validation for zipcode if it's in its default state
         if (newZipCode.value.trim() === '') {
@@ -138,7 +148,7 @@ function addCustomer() {
 
  
   
-    if (newFirstName && newLastName && newMiddleName && newSuffix && newSex && newPhone && newUnit && newStreet && newVillage && newProvince && newCity && newZipCode ) {
+    if (newFirstName && newLastName && newMiddleName && newSuffix && newSex && newPhone && newUnit && newStreet && newVillage && newProvince && newCity && newBarangay && newZipCode) {
       // Get the CSRF token from the meta tag
       const csrfToken = $('meta[name="csrf-token"]').attr('content');
   
@@ -161,6 +171,7 @@ function addCustomer() {
           village: newVillage.value,
           province: newProvince.value,
           city: newCity.value,
+          barangay: newBarangay.value,
           zipcode: newZipCode.value,
            
         },
@@ -226,7 +237,6 @@ function editCustomer(event) {
 }
 
 function showModalWithCustomerData(customerId) {
-    // Populate modal with current data
     const customerFirstName = $(`#fname${customerId}`).text();
     const customerLastName = $(`#lname${customerId}`).text();
     const customerMiddleName = $(`#mname${customerId}`).text();
@@ -239,7 +249,8 @@ function showModalWithCustomerData(customerId) {
     const customerVillage = $(`#village${customerId}`).text();
     const customerProvince = $(`#province${customerId}`).text();
     const customerCity = $(`#city${customerId}`).text(); 
-    const customerZipCode= $(`#zipcode${customerId}`).text();
+    const customerBarangay = $(`#barangay${customerId}`).text();
+    const customerZipCode = $(`#zipcode${customerId}`).text();
     
 
     $('#customerFirstName').val(customerFirstName);
@@ -254,6 +265,7 @@ function showModalWithCustomerData(customerId) {
     $('#customerVillage').val(customerVillage);
     $('#customerProvince').val(customerProvince);
     $('#customerCity').val(customerCity);
+    $('#customerBarangay').val(customerBarangay);
     $('#customerZipCode').val(customerZipCode);
    
 
@@ -278,6 +290,7 @@ function saveCustomerChanges() {
     const editedCustomerVillage = $('#customerVillage').val();
     const editedCustomerProvince = $('#customerProvince').val();
     const editedCustomerCity = $('#customerCity').val();
+    const editedCustomerBarangay = $('#customerBarangay').val();
     const editedCustomerZipCode = $('#customerZipCode').val();
 
 
@@ -343,17 +356,15 @@ function saveCustomerChanges() {
     return; // Exit the function
     }
 
-    if (customerCity.value === '') {
-    customerCity.setCustomValidity('Please select a city/municipality.');
-    customerCity.reportValidity();
-        return; // Exit the function
-        }
 
-    if (customerCity.value === '*Select City / Municipality') {
-        customerCity.setCustomValidity('Please select a city/municipality.');
-        customerCity.reportValidity();
+
+
+        if (customerBarangay.value.trim() === '') {
+            customerBarangay.setCustomValidity('Please fill out this field.');
+            customerBarangay.reportValidity();
         return; // Exit the function
         }
+        
 
     // Trigger validation for zipcode if it's in its default state
     if (customerZipCode.value.trim() === '') {
@@ -384,6 +395,7 @@ function saveCustomerChanges() {
             village: editedCustomerVillage,
             province: editedCustomerProvince,
             city: editedCustomerCity,
+            barangay: editedCustomerBarangay,
             zipcode: editedCustomerZipCode,
             
         },
@@ -472,12 +484,7 @@ function preventCountryCodeDeletion(input) {
 }
 
 
-function addCountryCode() {
-    var newPhoneInput = document.getElementById('Phone');
-    if (!newPhoneInput.value.startsWith('63')) {
-        newPhoneInput.value = '63' + newPhoneInput.value;
-    }
-}
+
 
 
 
