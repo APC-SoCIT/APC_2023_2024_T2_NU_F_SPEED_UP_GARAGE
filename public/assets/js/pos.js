@@ -141,7 +141,7 @@ filteredProducts() {
       if (index === -1) {
         this.cart.push({
           productId: product.id,
-          image: product.product_image_path,
+          image: '/storage/product_images/' + product.product_image,
           name: product.product_name,
           price: product.price,
           option: product.option,

@@ -408,68 +408,6 @@
     });
 
 
-    function saveChanges() {
-    // Get the edited values from the input fields
-    const editedQuantity = parseNumericalValue($('#editedQuantity').val());
-    const editedPrice = parseNumericalValue($('#editedPrice').val()).toFixed(2); // Format to two decimal places
-    const editedTag = $('#editedTag').val();
-    const editedProductName = $('#editedProductName').val();
-    const editedCategory = $('#editedCategory').val();
-    const editedBrand = $('#editedBrand').val();
-    const editedUpdatedBy = $('#editedUpdatedBy').val();
-    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-    // Ensure all values are strings before calling trim
-    const requiredFields = [editedQuantity, editedPrice, editedTag, editedProductName, editedCategory, editedBrand, editedUpdatedBy].map(String);
-    
-    // If any required field is empty, display error message
-    const emptyFields = requiredFields.filter(field => field.trim() === '');
-    if (emptyFields.length > 0) {
-        const errorMessage = 'Please fill out all required fields.';
-        showErrorMessage(errorMessage);
-        return; // Exit the function
-    }
-
-    // Send AJAX request to update the database
-    $.ajax({
-        url: `/update-product/${productId}`,
-        type: 'PUT',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        },
-        data: {
-            quantity: editedQuantity,
-            price: editedPrice,
-            tag: editedTag,
-            product_name: editedProductName,
-            category: editedCategory,
-            updated_by: editedUpdatedBy,
-            brand: editedBrand
-        },
-        success: function(response) {
-            console.log('Product updated successfully:', response);
-
-            // Update UI with the new data
-            $(`#quantity_${productId} .quantity`).text(addCommas(editedQuantity));
-            $(`#price_${productId} .price`).text(addCommas(editedPrice));
-            $(`#tag_${productId} .tag`).text(editedTag);
-            $(`#product_name_${productId} .product_name`).text(editedProductName);
-            $(`#category_${productId} .category`).text(editedCategory);
-            $(`#brand_${productId} .brand`).text(editedBrand);
-            $(`#updated_by${productId} .updated_by`).text(editedUpdatedBy);
-
-            // Hide the modal
-            $('#editModal').hide();
-            updateStatusClassForAll();
-            showSuccessModal('Product has been edited successfully.'); // Display success message
-            updateDisplayedValues(); // Call a function to update displayed values
-        },
-        error: function(error) {
-            console.error('Error updating product:', error);
-            // Handle error response (display error message, log, etc.)
-        }
-    });
-}
 </script>
 <div class="modal-button-container">
     <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>
@@ -482,6 +420,30 @@
     <script src="{{ asset('assets/js/inventory.js') }}"></script>    
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/filter.js') }}"></script>
+    <script>
+        function handleImageChange(input) {
+    var preview = document.getElementById('newProductImagePreview');
+    var label = document.getElementById('imageInputLabel');
+    var imageContainer = document.getElementById('imagePlaceholderContainer');
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            console.log('Image Data:', e.target.result);
+            preview.src = e.target.result;
+            label.innerHTML = 'Change image';
+            imageContainer.classList.add('has-image');
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.src = '#'; // Set placeholder image or empty string
+        label.innerHTML = 'Choose an image';
+        imageContainer.classList.remove('has-image'); // Remove the 'has-image' class
+    }
+}
+    </script>
 
 </body>
 

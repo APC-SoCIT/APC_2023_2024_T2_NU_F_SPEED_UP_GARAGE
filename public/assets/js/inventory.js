@@ -171,6 +171,9 @@ function editRow(event) {
     var quantity = row.find('.quantity span').text();
     var price = row.find('.price span').text();
     var updatedBy = row.find('.updated_by span').text();
+    
+    // Get the current image source
+    var currentImageSrc = row.find('.product-image img').attr('src');
 
     // Populate the modal fields with the extracted data
     $('#editedTag').val(tag);
@@ -181,13 +184,19 @@ function editRow(event) {
     $('#editedPrice').val(price);
     $('#editedUpdatedBy').val(updatedBy);
 
-    // You may need to handle the image separately if you have an image field
-    // For example, updating the image preview in the modal
-    // $('#editedImagePreview').attr('src', row.find('.product-image img').attr('src'));
+    // Display the current image in the modal
+    if (currentImageSrc) {
+        $('#editedImagePreview').attr('src', currentImageSrc);
+        $('#editedImagePlaceholderContainer').addClass('has-image');
+    } else {
+        $('#editedImagePreview').attr('src', ''); // Set placeholder image or empty string
+        $('#editedImagePlaceholderContainer').removeClass('has-image'); // Remove the 'has-image' class
+    }
 
     // Show the edit modal
     $('#editModal').show();
 }
+
 
 
 function showModalWithData(productId) {
@@ -282,8 +291,6 @@ function saveChanges() {
         }
     });
 }
-
-
 
 function updateStatusClassForAll() {
     var rows = document.querySelectorAll('.inventory-table tbody tr');
