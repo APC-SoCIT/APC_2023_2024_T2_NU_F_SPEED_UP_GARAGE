@@ -207,7 +207,7 @@
                     <option value="">Select Inventory Clerk</option>
                     @foreach ($users as $user)
                         @if ($user->role === 2)
-                            <option value="{{ $user->name }}">{{ $user->name }}</option>
+                            <option value="{{ $user->email }}">{{ $user->email }}</option>
                         @endif
                     @endforeach
                 </select>
@@ -283,7 +283,7 @@
                     <option value="">Select Inventory Clerk</option>
                     @foreach ($users as $user)
                         @if ($user->role === 2)
-                            <option value="{{ $user->name }}">{{ $user->name }}</option>
+                            <option value="{{ $user->id }}">{{ $user->email }}</option>
                         @endif
                     @endforeach
                 </select>
@@ -406,6 +406,70 @@
         };
         xhr.send();
     });
+
+
+    function saveChanges() {
+    // Get the edited values from the input fields
+    const editedQuantity = parseNumericalValue($('#editedQuantity').val());
+    const editedPrice = parseNumericalValue($('#editedPrice').val()).toFixed(2); // Format to two decimal places
+    const editedTag = $('#editedTag').val();
+    const editedProductName = $('#editedProductName').val();
+    const editedCategory = $('#editedCategory').val();
+    const editedBrand = $('#editedBrand').val();
+    const editedUpdatedBy = $('#editedUpdatedBy').val();
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    // Ensure all values are strings before calling trim
+    const requiredFields = [editedQuantity, editedPrice, editedTag, editedProductName, editedCategory, editedBrand, editedUpdatedBy].map(String);
+    
+    // If any required field is empty, display error message
+    const emptyFields = requiredFields.filter(field => field.trim() === '');
+    if (emptyFields.length > 0) {
+        const errorMessage = 'Please fill out all required fields.';
+        showErrorMessage(errorMessage);
+        return; // Exit the function
+    }
+
+    // Send AJAX request to update the database
+    $.ajax({
+        url: `/update-product/${productId}`,
+        type: 'PUT',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: {
+            quantity: editedQuantity,
+            price: editedPrice,
+            tag: editedTag,
+            product_name: editedProductName,
+            category: editedCategory,
+            updated_by: editedUpdatedBy,
+            brand: editedBrand
+        },
+        success: function(response) {
+            console.log('Product updated successfully:', response);
+
+            // Update UI with the new data
+            $(`#quantity_${productId} .quantity`).text(addCommas(editedQuantity));
+            $(`#price_${productId} .price`).text(addCommas(editedPrice));
+            $(`#tag_${productId} .tag`).text(editedTag);
+            $(`#product_name_${productId} .product_name`).text(editedProductName);
+            $(`#category_${productId} .category`).text(editedCategory);
+            $(`#brand_${productId} .brand`).text(editedBrand);
+            $(`#updated_by${productId} .updated_by`).text(editedUpdatedBy);
+
+            // Hide the modal
+            $('#editModal').hide();
+            updateStatusClassForAll();
+            showSuccessModal('Product has been edited successfully.'); // Display success message
+            updateDisplayedValues(); // Call a function to update displayed values
+        },
+        error: function(error) {
+            console.error('Error updating product:', error);
+            // Handle error response (display error message, log, etc.)
+        }
+    });
+}
 </script>
 <div class="modal-button-container">
     <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>

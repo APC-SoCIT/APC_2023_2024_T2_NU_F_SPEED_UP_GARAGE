@@ -231,22 +231,33 @@ function saveChanges() {
         return; // Exit the function
     }
 
+    // Prepare form data for AJAX request
+    const formData = new FormData();
+    formData.append('_method', 'PUT'); // Add _method field to emulate PUT request
+    formData.append('quantity', editedQuantity);
+    formData.append('price', editedPrice);
+    formData.append('tag', editedTag);
+    formData.append('product_name', editedProductName);
+    formData.append('category', editedCategory);
+    formData.append('updated_by', editedUpdatedBy);
+    formData.append('brand', editedBrand);
+
+    // Check if a new product image is selected
+    const productImage = $('#editedProductImage')[0].files[0];
+    if (productImage) {
+        formData.append('product_image', productImage);
+    }
+
     // Send AJAX request to update the database
     $.ajax({
         url: `/update-product/${productId}`,
-        type: 'PUT',
+        type: 'POST', // Use POST method with FormData
         headers: {
             'X-CSRF-TOKEN': csrfToken
         },
-        data: {
-            quantity: editedQuantity,
-            price: editedPrice,
-            tag: editedTag,
-            product_name: editedProductName,
-            category: editedCategory,
-            updated_by: editedUpdatedBy,
-            brand: editedBrand
-        },
+        data: formData,
+        contentType: false, // Set contentType to false for FormData
+        processData: false, // Set processData to false for FormData
         success: function(response) {
             console.log('Product updated successfully:', response);
 
@@ -271,6 +282,8 @@ function saveChanges() {
         }
     });
 }
+
+
 
 function updateStatusClassForAll() {
     var rows = document.querySelectorAll('.inventory-table tbody tr');
@@ -379,56 +392,6 @@ function fetchThreshold() {
         });
 }
 
-function openCity(evt, cityName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-
-function loadStoredNotifications() {
-    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-    const notificationBar = document.getElementById('notificationBar');
-
-    // Update the notification count in the bell logo
-    const notificationCountElement = document.querySelector('.count');
-    notificationCountElement.textContent = storedNotifications.length.toString();
-
-    storedNotifications.forEach((notification) => {
-        const existingNotification = document.querySelector(`.notification[data-id="${notification.id}"]`);
-        if (!existingNotification) {
-            const newNotification = document.createElement('div');
-            newNotification.className = 'notification';
-            newNotification.setAttribute('data-id', notification.id);
-            newNotification.textContent = notification.message;
-            notificationBar.appendChild(newNotification);
-        }
-    });
-}
-
-// Call loadStoredNotifications when the page loads
-window.addEventListener('DOMContentLoaded', loadStoredNotifications);
-
-function addNotification(id, message) {
-    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-    const existingNotification = storedNotifications.find(notification => notification.id === id);
-
-    if (!existingNotification) {
-        storedNotifications.push({ id, message });
-        localStorage.setItem('notifications', JSON.stringify(storedNotifications));
-
-        // Update the notification count in the bell logo
-        const notificationCountElement = document.querySelector('.count');
-        notificationCountElement.textContent = storedNotifications.length.toString();
-    }
-}
 
 // Call fetchThreshold when the page loads
 window.addEventListener('DOMContentLoaded', fetchThreshold);
@@ -447,46 +410,6 @@ function openCity(evt, cityName) {
     evt.currentTarget.className += " active";
 }
 
-function loadStoredNotifications() {
-    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-    const notificationBar = document.getElementById('notificationBar');
-
-    // Update the notification count in the bell logo
-    const notificationCountElement = document.querySelector('.count');
-    notificationCountElement.textContent = storedNotifications.length.toString();
-
-    storedNotifications.forEach((notification) => {
-        const existingNotification = document.querySelector(`.notification[data-id="${notification.id}"]`);
-        if (!existingNotification) {
-            const newNotification = document.createElement('div');
-            newNotification.className = 'notification';
-            newNotification.setAttribute('data-id', notification.id);
-            newNotification.textContent = notification.message;
-            notificationBar.appendChild(newNotification);
-        }
-    });
-}
-
-// Call loadStoredNotifications when the page loads
-window.addEventListener('DOMContentLoaded', loadStoredNotifications);
-
-function addNotification(id, message) {
-    const notificationBar = document.getElementById('notificationBar');
-    const existingNotification = notificationBar.querySelector(`.notification[data-id="${id}"]`);
-
-    if (!existingNotification) {
-        // Create a notification
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.setAttribute('data-id', id);
-        notification.textContent = message;
-        notificationBar.appendChild(notification);
-
-        // Update the notification count in the bell icon
-        const notificationCountElement = document.querySelector('.count');
-        notificationCountElement.textContent = notificationBar.children.length.toString();
-    }
-}
 
 function showSuccessModal(message) {
     var successModal = document.getElementById('successModal');

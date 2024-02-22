@@ -30,129 +30,107 @@ class ProductController extends Controller
         ]);
     }
 
-
     public function addProduct(Request $request)
-    {
-        // Validate request data
-        $request->validate([
-            'tag' => 'required|string',
-            'product_name' => 'required|string',
-            'category' => 'required|string',
-            'brand' => 'required|string',
-            'quantity' => 'required|numeric',
-            'price' => 'required|numeric',
-            'updated_by' => 'required|string',
-            'product_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules for the image
-        ]);
-    
-        // Insert the product into the database
-        $product = new Product;
-        $product->tag = $request->input('tag');
-        $product->product_name = $request->input('product_name');
-        $product->category = $request->input('category');
-        $product->brand = $request->input('brand');
-        $product->quantity = $request->input('quantity');
-        $product->price = $request->input('price');
-        $product->updated_by = $request->input('updated_by');
-    
-        // Handle file upload
-        if ($request->hasFile('product_image')) {
-            $image = $request->file('product_image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            
-            // Store in the public disk under 'product_images' folder
-            $image->storeAs('public/product_images', $imageName);
-    
-            // Set the image name
-            $product->product_image = $imageName;
-    
-            // Set the full path
-            $product->product_image_path = asset('storage/product_images/' . $imageName);
-        }
-    
-        $product->save();
-    
-        return response()->json(['message' => 'Product added successfully']);
-    } 
-    public function editProduct($id)
-    {
-        $product = Product::find($id);
+{
+    // Validate request data
+    $validatedData = $request->validate([
+        'tag' => 'required|string',
+        'product_name' => 'required|string',
+        'category' => 'required|string',
+        'brand' => 'required|string',
+        'quantity' => 'required|numeric',
+        'price' => 'required|numeric',
+        'updated_by' => 'required|string',
+        'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules for the image
+    ]);
 
-        if ($product) {
-            return response()->json(['product' => $product]);
-        } else {
-            return response()->json(['error' => 'Product not found'], 404);
-        }
+    // Insert the product into the database
+    $product = new Product;
+    $product->tag = $validatedData['tag'];
+    $product->product_name = $validatedData['product_name'];
+    $product->category = $validatedData['category'];
+    $product->brand = $validatedData['brand'];
+    $product->quantity = $validatedData['quantity'];
+    $product->price = $validatedData['price'];
+    $product->updated_by = $validatedData['updated_by'];
+
+    // Handle file upload
+    if ($request->hasFile('product_image')) {
+        $image = $request->file('product_image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->storeAs('public/product_images', $imageName);
+        $product->product_image = $imageName;
     }
 
-    public function getProductByBarcode(Request $request)
-{
-    $tag = $request->input('barcode'); // Retrieve the scanned tag (barcode)
-    $product = Product::where('tag', $tag)->first(); // Query the Product table using the tag
-    
-    if ($product) {
-        // Increment the quantity of the product by 1
-        $product->quantity += 1;
-        $product->save();
+    $product->save();
 
-        return response()->json([
-            'product_name' => $product->product_name,
-            'quantity' => $product->quantity,
-            'price' => $product->price,
-            'category' => $product->category,
-            'brand' => $product->price,
-            'product_image' => asset('storage/product_images/' . $product->product_image)
-        ]);
+    return response()->json(['message' => 'Product added successfully']);
+}
+
+    
+public function editProduct($id)
+{
+    $product = Product::find($id);
+
+    if ($product) {
+        // Since we are not storing the full image path in the database anymore,
+        // we need to construct the image URL manually based on the image name
+        $product->product_image = asset('storage/product_images/' . $product->product_image);
+        
+        return response()->json(['product' => $product]);
     } else {
-        return response()->json(['error' => 'Product not found for the given barcode'], 404);
+        return response()->json(['error' => 'Product not found'], 404);
     }
 }
 
+public function updateProduct(Request $request, $id)
+{
+    // Validate request data
+    $validatedData = $request->validate([
+        'quantity' => 'required|numeric',
+        'price' => 'required|numeric',
+        'tag' => 'required|string',
+        'product_name' => 'required|string',
+        'category' => 'required|string',
+        'brand' => 'required|string',
+        'updated_by' => 'required|string',
+        'product_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules for the image
+    ]);
 
+    // Find the product by ID
+    $product = Product::find($id);
 
+    if (!$product) {
+        return response()->json(['error' => 'Product not found'], 404);
+    }
 
-    public function updateProduct(Request $request, $id)
-    {
-        // Validate request data
-        $validatedData = $request->validate([
-            'quantity' => 'required|numeric',
-            'price' => 'required|numeric',
-            'tag' => 'required|string',
-            'product_name' => 'required|string',
-            'category' => 'required|string',
-            'brand' => 'required|string',
-            'updated_by' => 'required|string',
-            'product_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules for the image
-        ]);
+    // Update product data
+    $product->quantity = $validatedData['quantity'];
+    $product->price = $validatedData['price'];
+    $product->tag = $validatedData['tag'];
+    $product->product_name = $validatedData['product_name'];
+    $product->updated_by = $validatedData['updated_by'];
+    $product->category = $validatedData['category'];
+    $product->brand = $validatedData['brand'];
 
-        // Find the product by ID
-        $product = Product::find($id);
-
-        if (!$product) {
-            return response()->json(['error' => 'Product not found'], 404);
+    // Handle file upload for update
+    if ($request->hasFile('product_image')) {
+        $image = $request->file('product_image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->storeAs('public/product_images', $imageName);
+        
+        // Delete the old product image if it exists
+        if ($product->product_image) {
+            Storage::disk('public')->delete('product_images/' . $product->product_image);
         }
 
-        // Update product data
-        $product->quantity = $validatedData['quantity'];
-        $product->price = $validatedData['price'];
-        $product->tag = $validatedData['tag'];
-        $product->product_name = $validatedData['product_name'];
-        $product->updated_by = $validatedData['updated_by'];
-        $product->category = $validatedData['category'];
-        $product->brand = $validatedData['brand'];
+        $product->product_image = $imageName;
+    }
 
-        // Handle file upload for update
-        if ($request->hasFile('product_image')) {
-            $image = $request->file('product_image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('product_images', $imageName, 'public');
-            $product->product_image = $imageName;
-        }
+    $product->save();
 
-        $product->save();
-
-        return response()->json(['message' => 'Product updated successfully']);
-    } 
+    return response()->json(['message' => 'Product updated successfully']);
+}
 
     public function deleteProduct($id)
     {
