@@ -148,6 +148,24 @@
     outline: none;
 }
 
+.modal-content textarea,
+.add-product-modal-content textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    border-radius: 4px;
+    resize: none; /* Allow vertical resizing of textarea */
+}
+
+.dark .modal-content textarea,
+.dark .add-product-modal-content textarea {
+    background-color: #333; /* Background color in dark mode */
+    color: #fff; /* Text color in dark mode */
+    border-color: var(--border); /* Border color in dark mode */
+    outline: none;
+}
 
 
 .modal-button-container,

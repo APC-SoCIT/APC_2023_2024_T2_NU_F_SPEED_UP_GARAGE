@@ -101,6 +101,7 @@
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Brand</th>
+                                <th>Description</th>
                                 <th class="quantity">Quantity</th>
                                 <th class="price">Price</th>
                                 <th>Updated By</th>
@@ -124,6 +125,7 @@
                                 <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name}}</td>
                                 <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
                                 <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
+                                <td class="description" id="description{{ $product->id }}">{{ $product->description }}</td>
                                 <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
                                 <td class="price" id="price_{{ $product->id }}"><span class="price">{{ number_format($product->price, 2) }}</span><input type="text" class="edit-price" style="display:none;"></td>
                                 <td class="updated_by" id="updated_by{{ $product->id }}"><span class="updated_by">{{ $product->updated_by }}</span></td>
@@ -196,6 +198,14 @@
                     </select>
                     </div>  
                     </div>  
+
+                    <div class="form-row">
+                        <div class="form-row-container">
+                            <label for="editedDescription">Description</label>
+                            <textarea id="editedDescription" name="editedDescription" placeholder="Enter description" rows="4"></textarea>
+                        </div>
+                    </div>
+
                     <div class="form-row">
                 <div class="form-row-container"> 
                 <label for="editedPrice">Price</label>
@@ -272,6 +282,14 @@
                     </select>
                     </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-row-container">
+                            <label for="newDescription">Description</label>
+                            <textarea id="newDescription" name="newDescription" placeholder="Enter description" rows="4"></textarea>
+                        </div>
+                    </div>
+
                 <div class="form-row">
                 <div class="form-row-container">
                 <label for="newPrice">Price</label>
@@ -320,94 +338,50 @@
 
         
         <div class="add-modal" id="scanProductModal">
-    <div class="modal-content">
-        
-    <div class="add-customer-modal-title">Scan Product</div> <!-- Add the header -->
-<div class="divider"></div>
+            <div class="modal-content">
+                
+            <div class="add-customer-modal-title">Scan Product</div> <!-- Add the header -->
+        <div class="divider"></div>
 
-<div class="product-image" id="productImageContainer">
-    <img id="productImage" src="#" alt="">
-</div>
+        <div class="product-image" id="productImageContainer">
+            <img id="productImage" src="#" alt="">
+        </div>
 
-
-<div class="form-row">
-<div class="form-row-container">
-<label for="Barcode">Barcode</label>
-<input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" required>
-</div>
-</div>
-<div class="form-row">
-<div class="form-row-container">
-<label for="Product">Product Name</label>
-<input type="text" id="scanProduct" name="scanProduct" placeholder="Oil Filter" readonly>
-</div>
-</div>
-<div class="form-row">
-<div class="form-row-container">
-<label for="Category">Category</label>
-<input type="text" id="scanCategory" name="scanCategory" placeholder="500" readonly>
-</div>
-<div class="form-row-container">
-<label for="Brand">Brand</label>
-<input type="text" id="scanBrand" name="scanBrand" placeholder="1" readonly>
-</div>
-</div>
-<div class="form-row">
-<div class="form-row-container">
-<label for="Price">Price</label>
-<input type="text" id="scanPrice" name="scanPrice" placeholder="500" readonly>
-</div>
-<div class="form-row-container">
-<label for="Quantity">Quantity</label>
-<input type="text" id="scanQuantity" name="scanQuantity" placeholder="1" readonly>
-</div>
-</div>
-
+        <div class="form-row">
+            <div class="form-row-container">
+                <label for="Barcode">Barcode</label>
+                <input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" required>
+            </div>
+        </div>
+            <div class="form-row">
+                <div class="form-row-container">
+                    <label for="Product">Product Name</label>
+                    <input type="text" id="scanProduct" name="scanProduct" placeholder="Oil Filter" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-row-container">
+                    <label for="Category">Category</label>
+                    <input type="text" id="scanCategory" name="scanCategory" placeholder="500" readonly>
+                </div>
+                <div class="form-row-container">
+                    <label for="Brand">Brand</label>
+                    <input type="text" id="scanBrand" name="scanBrand" placeholder="1" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-row-container">
+                    <label for="Price">Price</label>
+                    <input type="text" id="scanPrice" name="scanPrice" placeholder="500" readonly>
+                </div>
+                <div class="form-row-container">
+                    <label for="Quantity">Quantity</label>
+                    <input type="text" id="scanQuantity" name="scanQuantity" placeholder="1" readonly>
+                </div>
+            </div>
 
 <script>
-    // Function to handle barcode scanning
-    document.getElementById('scanBarcode').addEventListener('change', function() {
-        var barcode = this.value; // Get the scanned barcode
-
-        // Make an AJAX request to fetch product data based on the scanned barcode
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/get-product-by-barcode?barcode=' + barcode, true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.product_name) {
-                        document.getElementById('scanProduct').value = response.product_name;
-                        document.getElementById('scanCategory').value = response.category;
-                         document.getElementById('scanBrand').value = response.brand;
-                        // Calculate the total quantity (original quantity + 1)
-                        var originalQuantity = parseInt(response.quantity);
-                        var addedQuantity = 1;
-                        var totalQuantity = originalQuantity + addedQuantity;
-                        
-                        // Display the total quantity with the added quantity
-                        document.getElementById('scanQuantity').value = originalQuantity + ' (+' + addedQuantity + ')';
-                        document.getElementById('scanPrice').value = '₱' + response.price;
-                       
-                        // Display the scanned product image
-                        var productImage = document.getElementById('productImage');
-                        var productImageContainer = document.getElementById('productImageContainer');
-                        productImage.src = response.product_image; // Use the corrected product image URL
-                        productImageContainer.style.display = 'block';
-
-                        // Clear the scanned barcode
-                        document.getElementById('scanBarcode').value = '';
-                    }
-                } else {
-                    alert('Error fetching product data');
-                    document.getElementById('scanBarcode').value = '';
-                }
-            }
-        };
-        xhr.send();
-    });
-
-
+    
 </script>
 <div class="modal-button-container">
     <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>
@@ -421,28 +395,8 @@
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/filter.js') }}"></script>
     <script>
-        function handleImageChange(input) {
-    var preview = document.getElementById('newProductImagePreview');
-    var label = document.getElementById('imageInputLabel');
-    var imageContainer = document.getElementById('imagePlaceholderContainer');
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            console.log('Image Data:', e.target.result);
-            preview.src = e.target.result;
-            label.innerHTML = 'Change image';
-            imageContainer.classList.add('has-image');
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        preview.src = '#'; // Set placeholder image or empty string
-        label.innerHTML = 'Choose an image';
-        imageContainer.classList.remove('has-image'); // Remove the 'has-image' class
-    }
-}
+        
+ 
     </script>
 
 </body>

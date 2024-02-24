@@ -21,12 +21,13 @@ class CreateProductsTable extends Migration
             $table->integer('price');
             $table->string('brand');
             $table->string('category');
+            $table->string('description');
             $table->timestamps(); // Created at and Updated at timestamps
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations. 
      *
      * @return void
      */

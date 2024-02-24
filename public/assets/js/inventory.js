@@ -12,49 +12,6 @@ function assignRowNumbers() {
     });
 }
 
-// Ensure Document Ready
-document.addEventListener("DOMContentLoaded", function () {
-    // Assign row numbers when the page loads
-    assignRowNumbers();
-
-    // Fetch the threshold when the page loads
-    fetchThreshold();
-});
-
-
-function showScanProductModal() {
-    const scanProductModal = document.getElementById('scanProductModal');
-    scanProductModal.style.display = 'flex'; 
-    focusOnBarcode();
-}
-
-function focusOnBarcode() {
-    document.getElementById('scanBarcode').focus();
-}
-
-
-function closeScanProductModal() {
-    const scanProductModal = document.getElementById('scanProductModal');
-    const scanBarcode = document.getElementById('scanBarcode');
-    const scanBrand = document.getElementById('scanBrand');
-    const scanCategory = document.getElementById('scanCategory');
-    const scanPrice = document.getElementById('scanPrice');
-    const scanProduct = document.getElementById('scanProduct');
-    const scanQuantity = document.getElementById('scanQuantity');
-    const productImage = document.getElementById('productImage');
-
-    scanBrand.value = '';
-    scanCategory.value = '';
-    scanQuantity.value = '';
-    scanPrice.value = '';
-    scanBarcode.value = '';
-    scanProduct.value = '';
-    productImage.src = ''; // Clear the image
-    scanProductModal.style.display = 'none';
-}
-
-
-
 function addProduct() {
     var newTag = document.getElementById('newTag');
     var newProductName = document.getElementById('newProductName');
@@ -63,11 +20,10 @@ function addProduct() {
     var newQuantity = document.getElementById('newQuantity');
     var newPrice = document.getElementById('newPrice');
     var newUpdatedBy = document.getElementById('newUpdatedBy');
-    var newProductImage = document.getElementById('newProductImage'); // Corrected variable name
-    // Create FormData object to handle file uploads
-    var formData = new FormData();
+    var newDescription = document.getElementById('newDescription'); // Get the description field
+    var newProductImage = document.getElementById('newProductImage'); 
 
-    // Append form data to FormData object
+    var formData = new FormData();
     formData.append('tag', newTag.value);
     formData.append('product_name', newProductName.value);
     formData.append('category', newCategory.value);
@@ -75,21 +31,21 @@ function addProduct() {
     formData.append('quantity', newQuantity.value);
     formData.append('price', newPrice.value);
     formData.append('updated_by', newUpdatedBy.value);
-    formData.append('product_image', newProductImage.files[0]); // Append the file
+    formData.append('description', newDescription.value); // Append the description field
+    formData.append('product_image', newProductImage.files[0]);
 
-    // Send an AJAX request with FormData for file upload
+    // AJAX request
     $.ajax({
-        url: '/add-product', // Correct route name
+        url: '/add-product',
         type: 'POST',
         data: formData,
         processData: false,
         contentType: false,
         success: function(response) {
             console.log('Product added successfully:', response);
-            showSuccessModal('Product added successfully'); // Display success message
+            showSuccessModal('Product added successfully');
             closeAddProductModal();
-            updateStatusClassForAll(); // You may need to define this function
-            
+            updateStatusClassForAll();
         },
         error: function(error) {
             console.error('Error adding product:', error);
@@ -155,7 +111,6 @@ function deleteRow(event) {
         }
     });
 }
-
 var editingProductId;  // Declare a variable to store the currently editing product ID
 
 function editRow(event) {
@@ -163,7 +118,7 @@ function editRow(event) {
     var row = $(event.target).closest('tr');
 
     // Extract data from the row
-    productId = row.data('id'); // Assign productId to the global variable
+    editingProductId = row.data('id'); // Set the value of editingProductId
     var tag = row.find('.tag').text();
     var productName = row.find('.product-name').text();
     var category = row.find('.category').text();
@@ -171,7 +126,8 @@ function editRow(event) {
     var quantity = row.find('.quantity span').text();
     var price = row.find('.price span').text();
     var updatedBy = row.find('.updated_by span').text();
-    
+    var description = row.find('.description').text(); // Extract description
+
     // Get the current image source
     var currentImageSrc = row.find('.product-image img').attr('src');
 
@@ -183,6 +139,7 @@ function editRow(event) {
     $('#editedQuantity').val(quantity);
     $('#editedPrice').val(price);
     $('#editedUpdatedBy').val(updatedBy);
+    $('#editedDescription').val(description); // Set the description field value
 
     // Display the current image in the modal
     if (currentImageSrc) {
@@ -197,27 +154,6 @@ function editRow(event) {
     $('#editModal').show();
 }
 
-
-
-function showModalWithData(productId) {
-    const quantity = $(`#quantity_${productId} .quantity`).text();
-    const price = $(`#price_${productId} .price`).text();
-    const tag = $(`#tag_${productId} .tag`).text();
-    const product_name = $(`#product_name_${productId} .product_name`).text();
-    const category = $(`#category_${productId} .category`).text();
-    const updated_by = $(`#updated_by${productId}`).text().trim();
-    const brand = $(`#brand_${productId} .brand`).text();
-
-    $('#editedTag').val(tag);
-    $('#editedProductName').val(product_name);
-    $('#editedCategory').val(category);
-    $('#editedBrand').val(brand);
-    $('#editedQuantity').val(quantity);
-    $('#editedPrice').val(price);
-    $('#editedUpdatedBy').val(updated_by);
-    $('#editModal').show();
-}
-
 function saveChanges() {
     // Get the edited values from the input fields
     const editedQuantity = parseNumericalValue($('#editedQuantity').val());
@@ -227,10 +163,12 @@ function saveChanges() {
     const editedCategory = $('#editedCategory').val();
     const editedBrand = $('#editedBrand').val();
     const editedUpdatedBy = $('#editedUpdatedBy').val();
+    const editedDescription = $('#editedDescription').val(); // Get the edited description
+
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
     // Ensure all values are strings before calling trim
-    const requiredFields = [editedQuantity, editedPrice, editedTag, editedProductName, editedCategory, editedBrand, editedUpdatedBy].map(String);
+    const requiredFields = [editedQuantity, editedPrice, editedTag, editedProductName, editedCategory, editedBrand, editedUpdatedBy, editedDescription].map(String);
     
     // If any required field is empty, display error message
     const emptyFields = requiredFields.filter(field => field.trim() === '');
@@ -250,6 +188,7 @@ function saveChanges() {
     formData.append('category', editedCategory);
     formData.append('updated_by', editedUpdatedBy);
     formData.append('brand', editedBrand);
+    formData.append('description', editedDescription); // Append the description field
 
     // Check if a new product image is selected
     const productImage = $('#editedProductImage')[0].files[0];
@@ -259,38 +198,41 @@ function saveChanges() {
 
     // Send AJAX request to update the database
     $.ajax({
-        url: `/update-product/${productId}`,
-        type: 'POST', // Use POST method with FormData
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        },
-        data: formData,
-        contentType: false, // Set contentType to false for FormData
-        processData: false, // Set processData to false for FormData
-        success: function(response) {
-            console.log('Product updated successfully:', response);
+    url: `/update-product/${editingProductId}`, // Change `productId` to `editingProductId`
+    type: 'POST', // Use POST method with FormData
+    headers: {
+        'X-CSRF-TOKEN': csrfToken
+    },
+    data: formData,
+    contentType: false, // Set contentType to false for FormData
+    processData: false, // Set processData to false for FormData
+    success: function(response) {
+        console.log('Product updated successfully:', response);
 
-            // Update UI with the new data
-            $(`#quantity_${productId} .quantity`).text(addCommas(editedQuantity));
-            $(`#price_${productId} .price`).text(addCommas(editedPrice));
-            $(`#tag_${productId} .tag`).text(editedTag);
-            $(`#product_name_${productId} .product_name`).text(editedProductName);
-            $(`#category_${productId} .category`).text(editedCategory);
-            $(`#brand_${productId} .brand`).text(editedBrand);
-            $(`#updated_by${productId} .updated_by`).text(editedUpdatedBy);
+        // Update UI with the new data
+        $(`#quantity_${editingProductId} .quantity`).text(addCommas(editedQuantity));
+        $(`#price_${editingProductId} .price`).text(addCommas(editedPrice));
+        $(`#tag_${editingProductId} .tag`).text(editedTag);
+        $(`#product_name_${editingProductId} .product_name`).text(editedProductName);
+        $(`#category_${editingProductId} .category`).text(editedCategory);
+        $(`#brand_${editingProductId} .brand`).text(editedBrand);
+        $(`#updated_by${editingProductId} .updated_by`).text(editedUpdatedBy);
+        $(`#description_${editingProductId} .description`).text(editedDescription); // Update description in UI
 
-            // Hide the modal
-            $('#editModal').hide();
-            updateStatusClassForAll();
-            showSuccessModal('Product has been edited successfully.'); // Display success message
-            updateDisplayedValues(); // Call a function to update displayed values
-        },
-        error: function(error) {
-            console.error('Error updating product:', error);
-            // Handle error response (display error message, log, etc.)
-        }
-    });
+        // Hide the modal
+        $('#editModal').hide();
+        updateStatusClassForAll();
+        showSuccessModal('Product has been edited successfully.'); // Display success message
+        updateDisplayedValues(); // Call a function to update displayed values
+    },
+    error: function(error) {
+        console.error('Error updating product:', error);
+        // Handle error response (display error message, log, etc.)
+    }
+});
 }
+
+
 
 function updateStatusClassForAll() {
     var rows = document.querySelectorAll('.inventory-table tbody tr');
@@ -318,6 +260,50 @@ function cancelEditModal() {
     $('#editModal').hide();
     $(document).on('click', '.edit-button', editRow);
 }
+
+
+
+// Ensure Document Ready
+document.addEventListener("DOMContentLoaded", function () {
+    // Assign row numbers when the page loads
+    assignRowNumbers();
+
+    // Fetch the threshold when the page loads
+    fetchThreshold();
+});
+
+
+function showScanProductModal() {
+    const scanProductModal = document.getElementById('scanProductModal');
+    scanProductModal.style.display = 'flex'; 
+    focusOnBarcode();
+}
+
+function focusOnBarcode() {
+    document.getElementById('scanBarcode').focus();
+}
+
+
+function closeScanProductModal() {
+    const scanProductModal = document.getElementById('scanProductModal');
+    const scanBarcode = document.getElementById('scanBarcode');
+    const scanBrand = document.getElementById('scanBrand');
+    const scanCategory = document.getElementById('scanCategory');
+    const scanPrice = document.getElementById('scanPrice');
+    const scanProduct = document.getElementById('scanProduct');
+    const scanQuantity = document.getElementById('scanQuantity');
+    const productImage = document.getElementById('productImage');
+
+    scanBrand.value = '';
+    scanCategory.value = '';
+    scanQuantity.value = '';
+    scanPrice.value = '';
+    scanBarcode.value = '';
+    scanProduct.value = '';
+    productImage.src = ''; // Clear the image
+    scanProductModal.style.display = 'none';
+}
+
 
 function updateUI() {
     const rows = document.querySelectorAll('tr[data-id]');

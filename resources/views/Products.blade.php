@@ -88,19 +88,21 @@
                     <table class="inventory-table">
                         <thead>
                             <tr>
-                                <th >Status</th>
+                                <th>Status</th>
                                 <th>#</th>
                                 <th class="tag">Tag</th>
                                 <th>Image</th>
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Brand</th>
+                                <th>Description</th>
                                 <th class="quantity">Quantity</th>
                                 <th class="price">Price</th>
+                                <th>Updated By</th>
                             </tr>
                         </thead>
                         <tbody id="inventoryTableBody">
-                            <!-- Example rows; replace with server-side generated rows -->
+                    
                             @foreach ($products as $product)
                             <tr data-id="{{ $product->id }}">
                             <td><span class="status"></span></td>
@@ -113,17 +115,16 @@
                                         No Image
                                     @endif
                                 </td>
-                                <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
+                                <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name}}</td>
                                 <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
                                 <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
+                                <td class="description" id="description{{ $product->id }}">{{ $product->description }}</td>
                                 <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                                <td class="price" id="price_{{ $product->id }}">
-                                    <span class="price">{{ number_format($product->price, 2) }}</span>
-                                    <input type="text" class="edit-price" style="display:none;">
-                                </td>
+                                <td class="price" id="price_{{ $product->id }}"><span class="price">{{ number_format($product->price, 2) }}</span><input type="text" class="edit-price" style="display:none;"></td>
+                                <td class="updated_by" id="updated_by{{ $product->id }}"><span class="updated_by">{{ $product->updated_by }}</span></td>
                             </tr>
                             @endforeach
-                            <!-- Add more rows as needed -->
+                            
                         </tbody>
                     </table>
                 </div>
@@ -137,7 +138,6 @@
                     <span class="pagination-link" data-page="5" onclick="goToPage(5)">5</span>
                     <span class="pagination-link" onclick="changePage(1)">></span>
                 </div>
-
             </div>
         </div>
 

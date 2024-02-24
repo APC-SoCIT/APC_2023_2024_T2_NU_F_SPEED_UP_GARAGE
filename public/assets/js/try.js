@@ -224,7 +224,6 @@ function closeAddProductModal() {
     newTag.value = '';
     newProductName.value = '';
     newCategory.value = '';
-    newBrand.value = '';
     newQuantity.value = '';
     newPrice.value = '';
 

@@ -28,14 +28,13 @@
 
 
 
-     <!-- Sidebar -->
-     <x-sidebar />
+    <!-- Sidebar -->
+    <x-sidebar />
     <!-- End of Sidebar -->
     <div class="content">
     <!-- Start of Navbar -->
         <x-navbar />
         <x-chatbox />
-    <!-- End of Navbar -->
         <!-- End of Navbar -->
 
         <!-- Start of POS -->
@@ -654,7 +653,6 @@ function preventCountryCodeDeletion(input) {
                 console.error('Element with ID "currentDate" not found');
             }
         });
-        
 </script>
 
 
