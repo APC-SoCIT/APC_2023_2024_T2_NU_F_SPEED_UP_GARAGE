@@ -101,7 +101,7 @@
                                     @endphp
                                     {{ $roleName }}
                                 </td>
-                                <td id="email{{ $user->id }}">{{ $user->email }}</td>
+                                <td id="username{{ $user->id }}">{{ $user->username }}</td>
                                 <td id="name{{ $user->id }}">{{ $fullName }}</td>
                                 <td id="birthdate{{ $user->id }}">
                                     @if ($employee->birthdate)
@@ -155,8 +155,8 @@
                 <input type="text" id="userContactNumber" name="userContactNumber">
                 <label for="userAddress">Address:</label>
                 <input type="text" id="userAddress" name="userAddress">
-                <label for="userEmail">Username:</label>
-                <input type="text" id="userEmail" name="userEmail">
+                <label for="userUsername">Username:</label>
+                <input type="text" id="userUsername" name="userUsername">
                 <label for="userPassword">Password:</label>
                 <input type="password" id="userPassword" name="userPassword">
                 <label for="userRole">Role:</label>
@@ -189,8 +189,8 @@
                 <input type="text" id="newUserContactNumber" name="newUserContactNumber">
                 <label for="newUserAddress">Address:</label>
                 <input type="text" id="newUserAddress" name="newUserAddress">
-                <label for="newUserEmail">Username:</label>
-                <input type="text" id="newUserEmail" name="newUserEmail">
+                <label for="newUserUsername">Username:</label>
+                <input type="text" id="newUserUsername" name="newUserUsername">
                 <label for="newUserPassword">Password:</label>
                 <input type="password" id="newUserPassword" name="newUserPassword">
                 <label for="newUserRole">Role:</label>
