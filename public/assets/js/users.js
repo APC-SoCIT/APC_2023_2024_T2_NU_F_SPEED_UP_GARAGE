@@ -229,7 +229,7 @@ function addUser() {
         return; // Exit the function
     }
 
-    if (newUserEmail.value.trim() === '' || !validateEmail(newUserEmail.value)) {
+    if (newUserEmail.value.trim() === '') {
         newUserEmail.setCustomValidity('Please enter a valid email address.');
         newUserEmail.reportValidity();
         return; // Exit the function
@@ -449,8 +449,8 @@ function saveUserChanges() {
         return;
     }
 
-    if (editedUserEmail.trim() === '' || !validateEmail(editedUserEmail)) {
-        $('#userEmail').get(0).setCustomValidity('Please enter a valid email address.');
+    if (editedUserEmail.trim() === '') {
+        $('#userEmail').get(0).setCustomValidity('Please enter a valid Username.');
         $('#userEmail').get(0).reportValidity();
         return;
     }

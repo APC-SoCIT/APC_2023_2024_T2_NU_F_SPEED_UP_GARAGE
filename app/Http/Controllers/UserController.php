@@ -22,7 +22,7 @@ class UserController extends Controller
         // Validate request data
         $validatedData = $request->validate([
             'role' => 'required|in:1,2,3', // Assuming role can only be 1, 2, or 3
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|unique:users',
             'password' => 'required|string|min:8',
             'fname' => 'required|string',
             'mname' => 'nullable|string',
@@ -77,7 +77,7 @@ class UserController extends Controller
         'birthdate' => 'nullable|date',
         'contact_number' => 'required|string',
         'address' => 'required|string',
-        'email' => 'required|string',
+        'email' => 'required',
         'password' => 'nullable|string|min:8', // Adjust validation rules
         'role' => 'required|in:1,2,3', // Assuming role can only be 1, 2, or 3
     ]);

@@ -22,8 +22,8 @@
     
             <!-- Email Address -->
             <div>
-                <label for="uname" class="login-label">Email</label>
-                <x-text-input id="email" class="login-input" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                <label for="uname" class="login-label">Username</label>
+                <x-text-input id="email" class="login-input" type="text" name="email" :value="old('email')" required autofocus autocomplete="username" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
     

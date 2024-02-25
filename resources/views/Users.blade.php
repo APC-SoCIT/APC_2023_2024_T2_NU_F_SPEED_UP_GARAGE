@@ -79,7 +79,7 @@
                         <tr>
                             <th>#</th>
                             <th>Role</th>
-                            <th>Email</th>
+                            <th>Username</th>
                             <th>Name</th>
                             <th>Birth Date</th>
                             <th>Contact Number</th>
@@ -155,7 +155,7 @@
                 <input type="text" id="userContactNumber" name="userContactNumber">
                 <label for="userAddress">Address:</label>
                 <input type="text" id="userAddress" name="userAddress">
-                <label for="userEmail">Email:</label>
+                <label for="userEmail">Username:</label>
                 <input type="text" id="userEmail" name="userEmail">
                 <label for="userPassword">Password:</label>
                 <input type="password" id="userPassword" name="userPassword">
@@ -189,7 +189,7 @@
                 <input type="text" id="newUserContactNumber" name="newUserContactNumber">
                 <label for="newUserAddress">Address:</label>
                 <input type="text" id="newUserAddress" name="newUserAddress">
-                <label for="newUserEmail">Email:</label>
+                <label for="newUserEmail">Username:</label>
                 <input type="text" id="newUserEmail" name="newUserEmail">
                 <label for="newUserPassword">Password:</label>
                 <input type="password" id="newUserPassword" name="newUserPassword">
