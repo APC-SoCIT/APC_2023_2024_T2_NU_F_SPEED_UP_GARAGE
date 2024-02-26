@@ -141,7 +141,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Customer</th>
+                                <th>Cashier</th>
                                 <th>Order Date</th>
                                 <th>Status</th>
                                 <th>Price</th>
@@ -151,7 +151,7 @@
                             @foreach($recentTransactions as $transaction)
                                 <tr>
                                     <td>
-                                        <p>{{ $transaction-> customer_name}}</p>
+                                        <p><img src="{{ Storage::url('/' . auth()->user()->employee->profile_picture) }}" onerror="this.onerror=null; this.src='https://i.stack.imgur.com/l60Hf.png'"></p>
                                     </td>
                                     <td>{{ $transaction->created_at }}</td>
                                     <td>
