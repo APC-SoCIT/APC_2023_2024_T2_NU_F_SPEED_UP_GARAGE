@@ -57,7 +57,7 @@ function cancelAddUserModal() {
 
     // Clear input fields when closing the modal
     document.getElementById('newUserName').value = '';
-    document.getElementById('newUserEmail').value = '';
+    document.getElementById('newUserUsername').value = '';
     document.getElementById('newUserPassword').value = '';
     // Add additional input fields as needed
 }
@@ -66,7 +66,7 @@ function cancelAddUserModal() {
 function addNewUser() {
     // Get input values
     var UserName = document.getElementById('newUserName').value;
-    var UserEmail = document.getElementById('newUserEmail').value;
+    var UserUsername = document.getElementById('newUserUsername').value;
     var UserPassword = document.getElementById('newUserPassword').value;
     // Add more fields as needed
 
@@ -74,7 +74,7 @@ function addNewUser() {
 
     // You can send the data to the server using an AJAX request or handle it as needed
     // Example: You can log the data to the console for now
-    console.log('New User Data:', { name: userName, email: userEmail, password: userPassword });
+    console.log('New User Data:', { name: userName, username: userUsername, password: userPassword });
     
     // Close the modal after saving
     cancelAddUserModal();
@@ -92,13 +92,13 @@ function editUser(event) {
     var selectedRow = event.target.closest('tr');
     var userId = selectedRow.dataset.id;
     var userName = selectedRow.cells[1].innerText;
-    var userEmail = selectedRow.cells[2].innerText;
+    var userUsername = selectedRow.cells[2].innerText;
     var userPassword = selectedRow.cells[3].innerText;
     // Add more fields as needed
 
     // Populate the input fields in the Edit User modal with the existing data
     document.getElementById('userName').value = userName;
-    document.getElementById('userEmail').value = userEmail;
+    document.getElementById('userUsername').value = userUsername;
     document.getElementById('userPassword').value = userPassword;
     // Add more fields as needed
 }
@@ -110,7 +110,7 @@ function cancelUserEditModal() {
 
     // Clear input fields when closing the modal
     document.getElementById('userName').value = '';
-    document.getElementById('userEmail').value = '';
+    document.getElementById('userUsername').value = '';
     document.getElementById('userPassword').value = '';
     // Add more fields as needed
 }
@@ -120,11 +120,11 @@ function saveUserChanges() {
     // Get updated values from the input fields
     
     const updatedUserName = document.getElementById('userName').value;
-    const updatedUserEmail = document.getElementById('userEmail').value;
+    const updatedUserUsername = document.getElementById('userUsername').value;
     const updatedUserPassword = document.getElementById('userPassword').value;
 
     // Validate if any field is empty (you can add more validation as needed)
-    if (!updatedUserName || !updatedUserEmail || !updatedUserPassword) {
+    if (!updatedUserName || !updatedUserUsername || !updatedUserPassword) {
         alert('Please fill in all fields.');
         return;
     }
@@ -136,7 +136,7 @@ function saveUserChanges() {
     if (row) {
         // Update the row with the new values
         row.querySelector('.user-name').textContent = updatedUserName;
-        row.querySelector('.user-email').textContent = updatedUserEmail;
+        row.querySelector('.user-username').textContent = updatedUserUsername;
         row.querySelector('.user-password').textContent = updatedUserPassword;
 
         // Close the modal
@@ -170,7 +170,7 @@ function closeAddUserModal() {
     const newUserBirthDate = document.getElementById('newUserBirthDate');
     const newUserContactNumber = document.getElementById('newUserContactNumber');
     const newUserAddress = document.getElementById('newUserAddress');
-    const newUserEmail = document.getElementById('newUserEmail');
+    const newUserUsername = document.getElementById('newUserUsername');
     const newUserPassword = document.getElementById('newUserPassword');
 
     // Clear the input fields
@@ -180,7 +180,7 @@ function closeAddUserModal() {
     newUserBirthDate.value = '';
     newUserContactNumber.value = '';
     newUserAddress.value = '';
-    newUserEmail.value = '';
+    newUserUsername.value = '';
     newUserPassword.value = '';
 
     // Hide the modal
@@ -194,7 +194,7 @@ function addUser() {
     var newUserBirthDate = document.getElementById('newUserBirthDate');
     var newUserContactNumber = document.getElementById('newUserContactNumber');
     var newUserAddress = document.getElementById('newUserAddress');
-    var newUserEmail = document.getElementById('newUserEmail');
+    var newUserUsername = document.getElementById('newUserUsername');
     var newUserPassword = document.getElementById('newUserPassword');
     var newUserRole = document.getElementById('newUserRole');
 
@@ -229,9 +229,9 @@ function addUser() {
         return; // Exit the function
     }
 
-    if (newUserEmail.value.trim() === '' || !validateEmail(newUserEmail.value)) {
-        newUserEmail.setCustomValidity('Please enter a valid email address.');
-        newUserEmail.reportValidity();
+    if (newUserUsername.value.trim() === '') {
+        newUserUsername.setCustomValidity('Please enter a valid username address.');
+        newUserUsername.reportValidity();
         return; // Exit the function
     }
 
@@ -258,7 +258,7 @@ function addUser() {
         data: {
             name: newUserFirstName.value + ' ' + newUserMiddleName.value + ' ' + newUserLastName.value, // Concatenate first, middle, and last names
             role: newUserRole.value,
-            email: newUserEmail.value,
+            username: newUserUsername.value,
             password: newUserPassword.value,
             // Add employee fields
             fname: newUserFirstName.value,
@@ -282,9 +282,9 @@ function addUser() {
     });
 }
 
-function validateEmail(email) {
+function validateUsername(username) {
     const re = /\S+@\S+\.\S+/;
-    return re.test(email);
+    return re.test(username);
 }
 
 
@@ -293,8 +293,8 @@ function deleteUserRow(event) {
     const row = event.target.closest('tr'); // Get the closest <tr> parent of the clicked button
     const userID = row.getAttribute('data-id');
     const confirmationModal = $('#confirmationModal');
-    const userEmail = row.querySelector('td:nth-child(3)').textContent; // Get the email from the third column
-    const confirmText = `Are you sure you want to delete user ${userEmail}?`; // Confirmation message with user's email
+    const userUsername = row.querySelector('td:nth-child(3)').textContent; // Get the username from the third column
+    const confirmText = `Are you sure you want to delete user ${userUsername}?`; // Confirmation message with user's username
     // Display confirmation modal
     confirmationModal.show();
 
@@ -351,7 +351,7 @@ function editUser(event) {
     userId = row.getAttribute('data-id'); // set userId in the same scope
     
     // Populate modal with current data
-    const email = $(`#email${userId}`).text();
+    const username = $(`#username${userId}`).text();
     const fullName = $(`#name${userId}`).text(); // Fetch the combined name
     const names = fullName.split(' '); // Split the combined name into first, middle, and last names
     const fname = names[0];
@@ -363,7 +363,7 @@ function editUser(event) {
     const address = $(`#address${userId}`).text();
 
     // Set values to the modal fields
-    $('#userEmail').val(email);
+    $('#userUsername').val(username);
     $('#userFirstName').val(fname);
     $('#userMiddleName').val(mname);
     $('#userLastName').val(lname);
@@ -378,7 +378,7 @@ function editUser(event) {
 
 function showModalWithUserData(userId) {
     // Populate modal with current data
-    const email = $(`#email${userId}`).text();
+    const username = $(`#username${userId}`).text();
     const fname = $(`#fname${userId}`).text();
     const mname = $(`#mname${userId}`).text();
     const lname = $(`#lname${userId}`).text();
@@ -387,7 +387,7 @@ function showModalWithUserData(userId) {
     const password = $(`#password${userId}`).text();
     const address = $(`#address${userId}`).text();
 
-    $('#userEmail').val(email);
+    $('#userUsername').val(username);
     $('#userFirstName').val(fname);
     $('#userMiddleName').val(mname);
     $('#userLastName').val(lname);
@@ -408,7 +408,7 @@ function saveUserChanges() {
     const editedBirthDate = $('#userBirthDate').val();
     const editedContactNumber = $('#userContactNumber').val();
     const editedAddress = $('#userAddress').val();
-    const editedUserEmail = $('#userEmail').val();
+    const editedUserUsername = $('#userUsername').val();
     const editedUserPassword = $('#userPassword').val();
     const editedUserRole = $('#userRole').val(); // Assuming you have a role field in your modal
 
@@ -449,9 +449,9 @@ function saveUserChanges() {
         return;
     }
 
-    if (editedUserEmail.trim() === '' || !validateEmail(editedUserEmail)) {
-        $('#userEmail').get(0).setCustomValidity('Please enter a valid email address.');
-        $('#userEmail').get(0).reportValidity();
+    if (editedUserUsername.trim() === '') {
+        $('#userUsername').get(0).setCustomValidity('Please enter a valid Username.');
+        $('#userUsername').get(0).reportValidity();
         return;
     }
 
@@ -477,7 +477,7 @@ function saveUserChanges() {
             birthdate: editedBirthDate,
             contact_number: editedContactNumber,
             address: editedAddress,
-            email: editedUserEmail,
+            username: editedUserUsername,
             password: editedUserPassword,
             role: editedUserRole
         },

@@ -22,7 +22,7 @@ class UserController extends Controller
         // Validate request data
         $validatedData = $request->validate([
             'role' => 'required|in:1,2,3', // Assuming role can only be 1, 2, or 3
-            'email' => 'required|email|unique:users,email',
+            'username' => 'required|unique:users',
             'password' => 'required|string|min:8',
             'fname' => 'required|string',
             'mname' => 'nullable|string',
@@ -35,7 +35,7 @@ class UserController extends Controller
         // Insert the user into the database
         $user = new User;
         $user->role = $validatedData['role'];
-        $user->email = $validatedData['email'];
+        $user->username = $validatedData['username'];
         $user->password = bcrypt($validatedData['password']); // Hash the password
         $user->save();
 
@@ -77,7 +77,7 @@ class UserController extends Controller
         'birthdate' => 'nullable|date',
         'contact_number' => 'required|string',
         'address' => 'required|string',
-        'email' => 'required|string',
+        'username' => 'required|unique:users',
         'password' => 'nullable|string|min:8', // Adjust validation rules
         'role' => 'required|in:1,2,3', // Assuming role can only be 1, 2, or 3
     ]);
@@ -90,7 +90,7 @@ class UserController extends Controller
     }
 
     // Update user data
-    $user->email = $validatedData['email'];
+    $user->username = $validatedData['username'];
     $user->role = $validatedData['role'];
 
     // Update password only if a new password is provided

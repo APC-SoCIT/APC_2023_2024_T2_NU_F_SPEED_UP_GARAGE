@@ -22,9 +22,9 @@
     
             <!-- Email Address -->
             <div>
-                <label for="uname" class="login-label">Email</label>
-                <x-text-input id="email" class="login-input" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                <label for="uname" class="login-label">Username</label>
+                <x-text-input id="username" class="login-input" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
+                <x-input-error :messages="$errors->get('username')" class="mt-2" />
             </div>
     
             <!-- Password -->
