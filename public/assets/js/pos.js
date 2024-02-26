@@ -331,44 +331,51 @@ filteredProducts() {
       window.location.reload();
   },
   
-  
-    printAndProceed(currentDate) {
-      const receiptData = {
-          customerName: this.selectedCustomerName,
-          cashierName: this.selectedCashierName,
-          status: this.selectedStatus,
-          paymentMethod: this.selectedPaymentMethod,
-          phone:this.selectedPhone,
-          date: this.dateFormat(), // Use the currentDate argument passed to the function
-          items: this.cart.map(item => item.name), // Modify to include only item names
-          qty: this.cart.map(item => item.qty), // Map quantities separately
-          quantity: this.getItemsCount(),
-          vatable: this.getVatable(),
-          vat: this.getVAT(),
-          totalAmount: this.getTotalPayment(),
-          paidAmount: this.cash,
-          customerChange: this.change,
-          
-      };
-    
-      addTransaction(receiptData);
-      const receiptContent = document.getElementById('receipt-content');
-      const titleBefore = document.title;
-      const printArea = document.getElementById('print-area');
-      printArea.innerHTML = receiptContent.innerHTML;
-      document.title = this.receiptNo;
-    
-      window.print();
-      this.isShowModalReceipt = false;
-    
-      printArea.innerHTML = '';
-      document.title = titleBefore;
-    
-      this.clear();
-      
-      window.location.reload(); // Refresh the page
-      
-    },
+  printAndProceed(currentDate) {
+    const receiptData = {
+        customerName: this.selectedCustomerName,
+        cashierName: this.selectedCashierName,
+        status: this.selectedStatus,
+        paymentMethod: this.selectedPaymentMethod,
+        phone: this.selectedPhone,
+        date: this.dateFormat(), // Use the currentDate argument passed to the function
+        items: this.cart.map(item => item.name), // Modify to include only item names
+        qty: this.cart.map(item => item.qty), // Map quantities separately
+        quantity: this.getItemsCount(),
+        vatable: this.getVatable(),
+        vat: this.getVAT(),
+        totalAmount: this.getTotalPayment(),
+        paidAmount: this.cash,
+        customerChange: this.change,
+    };
+
+    addTransaction(receiptData);
+
+    // Select the receipt content element
+    const receiptContent = document.getElementById('receipt-content');
+
+    // Clone the receipt content element
+    const clonedReceiptContent = receiptContent.cloneNode(false);
+
+    // Create a new div for printing
+    const printArea = document.getElementById('print-area');
+
+    // Clear any previous content in the print area
+    printArea.innerHTML = '';
+
+    // Change the document title to the receipt number
+    document.title = this.receiptNo;
+
+    // Print the content
+    window.print();
+
+    // Clear any previous data
+    this.clear();
+
+    // Refresh the page
+    window.location.reload();
+}
+,
 
     getVatable() {
       // Calculate the total price of all items with 12% increase in price
@@ -477,8 +484,6 @@ function closeScanProductModal() {
   var scanProductModal = document.getElementById('scanProductModal');
   scanProductModal.style.display = 'none';
 }
-
-
 
   function addCustomerModal() {
     const addCustomerModal = document.getElementById('addCustomerModal');

@@ -3,7 +3,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/settings.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -20,7 +19,6 @@
     <div class="content">
     <!-- Start of Navbar -->
         <x-navbar />
-        <x-chatbox />
     <!-- End of Navbar -->
 
         <main>
@@ -34,15 +32,15 @@
             <div class="filter-container">
             <div class="tab-container">
                 <div class="tabs">
-                    <button class="tablinks" onclick="openCity(event, 'London')">Account</button>
+                    <button class="tablinks" onclick="openCity(event, 'account')">Account</button>
                     <button class="tablinks" onclick="openCity(event, 'Brands')">Brands</button>
                     <button class="tablinks" onclick="openCity(event, 'Category')">Categories</button>
-                    <button class="tablinks" onclick="openCity(event, 'Paris')">Threshold</button>
+                    <button class="tablinks" onclick="openCity(event, 'threshold')">Threshold</button>
                 </div>
 
                 @if(auth()->user()->employee)
                 <div class="account-container">
-                    <div id="London" class="tabcontent">
+                    <div id="account" class="tabcontent">
                         <h3>Account Information</h3>
                         <hr>
                         <form id="accountForm" action="{{ route('update.profile', ['id' => auth()->user()->id]) }}" method="POST" enctype="multipart/form-data">
@@ -116,7 +114,7 @@
                     </div>
                 </div>
 
-                <div id="Paris" class="tabcontent">
+                <div id="threshold" class="tabcontent">
                     <div class="threshold-container">
                         <div class="threshold-section">
                             <h3>Threshold Level</h3>
@@ -157,7 +155,6 @@
     </div>
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
-    <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/settings.js') }}"></script>
@@ -298,8 +295,42 @@
             reader.readAsDataURL(selectedFile);
         }
     }
-
     
+
+    $(document).ready(function() {
+        // Check if the URL contains a "tab" parameter
+        var urlParams = new URLSearchParams(window.location.search);
+        var tabParam = urlParams.get('tab');
+        
+        // If the "tab" parameter is set to "account", open the "Account" tab
+        if (tabParam === 'account') {
+            openCity(event, 'account');
+            
+        }
+    });
+
+    function openCity(evt, cityName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+
 
     </script>
 </body>

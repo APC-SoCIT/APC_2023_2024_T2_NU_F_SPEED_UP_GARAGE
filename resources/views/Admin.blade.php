@@ -17,7 +17,7 @@
     <div class="content">
     <!-- Start of Navbar -->
         <x-navbar />
-        <x-chatbox />
+
     <!-- End of Navbar -->
         <main>
             <div class="header">
@@ -46,21 +46,29 @@
                         <a href="/inventory">Total Items on Hand</a>
                     </span>
                 </li>
-                <li><i class='bx bx-show-alt'></i>
+
+                <li>
+                    <i class='bx bx-show-alt'></i>
                     <span class="info">
-                        <h3>
-                            {{ count($outOfStockItems) }}
-                        </h3>
+                        <h3>{{ count($outOfStockItems) }}</h3>
                         <a href="/inventory?filter=Out of Stock">Out of stock Items</a>
                     </span>
                 </li>
                 <li>
                     <i class='bx bx-line-chart'></i>
                     <span class="info">
-                        <h3>
-                            {{ count($lowStockItems) }}
-                        </h3>
+                        <h3>{{ count($lowStockItems) }}</h3>
                         <a href="/inventory?filter=Low Stock">Low Stock Items</a>
+                    </span>
+                </li>
+
+
+                <li><i class='bx bx-show-alt'></i>
+                    <span class="info">
+                        <h3>
+                            ₱{{$formattedAverageDailySales}}
+                        </h3>
+                        <p>Average Daily Sales / month</p>
                     </span>
                 </li>
             </ul>
@@ -99,6 +107,15 @@
                         <p>Average Daily Sales / month</p>
                     </span>
                 </li>
+                <li><i class='bx bx-show-alt'></i>
+                    <span class="info">
+                        <h3>
+                            ₱{{$formattedAverageDailySales}}
+                        </h3>
+                        <p>Average Daily Sales / month</p>
+                    </span>
+                </li>
+                
                 
             </ul>
             <!-- End of Insights -->
@@ -176,7 +193,6 @@
 
 
     <script src="{{ asset('assets/js/chart.js') }}"></script>
-    <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>           
@@ -186,8 +202,6 @@
     window.addEventListener('popstate', function () {
         history.pushState(null, null, document.URL);
     });
-
-    
     
     </script>
 </body>

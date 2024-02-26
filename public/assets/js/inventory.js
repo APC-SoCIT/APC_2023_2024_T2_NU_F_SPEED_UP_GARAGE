@@ -232,46 +232,10 @@ function saveChanges() {
 });
 }
 
-
-
-function updateStatusClassForAll() {
-    var rows = document.querySelectorAll('.inventory-table tbody tr');
-
-    rows.forEach(function(row) {
-        var quantity = parseInt(row.querySelector('.quantity span').textContent);
-        var statusCell = row.querySelector('.status');
-
-        if (quantity === 0) {
-            statusCell.className = 'status status-out-of-stock';
-            statusCell.textContent = 'Out of Stock';
-        } else if (quantity <= threshold) {
-            statusCell.className = 'status status-low-stock';
-            statusCell.textContent = 'Low Stock';
-        } else {
-            statusCell.className = 'status status-in-stock';
-            statusCell.textContent = 'In Stock';
-        }
-    });
-}
-
-
 function cancelEditModal() {
-
     $('#editModal').hide();
     $(document).on('click', '.edit-button', editRow);
 }
-
-
-
-// Ensure Document Ready
-document.addEventListener("DOMContentLoaded", function () {
-    // Assign row numbers when the page loads
-    assignRowNumbers();
-
-    // Fetch the threshold when the page loads
-    fetchThreshold();
-});
-
 
 function showScanProductModal() {
     const scanProductModal = document.getElementById('scanProductModal');
@@ -304,49 +268,62 @@ function closeScanProductModal() {
     scanProductModal.style.display = 'none';
 }
 
+// Ensure Document Ready
+document.addEventListener("DOMContentLoaded", function () {
+    fetchThreshold();
+});
 
 function updateUI() {
-    const rows = document.querySelectorAll('tr[data-id]');
-    const notificationBar = document.getElementById('notificationBar');
-
-    let notificationCount = 0;
+    const rows = document.querySelectorAll('.inventory-table tbody tr');
 
     rows.forEach((row) => {
-        const quantity = parseInt(row.querySelector('.quantity').textContent, 10);
+        const quantity = parseInt(row.querySelector('.quantity span').textContent, 10);
         const statusCell = row.querySelector('.status');
-        const existingNotification = notificationBar.querySelector(`.notification[data-id="${row.dataset.id}"]`);
-
+        
         if (quantity === 0) {
             statusCell.className = 'status status-out-of-stock';
             statusCell.textContent = 'Out of Stock';
-        } else if (quantity <= threshold) {
+        } else if (quantity <= threshold && quantity > 0 ) {
             statusCell.className = 'status status-low-stock';
             statusCell.textContent = 'Low Stock';
-
-            if (!existingNotification) {
-                // Create a notification
-                const notification = document.createElement('div');
-                notification.className = 'notification';
-                notification.setAttribute('data-id', row.dataset.id);
-                notification.textContent = `Low stock for ${row.querySelector('.product-name').textContent}`;
-                notificationBar.appendChild(notification);
-                notificationCount++;
-            }
         } else {
             statusCell.className = 'status status-in-stock';
             statusCell.textContent = 'In Stock';
+        }
+    });
+}
 
-            if (existingNotification) {
-                // Remove the notification
-                existingNotification.remove();
-            }
+async function updateStatusClassForAll(filter) {
+    const rows = document.querySelectorAll('.inventory-table tbody tr');
+    await fetchThreshold(); // Wait for fetchThreshold to complete
+    console.log(threshold);
+
+    rows.forEach((row) => {
+        const quantity = parseInt(row.querySelector('.quantity span').textContent, 10);
+        const statusCell = row.querySelector('.status');
+
+        if (filter === 'Out of Stock' && quantity === 0) {
+            statusCell.className = 'status';
+            statusCell.textContent = filter;
+            row.style.display = ''; // Show the row if it matches the filter
+        } else if (filter === 'Low Stock' && quantity > 0 && quantity <= threshold) {
+            statusCell.className = 'status';
+            statusCell.textContent = filter;
+            row.style.display = ''; // Show the row if it matches the filter
+        } else if (filter === 'In Stock' && quantity > threshold) {
+            statusCell.className = 'status';
+            statusCell.textContent = filter;
+            row.style.display = ''; // Show the row if it matches the filter
+        } else {
+            row.style.display = 'none'; // Hide the row if it doesn't match the filter
         }
     });
 
-    // Update the notification count in the HTML
-    const notificationCountElement = document.querySelector('.count');
-    notificationCountElement.textContent = notificationCount.toString();
+    // Ensure the table is visible after updating rows
+    document.querySelector('.inventory-table').style.display = 'table';
 }
+
+// Rest of your code remains the same
 
 function updateThreshold() {
     const newThreshold = parseInt(document.getElementById('thresholdInput').value, 10);
@@ -373,7 +350,7 @@ function updateThreshold() {
 }
 
 function fetchThreshold() {
-    fetch('/threshold')
+    return fetch('/threshold')
         .then(response => response.json())
         .then(data => {
             threshold = data.threshold;
@@ -385,9 +362,27 @@ function fetchThreshold() {
         });
 }
 
+window.addEventListener('DOMContentLoaded', (event) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const filter = urlParams.get('filter');
 
-// Call fetchThreshold when the page loads
-window.addEventListener('DOMContentLoaded', fetchThreshold);
+    // Set the selected filter option based on the filter parameter
+    if (filter) {
+        const filterSelect = document.getElementById('statusFilter');
+        if (filterSelect) {
+            for (let i = 0; i < filterSelect.options.length; i++) {
+                if (filterSelect.options[i].value === filter) {
+                    filterSelect.selectedIndex = i;
+                    updateStatusClassForAll(filter);
+                    break;
+                }
+            }
+        }
+    }
+
+    // Fetch the threshold value on page load
+    fetchThreshold();
+});
 
 function openCity(evt, cityName) {
     var i, tabcontent, tablinks;

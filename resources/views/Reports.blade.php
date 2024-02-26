@@ -3,7 +3,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/filter.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
@@ -22,7 +21,6 @@
     <div class="content">
     <!-- Start of Navbar -->
         <x-navbar />
-        <x-chatbox />
     <!-- End of Navbar -->
         <main>
             <div class="header">
@@ -64,7 +62,6 @@
     </div>
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
-    <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
 </body>

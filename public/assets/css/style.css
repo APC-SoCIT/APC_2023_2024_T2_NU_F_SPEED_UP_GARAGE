@@ -298,6 +298,60 @@ body.dark .sidebar .side-menu li:hover a {
     height: 36px;
     object-fit: cover;
     border-radius: 50%;
+    margin-right: 10px; /* Adjust the spacing between profile picture and name-role */
+    margin-left: 10px; /* Adjust the spacing between profile picture and name-role */
+}
+
+.content nav .profile {
+    display: flex;
+    align-items: center;
+}
+
+.content nav .profile .profile-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.content nav .profile .profile-wrapper img {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.content nav .profile .name-role {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.content nav .profile .name-role p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--dark);
+}
+
+.content nav .profile .name-role .role {
+    font-weight: 600;
+}
+
+.content nav .profile i {
+    font-size: 18px; /* Adjust the size of the icon */
+    text-align: center;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+
+
+@media (max-width: 768px) {
+    .content nav .profile .name-role {
+        display: none; /* Hide name-role on smaller screens */
+    }
+
+    .content nav .profile img {
+        margin-right: 0; /* Remove margin between profile picture and name-role on smaller screens */
+    }
 }
 
 .content nav .theme-toggle{
@@ -325,6 +379,7 @@ body.dark .sidebar .side-menu li:hover a {
 .content nav #theme-toggle:checked+.theme-toggle::before{
     left: calc(100% - (25px - 4px) - 2px);
 }
+
 
 .content main{
     width: 100%;

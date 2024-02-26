@@ -1,6 +1,4 @@
-
-
-<div class="sidebar">
+<div class="sidebar hide-on-print">
     <a href="/admin" class="logo">
         <img class="logo-image" src="{{ asset('assets/images/logo.png') }}">
         <div class="logo-name"><span>SpeedUp</span> Garage</div>
