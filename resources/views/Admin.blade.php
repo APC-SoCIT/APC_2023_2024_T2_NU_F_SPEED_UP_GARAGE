@@ -61,16 +61,6 @@
                         <a href="/inventory?filter=Low Stock">Low Stock Items</a>
                     </span>
                 </li>
-
-
-                <li><i class='bx bx-show-alt'></i>
-                    <span class="info">
-                        <h3>
-                            ₱{{$formattedAverageDailySales}}
-                        </h3>
-                        <p>Average Daily Sales / month</p>
-                    </span>
-                </li>
             </ul>
 
             <ul class="insights">
@@ -107,12 +97,12 @@
                         <p>Average Daily Sales / month</p>
                     </span>
                 </li>
-                <li><i class='bx bx-show-alt'></i>
+                <li><i class='bx bx-cycling'></i>
                     <span class="info">
                         <h3>
                             ₱{{$formattedAverageDailySales}}
                         </h3>
-                        <p>Average Daily Sales / month</p>
+                        <p>Number of customer / day</p>
                     </span>
                 </li>
                 

@@ -18,10 +18,24 @@
     <a href="#" class="profile" onclick="toggleProfileMenu()">
         <img src="{{ Storage::url('/' . auth()->user()->employee->profile_picture) }}" onerror="this.onerror=null; this.src='https://i.stack.imgur.com/l60Hf.png'">
        
-    <div class="name-role">
-        <p class="role">Admin</p>
-        <p class="name">cinnamonesurena</p>
-    </div>    
+        <div class="name-role">
+            @php
+                $role = auth()->user()->role;
+                $username = auth()->user()->username;
+            @endphp
+
+            <p class="role">
+                @if($role == 1)
+                    Admin
+                @elseif($role == 2)
+                    Inventory
+                @else
+                    Cashier
+                @endif
+            </p>
+
+            <p class="name">{{ $username }}</p>
+        </div>     
 
         <!-- Profile dropdown menu -->
         <div class="profile-menu" id="profileMenu">

@@ -491,6 +491,11 @@ body.dark .sidebar .side-menu li:hover a {
     color: var(--danger);
 }
 
+.content main .insights li:nth-child(5) .bx{
+    background: var(--light-danger);
+    color: var(--danger);
+}
+
 .content main .insights li .info h3{
     font-size: 24px;
     font-weight: 600;
