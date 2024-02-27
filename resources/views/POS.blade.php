@@ -7,7 +7,6 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pos.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
@@ -18,7 +17,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -34,7 +32,6 @@
     <div class="content">
     <!-- Start of Navbar -->
         <x-navbar />
-        <x-chatbox />
         <!-- End of Navbar -->
 
         <!-- Start of POS -->
@@ -484,9 +481,11 @@
     </div>
 
     <div
-      x-show="isShowModalReceipt"
-      class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24"
-    >
+  x-show="isShowModalReceipt"
+  class="fixed w-full h-screen left-0 top-0 z-50 flex flex-wrap justify-center items-center p-24 overflow-y-auto text-center"
+  style="z-index: 1000;"
+>
+
       <div
         x-show="isShowModalReceipt"
         class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalReceipt()"
@@ -507,6 +506,8 @@
         x-transition:leave-start="opacity-100 transform scale-100"
         x-transition:leave-end="opacity-0 transform scale-90"
       >
+
+
         <div id="receipt-content" class="text-left w-full text-sm p-6 overflow-auto">
           <div class="text-center">
             <img src="assets/images/logo.png" alt="SPEED UP POS" class="mb-1 w-20 h-20 inline-block">
@@ -515,7 +516,7 @@
           </div>
           <div class="flex mt-4 text-xs">
             
-            <div class="flex-grow">Receipt #<span x-text="receiptNo"></span></div>
+            <div class="flex-grow">Transaction #<span x-text="receiptNo"></span></div>
             <div x-text="receiptDate"></div>
           </div>
           <hr class="my-2">
@@ -592,7 +593,7 @@
         </div>
         <div class="p-4 w-full">
           
-          <button class="proceed-btn" x-on:click="printAndProceed()">PROCEED</button>
+          <button class="proceed-btn hide-on-print" x-on:click="printAndProceed()">PROCEED</button>
         </div>
       </div>
     </div>

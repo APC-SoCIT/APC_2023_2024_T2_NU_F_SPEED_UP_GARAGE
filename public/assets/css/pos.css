@@ -21,11 +21,6 @@
   --white: #fff;
 }
 
-
-
-
-
-
 .product-card.out-of-stock {
 cursor: not-allowed;
 opacity: 0.7; /* You can adjust the opacity or add other styling for out-of-stock products */
@@ -796,10 +791,6 @@ margin-top: -0.1875rem; /* Equivalent to -mt-3 */
 
 
 
-
-
-
-
 /* Edit User Modal */
 .edit-user-modal, .add-user-modal {
 display: none;
@@ -953,33 +944,6 @@ margin-top: 36px;
   text-align: right;
  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* width */
 ::-webkit-scrollbar {
@@ -1202,16 +1166,40 @@ table td {
   vertical-align: top;
 }
 
-#receipt-content {
-  max-height: 70vh;
-}
-
 @media print {
-  .hide-print {
+  /* Hide navbar and sidebar */
+  .sidebar {
     display: none !important;
   }
-  .print-area {
-    display: block;
+  .navbar {
+    display: none !important;
+  }
+  .proceed-btn {
+    display: none !important;
+  }
+  
+  @page {
+    margin: 0;
+    size: A4; /* Set paper size to A4 */
+  }
+
+  body {
+    margin: auto;
+    width: 100%;
+    transform: scale(2); 
+    font-size: 16px; /* Adjust the font size as needed */
+  }
+
+  .receipt-content {
+    /* Your existing styles */
+    width: 100%; /* Increase content width */
+    line-height: 1.5; /* Increase line height for better readability */
+    padding: 30px; /* Increase padding for better visibility */
+  }
+
+  #print-area {
+    margin: 0; /* Remove any margins */
+    padding: 0; /* Remove any padding */
   }
 }
 

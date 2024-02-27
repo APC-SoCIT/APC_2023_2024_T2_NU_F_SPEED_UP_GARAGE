@@ -4,7 +4,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/filter.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
@@ -23,7 +22,7 @@
 
     <div class="content">
         <x-navbar />
-        <x-chatbox />
+
         <main>
             <div class="header">
                 <div class="left">
@@ -352,7 +351,6 @@
     <script src="{{ asset('assets/js/city.js') }}"></script>
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
-    <script src="{{ asset('assets/js/chat.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     
    

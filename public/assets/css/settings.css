@@ -352,6 +352,21 @@ body.dark .success-modal-content .modal-close-button:hover, body.dark .error-mod
     outline: none;
 }
 
+/* Dark mode styles for input fields */
+/* Dark mode styles for input fields */
+.dark .name-group input[type="text"],
+.dark .name-group input[type="date"],
+.dark .form-group input[type="text"],
+.dark .form-group input[type="date"] {
+    flex: 0.4; /* Allow input fields to grow and fill available space */
+    padding: 10px;
+    border: 1px solid #444343; /* Border color in dark mode */
+    border-radius: 5px;
+    outline: none;
+    background-color: #333; /* Background color in dark mode */
+    color: white; /* Text color in dark mode */
+}
+
 
 h4 {
     margin-bottom: 20px;
@@ -383,6 +398,76 @@ form .cancel-btn {
 
 form .cancel-btn:hover {
     background-color: rgb(247, 247, 247);
+}
+
+.button-container{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.upload-btn {
+    background-color: #4b4b4b;
+    color: #fff;
+    font-size: 13px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px; /* Add some space between buttons */
+}
+
+.delete-btn {
+    background-color: 4b4b4b;
+    color: #fff;
+    border-style: solid;
+    padding: 10px 20px;
+    font-size: 13px;
+    border-width: 1px;
+    border-style: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px; /* Add some space between buttons */
+}
+
+.dark .upload-btn:hover {
+    background-color: #777777;
+}
+
+.dark .delete-btn:hover {
+    background-color: #777777;
+}
+
+
+.dark form .edit-btn,
+.dark form .save-btn  {
+    background-color: #777777;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Dark mode hover styles for update button */
+.dark form .update-btn:hover {
+    background-color: #777777;
+}
+
+/* Dark mode styles for cancel button */
+.dark form .cancel-btn {
+    background-color: 4b4b4b; 
+    color: #fff;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 9px 20px;
+    cursor: pointer;
+    border-style: none;
+}
+
+/* Dark mode hover styles for cancel button */
+.dark form .cancel-btn:hover, .dark form .save-btn:hover,.dark form .edit-btn:hover{
+    background-color: rgb(156, 154, 154);
 }
 
 .button-container{
