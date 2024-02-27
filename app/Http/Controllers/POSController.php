@@ -91,7 +91,10 @@ public function addTransaction(Request $request)
     $transaction->date = $request->input('date');
     $transaction->vatable = $request->input('vatable');
     $transaction->vat = $request->input('vat');
-    $transaction->paid_amount = $request->input('paid_amount');
+    $transaction->cash_amount = $request->input('cash_amount');
+    $transaction->gcash_amount = $request->input('gcash_amount');
+    $transaction->card_amount = $request->input('card_amount');
+    $transaction->total_payment = $request->input('total_payment');
     $transaction->customer_change = $request->input('customer_change');
     $transaction->quantity = $request->input('quantity');
     $transaction->total_amount = $request->input('total_amount');

@@ -112,6 +112,9 @@ function deleteRow(event) {
     });
 }
 var editingProductId;  // Declare a variable to store the currently editing product ID
+var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
+
+
 
 function editRow(event) {
     // Get the parent row of the clicked button
@@ -138,7 +141,7 @@ function editRow(event) {
     $('#editedBrand').val(brand);
     $('#editedQuantity').val(quantity);
     $('#editedPrice').val(price);
-    $('#editedUpdatedBy').val(updatedBy);
+    $('#editedUpdatedBy').val(currentUserUsername);
     $('#editedDescription').val(description); // Set the description field value
 
     // Display the current image in the modal
@@ -478,4 +481,134 @@ function parseNumericalValue(value) {
     // Remove commas and parse the value as a float
     return parseFloat(value.replace(/,/g, ''));
 }
+
+
+const handleBarcodeScan = async (scannedBarcode) => {
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get-product-by-barcode?barcode=' + scannedBarcode, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.product_name) {
+                        document.getElementById('scanBarcode').value = response.tag;
+                        document.getElementById('scanId').value = response.id;
+                        document.getElementById('scanProduct').value = response.product_name;
+                        document.getElementById('scanCategory').value = response.category;
+                        document.getElementById('scanBrand').value = response.brand;
+                        const originalQuantity = parseInt(response.quantity);
+                        const totalQuantity = originalQuantity;
+                        document.getElementById('scanQuantity').value = originalQuantity;
+                        document.getElementById('scanPrice').value = '₱' + response.price;
+                        document.getElementById('productImage').src = response.product_image;
+                        document.getElementById('productImageContainer').style.display = 'block';
+                        document.getElementById('scanProductModal').style.display = 'flex';
+                    }
+                } else {
+                    alert('Error fetching product data');
+                }
+            }
+        };
+        xhr.send();
+    } catch (error) {
+        console.error('Error searching for product:', error);
+    }
+};
+
+const handleKeyPress = async (event) => {
+
+    if (/^[0-9]+$/.test(event.key) || event.key === '\n' || event.key === '\r') {
+        scannedBarcode += event.key;
+    } else if (event.key === 'Enter') {
+        await handleBarcodeScan(scannedBarcode);
+        scannedBarcode = '';
+    }
+};
+
+let scannedBarcode = '';
+document.addEventListener('keypress', handleKeyPress);
+function closeScanProductModal() {
+    document.getElementById('scanProductModal').style.display = 'none';
+}
+
+
+
+function decrementQuantity() {
+    const quantityInput = document.getElementById('scanQuantity');
+    let quantity = parseInt(quantityInput.value);
+    if (!isNaN(quantity) && quantity > 1) {
+        quantity -= 1;
+        quantityInput.value = quantity;
+    }
+}
+
+// Function to increment the quantity
+function incrementQuantity() {
+    const quantityInput = document.getElementById('scanQuantity');
+    let quantity = parseInt(quantityInput.value);
+    if (!isNaN(quantity)) {
+        quantity += 1;
+        quantityInput.value = quantity;
+    }
+}
+
+
+function updateQty() {
+    // Get the product ID from the input field
+    const productId = document.getElementById('scanId').value;
+    
+    // Get the edited quantity value from the input field
+    const editedQuantity = parseNumericalValue($('#scanQuantity').val());
+  
+    // Validate edited quantity value
+    if (isNaN(editedQuantity) || editedQuantity <= 0) {
+      const errorMessage = 'Please enter a valid quantity.';
+      showErrorMessage(errorMessage);
+      return; // Exit the function
+    }
+  
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+  
+    // Prepare form data for AJAX request
+    const formData = new FormData();
+    formData.append('_method', 'PUT'); // Use PUT method
+    formData.append('quantity', editedQuantity);
+  
+    // Send AJAX request to update the quantity
+    $.ajax({
+      url: `/update-qty/${productId}`, // Include the productId in the URL
+      type: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      },
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+        console.log('Quantity updated successfully:', response);
+  
+        // Update UI with the new quantity value
+        $('#quantity_' + productId + ' .quantity').text(addCommas(editedQuantity));
+  
+        // Show success modal
+        showSuccessModal('Quantity updated successfully.');
+        closeScanProductModal(); // Close the modal
+        
+      },
+      error: function(error) {
+        console.error('Error updating quantity:', error);
+  
+        if (error.responseJSON && error.responseJSON.error) {
+          // Product not found, display error message to the user
+          showErrorMessage(error.responseJSON.error);
+        } else {
+          // Handle other types of errors
+          // You can display a generic error message or take other actions as needed
+          showErrorMessage('An error occurred while updating the quantity.');
+        }
+      }
+    });
+  }
+  
 

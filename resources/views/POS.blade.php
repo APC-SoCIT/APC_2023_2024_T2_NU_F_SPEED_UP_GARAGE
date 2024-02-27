@@ -50,7 +50,6 @@
         <div class="right-section">
         <div class="order-no" id="receiptNo"></div>
         <div class="date-today" id="currentDate"></div>
-        <input type="text" class="barcodeScan" id="barcodeInput" onkeypress="toggleDot(event)" />
       </div>
       <div class="left-section">
         <div class="category-plc">
@@ -61,14 +60,7 @@
                                     <option value="{{ $customer->phone }}" data-phone="{{ $customer->fname }}">{{ $customer->phone }}</option>
                                 @endforeach
               </select>
-              <select id="cashierName" class="category-dropdown1">
-                <option value="">Cashier</option>
-                  @foreach ($users as $user)
-                      @if ($user->role === 3)
-                          <option value="{{ $user->name }}">{{ $user->name }}</option>
-                      @endif
-                  @endforeach
-              </select>
+              <input type="text" id="cashierName" class="category-dropdown1" value="{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}" readonly>
                 <select id="customerName" class="category-dropdown1" name="customerName" onchange="updatePhoneLabel()">
                 <option value="">Customer</option>
                     @foreach ($customers as $customer)
@@ -298,25 +290,44 @@
 
 
       
-        <!-- Show products that match the search keyword -->
-        <div class="products-product" x-show="filteredProducts().length > 0">
-            <template x-for="product in filteredProducts()" :key="product.id">
-                <div role="button" class="product-card" :title="product.product_name" x-on:click="product.quantity > 0 ? addToCart(product) : null">
+        
+        <div class="products-container">
+    <div class="products-product" x-show="filteredProducts().length > 0">
+        <template x-for="(product, index) in filteredProducts()" :key="product.id">
+            <div role="button" class="product-card" :title="product.product_name" x-on:click="addToCart(product)" x-bind:class="{ 'disabled': product.price <= 0 }">
                 <img class="product-image" :src="'/storage/product_images/' + product.product_image" :alt="product.product_name">
-                    <div class="product-card-pad">
-                        <div class="product-details">
-                            <div class="product-brand" x-text="product.brand"></div>
-                            <div class="product-name" x-text="product.product_name"></div>
-                            <div class="product-price-quantity">
-                                <div class="product-price" x-text="priceFormat(product.price * 1.12)"></div>
-                                <div class="product-quantity" x-text="qtyFormat(product.quantity)"></div>
-                            </div>
+                <div class="product-card-pad">
+                    <div class="product-details">
+                        <div class="product-brand" x-text="product.brand"></div>
+                        <div class="product-name" x-text="product.product_name"></div>
+                        
+                        <!-- Check if the product is eligible for editing -->
+                        <template x-if="product.allowEdit">
+    <div class="price-input-container">
+        <span>₱</span>
+        <input type="number" class="editedPrice" x-model="product.editedPrice" @click.stop placeholder="100" step="0.01">
+
+    </div>
+</template>
+
+                        <template x-if="!product.allowEdit">
+                            <div class="product-price" x-text="priceFormat(product.price * 1.12)"></div>
+                        </template>
+                        
+                        <div class="product-price-quantity">
+                            <!-- Display edited price if available, else display original price -->
+                       
+                            <div class="product-quantity" x-text="qtyFormat(product.quantity)"></div>
                         </div>
                     </div>
                 </div>
-            </template>
-        </div>
+            </div>
+        </template>
     </div>
+</div>
+
+
+</div>
 </div>
 </div>
 
@@ -392,38 +403,57 @@
           <div class="select-none h-auto w-full text-center pt-3 pb-4 px-4">
 
 
-
-            <div class="cash-text">
+          <div class="cash-text">
             
-              <div class="category-plc1">
-              
-            <select id="paymentMethod" class="category-dropdown2" >
-      <option value="">Method</option>
-      <option value="CASH">Cash</option>
-      <option value="GCASH">GCASH</option>
-      </div>
-    </select>
+            <div class="category-plc1">
+            
+            <select id="paymentMethod" class="category-dropdown2" onchange="showPaymentMethod()">
+<option value="CASH">Cash</option>
+<option value="GCASH">GCash/Maya</option>
+<option value="CARD">Card</option>
+<option value="Multiple">Multiple Payments</option>
+    
+    </div>
+  </select>
 
-    <select id="status" class="category-dropdown2" >
-      <option value="">Payment</option>
-      <option value="Full Payment">Full Payment</option>
-      <option value="Installment">Installment</option>
-      </div>
-    </select>
- 
-    <div class="text-php">
-      <div class="mr-2 mt-2">₱</div>
-      
-                  <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="cash-inner-card">
-                </div>
-              </div>
-              <hr class="my-2">
-              <div class="money-grid">
-                <template x-for="money in moneys">
-                  <button x-on:click="addCash(money)" class="add-money">+<span x-text="numberFormat(money)"></span></button>
-                </template>
-              </div>
+  <select id="status" class="category-dropdown2" >
+    <option value="Full Payment">Full Payment</option>
+    <option value="Installment">Installment</option>
+    </div>
+  </select>
+
+
+      <div class="text-php">
+             </div>
             </div>
+          </div>
+
+
+          <div class="summary-card">
+<div class="total-text1" id="cashPayment">
+  <div>CASH</div> 
+  <div class="input-container">
+  <div class="signsignsign">₱</div>
+  <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="cash-inner-card">
+</div>
+</div>
+
+<div class="total-text1" id="gcashPayment" style="display: none;">
+  <div>GCASH/MAYA</div>
+  <div class="input-container">
+  <div class="signsignsign">₱</div>
+  <input x-bind:value="numberFormat(gcash)" x-on:keyup="updateGCash($event.target.value)" type="text" class="cash-inner-card">
+</div>
+</div>
+
+<div class="total-text1" id="cardPayment" style="display: none;">
+  <div>CARD</div>
+  <div class="input-container">
+  <div class="signsignsign">₱</div>
+  <input x-bind:value="numberFormat(card)" x-on:keyup="updateCard($event.target.value)" type="text" class="cash-inner-card">
+</div>
+</div>
+</div>
                 
           <div class="summary-card" >
   <div class="total-text" >
@@ -438,6 +468,11 @@
 
   <div class="total-text" >
     <div>TOTAL</div>
+    <div class="text-right" x-text="priceFormat(getTotalAmount())"></div>
+  </div>
+
+  <div class="total-text" >
+    <div>TOTAL PAYMENT</div>
     <div class="text-right" x-text="priceFormat(getTotalPayment())"></div>
   </div>
 </div>
@@ -579,11 +614,23 @@
             </div>
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">TOTAL</div>
-              <div x-text="priceFormat(getTotalPayment())"></div>
+              <div x-text="priceFormat(getTotalAmount())"></div>
+            </div>
+            <div x-show="cash > 0" class="flex text-xs font-semibold">
+              <div class="flex-grow">PAID CASH AMOUNT</div>
+              <div x-text="priceFormat(cash)"></div>
+            </div>
+            <div x-show="gcash > 0" class="flex text-xs font-semibold">
+              <div class="flex-grow">PAID GCASH AMOUNT</div>
+              <div x-text="priceFormat(gcash)"></div>
+            </div>
+            <div x-show="card > 0" class="flex text-xs font-semibold">
+              <div class="flex-grow">PAID CARD AMOUNT</div>
+              <div x-text="priceFormat(card)"></div>
             </div>
             <div class="flex text-xs font-semibold">
-              <div class="flex-grow">PAID AMOUNT</div>
-              <div x-text="priceFormat(cash)"></div>
+              <div class="flex-grow">TOTAL PAYMENT</div>
+              <div x-text="priceFormat(getTotalPayment())"></div>
             </div>
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">CHANGE</div>

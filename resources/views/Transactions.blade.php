@@ -94,7 +94,10 @@
                             <th>VATable</th>
                             <th>VAT</th>
                             <th>Total Amount</th>
-                            <th>Paid Amount</th>
+                            <th>Cash Amount</th>
+                            <th>GCASH Amount</th>
+                            <th>Card Amount</th>
+                            <th>Total Payment</th>
                             <th>Change</th>
                             <th>Payment Method</th>
                             <th>Payment</th>
@@ -137,7 +140,22 @@
     <input type="text" style="display:none;">
 </td>
 <td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
-    <span class="paid_amount">₱{{ number_format($transaction->paid_amount, 2) }}</span>
+    <span class="paid_amount">₱{{ number_format($transaction->cash_amount, 2) }}</span>
+    <input type="text" style="display:none;">
+</td>
+
+<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
+    <span class="paid_amount">₱{{ number_format($transaction->gcash_amount, 2) }}</span>
+    <input type="text" style="display:none;">
+</td>
+
+<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
+    <span class="paid_amount">₱{{ number_format($transaction->card_amount, 2) }}</span>
+    <input type="text" style="display:none;">
+</td>
+
+<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
+    <span class="total_payment">₱{{ number_format($transaction->total_payment, 2) }}</span>
     <input type="text" style="display:none;">
 </td>
 <td class="customer-change numeric-cell" id="customer_change_{{ $transaction->transaction_id }}">

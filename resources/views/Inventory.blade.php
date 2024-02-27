@@ -46,7 +46,7 @@
                 <div class="filter-container">
                     <div class="add-product-container">
                        <button class="add-product-btn" onclick="showAddProductModal()">+ Add Product</button>
-                       <button class="add-product-btn" onclick="showScanProductModal()">+ Scan Product</button>
+                       
                        <div class="dropdown-container">
                         <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Status</option>
@@ -210,15 +210,8 @@
                     <input type="text" id="editedPrice" name="editedPrice" onkeypress="return onlyNumbers(event)">
                     </div>  
                     <div class="form-row-container"> 
-                <label for="editedUpdatedBy">Updated By</label>
-                <select id="editedUpdatedBy" name="editedUpdatedBy">
-                    <option value="">Select Inventory Clerk</option>
-                    @foreach ($users as $user)
-                        @if ($user->role === 2)
-                            <option value="{{ $user->email }}">{{ $user->email }}</option>
-                        @endif
-                    @endforeach
-                </select>
+                    <label for="editedUpdatedBy">Updated By</label>
+                     <input type="text" id="editedUpdatedBy" name="editedUpdatedBy" readonly>
                 </div>  
                     </div>  
                 <div class="modal-button-container">
@@ -294,15 +287,8 @@
                     <input id="newPrice" name="newPrice" placeholder="500" required onkeypress="return onlyNumbers(event)">
                     </div>
                     <div class="form-row-container">
-                <label for="newUpdatedBy">Updated By</label>
-                    <select id="newUpdatedBy" name="newUpdatedBy" required>
-                    <option value="">Select Inventory Clerk</option>
-                    @foreach ($users as $user)
-                        @if ($user->role === 2)
-                            <option value="{{ $user->id }}">{{ $user->email }}</option>
-                        @endif
-                    @endforeach
-                </select>
+                    <label for="newUpdatedBy">Updated By</label>
+                    <input id="newUpdatedBy" name="newUpdatedBy" value="{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}" disabled>
                 </div>
                     </div>
                 <div class="modal-button-container">
@@ -334,62 +320,107 @@
         </div>
 
 
-        
         <div class="add-modal" id="scanProductModal">
-            <div class="modal-content">
-                
-            <div class="add-customer-modal-title">Scan Product</div> <!-- Add the header -->
-        <div class="divider"></div>
+    <div class="modal-content">
+        
+    <div class="add-customer-modal-title">Scan Product</div> <!-- Add the header -->
+<div class="divider"></div>
 
-        <div class="product-image" id="productImageContainer">
-            <img id="productImage" src="#" alt="">
-        </div>
+<div class="product-image" id="productImageContainer">
+    <img id="productImage" src="#" alt="">
+</div>
 
-        <div class="form-row">
-            <div class="form-row-container">
-                <label for="Barcode">Barcode</label>
-                <input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" required>
-            </div>
-        </div>
-            <div class="form-row">
-                <div class="form-row-container">
-                    <label for="Product">Product Name</label>
-                    <input type="text" id="scanProduct" name="scanProduct" placeholder="Oil Filter" readonly>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-row-container">
-                    <label for="Category">Category</label>
-                    <input type="text" id="scanCategory" name="scanCategory" placeholder="500" readonly>
-                </div>
-                <div class="form-row-container">
-                    <label for="Brand">Brand</label>
-                    <input type="text" id="scanBrand" name="scanBrand" placeholder="1" readonly>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-row-container">
-                    <label for="Price">Price</label>
-                    <input type="text" id="scanPrice" name="scanPrice" placeholder="500" readonly>
-                </div>
-                <div class="form-row-container">
-                    <label for="Quantity">Quantity</label>
-                    <input type="text" id="scanQuantity" name="scanQuantity" placeholder="1" readonly>
-                </div>
-            </div>
+<div class="form-row">
+<div class="form-row-container">
+<label for="Barcode">Barcode</label>
+<input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" required>
+</div>
 
-<script>
-    
-</script>
+<div class="form-row-container">
+<label for="Id">ID</label>
+<input type="text" id="scanId" name="scanId" placeholder="1" required>
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-row-container">
+<label for="Product">Product Name</label>
+<input type="text" id="scanProduct" name="scanProduct" placeholder="Oil Filter" readonly>
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-row-container">
+<label for="scanDescription">Description</label>
+<textarea id="scanDescription" name="scanDescription" placeholder="Description" rows="4"></textarea>
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-row-container">
+<label for="Category">Category</label>
+<input type="text" id="scanCategory" name="scanCategory" placeholder="500" readonly>
+</div>
+<div class="form-row-container">
+<label for="Brand">Brand</label>
+<input type="text" id="scanBrand" name="scanBrand" placeholder="1" readonly>
+</div>
+</div>
+<div class="form-row">
+<div class="form-row-container">
+<label for="Price">Price</label>
+<input type="text" id="scanPrice" name="scanPrice" placeholder="500" readonly>
+</div>
+<div class="form-row-container">
+    <label for="Quantity">Quantity</label>
+    <div class="quantity-control">
+        <button class="quantity-btn minus-btn" onclick="decrementQuantity()">-</button>
+        <input type="text" id="scanQuantity" name="scanQuantity" placeholder="1">
+        <button class="quantity-btn plus-btn" onclick="incrementQuantity()">+</button>
+    </div>
+</div>
+</div>
+
+
 <div class="modal-button-container">
+<button class="modal-save-button" onclick="updateQty()">Update</button>
     <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>
 </div>
+    
     </main>
-
     <script src="{{ asset('assets/js/try.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/inventory.js') }}"></script>    
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
+    <script src="{{ asset('assets/js/filter.js') }}"></script>
+    <script>
+
+    var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
+
+
+        function handleImageChange(input) {
+    var preview = document.getElementById('newProductImagePreview');
+    var label = document.getElementById('imageInputLabel');
+    var imageContainer = document.getElementById('imagePlaceholderContainer');
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            console.log('Image Data:', e.target.result);
+            preview.src = e.target.result;
+            label.innerHTML = 'Change image';
+            imageContainer.classList.add('has-image');
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.src = '#'; // Set placeholder image or empty string
+        label.innerHTML = 'Choose an image';
+        imageContainer.classList.remove('has-image'); // Remove the 'has-image' class
+    }
+}
+    </script>
 
 
 </body>
