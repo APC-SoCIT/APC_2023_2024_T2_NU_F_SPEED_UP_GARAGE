@@ -25,6 +25,7 @@ use App\Http\Controllers\SettingsController;
 |
 */
 
+
 Route::get('/', function () {
     return redirect('/login');
 });

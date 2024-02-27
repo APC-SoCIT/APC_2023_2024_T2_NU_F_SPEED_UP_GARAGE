@@ -77,6 +77,7 @@
                                         <th>Date</th>
                                         <th>#</th>
                                         <th>Transactions</th>
+                                        <th>Total Labor</th>
                                         <th>Total Sales</th>
             
                                     </tr>
@@ -87,6 +88,7 @@
                                                 <td class="date" id="date{{ $date }}">{{ $date }}</td>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td class="total-transactions" id="{{ $todayTransactions[$index] }}">{{ $todayTransactions[$index] }}</td>
+                                                <td class="total-amount" id=" ₱{{ $todaySales[$index] }}">₱{{ $todaySales[$index] }}</td>
                                                 <td class="total-amount" id=" ₱{{ $todaySales[$index] }}">₱{{ $todaySales[$index] }}</td>
                                             </tr>
                                         @endforeach
