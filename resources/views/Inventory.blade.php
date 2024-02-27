@@ -390,37 +390,9 @@
     </main>
     <script src="{{ asset('assets/js/try.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
+    <script src="{{ asset('assets/js/chat.js') }}"></script>
     <script src="{{ asset('assets/js/inventory.js') }}"></script>    
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
-    <script src="{{ asset('assets/js/filter.js') }}"></script>
-    <script>
-
-    var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
-
-
-        function handleImageChange(input) {
-    var preview = document.getElementById('newProductImagePreview');
-    var label = document.getElementById('imageInputLabel');
-    var imageContainer = document.getElementById('imagePlaceholderContainer');
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            console.log('Image Data:', e.target.result);
-            preview.src = e.target.result;
-            label.innerHTML = 'Change image';
-            imageContainer.classList.add('has-image');
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        preview.src = '#'; // Set placeholder image or empty string
-        label.innerHTML = 'Choose an image';
-        imageContainer.classList.remove('has-image'); // Remove the 'has-image' class
-    }
-}
-    </script>
 
 
 </body>
