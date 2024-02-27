@@ -6,16 +6,23 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\InventoryLog;
 
 class ProductsController extends Controller
 {
     public function index()
     {
         $products = Product::all();
+        $users = User::all();
         $brands = Brand::all();
         $categories = Category::all();
-
-        return view('products', compact('products', 'brands', 'categories'));
+    
+        return view('inventory', [
+            'products' => $products,
+            'brands' => $brands,
+            'categories' => $categories,
+            'users' => $users
+        ]);
     }
 
     public function getProducts()
@@ -26,7 +33,7 @@ class ProductsController extends Controller
 
     public function invreport()
     {
-        $products = Product::all();
-        return view('inventory-reports', compact('products'));
+        $inventory_logs = InventoryLog::all();
+        return view('inventory-reports', compact('inventory_logs'));
     }
 }

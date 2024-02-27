@@ -139,23 +139,26 @@
                                     <thead>
                                         <tr>
                                             <th>Status</th>
-                                            <th>Product #</th>
+                                            <th>#</th>
+                                            <th>Tag</th>
                                             <th>Name</th>
+                                            <th>Category</th>
+                                            <th>Brand</th>
                                             <th>Quantity</th>
-                                            <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody id="inventoryTableBody">
                                 
-                                        @foreach ($inventory_logs as $product)
+                                        @foreach ($products as $product)
                                         <tr data-id="{{ $product->id }}">
                                         <td><span class="status"></span></td>
                                             <td>{{ $product->id }}</td>
+                                            <td class="tag" id="tag{{ $product->id }}">{{ $product->tag }}</td>
                                             <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
-                                            <td class="quantity" id="quantity{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span></td>
-                                            <td>{{ $product->created_at}}</td> <!-- Format created_at as date only -->
-
-                                        </tr>
+                                            <td class="category" id="category{{ $product->id }}">{{ $product->category }}</td>
+                                            <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
+                                            <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
+                                            </tr>
                                         @endforeach
                                         
                                     </tbody>

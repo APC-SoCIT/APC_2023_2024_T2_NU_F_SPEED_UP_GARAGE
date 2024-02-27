@@ -36,7 +36,7 @@
 
 
             <!-- Insights -->
-            <ul class="reports">
+            <ul class="insights">
                 <li>
                     <i class='bx bx-calendar-check'></i>
                     <span class="info">
