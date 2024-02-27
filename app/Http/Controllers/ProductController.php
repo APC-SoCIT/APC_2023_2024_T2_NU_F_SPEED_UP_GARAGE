@@ -67,14 +67,63 @@ class ProductController extends Controller
     
         return response()->json(['message' => 'Product added successfully']);
     }
+
+    public function updateQty(Request $request, $id){
+        // Validate request data
+        $validatedData = $request->validate([
+            'quantity' => 'required|numeric',
+        ]);
     
+        // Retrieve the product by its ID
+        $product = Product::find($id);
+    
+        // Check if the product exists
+        if(!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+    
+        // Update the quantity
+        $product->quantity = $validatedData['quantity'];
+    
+        // Save the updated product
+        $product->save();
+    
+        // Return a response indicating success
+        return response()->json(['message' => 'Product quantity updated successfully']);
+    }
+    
+    
+    public function getProductByBarcode(Request $request)
+{
+    $tag = $request->input('barcode'); // Retrieve the scanned tag (barcode)
+    $product = Product::where('tag', $tag)->first(); // Query the Product table using the tag
+
+    if ($product) {
+        // Increment the quantity of the product by 1
+        
+        $product->save();
+
+        return response()->json([
+            'id' => $product->id, // Include the product ID
+            'tag' => $product->tag,
+            'product_name' => $product->product_name,
+            'quantity' => $product->quantity,
+            'price' => $product->price,
+            'category' => $product->category,
+            'brand' => $product->brand,
+            'product_image' => asset('storage/product_images/' . $product->product_image)
+        ]);
+    } else {
+        return response()->json(['error' => 'Product not found for the given barcode'], 404);
+    }
+}
+    
+
     public function editProduct($id)
     {
         $product = Product::find($id);
     
         if ($product) {
-            // Since we are not storing the full image path in the database anymore,
-            // we need to construct the image URL manually based on the image name
             $product->product_image = asset('storage/product_images/' . $product->product_image);
             
             return response()->json(['product' => $product]);
@@ -186,28 +235,6 @@ class ProductController extends Controller
         // Handle the case where product_names or quantities are null
         Log::error('Invalid request. Please provide product_names and quantities.');
         return response()->json(['error' => 'Invalid request. Please provide product_names and quantities.'], 400);
-    }
-}
-public function getProductByBarcode(Request $request)
-{
-    $tag = $request->input('barcode'); // Retrieve the scanned tag (barcode)
-    $product = Product::where('tag', $tag)->first(); // Query the Product table using the tag
-    
-    if ($product) {
-        // Increment the quantity of the product by 1
-        $product->quantity += 1;
-        $product->save();
-
-        return response()->json([
-            'product_name' => $product->product_name,
-            'quantity' => $product->quantity,
-            'price' => $product->price,
-            'category' => $product->category,
-            'brand' => $product->price,
-            'product_image' => asset('storage/product_images/' . $product->product_image)
-        ]);
-    } else {
-        return response()->json(['error' => 'Product not found for the given barcode'], 404);
     }
 }
 

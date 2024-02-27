@@ -112,6 +112,7 @@ Route::put('/update-user/{id}', [UserController::class, 'updateUser']);
 
 Route::get('/inventory', [ProductController::class, 'index'])->name('inventory.index');
 Route::post('/add-product', [ProductController::class, 'addProduct'])->name('product.add');
+Route::put('/update-qty/{id}', [ProductController::class, 'updateQty']);
 Route::get('/edit-product/{id}', [ProductController::class, 'editProduct'])->name('product.edit');
 Route::delete('/delete-product/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
 Route::put('/update-product/{id}', [ProductController::class, 'updateProduct']);
