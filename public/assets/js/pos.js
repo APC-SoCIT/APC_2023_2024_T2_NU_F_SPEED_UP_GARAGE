@@ -1,11 +1,9 @@
-
-
 function updateReceiptNo(app, newReceiptNo, time) {
   console.log('Updating receipt number:', newReceiptNo);
   app.receiptNo = newReceiptNo;
   app.receiptDate = app.dateFormat(time);
 
-  // Update the receipt number in the order-info section
+
   const receiptNoElement = document.getElementById("receiptNo");
   if (receiptNoElement) {
     receiptNoElement.textContent = `Receipt #${app.receiptNo}`;
@@ -13,41 +11,11 @@ function updateReceiptNo(app, newReceiptNo, time) {
   }
 }
 
-document.getElementById('cashierName').addEventListener('change', function () {
-  app.updateCashierName(this.value);
- 
-  this.updateChange();
-});
-
-document.getElementById('customerName').addEventListener('change', function () {
-  app.updateCustomerName(this.value);
-
-});
-
-document.getElementById('paymentMethod').addEventListener('change', function () {
-  app.updatePaymentMethod(this.value);
- 
-});
-
-document.getElementById('phone').addEventListener('change', function () {
-  app.updatePaymentMethod(this.value);
- 
-});
-
-document.getElementById('status').addEventListener('change', function () {
-  app.updatePaymentMethod(this.value);
- 
-});
-
-
-
 const app = initApp();
 app.initReceiptNo();
 document.addEventListener('DOMContentLoaded', function () {
 
 });
-
-
 
 function initApp() {
   
@@ -62,14 +30,17 @@ function initApp() {
     selectedCashierName:"",
     selectedPhone:"",
     activeMenu: 'pos',
-    loadingSampleData: true,
     moneys: [1, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000,],
     products: [],
     keyword: "",
     cart: [],
     vat: 0,
-    paidAmount: 0,
+    cashAmount: 0,
+    gcashAmount: 0,
+    cardAmount: 0,
     cash: 0,
+    gcash: 0,
+    card: 0,
     change: 0,
     isShowModalReceipt: false,
     receiptDate: null,
@@ -118,8 +89,6 @@ getNextReceiptNo() {
 },
 
 
-
-
 filteredProducts() {
   const rg = this.keyword ? new RegExp(this.keyword, "gi") : null;
   const brandFilter = this.selectedBrand ? (p) => p.brand === this.selectedBrand : () => true;
@@ -132,27 +101,54 @@ filteredProducts() {
   return this.keyword && filtered.length === 0 ? [] : filtered;
 },
 
+addToCart(product) {
+  let index = this.findCartIndex(product);
+  let priceToAdd;
 
+  // Check if the product has an edited price 
+  if (product.editedPrice !== null && product.editedPrice !== undefined) {
+    priceToAdd = product.editedPrice;
+  } else {
+    priceToAdd = product.price;
+  }
 
-
-
-    addToCart(product) {
-      const index = this.findCartIndex(product);
-      if (index === -1) {
+  // Check if the price is greater than or equal to 1
+  if (priceToAdd >= 1) {
+    if (index === -1) {
+      this.cart.push({
+        productId: product.id,
+        image: '/storage/product_images/' + product.product_image,
+        name: product.product_name,
+        price: priceToAdd,
+        option: product.option,
+        qty: 1,
+      });
+    } else {
+      if (this.cart[index].price === priceToAdd || (this.cart[index].editedPrice !== null && this.cart[index].editedPrice === priceToAdd)) {
+        this.cart[index].qty += 1;
+      } else {
         this.cart.push({
           productId: product.id,
           image: '/storage/product_images/' + product.product_image,
           name: product.product_name,
-          price: product.price,
+          price: priceToAdd,
           option: product.option,
           qty: 1,
         });
-      } else {
-        this.cart[index].qty += 1;
       }
-      
-      this.updateChange();
-    },
+    }
+
+    // Reset editedPrice to null after adding the product to the cart
+    product.editedPrice = null;
+    
+    this.updateChange();
+  } else {
+    console.log('Product price is less than 1, cannot be added to cart.');
+  }
+},
+
+
+
     findCartIndex(product) {
       return this.cart.findIndex((p) => p.productId === product.id);
     },
@@ -164,13 +160,11 @@ filteredProducts() {
     
       const afterAdd = item.qty + qty;
       if (afterAdd <= 0) {
-        // If quantity becomes zero or less, remove item from cart
         this.cart.splice(index, 1);
       } else {
         this.cart[index].qty = afterAdd;
       }
     
-      // Update the change whenever the quantity changes
       this.updateChange();
     },
   
@@ -178,11 +172,33 @@ filteredProducts() {
       this.cash = (this.cash || 0) + amount;
       this.updateChange();
     },
+    
+    addGCash(amount) {      
+      this.gcash = (this.gcash || 0) + amount;
+      this.updateChange();
+    },
+    
+    addCard(amount) {      
+      this.card = (this.card || 0) + amount;
+      this.updateChange();
+    },
+
     getItemsCount() {
       return this.cart.reduce((count, item) => count + item.qty, 0);
     },
     updateChange() {
-      this.change = this.cash - this.getTotalPayment();
+      this.change = this.cash + this.gcash + this.card - this.getTotalAmount();
+      
+  },
+  
+    updateGCash(value) {
+      this.gcash = parseFloat(value.replace(/[^0-9.]+/g, ""));
+      this.updateChange();
+    },
+    
+    updateCard(value) {
+      this.card = parseFloat(value.replace(/[^0-9.]+/g, ""));
+      this.updateChange();
     },
     updateCash(value) {
       this.cash = parseFloat(value.replace(/[^0-9]+/g, ""));
@@ -191,6 +207,7 @@ filteredProducts() {
 
     updateCashierName(selectedCashierName) {
       this.selectedCashierName = selectedCashierName;
+      
       this.updateChange();
     },
 
@@ -203,6 +220,12 @@ filteredProducts() {
       this.selectedPaymentMethod = selectedPaymentMethod;
       this.updateChange();
     },
+
+    getTotalPayment(){
+      return this.cash + this.gcash + this.card
+
+    },
+
     getTotalPrice() {
       return this.cart.reduce(
         (total, item) => total + item.qty * item.price,
@@ -213,28 +236,21 @@ filteredProducts() {
       const cashierNameElement = document.getElementById("cashierName");
       const customerNameElement = document.getElementById("customerName");
       const phoneElement = document.getElementById("phone");
-      const statusElement = document.getElementById("status")
-      const paymentMethodElement = document.getElementById("paymentMethod");
-
-
+     
+    
       const isPhoneSelected = phoneElement.value !== "Select Phone";
-      const isPaymentsSelected = statusElement.value !== "Payment";
       const isCashierSelected = cashierNameElement.value !== "Select Cashier";
       const isCustomerSelected = customerNameElement.value !== "Select Customer";
-      const isPaymentSelected = paymentMethodElement.value !== "";
-      const isCashEnough = this.change >= 0; // Cash provided is enough or more than the total amount
-    
-      return isPaymentsSelected && isPhoneSelected && isCashierSelected && isCustomerSelected && isPaymentSelected && isCashEnough && this.cart.length > 0;
+     
+      const isCashEnough = this.change >= 0;
+ 
+      return isPhoneSelected && isCashierSelected && isCustomerSelected && isCashEnough && this.cart.length > 0;
     },
+
     submit: async function () {
       const time = new Date();
-      
-      // Ensure that initReceiptNo has completed before proceeding
       await this.initReceiptNo();
 
-
- 
-    
       const paymentMethodElement = document.getElementById("paymentMethod");
       if (paymentMethodElement) {
           this.selectedPaymentMethod = paymentMethodElement.value;
@@ -292,7 +308,6 @@ filteredProducts() {
         const parts = formattedNumber.split(".");
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         
-        // Limit numbers to two decimal places
         if (parts.length > 1) {
           parts[1] = parts[1].substring(0, 2);
         }
@@ -302,7 +317,6 @@ filteredProducts() {
       
       return formattedNumber;
     },
-    
     
     numberFormat1(number) {
       return (number || "")
@@ -321,14 +335,13 @@ filteredProducts() {
       this.cash = 0;
       this.cart = [];
       this.selectedStatus = "";
-      this.selectedCashierName = ""; // Reset the selected cashier name
-      this.selectedCustomerName = ""; // Reset the selected customer name
-      this.selectedPaymentMethod = ""; // Reset the selected payment method
+      this.selectedCashierName = "";
+      this.selectedCustomerName = "";
+      this.selectedPaymentMethod = "";
       this.receiptNo = null;
       this.receiptDate = null;
       this.updateChange();
 
-      window.location.reload();
   },
   
   printAndProceed(currentDate) {
@@ -344,8 +357,11 @@ filteredProducts() {
         quantity: this.getItemsCount(),
         vatable: this.getVatable(),
         vat: this.getVAT(),
-        totalAmount: this.getTotalPayment(),
-        paidAmount: this.cash,
+        totalAmount: this.getTotalAmount(),
+        cashAmount: this.cash,
+        gcashAmount: this.gcash,
+        cardAmount: this.card,
+        totalPayment: this.getTotalPayment(),
         customerChange: this.change,
     };
 
@@ -363,22 +379,17 @@ filteredProducts() {
     // Clear any previous content in the print area
     printArea.innerHTML = '';
 
-    // Change the document title to the receipt number
     document.title = this.receiptNo;
 
-    // Print the content
     window.print();
 
-    // Clear any previous data
     this.clear();
 
-    // Refresh the page
+
     window.location.reload();
-}
-,
+},
 
     getVatable() {
-      // Calculate the total price of all items with 12% increase in price
       const totalPrice = this.cart.reduce(
         (total, item) => total + (item.qty * item.price),
         0
@@ -387,24 +398,19 @@ filteredProducts() {
     },
 
     getVAT() {
-      // Calculate the total price of all items without tax
       const totalPrice = this.getTotalPrice();
-    
-      // Calculate 12% tax
       const vat = totalPrice * 0.12;
-    
       return vat;
     },
-    
-    getTotalPayment() {
-   
-      return this.getVAT() + this.getVatable(); // Total payment including change
+      getTotalAmount() {
+      return this.getVAT() + this.getVatable();
     },
+
+  
   };
 
   return app;
 }
-
     const dateToday = document.getElementById('currentDate');
     const currentDate = new Date();
     const monthNames = [
@@ -422,7 +428,6 @@ filteredProducts() {
     function addTransaction(receiptData) {
       const csrfToken = $('meta[name="csrf-token"]').attr('content');
   
-      // Send an AJAX request to update product quantities
       $.ajax({
         url: '/update-product-quantities',
         type: 'POST',
@@ -441,7 +446,6 @@ filteredProducts() {
         },
     });
   
-      // Now, you can proceed with adding the transaction as before
       $.ajax({
           url: '/add-transaction',
           type: 'POST',
@@ -453,13 +457,16 @@ filteredProducts() {
               phone:receiptData.phone,
               date: receiptData.date,
               status: receiptData.status,
-              items: receiptData.items.join(', '), // Join item names into a comma-separated string
+              items: receiptData.items.join(', '),
               qty: receiptData.qty.join(', '),
               payment_method: receiptData.paymentMethod,
               vatable: receiptData.vatable,
               vat: receiptData.vat,
               total_amount: receiptData.totalAmount,
-              paid_amount: receiptData.paidAmount,
+              cash_amount: receiptData.cashAmount,
+              gcash_amount: receiptData.gcashAmount,
+              card_amount: receiptData.cardAmount,
+              total_payment:receiptData.totalPayment,
               customer_change: receiptData.customerChange,
               cashier_name: receiptData.cashierName,
               quantity: receiptData.quantity,
@@ -476,9 +483,8 @@ filteredProducts() {
   
   function scanProductModal() {
     const scanProductModal = document.getElementById('scanProductModal');
-    scanProductModal.style.display = 'flex'; // Use 'flex' to center the modal
+    scanProductModal.style.display = 'flex';
 }
-
 
 function closeScanProductModal() {
   var scanProductModal = document.getElementById('scanProductModal');
@@ -487,10 +493,9 @@ function closeScanProductModal() {
 
   function addCustomerModal() {
     const addCustomerModal = document.getElementById('addCustomerModal');
-    addCustomerModal.style.display = 'flex'; // Use 'flex' to center the modal
+    addCustomerModal.style.display = 'flex';
 }
 
-// Function to close the Add Customer modal
 function closeAddCustomerModal() {
     const addCustomerModal = document.getElementById('addCustomerModal');
     const newFirstName = document.getElementById('newFirstName');
@@ -507,8 +512,6 @@ function closeAddCustomerModal() {
     const newBarangay = document.getElementById('newBarangay');
     const newZipCode = document.getElementById('newZipCode');
     
-
-    // Clear the input fields
     newFirstName.value = '';
     newLastName.value = '';
     newMiddleName.value = '';
@@ -520,13 +523,11 @@ function closeAddCustomerModal() {
     newBarangay.value = '';
     newZipCode.value = '';
 
-    // Hide the modal
     addCustomerModal.style.display = 'none';
 }
 
 function addCustomer() {
    
-  
   var newFirstName = document.getElementById('newFirstName');
   var newLastName = document.getElementById('newLastName');
   var newMiddleName = document.getElementById('newMiddleName');
@@ -543,85 +544,77 @@ function addCustomer() {
   var newZipCode = document.getElementById('newZipCode');
 
     if (newFirstName.value.trim() === '') {
-          newFirstName.setCustomValidity('Please fill out this field.');
-          newFirstName.reportValidity();
-          return; // Exit the function
+      newFirstName.setCustomValidity('Please fill out this field.');
+      newFirstName.reportValidity();
+      return;
       }
 
     if (newLastName.value.trim() === '') {
       newLastName.setCustomValidity('Please fill out this field.');
       newLastName.reportValidity();
-      return; // Exit the function
+      return;
     }
 
     if (newMiddleName.value.trim() === '') {
       newMiddleName.setCustomValidity('Please fill out this field.');
       newMiddleName.reportValidity();
-      return; // Exit the function
+      return;
     }
 
     if (newSex.value.trim() === '') {
       newSex.setCustomValidity('Please Select Your Gender.');
       newSex.reportValidity();
-      return; // Exit the function
+      return;
     }
 
     if (newBirthday.value.trim() === '') {
       newBirthday.setCustomValidity('Please  Select Your Birthday.');
       newBirthday.reportValidity();
-      return; // Exit the function
+      return;
     }
 
     if (newPhone.value.trim() === '') {
       newPhone.setCustomValidity('Please fill out this field.');
       newPhone.reportValidity();
-      return; // Exit the function
+      return;
     }
 
- 
-      if (newUnit.value.trim() === '' && newStreet.value.trim() === '') {
-          // If both newUnit and newStreet are empty, prompt the user to input in either one
-          newUnit.setCustomValidity('Please fill out either Unit or Street.');
-          newStreet.setCustomValidity('Please fill out either Unit or Street.');
-          newUnit.reportValidity();
-          return; // Exit the function
-      } else {
-          // Reset custom validity if one of newUnit or newStreet is filled
-          newUnit.setCustomValidity('');
-          newStreet.setCustomValidity('');
-      }
-  
-      if (newProvince.value === 'Select Province') {
+    if (newUnit.value.trim() === '' && newStreet.value.trim() === '') {
+      newUnit.setCustomValidity('Please fill out either Unit or Street.');
+      newStreet.setCustomValidity('Please fill out either Unit or Street.');
+      newUnit.reportValidity();
+      return; 
+    } else {
+        newUnit.setCustomValidity('');
+        newStreet.setCustomValidity('');
+    }
+
+    if (newProvince.value === 'Select Province') {
       newProvince.setCustomValidity('Please select a province.');
       newProvince.reportValidity();
-      return; // Exit the function
+      return;
       }
 
-      // Trigger validation for city if it's in its default state
-      if (newCity.value === 'Select City / Municipality') {
+    if (newCity.value === 'Select City / Municipality') {
       newCity.setCustomValidity('Please select a city/municipality.');
       newCity.reportValidity();
-      return; // Exit the function
+      return; 
       }
 
-      // Trigger validation for zipcode if it's in its default state
-      if (newBarangay.value.trim() === '') {
-        newBarangay.setCustomValidity('Please fill out this field.');
-        newBarangay.reportValidity();
-        return; // Exit the function
-        }
+    if (newBarangay.value.trim() === '') {
+       newBarangay.setCustomValidity('Please fill out this field.');
+       newBarangay.reportValidity();
+      return;
+      }
   
-      // Trigger validation for zipcode if it's in its default state
-      if (newZipCode.value.trim() === '') {
+    if (newZipCode.value.trim() === '') {
       newZipCode.setCustomValidity('Please fill out this field.');
       newZipCode.reportValidity();
-      return; // Exit the function
+      return; 
       }
-
 
 
   if (newFirstName && newLastName && newMiddleName && newSuffix && newSex && newPhone && newUnit && newStreet && newVillage && newProvince && newCity && newBarangay && newZipCode) {
-    // Get the CSRF token from the meta tag
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
     $.ajax({
@@ -652,12 +645,10 @@ function addCustomer() {
       },
       success: function(response) {
         console.log('Customer added successfully:', response);
-        // Handle success response (update UI, close modal, etc.)
         closeAddCustomerModal();
       },
       error: function(error) {
         console.error('Error adding customer:', error);
-        // Handle error response (display error message, log, etc.)
       }
     });
   } else {
@@ -682,107 +673,117 @@ function preventCountryCodeDeletion(input) {
   }
 }
     
-
 function isNumeric(evt) {
-    // Get the event key code
     var charCode = (evt.which) ? evt.which : evt.keyCode;
-
-    // Allow only numeric digits and specific control keys (e.g., backspace, delete, arrow keys)
     if (charCode > 31 && (charCode < 48 || charCode > 57) && (charCode !== 8 && charCode !== 9 && charCode !== 37 && charCode !== 39 && charCode !== 46)) {
         return false;
     }
-
     return true;
 }
 
-  
-document.addEventListener("DOMContentLoaded", function () {
-    const barcodeInput = document.querySelector('.barcodeScan');
 
-    barcodeInput.addEventListener('change', async (event) => {
-        const scannedBarcode = event.target.value;
+async function handleBarcodeScan(scannedBarcode) {
+  try {
+      // Fetch product data from the /pos1 endpoint
+      const response = await fetch('http://127.0.0.1:8000/pos1');
+      const data = await response.json();
 
-        try {
-            // Fetch product data from the /pos1 endpoint
-            const response = await fetch('http://127.0.0.1:8000/pos1');
-            const data = await response.json();
+      console.log('Fetched product data:', data);
 
-            console.log('Fetched product data:', data);
+      // Find the product with the scanned barcode
+      const product = data.products.find(p => p.tag === scannedBarcode);
 
-            // Display all the data of the currently displayed product cards
-            const productCards = document.querySelectorAll('.product-card');
-            productCards.forEach(productCard => {
-                const title = productCard.getAttribute('title');
-                console.log('Product card title:', title);
-            });
+      console.log('Found Product:', product);
 
-            // Initialize app with the fetched product data
-            const app = initApp(data);
+      if (product) {
+          // Find the product card element by its title attribute
+          const productCard = document.querySelector(`[title="${product.product_name}"]`);
 
-            console.log('Scanned Barcode:', scannedBarcode);
-
-            // Find the product with the scanned barcode
-            const product = data.products.find(p => p.tag === scannedBarcode);
-
-            console.log('Found Product:', product);
-
-            if (product) {
-                // Find the product card element by its title attribute
-                const productCard = document.querySelector(`[title="${product.product_name}"]`);
-
-                if (productCard) {
-                    // Dispatch a click event on the product card element
-                    productCard.click();
-                    console.log('Product clicked:', product);
-                } else {
-                    console.log('Product card not found for product:', product);
-                }
-            } else {
-                console.log('Product not found for barcode:', scannedBarcode);
-            }
-
-        } catch (error) {
-            console.error('Error searching for product:', error);
-        }
-
-        // Clear the input field after scanning
-        event.target.value = '';
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Function to check if the Shift key and the plus key are pressed simultaneously
-  const handleHotkeyPress = (event) => {
-      if (event.shiftKey && event.keyCode === 187) {
-          // Focus on the barcode input field
-          const barcodeInput = document.querySelector('.barcodeScan');
-          barcodeInput.focus();
-          return false; // Prevent the default action of the plus key
+          if (productCard) {
+              // Dispatch a click event on the product card element
+              productCard.click();
+              console.log('Product clicked:', product);
+          } else {
+              console.log('Product card not found for product:', product);
+          }
+      } else {
+          console.log('Product not found for barcode:', scannedBarcode);
       }
-  };
 
-  // Event listener for keydown event to detect hotkey press
-  document.addEventListener('keydown', handleHotkeyPress);
-  
-  // Function to allow only numeric input
-  window.isNumeric = (event) => {
-      const charCode = (event.which) ? event.which : event.keyCode;
-      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-          return false;
-      }
-      return true;
-  };
-});
-
-function toggleDot(event) {
-  const dot = document.getElementById("dot");
-  if (event.keyCode !== 13) {
-    dot.style.display = "none";
-  } else {
-    dot.style.display = "block";
+  } catch (error) {
+      console.error('Error searching for product:', error);
   }
 }
 
+// Add event listener for barcode scanning
+document.addEventListener("DOMContentLoaded", function () {
+  const handleKeyPress = async (event) => {
+      // Check if the pressed key is a number or a character typically used by barcode scanners
+      if (/^[0-9]+$/.test(event.key) || event.key === '\n' || event.key === '\r') {
+          // Append the pressed key to the scannedBarcode variable
+          scannedBarcode += event.key;
+      } else if (event.key === 'Enter') {
+          // Handle the scanned barcode once the Enter key is pressed
+          await handleBarcodeScan(scannedBarcode);
+          // Clear the scannedBarcode variable for the next scan
+          scannedBarcode = '';
+      }
+  };
+
+  // Initialize an empty string to store the scanned barcode
+  let scannedBarcode = '';
+  let lastKeyPressTime = Date.now(); // Initialize the time of the last key press
+
+  // Set the threshold in milliseconds
+  const delayThreshold = 100; // Adjust this value as needed
+
+  // Listen for keypress events at the document level
+  document.addEventListener('keypress', (event) => {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - lastKeyPressTime;
+
+      // If the time elapsed between key presses exceeds the threshold, reset the scannedBarcode variable
+      if (elapsedTime > delayThreshold) {
+          scannedBarcode = '';
+      }
+
+      // Update the time of the last key press
+      lastKeyPressTime = currentTime;
+
+      // Handle the key press
+      handleKeyPress(event);
+  });
+});
+
+
+function showPaymentMethod() {
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const cashPayment = document.getElementById("cashPayment");
+  const gcashPayment = document.getElementById("gcashPayment");
+  const cardPayment = document.getElementById("cardPayment");
+
+  // Hide all payment method fields first
+  cashPayment.style.display = "none";
+  gcashPayment.style.display = "none";
+  cardPayment.style.display = "none";
+
+  // Show corresponding payment method field based on the selected option
+  if (paymentMethod === "CASH") {
+    cashPayment.style.display = "flex";
+  } else if (paymentMethod === "GCASH") {
+    gcashPayment.style.display = "flex";
+  } else if (paymentMethod === "CARD") {
+    cardPayment.style.display = "flex";
+  } else if (paymentMethod === "") {
+    cashPayment.style.display = "flex";
+  }
+  
+    else if (paymentMethod === "Multiple") {
+    cashPayment.style.display = "flex";
+    gcashPayment.style.display = "flex";
+    cardPayment.style.display = "flex";
+}
+}
 
 
 

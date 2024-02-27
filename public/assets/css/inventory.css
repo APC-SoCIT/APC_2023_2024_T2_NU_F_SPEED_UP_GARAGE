@@ -14,3 +14,44 @@
     max-height: 100%; /* Ensure the image fits within the container */
 }
 
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-btn {
+    padding: 8.5px 10px;
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    display:flex;
+    margin-top: -10px;
+    border-radius:4px;
+}
+
+.minus-btn {
+    background-color: var(--red); /* Background color set to bg-blue-gray-600 */
+    padding: 8.5px 11px;
+    order: -1; /* Place minus button before input */
+    display: flex;
+    margin-right: 2px;
+    color: #fff; /* Text color set to text-white */
+    
+}
+
+.plus-btn {
+    order: 1; /* Place plus button after input */
+    display: flex;
+    margin-left: 2px;
+    background-color: var(--red); /* Background color set to bg-blue-gray-600 */
+    color: #fff; /* Text color set to text-white */
+} 
+
+.quantity-btn:hover {
+    background-color: #4d4f53; /* Hover background color set to hover:bg-blue-gray-700 */
+  }
+  
+  .quantity-btn:focus {
+    outline: none; /* Remove outline on focus */
+  }
