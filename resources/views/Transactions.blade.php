@@ -40,7 +40,7 @@
                         <li><a href='/inventory' class="active">Transactions</a></li>
                     </ul>
                 </div>
-                <a href="#" class="report">
+                <a href="#" class="report" onclick=" transactionCSV()">
                     <i class='bx bx-cloud-download'></i>
                     <span>Download CSV</span>
                 </a>
@@ -189,7 +189,9 @@
 
     <script src="{{ asset('assets/js/try.js') }}"></script> 
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/transactions.js') }}"></script>
+
 
 </body>
 

@@ -23,6 +23,16 @@
     --white: #fff;
 }
 
+.table-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.scrollable-table {
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+}
 
 @media screen and (max-width: 768px) {
     .table-container {
@@ -164,6 +174,7 @@
     text-align: left;
 
 }
+
 
 .inventory-table td {
     border: none;

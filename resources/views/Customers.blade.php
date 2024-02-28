@@ -33,7 +33,7 @@
                         <li><a href='/products' class="active">Customers</a></li>
                     </ul>
                 </div>
-                <a href="#" class="report">
+                <a href="#" class="report" onclick="customerCSV()">
                     <i class='bx bx-cloud-download'></i>
                     <span>Download CSV</span>
                 </a>
@@ -352,9 +352,6 @@
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
-    
-   
-
     <script>	
     window.onload = function() {	
 
@@ -363,27 +360,8 @@
 	$.showCities("#newCity");
     $.showProvinces("#customerProvince");
 	$.showCities("#customerCity");
-	
-}
-    </script> 
 
-    <script>
-function addCountryCode() {
-    var newPhoneInput = document.getElementById('newPhone');
-    if (!newPhoneInput.value.startsWith('63')) {
-        newPhoneInput.value = '63' + newPhoneInput.value;
     }
-}
-
-function preventCountryCodeDeletion(input) {
-    var countryCode = '63';
-    if (input.value.length < countryCode.length) {
-        input.value = countryCode;
-    } else if (!input.value.startsWith(countryCode)) {
-        input.value = countryCode + input.value.substring(countryCode.length);
-    }
-}
-
 </script>
 
 </body>

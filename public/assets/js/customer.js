@@ -483,7 +483,63 @@ function preventCountryCodeDeletion(input) {
     }
 }
 
+function addCountryCode() {
+    var newPhoneInput = document.getElementById('newPhone');
+    if (!newPhoneInput.value.startsWith('63')) {
+        newPhoneInput.value = '63' + newPhoneInput.value;
+    }
+}
 
+function preventCountryCodeDeletion(input) {
+    var countryCode = '63';
+    if (input.value.length < countryCode.length) {
+        input.value = countryCode;
+    } else if (!input.value.startsWith(countryCode)) {
+        input.value = countryCode + input.value.substring(countryCode.length);
+    }
+}
+
+function customerCSV() {
+    // Initialize an empty CSV string
+    let csv = 'First Name,Last Name,Middle Name,Suffix,Sex,Birthday,Phone,Address Line 1,Address Line 2,Village/Subdivision,Province,City/Municipality,Barangay,Zipcode\n';
+
+    // Loop through each row in the table body
+    $('#inventoryTableBody tr').each(function() {
+        // Extract data from the row
+        let firstName = $(this).find('.customer-name#fname' + $(this).data('id')).text();
+        let lastName = $(this).find('.customer-name#lname' + $(this).data('id')).text();
+        let middleName = $(this).find('.customer-name#mname' + $(this).data('id')).text();
+        let suffix = $(this).find('.customer-name#suffix' + $(this).data('id')).text();
+        let sex = $(this).find('.customer-name#sex' + $(this).data('id')).text();
+        let birthday = $(this).find('.customer-name#birthday' + $(this).data('id')).text();
+        let phone = $(this).find('.customer-phone#phone' + $(this).data('id')).text();
+        let addressLine1 = $(this).find('.customer-address#unit' + $(this).data('id')).text();
+        let addressLine2 = $(this).find('.customer-address#street' + $(this).data('id')).text();
+        let village = $(this).find('.customer-address#village' + $(this).data('id')).text();
+        let province = $(this).find('.customer-address#province' + $(this).data('id')).text();
+        let city = $(this).find('.customer-address#city' + $(this).data('id')).text();
+        let barangay = $(this).find('.customer-address#barangay' + $(this).data('id')).text();
+        let zipcode = $(this).find('.customer-address#zipcode' + $(this).data('id')).text();
+
+        // Append the data to the CSV string
+        csv += `"${firstName}","${lastName}","${middleName}","${suffix}","${sex}","${birthday}","${phone}","${addressLine1}","${addressLine2}","${village}","${province}","${city}","${barangay}","${zipcode}"\n`;
+    });
+
+    // Create a Blob object containing the CSV data
+    const blob = new Blob([csv], { type: 'text/csv' });
+
+    // Create a temporary anchor element to trigger the download
+    const a = document.createElement('a');
+    a.href = window.URL.createObjectURL(blob);
+    a.download = 'customer.csv';
+    document.body.appendChild(a);
+
+    // Trigger the download
+    a.click();
+
+    // Clean up
+    document.body.removeChild(a);
+}
 
 
 

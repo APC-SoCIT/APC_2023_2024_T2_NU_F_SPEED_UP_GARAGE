@@ -36,7 +36,7 @@
                         <li><a href='/inventory' class="active">Inventory</a></li>
                     </ul>
                 </div>
-                <a href="#" class="report">
+                <a href="#" class="report" onclick="inventoryCSV()">
                     <i class='bx bx-cloud-download'></i>
                     <span>Download CSV</span>
                 </a>
@@ -46,6 +46,7 @@
                 <div class="filter-container">
                     <div class="add-product-container">
                        <button class="add-product-btn" onclick="showAddProductModal()">+ Add Product</button>
+                       
                        
                        <div class="dropdown-container">
                         <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
@@ -125,7 +126,7 @@
                                 <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
                                 <td class="description" id="description{{ $product->id }}">{{ $product->description }}</td>
                                 <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                                <td class="price" id="price_{{ $product->id }}"><span class="price">{{ number_format($product->price, 2) }}</span><input type="text" class="edit-price" style="display:none;"></td>
+                                <td class="price" id="price_{{ $product->id }}"><span class="price">₱{{ number_format($product->price, 2) }}</span><input type="text" class="edit-price" style="display:none;"></td>
                                 <td class="updated_by" id="updated_by{{ $product->id }}"><span class="updated_by">{{ $product->updated_by }}</span></td>
                                 <td>
                                     <button class="edit-btn" onclick="editRow(event)">Edit</button>
