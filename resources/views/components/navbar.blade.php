@@ -2,15 +2,11 @@
 <nav>
     <i class='bx bx-menu'></i>
     <form action="#">
-<<<<<<< HEAD:kapitan-stone/resources/views/components/navbar.blade.php
         <p class="current-date">
             {{ \Carbon\Carbon::now()->englishDayOfWeek }}, 
             {{ \Carbon\Carbon::now()->day }}
             {{ \Carbon\Carbon::now()->englishMonth }}
         </p>
-=======
-        <p id="currentDate" class="current-date"></p>
->>>>>>> 8fc67fa30e83970d47402e93e054e8ba2c573019:resources/views/components/navbar.blade.php
     </form>
     <input type="checkbox" id="theme-toggle" hidden>
     <label for="theme-toggle" class="theme-toggle"></label>

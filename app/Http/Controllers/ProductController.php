@@ -200,43 +200,83 @@ class ProductController extends Controller
     }
 
     public function updateQuantities(Request $request)
-{
-    // Retrieve data from the request
-    $productNames = $request->input('product_names');
-    $quantities = $request->input('quantities');
+    {
+        // Retrieve data from the request
+        $productNames = $request->input('product_names');
+        $quantities = $request->input('quantities');
 
-    // Check if both arrays are not null
-    if ($productNames !== null && $quantities !== null) {
-        // Update product quantities
-        foreach ($productNames as $index => $productName) {
-            // Use the correct table name and column name
-            $product = Product::where('product_name', $productName)->first();
+        // Check if both arrays are not null
+        if ($productNames !== null && $quantities !== null) {
+            // Update product quantities
+            foreach ($productNames as $index => $productName) {
+                // Use the correct table name and column name
+                $product = Product::where('product_name', $productName)->first();
 
-            if ($product) {
-                // Deduct the provided quantity from the current stock
-                $currentQuantity = $product->quantity;
-                $providedQuantity = $quantities[$index];
+                if ($product) {
+                    // Deduct the provided quantity from the current stock
+                    $currentQuantity = $product->quantity;
+                    $providedQuantity = $quantities[$index];
 
-                if ($currentQuantity >= $providedQuantity) {
-                    $product->quantity = $currentQuantity - $providedQuantity;
+                    if ($currentQuantity >= $providedQuantity) {
+                        $product->quantity = $currentQuantity - $providedQuantity;
+                        $product->save();
+                    } else {
+                        // Handle the case where the provided quantity is greater than the current stock
+                        Log::warning('Insufficient stock for product: ' . $productName);
+                    }
+                } else {
+                    // Handle the case where the product is not found
+                    Log::warning('Product not found: ' . $productName);
+                }
+            }
+
+            return response()->json(['message' => 'Product quantities updated successfully']);
+        } else {
+            // Handle the case where product_names or quantities are null
+            Log::error('Invalid request. Please provide product_names and quantities.');
+            return response()->json(['error' => 'Invalid request. Please provide product_names and quantities.'], 400);
+        }
+    }
+
+    public function uploadInventory(Request $request)
+    {
+        // Process the uploaded CSV file
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $file = $request->file('file');
+            // Parse and process the CSV file data
+            // Example code to parse CSV and update database
+            // You'll need to implement your own logic here
+            // For example:
+            $contents = file_get_contents($file->path());
+            $rows = explode("\n", $contents);
+            foreach ($rows as $row) {
+                $data = str_getcsv($row);
+                // Assuming CSV format: tag, name, category, brand, description, quantity, price
+                $tag = $data[0];
+                $quantity = $data[5];
+                $product = Product::where('tag', $tag)->first();
+                if ($product) {
+                    // Product exists, update quantity
+                    $product->quantity += $quantity;
                     $product->save();
                 } else {
-                    // Handle the case where the provided quantity is greater than the current stock
-                    Log::warning('Insufficient stock for product: ' . $productName);
+                    // Product doesn't exist, create new
+                    Product::create([
+                        'tag' => $tag,
+                        'name' => $data[1],
+                        'category' => $data[2],
+                        'brand' => $data[3],
+                        'description' => $data[4],
+                        'quantity' => $quantity,
+                        'price' => $data[6],
+                    ]);
                 }
-            } else {
-                // Handle the case where the product is not found
-                Log::warning('Product not found: ' . $productName);
             }
+            return response()->json(['message' => 'Inventory updated successfully'], 200);
+        } else {
+            return response()->json(['error' => 'Invalid file or file not found'], 400);
         }
-
-        return response()->json(['message' => 'Product quantities updated successfully']);
-    } else {
-        // Handle the case where product_names or quantities are null
-        Log::error('Invalid request. Please provide product_names and quantities.');
-        return response()->json(['error' => 'Invalid request. Please provide product_names and quantities.'], 400);
     }
-}
 
 
 }

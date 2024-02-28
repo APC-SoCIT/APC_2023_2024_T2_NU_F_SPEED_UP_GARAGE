@@ -118,6 +118,7 @@ Route::delete('/delete-product/{id}', [ProductController::class, 'deleteProduct'
 Route::put('/update-product/{id}', [ProductController::class, 'updateProduct']);
 
 Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
+Route::post('/upload-inventory', [ProductController::class, 'uploadInventory'])->name('upload.inventory');
 
 // Use SettingsController to handle brand/category related functionality
 
