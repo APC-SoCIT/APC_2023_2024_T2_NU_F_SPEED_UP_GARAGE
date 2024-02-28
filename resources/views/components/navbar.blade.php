@@ -2,11 +2,15 @@
 <nav>
     <i class='bx bx-menu'></i>
     <form action="#">
+<<<<<<< HEAD:kapitan-stone/resources/views/components/navbar.blade.php
         <p class="current-date">
             {{ \Carbon\Carbon::now()->englishDayOfWeek }}, 
             {{ \Carbon\Carbon::now()->day }}
             {{ \Carbon\Carbon::now()->englishMonth }}
         </p>
+=======
+        <p id="currentDate" class="current-date"></p>
+>>>>>>> 8fc67fa30e83970d47402e93e054e8ba2c573019:resources/views/components/navbar.blade.php
     </form>
     <input type="checkbox" id="theme-toggle" hidden>
     <label for="theme-toggle" class="theme-toggle"></label>
@@ -82,4 +86,23 @@ function openAccountTab() {
     document.querySelector('.tablinks[data-tab="account"]').click();
 }
 
+<<<<<<< HEAD:kapitan-stone/resources/views/components/navbar.blade.php
+=======
+const currentDate = new Date();
+
+    // Options for formatting the date
+    const options = {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    };
+
+    // Format the date
+    const formattedDate = currentDate.toLocaleDateString('en-US', options);
+
+    // Display the formatted date in the designated paragraph element
+    document.getElementById('currentDate').textContent = formattedDate;
+
+>>>>>>> 8fc67fa30e83970d47402e93e054e8ba2c573019:resources/views/components/navbar.blade.php
 </script>

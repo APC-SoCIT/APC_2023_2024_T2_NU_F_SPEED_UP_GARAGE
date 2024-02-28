@@ -41,7 +41,10 @@
                 <a href="#" class="report" onclick="uploadCSV()">
                     <i class='bx bx-cloud-download'></i>
                     <span>Upload CSV</span>
+<<<<<<< HEAD:kapitan-stone/resources/views/Inventory.blade.php
                     <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(event)">
+=======
+>>>>>>> 8fc67fa30e83970d47402e93e054e8ba2c573019:resources/views/Inventory.blade.php
                 </a>
                 <a href="#" class="upload" onclick="inventoryCSV()">
                     <i class='bx bx-upload'></i>

@@ -500,6 +500,7 @@ function preventCountryCodeDeletion(input) {
 }
 
 function customerCSV() {
+<<<<<<< HEAD:kapitan-stone/public/assets/js/customer.js
 
     const currentDate = new Date();
     const day = currentDate.getDate().toString().padStart(2, '0'); // Add leading zero if needed
@@ -508,6 +509,8 @@ function customerCSV() {
 
     const filename = `customer-${day}-${month}-${year}.csv`;
 
+=======
+>>>>>>> 8fc67fa30e83970d47402e93e054e8ba2c573019:public/assets/js/customer.js
     // Initialize an empty CSV string
     let csv = 'First Name,Last Name,Middle Name,Suffix,Sex,Birthday,Phone,Address Line 1,Address Line 2,Village/Subdivision,Province,City/Municipality,Barangay,Zipcode\n';
 
@@ -539,7 +542,11 @@ function customerCSV() {
     // Create a temporary anchor element to trigger the download
     const a = document.createElement('a');
     a.href = window.URL.createObjectURL(blob);
+<<<<<<< HEAD:kapitan-stone/public/assets/js/customer.js
     a.download = filename;
+=======
+    a.download = 'customer.csv';
+>>>>>>> 8fc67fa30e83970d47402e93e054e8ba2c573019:public/assets/js/customer.js
     document.body.appendChild(a);
 
     // Trigger the download
