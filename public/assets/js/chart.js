@@ -314,7 +314,7 @@ xaxisCategories = xaxisCategories.map(item => item.label);
     // Generate an array of dates for the last 5 days
     let currentDate = new Date();
     let dates = [];
-    for (let i = 4; i >= 0; i--) {
+    for (let i = 5  ; i >= 0; i--) {
         let date = new Date(currentDate);
         date.setDate(date.getDate() - i);
         dates.push(date.toISOString().slice(0, 10));

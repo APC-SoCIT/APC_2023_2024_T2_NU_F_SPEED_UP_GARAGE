@@ -131,54 +131,56 @@
                 </div>
             </div>
 
-            <div class="orders">
-                <div class="header">
-                    <i class='bx bx-receipt'></i>
-                    <h3>Recent Transactions</h3>
-                    <i class='bx bx-filter'></i>
-                    <i class='bx bx-search'></i>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Cashier</th>
-                                <th>Order Date</th>
-                                <th>Status</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($recentTransactions as $transaction)
-                                <tr>
-                                    <td>
-                                        <p><img src="{{ Storage::url('/' . auth()->user()->employee->profile_picture) }}" onerror="this.onerror=null; this.src='https://i.stack.imgur.com/l60Hf.png'"></p>
-                                    </td>
-                                    <td>{{ $transaction->created_at }}</td>
-                                    <td>
-                                        <span class="status {{ $transaction->status == 'Pending' ? 'pending' : 'process' }}">
-                                            {{ $transaction->status }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        {{ $transaction->total_amount }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-
             <div>
-            <div class="salesreminders">
+                <div class="salesreminders">
                     <h2 id="salesForecastTitle">Sales Forecast</h2>
                     <p>Sales Performance Overview</p>
                     <div class="pulse"></div>
                     <div id="dailySalesData" data-daily-sales='{!! json_encode($dailySalesData) !!}'></div>
                 </div>
             </div>
+
+            <div class="orders">
+                <div class="header">
+                    <i class='bx bx-receipt'></i>
+                    <h3>Recent Transactions</h3>
+                    <i class='bx bx-filter'></i>
+                    <i class='bx bx-search'></i>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cashier</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($recentTransactions as $transaction)
+                            <tr>
+                                <td>
+                                    {{ $transaction->cashier_name }}
+                                </td>
+                                <td>{{ $transaction->created_at }}</td>
+                                <td>
+                                    <span class="status {{ $transaction->status == 'Pending' ? 'pending' : 'process' }}">
+                                        {{ $transaction->status }}
+                                    </span>
+                                </td>
+                                <td class="transaction-amount">
+                                    ₱{{ number_format($transaction->total_amount, 2, '.', ',') }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-                
+
+
+
+
+            </div>
         </main>
 
 

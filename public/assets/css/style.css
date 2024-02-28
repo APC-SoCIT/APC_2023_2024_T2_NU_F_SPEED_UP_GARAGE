@@ -484,6 +484,10 @@ body.dark .sidebar .side-menu li:hover a {
     grid-gap: 24px;
 }
 
+.transaction-amount {
+    text-align: right;
+}
+
 .content main .insights li .bx{
     width: 80px;
     height: 80px;
