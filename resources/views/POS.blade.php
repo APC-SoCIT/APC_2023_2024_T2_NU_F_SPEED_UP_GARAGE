@@ -60,6 +60,7 @@
                                     <option value="{{ $customer->phone }}" data-phone="{{ $customer->fname }}">{{ $customer->phone }}</option>
                                 @endforeach
               </select>
+              <input type="hidden" id="currentUserId" value="{{ auth()->user()->id }}">
               <input type="text" id="cashierName" class="category-dropdown1" value="{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}" readonly>
                 <select id="customerName" class="category-dropdown1" name="customerName" onchange="updatePhoneLabel()">
                 <option value="">Customer</option>

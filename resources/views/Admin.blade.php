@@ -161,7 +161,23 @@
                     <tbody>
                         @foreach($recentTransactions as $transaction)
                             <tr>
-                            <td>{{ explode(' ', $transaction->cashier_name)[0] }}</td>
+                            <td>
+                                @php
+                                    $userId = $transaction->user_id;
+
+                                    $employee = \App\Models\Employee::where('user_id', $userId)->first();
+
+                                    // Check if the employee record exists and has a profile picture
+                                    if ($employee && $employee->profile_picture) {
+                                        // Display the profile picture with a fallback default image
+                                        echo '<img src="' . asset('storage/' . $employee->profile_picture) . '" alt="Profile Picture" width="50" height="50" onerror="this.onerror=null; this.src=\'https://i.stack.imgur.com/l60Hf.png\'">';
+                                    } else {
+                                        // Display a default placeholder image if no profile picture is available
+                                        echo '<img src="https://i.stack.imgur.com/l60Hf.png" alt="Default Profile Picture" width="50" height="50">';
+                                    }
+                                @endphp
+                            </td>
+
                                 <td>{{ date('m/d/y', strtotime($transaction->created_at)) }}</td>
 
                                 <td>
@@ -188,8 +204,7 @@
         <script src="{{ asset('assets/js/chart.js') }}" data-top-products="@json($topProductsData)"></script>
         
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
-    <script src="{{ asset('assets/js/navbar.js') }}"></script>
-    <script src="{{ asset('assets/js/pagination.js') }}"></script>           
+    <script src="{{ asset('assets/js/navbar.js') }}"></script>         
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script>    
     history.pushState(null, null, document.URL);

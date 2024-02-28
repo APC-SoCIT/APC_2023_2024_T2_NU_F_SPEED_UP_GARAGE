@@ -412,28 +412,30 @@ addToCart(product) {
     const formattedDate = `${day} ${month}, ${year}`;
     dateToday.textContent = formattedDate;
 
-  
     function addTransaction(receiptData) {
       const csrfToken = $('meta[name="csrf-token"]').attr('content');
+      const userId = $('#currentUserId').val(); // Retrieve the user ID from the hidden input field
   
+      // Make the update product quantities AJAX request
       $.ajax({
-        url: '/update-product-quantities',
-        type: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken,
-        },
-        data: {
-          product_names: receiptData.items,
-          quantities: receiptData.qty,
-        },
-        success: function (response) {
-            console.log('Product quantities updated successfully:', response);
-        },
-        error: function (error) {
-            console.error('Error updating product quantities:', error);
-        },
-    });
+          url: '/update-product-quantities',
+          type: 'POST',
+          headers: {
+              'X-CSRF-TOKEN': csrfToken,
+          },
+          data: {
+              product_names: receiptData.items,
+              quantities: receiptData.qty,
+          },
+          success: function(response) {
+              console.log('Product quantities updated successfully:', response);
+          },
+          error: function(error) {
+              console.error('Error updating product quantities:', error);
+          },
+      });
   
+      // Make the add transaction AJAX request with the retrieved user ID
       $.ajax({
           url: '/add-transaction',
           type: 'POST',
@@ -441,8 +443,9 @@ addToCart(product) {
               'X-CSRF-TOKEN': csrfToken,
           },
           data: {
+              user_id: userId, // Include the user ID in the request data
               customer_name: receiptData.customerName,
-              phone:receiptData.phone,
+              phone: receiptData.phone,
               date: receiptData.date,
               status: receiptData.status,
               items: receiptData.items.join(', '),
@@ -454,7 +457,7 @@ addToCart(product) {
               cash_amount: receiptData.cashAmount,
               gcash_amount: receiptData.gcashAmount,
               card_amount: receiptData.cardAmount,
-              total_payment:receiptData.totalPayment,
+              total_payment: receiptData.totalPayment,
               customer_change: receiptData.customerChange,
               cashier_name: receiptData.cashierName,
               quantity: receiptData.quantity,
@@ -467,6 +470,7 @@ addToCart(product) {
           },
       });
   }
+  
   
   
   function scanProductModal() {
