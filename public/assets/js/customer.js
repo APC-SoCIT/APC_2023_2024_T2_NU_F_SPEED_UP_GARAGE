@@ -500,6 +500,14 @@ function preventCountryCodeDeletion(input) {
 }
 
 function customerCSV() {
+
+    const currentDate = new Date();
+    const day = currentDate.getDate().toString().padStart(2, '0'); // Add leading zero if needed
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Add leading zero if needed
+    const year = currentDate.getFullYear();
+
+    const filename = `customer-${day}-${month}-${year}.csv`;
+
     // Initialize an empty CSV string
     let csv = 'First Name,Last Name,Middle Name,Suffix,Sex,Birthday,Phone,Address Line 1,Address Line 2,Village/Subdivision,Province,City/Municipality,Barangay,Zipcode\n';
 
@@ -531,7 +539,7 @@ function customerCSV() {
     // Create a temporary anchor element to trigger the download
     const a = document.createElement('a');
     a.href = window.URL.createObjectURL(blob);
-    a.download = 'customer.csv';
+    a.download = filename;
     document.body.appendChild(a);
 
     // Trigger the download

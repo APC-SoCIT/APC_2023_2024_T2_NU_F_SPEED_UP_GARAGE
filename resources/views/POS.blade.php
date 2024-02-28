@@ -49,7 +49,7 @@
       <div class="order-info">
         <div class="right-section">
         <div class="order-no" id="receiptNo"></div>
-        <div class="date-today" id="currentDate"></div>
+        <div class="date-today" id="currentDate" style="display: none;"></div>
       </div>
       <div class="left-section">
         <div class="category-plc">

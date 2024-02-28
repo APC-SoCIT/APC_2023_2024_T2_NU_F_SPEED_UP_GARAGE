@@ -660,6 +660,15 @@ function updateQty() {
   }
 
   function inventoryCSV() {
+    // Get the current date
+    const currentDate = new Date();
+    const day = currentDate.getDate().toString().padStart(2, '0'); // Add leading zero if needed
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Add leading zero if needed
+    const year = currentDate.getFullYear();
+
+    // Form the filename
+    const filename = `inventory-${day}-${month}-${year}.csv`;
+
     // Initialize an empty CSV string
     let csv = 'Tag,Name,Category,Brand,Description,Quantity,Price\n';
 
@@ -690,7 +699,7 @@ function updateQty() {
     // Create a temporary anchor element to trigger the download
     const a = document.createElement('a');
     a.href = window.URL.createObjectURL(blob);
-    a.download = 'inventory.csv';
+    a.download = filename;
     document.body.appendChild(a);
 
     // Trigger the download
@@ -698,4 +707,14 @@ function updateQty() {
 
     // Clean up
     document.body.removeChild(a);
+}
+
+function uploadCSV() {
+    document.getElementById('fileInput').click();
+}
+
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    // Handle the uploaded file here (e.g., read its contents, parse CSV data, etc.)
+    console.log('Uploaded file:', file);
 }

@@ -2,7 +2,11 @@
 <nav>
     <i class='bx bx-menu'></i>
     <form action="#">
-        <p id="currentDate" class="current-date"></p>
+        <p class="current-date">
+            {{ \Carbon\Carbon::now()->englishDayOfWeek }}, 
+            {{ \Carbon\Carbon::now()->day }}
+            {{ \Carbon\Carbon::now()->englishMonth }}
+        </p>
     </form>
     <input type="checkbox" id="theme-toggle" hidden>
     <label for="theme-toggle" class="theme-toggle"></label>
@@ -77,21 +81,5 @@ function openAccountTab() {
     // Trigger a click event on the "Account" tab button
     document.querySelector('.tablinks[data-tab="account"]').click();
 }
-
-const currentDate = new Date();
-
-    // Options for formatting the date
-    const options = {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    };
-
-    // Format the date
-    const formattedDate = currentDate.toLocaleDateString('en-US', options);
-
-    // Display the formatted date in the designated paragraph element
-    document.getElementById('currentDate').textContent = formattedDate;
 
 </script>
