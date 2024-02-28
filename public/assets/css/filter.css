@@ -35,6 +35,20 @@ body.dark .filter-container {
     background-color: #27ae60; /* Darker shade of green */
 }
 
+.upload-csv-btn {
+    padding: 12px 20px;
+    background-color: #1976d2; /* Green color, you can change it */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.upload-csv-btn:hover {
+    background-color: #2b84dd; /* Darker shade of green */
+}
+
 .category-dropdown,
 .brand-dropdown{
     padding: 12px;

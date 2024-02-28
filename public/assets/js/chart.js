@@ -308,17 +308,22 @@ xaxisCategories = xaxisCategories.map(item => item.label);
     },
   };
 
-
-
-
-
-
   document.addEventListener("DOMContentLoaded", function () {
     let dailySalesData = JSON.parse(document.getElementById('dailySalesData').getAttribute('data-daily-sales'));
 
-    let salesDataArray = Object.entries(dailySalesData).map(([date, value]) => ({
+    // Generate an array of dates for the last 5 days
+    let currentDate = new Date();
+    let dates = [];
+    for (let i = 4; i >= 0; i--) {
+        let date = new Date(currentDate);
+        date.setDate(date.getDate() - i);
+        dates.push(date.toISOString().slice(0, 10));
+    }
+
+    // Create salesDataArray ensuring there's a data point for each of the last 5 days
+    let salesDataArray = dates.map(date => ({
         x: date,
-        y: value,
+        y: dailySalesData[date] ? Number(dailySalesData[date].toFixed(2)) : 0, // If sales data exists for the date, use it, otherwise use 0
     }));
 
     let primaryColor = "#1976D2";
@@ -363,7 +368,7 @@ xaxisCategories = xaxisCategories.map(item => item.label);
                 fontFamily: fontFamily,
             },
             y: {
-                formatter: (value) => `₱${value.toLocaleString()}`,
+                formatter: (value) => `₱${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
             },
         },
 
@@ -416,10 +421,22 @@ xaxisCategories = xaxisCategories.map(item => item.label);
 
         yaxis: {
             show: true,
+            labels: {
+                formatter: function (value) {
+                    return '₱' + Number(value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                },
+                style: {
+                    colors: labelColor,
+                    fontFamily: fontFamily,
+                },
+            },
         },
 
         xaxis: {
-            categories: Object.keys(dailySalesData),
+            categories: dates.map(date => {
+                const [year, month, day] = date.split('-');
+                return `${month}-${day}`;
+            }),
             labels: {
                 style: {
                     colors: labelColor,
@@ -433,6 +450,7 @@ xaxisCategories = xaxisCategories.map(item => item.label);
                 show: false,
             },
         },
+
     };
 
     let salesChart = new ApexCharts(document.getElementById("dailySalesData"), salesOptions); // Update to use getElementById
