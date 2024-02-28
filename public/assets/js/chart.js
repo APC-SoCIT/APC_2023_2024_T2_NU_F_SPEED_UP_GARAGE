@@ -149,132 +149,124 @@ chart.render();
 
 /* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot */
 
+
 let ddefaultOptions = {
     chart: {
-      toolbar: {
-        show: true,
-      },
-      zoom: {
-        enabled: false,
-      },
-      width: "100%",
-      height: 210,
-      offsetY: 18,
+        toolbar: {
+            show: true,
+        },
+        zoom: {
+            enabled: false,
+        },
+        width: "100%",
+        height: 210,
+        offsetY: 18,
     },
     dataLabels: {
-      enabled: true,
+        enabled: true,
     },
-  };
-  
-  let Options = {
-    ...ddefaultOptions,
-    chart: {
+};
+
+topProductsData.sort((a, b) => b.quantity_sold - a.quantity_sold); 
+topProductsData = topProductsData.slice(0, 5);
+
+let Options = {
+  ...ddefaultOptions,
+  chart: {
       ...ddefaultOptions.chart,
       type: "bar",
-      
-    },
-    plotOptions: {
+  },
+  plotOptions: {
       bar: {
-        borderRadius: 4,
-        horizontal: true,
+          horizontal: true, // Set to false to display bars vertically
+          columnWidth: "50%", // Adjust the width of each bar
+          endingShape: "rounded", // Set the shape of the bars' endings
       },
-    },
-    tooltip: {
+  },
+  tooltip: {
       enabled: true,
       style: {
-        fontFamily: fontFamily,
+          fontFamily: fontFamily,
       },
       x: {
-        formatter: function (val) {
-          return val;
-        },
+          formatter: function(val) {
+              return val;
+          },
       },
-    },
-    series: [
-      {
-        data: [15, 5, 4, 3, 12, 1],
-      },
-    ],
-    colors: [primaryColor],
-    fill: {
+  },
+  series: [{
+      data: topProductsData.map(product => product.quantity_sold),
+  }],
+  colors: [primaryColor],
+  fill: {
       type: "gradient",
       gradient: {
-        type: "vertical",
-        opacityFrom: 0.8,
-        opacityTo: 0.3,
-        stops: [0, 100],
-        colorStops: [
-          {
-            offset: 0,
-            opacity: 1,
-            color: primaryColor,
-          },
-          {
-            offset: 100,
-            opacity: 0.4,
-            color: primaryColor,
-          },
-        ],
+          type: "vertical",
+          opacityFrom: 0.8,
+          opacityTo: 0.3,
+          stops: [0, 100],
+          colorStops: [{
+                  offset: 0,
+                  opacity: 1,
+                  color: primaryColor,
+              },
+              {
+                  offset: 100,
+                  opacity: 0.4,
+                  color: primaryColor,
+              },
+          ],
       },
-    },
-    stroke: {
+  },
+  stroke: {
       colors: [primaryColor],
       lineCap: "round",
-    },
-    grid: {
+  },
+  grid: {
       borderColor: "rgba(0, 0, 0, 0)",
       padding: {
-        top: -30,
-        right: 0,
-        bottom: -8,
-        left: 2,
+          top: -30,
+          right: 0,
+          bottom: -8,
+          left: 2,
       },
-    },
-    markers: {
+  },
+  markers: {
       strokeColors: primaryColor,
-    },
-    yaxis: {
+  },
+  yaxis: {
       show: true,
-    },
-    xaxis: {
-      categories: [
-        ["Oil Filter"],
-        ["Oil"],
-        ["Tires"],
-        ["Brake Kit"],
-        ["Wheels"],
-        ["Chain"],
-      ],
+  },
+  xaxis: {
+      categories: topProductsData.map(product => product.item_name),
       labels: {
-        style: {
-          colors: labelColor,
-          fontFamily: fontFamily,
-        
-        },
+          style: {
+              colors: labelColor,
+              fontFamily: fontFamily,
+          },
       },
       axisBorder: {
-        show: false,
+          show: false,
       },
       crosshairs: {
-        show: false,
+          show: false,
       },
       dataLabels: {
-        enabled: true,
-        formatter: function (val) {
-          return "Product " + val;
-        },
+          enabled: true,
+          formatter: function(val) {
+              return "Product " + val;
+          },
       },
-    },
-  };
-  
-  
-  
-  let cchart = new ApexCharts(document.querySelector(".bar-chart"), Options);
-  cchart.render();
+  },
+};
+
+let cchart = new ApexCharts(document.querySelector(".bar-chart"), Options);
+cchart.render();
+
 
   /* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot */
   let today = new Date();
-let xaxisCategories = [];
+  let xaxisCategories = [];
 
 for (let i = 0; i < 9; i++) {
   let date = new Date();

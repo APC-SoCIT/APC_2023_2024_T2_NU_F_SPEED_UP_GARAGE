@@ -23,6 +23,54 @@ function addProduct() {
     var newDescription = document.getElementById('newDescription'); // Get the description field
     var newProductImage = document.getElementById('newProductImage'); 
 
+    if (newProductImage.value.trim() === '') {
+        newProductImage.setCustomValidity('Please add an image.');
+        newProductImage.reportValidity();
+        return;
+        }
+
+    if (newTag.value.trim() === '') {
+        newTag.setCustomValidity('Please fill out the barcode.');
+        newTag.reportValidity();
+        return; 
+        }
+
+      if (newProductName.value.trim() === '') {
+        newProductName.setCustomValidity('Please fill out the product name.');
+        newProductName.reportValidity();
+        return;
+      }
+
+      if (newQuantity.value.trim() === '') {
+        newQuantity.setCustomValidity('Please add product quantity.');
+        newQuantity.reportValidity();
+        return;
+      }
+
+      if (newBrand.value.trim() === '') {
+        newBrand.setCustomValidity('Please select brand.');
+        newBrand.reportValidity();
+        return; // Exit the function
+      }
+
+      if (newCategory.value.trim() === '') {
+        newCategory.setCustomValidity('Please select category.');
+        newCategory.reportValidity();
+        return; // Exit the function
+      }
+
+      if (newDescription.value === '') {
+        newDescription.setCustomValidity('Please enter product description.');
+        newDescription.reportValidity();
+        return; // Exit the function
+      }
+
+      if (newPrice.value.trim() === '') {
+        newPrice.setCustomValidity('Please enter product price.');
+        newPrice.reportValidity();
+        return; // Exit the function
+      }
+
     var formData = new FormData();
     formData.append('tag', newTag.value);
     formData.append('product_name', newProductName.value);

@@ -131,6 +131,8 @@
                 </div>
             </div>
 
+            <script> let topProductsData = @json($topProductsData);</script>
+
             <div>
                 <div class="salesreminders">
                     <h2 id="salesForecastTitle">Sales Forecast</h2>
@@ -159,10 +161,9 @@
                     <tbody>
                         @foreach($recentTransactions as $transaction)
                             <tr>
-                                <td>
-                                    {{ $transaction->cashier_name }}
-                                </td>
-                                <td>{{ $transaction->created_at }}</td>
+                            <td>{{ explode(' ', $transaction->cashier_name)[0] }}</td>
+                                <td>{{ date('m/d/y', strtotime($transaction->created_at)) }}</td>
+
                                 <td>
                                     <span class="status {{ $transaction->status == 'Pending' ? 'pending' : 'process' }}">
                                         {{ $transaction->status }}
@@ -184,7 +185,8 @@
         </main>
 
 
-    <script src="{{ asset('assets/js/chart.js') }}"></script>
+        <script src="{{ asset('assets/js/chart.js') }}" data-top-products="@json($topProductsData)"></script>
+        
     <script src="{{ asset('assets/js/inventory.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>           
@@ -196,6 +198,8 @@
     });
     
     </script>
+
+    
 </body>
 
 </html>

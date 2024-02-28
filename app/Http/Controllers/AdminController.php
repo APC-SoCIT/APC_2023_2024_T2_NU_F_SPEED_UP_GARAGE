@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Customer;
 use App\Models\Threshold; // Add this line
+use App\Models\TopProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        // Retrieve all products and transactions
+        $topProductsData = TopProduct::all();
         $products = Product::all();
         $transactions = Transaction::all();
 
@@ -103,6 +104,7 @@ class AdminController extends Controller
             'dailySalesData' => $dailySalesData,
             'lastSixMonthsSalesData' => $lastSixMonths->toArray(),
             'userRole' => $userRole,
+            'topProductsData' => $topProductsData,
         ]);
     }
 }

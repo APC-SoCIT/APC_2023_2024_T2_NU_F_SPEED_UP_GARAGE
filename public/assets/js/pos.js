@@ -6,7 +6,7 @@ function updateReceiptNo(app, newReceiptNo, time) {
 
   const receiptNoElement = document.getElementById("receiptNo");
   if (receiptNoElement) {
-    receiptNoElement.textContent = `Receipt #${app.receiptNo}`;
+    receiptNoElement.textContent = `Transaction #${app.receiptNo}`;
     console.log('Receipt number updated in the DOM:', app.receiptNo);
   }
 }
@@ -51,9 +51,9 @@ function initApp() {
 
   async loadProducts() {
     try {
-      const response = await fetch('/pos1'); // Assuming the endpoint now returns JSON
-      const data = await response.json(); // Parse JSON response
-      this.products = data.products; // Update the products array with the fetched data
+      const response = await fetch('/pos1');
+      const data = await response.json();
+      this.products = data.products;
       console.log("Products loaded:", this.products);
     } catch (error) {
       console.error('Error loading products:', error);
@@ -72,8 +72,7 @@ function initApp() {
       }
   
       updateReceiptNo(app, app.receiptNo);
-  
-      // Call the callback if provided
+
       if (callback) {
         callback();
       }
@@ -83,8 +82,8 @@ function initApp() {
   },
 
 getNextReceiptNo() {
-  const currentNumber = parseInt(app.receiptNo.slice(-4)); // Extract the numeric part (last 4 digits)
-  const nextNumber = pad(currentNumber, 4); // Use the same logic as initReceiptNo
+  const currentNumber = parseInt(app.receiptNo.slice(-4));
+  const nextNumber = pad(currentNumber, 4);
   return `SPDG-POS${nextNumber}`;
 },
 
@@ -102,17 +101,22 @@ filteredProducts() {
 },
 
 addToCart(product) {
+  // Check if the product has sufficient stock
+  if (product.quantity <= 0) {
+    console.log('Product has zero stock, cannot be added to cart.');
+    return; // Exit the function without adding the product to the cart
+  }
+
+  // Proceed to add the product to the cart
   let index = this.findCartIndex(product);
   let priceToAdd;
 
-  // Check if the product has an edited price 
   if (product.editedPrice !== null && product.editedPrice !== undefined) {
     priceToAdd = product.editedPrice;
   } else {
     priceToAdd = product.price;
   }
 
-  // Check if the price is greater than or equal to 1
   if (priceToAdd >= 1) {
     if (index === -1) {
       this.cart.push({
@@ -138,7 +142,6 @@ addToCart(product) {
       }
     }
 
-    // Reset editedPrice to null after adding the product to the cart
     product.editedPrice = null;
     
     this.updateChange();
@@ -146,8 +149,6 @@ addToCart(product) {
     console.log('Product price is less than 1, cannot be added to cart.');
   }
 },
-
-
 
     findCartIndex(product) {
       return this.cart.findIndex((p) => p.productId === product.id);
@@ -351,9 +352,9 @@ addToCart(product) {
         status: this.selectedStatus,
         paymentMethod: this.selectedPaymentMethod,
         phone: this.selectedPhone,
-        date: this.dateFormat(), // Use the currentDate argument passed to the function
-        items: this.cart.map(item => item.name), // Modify to include only item names
-        qty: this.cart.map(item => item.qty), // Map quantities separately
+        date: this.dateFormat(),
+        items: this.cart.map(item => item.name), 
+        qty: this.cart.map(item => item.qty),
         quantity: this.getItemsCount(),
         vatable: this.getVatable(),
         vat: this.getVAT(),
@@ -366,26 +367,13 @@ addToCart(product) {
     };
 
     addTransaction(receiptData);
-
-    // Select the receipt content element
     const receiptContent = document.getElementById('receipt-content');
-
-    // Clone the receipt content element
     const clonedReceiptContent = receiptContent.cloneNode(false);
-
-    // Create a new div for printing
     const printArea = document.getElementById('print-area');
-
-    // Clear any previous content in the print area
     printArea.innerHTML = '';
-
     document.title = this.receiptNo;
-
     window.print();
-
     this.clear();
-
-
     window.location.reload();
 },
 
@@ -684,23 +672,16 @@ function isNumeric(evt) {
 
 async function handleBarcodeScan(scannedBarcode) {
   try {
-      // Fetch product data from the /pos1 endpoint
       const response = await fetch('http://127.0.0.1:8000/pos1');
       const data = await response.json();
-
       console.log('Fetched product data:', data);
-
-      // Find the product with the scanned barcode
       const product = data.products.find(p => p.tag === scannedBarcode);
-
       console.log('Found Product:', product);
 
       if (product) {
-          // Find the product card element by its title attribute
           const productCard = document.querySelector(`[title="${product.product_name}"]`);
 
           if (productCard) {
-              // Dispatch a click event on the product card element
               productCard.click();
               console.log('Product clicked:', product);
           } else {
@@ -715,42 +696,27 @@ async function handleBarcodeScan(scannedBarcode) {
   }
 }
 
-// Add event listener for barcode scanning
 document.addEventListener("DOMContentLoaded", function () {
   const handleKeyPress = async (event) => {
-      // Check if the pressed key is a number or a character typically used by barcode scanners
       if (/^[0-9]+$/.test(event.key) || event.key === '\n' || event.key === '\r') {
-          // Append the pressed key to the scannedBarcode variable
           scannedBarcode += event.key;
       } else if (event.key === 'Enter') {
-          // Handle the scanned barcode once the Enter key is pressed
           await handleBarcodeScan(scannedBarcode);
-          // Clear the scannedBarcode variable for the next scan
           scannedBarcode = '';
       }
   };
 
-  // Initialize an empty string to store the scanned barcode
   let scannedBarcode = '';
-  let lastKeyPressTime = Date.now(); // Initialize the time of the last key press
-
-  // Set the threshold in milliseconds
-  const delayThreshold = 100; // Adjust this value as needed
-
-  // Listen for keypress events at the document level
+  let lastKeyPressTime = Date.now();
+  const delayThreshold = 100;
   document.addEventListener('keypress', (event) => {
       const currentTime = Date.now();
       const elapsedTime = currentTime - lastKeyPressTime;
 
-      // If the time elapsed between key presses exceeds the threshold, reset the scannedBarcode variable
       if (elapsedTime > delayThreshold) {
           scannedBarcode = '';
       }
-
-      // Update the time of the last key press
       lastKeyPressTime = currentTime;
-
-      // Handle the key press
       handleKeyPress(event);
   });
 });
@@ -762,12 +728,11 @@ function showPaymentMethod() {
   const gcashPayment = document.getElementById("gcashPayment");
   const cardPayment = document.getElementById("cardPayment");
 
-  // Hide all payment method fields first
+
   cashPayment.style.display = "none";
   gcashPayment.style.display = "none";
   cardPayment.style.display = "none";
 
-  // Show corresponding payment method field based on the selected option
   if (paymentMethod === "CASH") {
     cashPayment.style.display = "flex";
   } else if (paymentMethod === "GCASH") {

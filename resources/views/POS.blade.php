@@ -291,10 +291,10 @@
 
       
         
-        <div class="products-container">
+<div class="products-container">
     <div class="products-product" x-show="filteredProducts().length > 0">
         <template x-for="(product, index) in filteredProducts()" :key="product.id">
-            <div role="button" class="product-card" :title="product.product_name" x-on:click="addToCart(product)" x-bind:class="{ 'disabled': product.price <= 0 }">
+            <div role="button" class="product-card" :title="product.product_name" x-on:click="addToCart(product)" x-bind:class="{ 'disabled': product.price <= 0 || product.quantity <= 0 }">
                 <img class="product-image" :src="'/storage/product_images/' + product.product_image" :alt="product.product_name">
                 <div class="product-card-pad">
                     <div class="product-details">
@@ -303,12 +303,11 @@
                         
                         <!-- Check if the product is eligible for editing -->
                         <template x-if="product.allowEdit">
-    <div class="price-input-container">
-        <span>₱</span>
-        <input type="number" class="editedPrice" x-model="product.editedPrice" @click.stop placeholder="100" step="0.01">
-
-    </div>
-</template>
+                            <div class="price-input-container">
+                                <span>₱</span>
+                                <input type="number" class="editedPrice" x-model="product.editedPrice" @click.stop placeholder="100" step="0.01">
+                            </div>
+                        </template>
 
                         <template x-if="!product.allowEdit">
                             <div class="product-price" x-text="priceFormat(product.price * 1.12)"></div>
@@ -316,7 +315,6 @@
                         
                         <div class="product-price-quantity">
                             <!-- Display edited price if available, else display original price -->
-                       
                             <div class="product-quantity" x-text="qtyFormat(product.quantity)"></div>
                         </div>
                     </div>
@@ -325,6 +323,7 @@
         </template>
     </div>
 </div>
+
 
 
 </div>

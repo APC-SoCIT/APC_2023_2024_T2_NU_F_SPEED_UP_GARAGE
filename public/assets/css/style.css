@@ -590,6 +590,7 @@ body.dark .sidebar .side-menu li:hover a {
 
 .content main .bottom-data .orders table td{
     padding: 16px 0;
+    font-size: 15px;
 }
 
 .content main .bottom-data .orders table tr td:first-child{
