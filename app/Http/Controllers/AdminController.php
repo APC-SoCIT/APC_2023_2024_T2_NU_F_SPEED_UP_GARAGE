@@ -60,12 +60,27 @@ class AdminController extends Controller
         $formattedCurrentMonthSales = number_format($currentMonthSales, 2, '.', ',');
 
         // Calculate average daily sales for the current month
-        $daysInCurrentMonth = Carbon::now()->daysInMonth;
-        $averageDailySales = $currentMonthSales / $daysInCurrentMonth;
-
+        $currentDate = Carbon::now();
+        $firstDayOfMonth = $currentDate->copy()->startOfMonth();
+        $currentDayOfMonth = $currentDate->day;
+        
+        // Calculate the sum of sales from the first day of the month up to the current day
+        $currentMonthSalesToDate = Transaction::where('created_at', '>=', $firstDayOfMonth)
+            ->where('created_at', '<=', $currentDate)
+            ->sum('total_amount');
+        
+        // Calculate the average daily sales
+        $averageDailySales = $currentMonthSalesToDate / $currentDayOfMonth;
+        
         $formattedAverageDailySales = number_format($averageDailySales, 2, '.', ',');
 
         $recentTransactions = Transaction::latest()->take(3)->get();
+
+        $currentDate = Carbon::now();
+        $currentMonth = Carbon::now()->monthName;
+
+        // Get the count of transactions that occurred today
+        $transactionsTodayCount = Transaction::whereDate('created_at', $currentDate)->count();
 
         $dailySalesData = Transaction::select(DB::raw('SUM(total_amount) as total_sales'), DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as day'))
         ->where('created_at', '>=', Carbon::now()->subDays(9))
@@ -105,6 +120,8 @@ class AdminController extends Controller
             'lastSixMonthsSalesData' => $lastSixMonths->toArray(),
             'userRole' => $userRole,
             'topProductsData' => $topProductsData,
+            'transactionsTodayCount' => $transactionsTodayCount,
+            'currentMonth' => $currentMonth
         ]);
     }
 }

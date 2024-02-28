@@ -342,7 +342,11 @@ body.dark .sidebar .side-menu li:hover a {
     vertical-align: middle;
 }
 
-
+.current-date {
+    display: flex;
+    white-space: nowrap; /* Prevent line breaks */
+    font-weight: 500;
+}
 
 @media (max-width: 768px) {
     .content nav .profile .name-role {
@@ -351,6 +355,9 @@ body.dark .sidebar .side-menu li:hover a {
 
     .content nav .profile img {
         margin-right: 0; /* Remove margin between profile picture and name-role on smaller screens */
+    }
+    .current-date {
+        display: none; /* Hide the element on smaller screens */
     }
 }
 
@@ -406,8 +413,6 @@ body.dark .sidebar .side-menu li:hover a {
     display: flex;
     flex-wrap: nowrap;
 }
-
-
 
 .orders tr{
     color: var(--dark);
@@ -519,8 +524,8 @@ body.dark .sidebar .side-menu li:hover a {
 }
 
 .content main .insights li:nth-child(5) .bx{
-    background: var(--light-danger);
-    color: var(--danger);
+    background: #ead9ee;
+    color: #ab64bb;
 }
 
 .content main .insights li .info h3{

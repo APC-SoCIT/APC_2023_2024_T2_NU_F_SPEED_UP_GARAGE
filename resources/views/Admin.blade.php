@@ -46,7 +46,14 @@
                         <a href="/inventory">Total Items on Hand</a>
                     </span>
                 </li>
-
+                <li><i class='bx bx-show-alt'></i>
+                    <span class="info">
+                        <h3>
+                            {{$productsSoldToday}}
+                        </h3>
+                        <p>Items Sold / day</p>
+                    </span>
+                </li>
                 <li>
                     <i class='bx bx-show-alt'></i>
                     <span class="info">
@@ -69,7 +76,23 @@
                         <h3>
                             ₱{{$formattedTodaySales}}
                         </h3>
-                        <p>Todays Sales</p>
+                        <p>Todays Total Sales</p>
+                    </span>
+                </li>
+                <li><i class='bx bx-cycling'></i>
+                    <span class="info">
+                        <h3>
+                        {{$transactionsTodayCount}}
+                        </h3>
+                        <p>Product Sales / day </p>
+                    </span>
+                </li>
+                <li><i class='bx bx-show-alt'></i>
+                    <span class="info">
+                        <h3>
+                            {{$productsSoldToday}}
+                        </h3>
+                        <p>Labor Sales / day</p>
                     </span>
                 </li>
                 <li>
@@ -78,15 +101,7 @@
                         <h3>
                             ₱{{$formattedCurrentMonthSales}}
                         </h3>
-                        <p>Monthly Sales</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-show-alt'></i>
-                    <span class="info">
-                        <h3>
-                            {{$productsSoldToday}}
-                        </h3>
-                        <p>Product Sold / day</p>
+                        <p>{{$currentMonth}}'s Total Sales</p>
                     </span>
                 </li>
                 <li><i class='bx bx-show-alt'></i>
@@ -94,15 +109,7 @@
                         <h3>
                             ₱{{$formattedAverageDailySales}}
                         </h3>
-                        <p>Average Daily Sales / month</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-cycling'></i>
-                    <span class="info">
-                        <h3>
-                            ₱{{$formattedAverageDailySales}}
-                        </h3>
-                        <p>Number of customer / day</p>
+                        <p>Average Daily Sales / {{$currentMonth}}</p>
                     </span>
                 </li>
                 
