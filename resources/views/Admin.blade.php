@@ -79,18 +79,20 @@
                         <p>Todays Total Sales</p>
                     </span>
                 </li>
-                <li><i class='bx bx-cycling'></i>
+                <li>
+                    <i class='bx bx-cycling'></i>
                     <span class="info">
                         <h3>
-                        {{$transactionsTodayCount}}
+                            {{$totalProductSalesToday}}
                         </h3>
-                        <p>Product Sales / day </p>
+                        <p>Product Sales / day</p>
                     </span>
                 </li>
-                <li><i class='bx bx-show-alt'></i>
+                <li>
+                    <i class='bx bx-show-alt'></i>
                     <span class="info">
                         <h3>
-                            {{$productsSoldToday}}
+                            {{$totalLaborSalesToday}}
                         </h3>
                         <p>Labor Sales / day</p>
                     </span>

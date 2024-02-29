@@ -19,6 +19,13 @@ class AdminController extends Controller
         $topProductsData = TopProduct::all();
         $products = Product::all();
         $transactions = Transaction::all();
+        $transactionsToday = Transaction::whereDate('created_at', Carbon::today())->get();
+        $totalLaborSalesToday = $transactionsToday->sum('labor_amount');
+
+        $transactionsToday = Transaction::whereDate('created_at', Carbon::today())->get();
+        $totalSalesToday = $transactionsToday->sum('total_amount');
+
+        $totalProductSalesToday = $totalSalesToday - $totalLaborSalesToday;
 
         $user = Auth::user();
         $userRole = $user ? $user->role : null;
@@ -50,7 +57,6 @@ class AdminController extends Controller
         $todaySales = $transactions->where('created_at', '>=', Carbon::today())->sum('total_amount');
         $formattedTodaySales = number_format($todaySales, 2, '.', ',');
 
-        // Calculate the number of products sold today
         $productsSoldToday = $transactions->where('created_at', '>=', Carbon::today())->sum('quantity');
 
         $currentMonthSales = Transaction::whereYear('created_at', Carbon::now()->year)
@@ -121,7 +127,9 @@ class AdminController extends Controller
             'userRole' => $userRole,
             'topProductsData' => $topProductsData,
             'transactionsTodayCount' => $transactionsTodayCount,
-            'currentMonth' => $currentMonth
+            'currentMonth' => $currentMonth,
+            'totalLaborSalesToday' => '₱' . number_format($totalLaborSalesToday, 2, '.', ','),
+            'totalProductSalesToday' =>'₱' . number_format($totalProductSalesToday, 2, '.', ','),
         ]);
     }
-}
+} 

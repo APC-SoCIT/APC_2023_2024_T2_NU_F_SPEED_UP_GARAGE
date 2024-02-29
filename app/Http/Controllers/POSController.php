@@ -117,7 +117,8 @@ class POSController extends Controller
         $transaction->status = $request->input('status');
         $transaction->cashier_name = $request->input('cashier_name');
         
-        // Save the transaction to the database
+        $laborAmount = $request->input('labor_amount');
+        $transaction->labor_amount = $laborAmount;
         $transaction->save();
         
         // Retrieve items and quantities from the request
@@ -130,14 +131,19 @@ class POSController extends Controller
         // Ensure items and quantities are properly defined and match in length
         if (count($items) === count($qtys)) {
             foreach ($items as $index => $itemName) {
+                // Check if the item is named "Labor"
+                if ($itemName === "Labor") {
+                    continue; // Skip processing for "Labor" item
+                }
+            
                 // Find the product by its name
                 $product = Product::where('product_name', $itemName)->first();
-
+            
                 if ($product) {
                     // Deduct the quantity based on the purchased quantity
                     $product->quantity -= $qtys[$index];
                     $product->save();
-
+            
                     // Create or update the corresponding TopProduct record
                     $topProduct = TopProduct::where('item_name', $itemName)->first();
                     if ($topProduct) {
@@ -156,14 +162,6 @@ class POSController extends Controller
                     return response()->json(['error' => 'Product not found for item name: ' . $itemName], 400);
                 }
             }
-        } else {
-            // Log error if items and quantities do not match in length
-            Log::error('Items and qtys are not properly defined or do not match');
-            return response()->json(['error' => 'Items and qtys are not properly defined or do not match'], 400);
         }
-
-        // Return success message if the transaction is added successfully
-        return response()->json(['message' => 'Transaction added successfully']);
     }
 }
-

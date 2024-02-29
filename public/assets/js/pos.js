@@ -160,7 +160,7 @@ addToCart(product) {
       }
     
       const afterAdd = item.qty + qty;
-      if (afterAdd <= 0) {
+      if (afterAdd <= 0) {cart
         this.cart.splice(index, 1);
       } else {
         this.cart[index].qty = afterAdd;
@@ -344,38 +344,81 @@ addToCart(product) {
       this.updateChange();
 
   },
-  
-  printAndProceed(currentDate) {
-    const receiptData = {
-        customerName: this.selectedCustomerName,
-        cashierName: this.selectedCashierName,
-        status: this.selectedStatus,
-        paymentMethod: this.selectedPaymentMethod,
-        phone: this.selectedPhone,
-        date: this.dateFormat(),
-        items: this.cart.map(item => item.name), 
-        qty: this.cart.map(item => item.qty),
-        quantity: this.getItemsCount(),
-        vatable: this.getVatable(),
-        vat: this.getVAT(),
-        totalAmount: this.getTotalAmount(),
-        cashAmount: this.cash,
-        gcashAmount: this.gcash,
-        cardAmount: this.card,
-        totalPayment: this.getTotalPayment(),
-        customerChange: this.change,
-    };
 
-    addTransaction(receiptData);
-    const receiptContent = document.getElementById('receipt-content');
-    const clonedReceiptContent = receiptContent.cloneNode(false);
-    const printArea = document.getElementById('print-area');
-    printArea.innerHTML = '';
-    document.title = this.receiptNo;
-    window.print();
-    this.clear();
-    window.location.reload();
+  getLaborAmount() {
+    // Find the labor item in the cart
+    const laborItem = this.cart.find(item => item.name === "Labor");
+    
+    if (laborItem) {
+        console.log(`${laborItem.name}: ${laborItem.price}`); // Log labor item and its price
+        const laborPriceWithMarkup = laborItem.price * 1.12; // Increase the labor price by 12%
+        console.log(`Labor price with markup: ${laborPriceWithMarkup}`); // Log labor price with markup
+        return laborPriceWithMarkup; // Return labor price with markup
+    } else {
+        console.log("Labor item not found"); // Log if labor item is not found
+        return 0; // Return 0 if labor item not found
+    }
+  },
+
+  
+printAndProceed(currentDate) {
+  const laborAmount = this.getLaborAmount();
+  const receiptData = {
+      customerName: this.selectedCustomerName,
+      cashierName: this.selectedCashierName,
+      status: this.selectedStatus,
+      paymentMethod: this.selectedPaymentMethod,
+      phone: this.selectedPhone,
+      date: this.dateFormat(),
+      items: this.cart.map(item => item.name),
+      qty: this.cart.map(item => item.qty),
+      quantity: this.getItemsCount(),
+      vatable: this.getVatable(),
+      vat: this.getVAT(),
+      totalAmount: this.getTotalAmount(),
+      cashAmount: this.cash,
+      gcashAmount: this.gcash,
+      cardAmount: this.card,
+      totalPayment: this.getTotalPayment(),
+      customerChange: this.change,
+  };
+
+  // Check if cart is empty or not
+  console.log('Cart contents:', this.cart);
+
+  // Log the prices of each item in the receipt
+  console.log('Prices of each item in the receipt:');
+  this.cart.forEach(item => {
+      if (item.name === "Labor") {
+          console.log(`${item.name}: ${item.price}`);
+      }
+  });
+
+  // Log labor amount and labor subtotal
+  console.log(`Labor amount: ${laborAmount}`);
+
+
+
+  // Check if laborAmount is not NaN
+  if (!isNaN(laborAmount)) {
+    // Debugging: Log receiptData before adding transaction
+    console.log("Receipt data:", receiptData);
+
+    addTransaction(receiptData, laborAmount);
+} else {
+    console.error('Invalid labor amount:', laborAmount);
+}
+
+  const receiptContent = document.getElementById('receipt-content');
+  const clonedReceiptContent = receiptContent.cloneNode(false);
+  const printArea = document.getElementById('print-area');
+  printArea.innerHTML = '';
+  document.title = this.receiptNo;
+  window.print();
+  this.clear();
+  this.isShowModalReceipt = false;
 },
+
 
     getVatable() {
       const totalPrice = this.cart.reduce(
@@ -412,7 +455,7 @@ addToCart(product) {
     const formattedDate = `${day} ${month}, ${year}`;
     dateToday.textContent = formattedDate;
 
-    function addTransaction(receiptData) {
+    function addTransaction(receiptData, laborAmount) {
       const csrfToken = $('meta[name="csrf-token"]').attr('content');
       const userId = $('#currentUserId').val(); // Retrieve the user ID from the hidden input field
   
@@ -461,6 +504,7 @@ addToCart(product) {
               customer_change: receiptData.customerChange,
               cashier_name: receiptData.cashierName,
               quantity: receiptData.quantity,
+              labor_amount: laborAmount, // Include the labor amount in the request data
           },
           success: function(response) {
               console.log('Transaction added successfully:', response);
@@ -470,8 +514,7 @@ addToCart(product) {
           },
       });
   }
-  
-  
+
   
   function scanProductModal() {
     const scanProductModal = document.getElementById('scanProductModal');
