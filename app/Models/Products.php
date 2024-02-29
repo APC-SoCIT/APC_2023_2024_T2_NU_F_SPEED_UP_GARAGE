@@ -16,6 +16,6 @@ class Products extends Model
 
     // Specify the attributes that are mass assignable
     protected $fillable = [
-        'tag', 'product_name', 'category', 'brand', 'quantity', 'price', 'updated_by', 'description', 'product_image', 'product_image_path'
+        'id', 'tag', 'product_name', 'category', 'brand', 'quantity', 'price', 'updated_by', 'description', 'product_image'
     ];
 }

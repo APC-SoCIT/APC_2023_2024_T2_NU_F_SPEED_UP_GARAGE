@@ -11,6 +11,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Http\UploadedFile; 
 use Illuminate\Support\Str;
+use League\Csv\Reader;
 
 
 class ProductController extends Controller
@@ -238,46 +239,46 @@ class ProductController extends Controller
         }
     }
 
-    public function uploadInventory(Request $request)
-    {
-        // Process the uploaded CSV file
-        if ($request->hasFile('file') && $request->file('file')->isValid()) {
-            $file = $request->file('file');
-            // Parse and process the CSV file data
-            // Example code to parse CSV and update database
-            // You'll need to implement your own logic here
-            // For example:
-            $contents = file_get_contents($file->path());
-            $rows = explode("\n", $contents);
-            foreach ($rows as $row) {
-                $data = str_getcsv($row);
-                // Assuming CSV format: tag, name, category, brand, description, quantity, price
-                $tag = $data[0];
-                $quantity = $data[5];
-                $product = Product::where('tag', $tag)->first();
-                if ($product) {
-                    // Product exists, update quantity
-                    $product->quantity += $quantity;
-                    $product->save();
-                } else {
-                    // Product doesn't exist, create new
-                    Product::create([
-                        'tag' => $tag,
-                        'name' => $data[1],
-                        'category' => $data[2],
-                        'brand' => $data[3],
-                        'description' => $data[4],
-                        'quantity' => $quantity,
-                        'price' => $data[6],
-                    ]);
-                }
+    public function uploadInventory(Request $request) {
+        // Ensure a file is uploaded
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt',
+        ]);
+    
+        // Get uploaded file
+        $file = $request->file('file');
+    
+        // Parse CSV
+        $csv = Reader::createFromPath($file->getPathname(), 'r');
+        $csv->setHeaderOffset(0); // assuming CSV has headers
+    
+        foreach ($csv as $row) {
+            $tag = $row['Tag'];
+            $existingProduct = Product::where('tag', $tag)->first();
+    
+            if ($existingProduct) {
+                // Product exists, update quantity
+                $quantity = $existingProduct->quantity + intval($row['Quantity']);
+                $existingProduct->update(['quantity' => $quantity]);
+                Log::info("Updated product with tag $tag. New quantity: $quantity");
+            } else {
+                // Product doesn't exist, create new entry
+                Product::create([
+                    'tag' => $tag,
+                    'name' => $row['Name'],
+                    'category' => $row['Category'],
+                    'brand' => $row['Brand'],
+                    'description' => $row['Description'],
+                    'quantity' => intval($row['Quantity']),
+                    'price' => floatval($row['Price']),
+                ]);
+                Log::info("Created new product with tag $tag");
             }
-            return response()->json(['message' => 'Inventory updated successfully'], 200);
-        } else {
-            return response()->json(['error' => 'Invalid file or file not found'], 400);
         }
+    
+        return response()->json(['message' => 'Inventory updated successfully']);
     }
-
+    
 
 }
 

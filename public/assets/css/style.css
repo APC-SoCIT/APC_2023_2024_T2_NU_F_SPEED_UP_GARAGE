@@ -533,6 +533,11 @@ body.dark .sidebar .side-menu li:hover a {
     color: #ab64bb;
 }
 
+.content main .insights li .info p, .content main .insights li .info a{
+    font-size: 14px;
+}
+
+
 .content main .insights li .info h3{
     font-size: 24px;
     font-weight: 600;

@@ -708,29 +708,3 @@ function updateQty() {
     // Clean up
     document.body.removeChild(a);
 }
-
-function uploadCSV() {
-    document.getElementById('fileInput').click();
-}
-
-function handleFileUpload(event) {
-    const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
-
-    $.ajax({
-        url: '/upload-inventory',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            console.log('Inventory updated:', response);
-            // Update UI or display success message
-        },
-        error: function(xhr, status, error) {
-            console.error('Error uploading inventory:', error);
-            // Display error message
-        }
-    });
-}

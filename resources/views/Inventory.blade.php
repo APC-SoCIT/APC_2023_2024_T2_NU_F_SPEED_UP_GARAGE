@@ -165,66 +165,63 @@
             <div class="modal-content">
                 <div class="add-customer-modal-title">Edit Product</div> <!-- Add the header -->
                 <div class="divider"></div> <!-- Add the divider line -->
-                <!-- Add form fields for editing -->
                 <label for="editedProductImage">Product Image</label>
                 <div class="image-placeholder-edit" id="editedImagePlaceholderContainer">
                     <img src="#" id="editedImagePreview" class="image-preview-edit">
                 </div>
                 <input type="file" id="editedProductImage" name="editedProductImage" onchange="EditImageChange(this)" accept="image/*">
                 <div class="form-row">
-                <div class="form-row-container"> 
-                <label for="editedTag">Tag</label>
-                <input type="text" id="editedTag" name="editedTag" placeholder="Enter tag" required onkeypress="return onlyNumbers(event)">
-                </div>  
-                </div>  
-                <div class="form-row">
-                <div class="form-row-container"> 
-                <label for="editedProductName">Product Name</label>
-                <input type="text" id="editedProductName" name="editedProductName" placeholder="Enter product name" required>
-                </div>  
-                <div class="form-row-container"> 
-                <label for="editedQuantity">Quantity</label>
-                <input type="text" id="editedQuantity" name="editedQuantity" onkeypress="return onlyNumbers(event)">
-                </div>  
+                    <div class="form-row-container"> 
+                        <label for="editedTag">Tag</label>
+                        <input type="text" id="editedTag" name="editedTag" placeholder="Enter tag" required onkeypress="return onlyNumbers(event)">
+                    </div>  
                 </div>  
                 <div class="form-row">
-                <div class="form-row-container"> 
-                <label for="editedCategory">Category</label>
-                    <select id="editedCategory">
+                    <div class="form-row-container"> 
+                        <label for="editedProductName">Product Name</label>
+                        <input type="text" id="editedProductName" name="editedProductName" placeholder="Enter product name" required>
+                    </div>  
+                    <div class="form-row-container"> 
+                        <label for="editedQuantity">Quantity</label>
+                        <input type="text" id="editedQuantity" name="editedQuantity" onkeypress="return onlyNumbers(event)">
+                    </div>  
+                </div>  
+                <div class="form-row">
+                    <div class="form-row-container"> 
+                        <label for="editedCategory">Category</label>
+                        <select id="editedCategory">
                             <option value="">Select Category</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->name }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->name }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
                     </div>  
                     <div class="form-row-container"> 
-                <label for="editedBrand">Brand</label>
-                    <select id="editedBrand" >
+                        <label for="editedBrand">Brand</label>
+                        <select id="editedBrand">
                             <option value="">Select Brand</option>
-                        @foreach($brands as $brand)
-                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
-                        @endforeach
-                    </select>
+                            @foreach($brands as $brand)
+                                <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                            @endforeach
+                        </select>
                     </div>  
-                    </div>  
-
-                    <div class="form-row">
-                        <div class="form-row-container">
-                            <label for="editedDescription">Description</label>
-                            <textarea id="editedDescription" name="editedDescription" placeholder="Enter description" rows="4"></textarea>
-                        </div>
+                </div>  
+                <div class="form-row">
+                    <div class="form-row-container">
+                        <label for="editedDescription">Description</label>
+                        <textarea id="editedDescription" name="editedDescription" placeholder="Enter description" rows="4"></textarea>
                     </div>
-
-                    <div class="form-row">
-                <div class="form-row-container"> 
-                <label for="editedPrice">Price</label>
-                    <input type="text" id="editedPrice" name="editedPrice" onkeypress="return onlyNumbers(event)">
+                </div>
+                <div class="form-row">
+                    <div class="form-row-container"> 
+                        <label for="editedPrice">Price</label>
+                        <input type="text" id="editedPrice" name="editedPrice" onkeypress="return onlyNumbers(event)">
                     </div>  
                     <div class="form-row-container"> 
-                    <label for="editedUpdatedBy">Updated By</label>
-                     <input type="text" id="editedUpdatedBy" name="editedUpdatedBy" readonly>
-                </div>  
+                        <label for="editedUpdatedBy">Updated By</label>
+                        <input type="text" id="editedUpdatedBy" name="editedUpdatedBy" readonly>
                     </div>  
+                </div>  
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="saveChanges()">Save</button>
                     <button class="modal-close-button" onclick="cancelEditModal()">Cancel</button>
@@ -232,9 +229,9 @@
             </div>
         </div>
 
+
         <div class="add-modal" id="addProductModal">
             <div class="modal-content">
-                
                 <div class="add-customer-modal-title">Add Product</div> <!-- Add the header -->
                 <div class="divider"></div>
                 <label for="newProductImage">Product Image</label>
@@ -243,65 +240,62 @@
                     <label for="newProductImage" id="imageInputLabel">Choose an image</label>
                 </div>
                 <div class="form-row">
-                <div class="form-row-container">
-                <input type="file" id="newProductImage" name="newProductImage" onchange="handleImageChange(this)" accept="image/*">
-                </div>
-                </div>
-                <div class="form-row">
-                <div class="form-row-container">
-                <label for="newTag">Tag</label>
-                <input type="text" id="newTag" name="newTag" placeholder="8512731" required onkeypress="return onlyNumbers(event)">
-                </div>
-                </div>
-                <div class="form-row">
-                <div class="form-row-container">
-                <label for="newProductName">Product Name</label>
-                    <input type="text" id="newProductName" name="newProductName" placeholder="Drive - Oil Filter" required>
-                </div>  
-                <div class="form-row-container">
-                <label for="newQuantity">Quantity</label>
-                    <input id="newQuantity" name="newQuantity" placeholder="27" required onkeypress="return onlyNumbers(event)">
+                    <div class="form-row-container">
+                        <input type="file" id="newProductImage" name="newProductImage" onchange="handleImageChange(this)" accept="image/*">
                     </div>
-                    </div>
-
+                </div>
                 <div class="form-row">
-                <div class="form-row-container">
-                <label for="newBrand">Brand</label>
-                    <select id="newBrand">
+                    <div class="form-row-container">
+                        <label for="newTag">Tag</label>
+                        <input type="text" id="newTag" name="newTag" placeholder="8512731" required onkeypress="return onlyNumbers(event)">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-row-container">
+                        <label for="newProductName">Product Name</label>
+                        <input type="text" id="newProductName" name="newProductName" placeholder="Drive - Oil Filter" required>
+                    </div>  
+                    <div class="form-row-container">
+                        <label for="newQuantity">Quantity</label>
+                        <input id="newQuantity" name="newQuantity" placeholder="27" required onkeypress="return onlyNumbers(event)">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-row-container">
+                        <label for="newBrand">Brand</label>
+                        <select id="newBrand">
                             <option value="">Select Brand</option>
-                        @foreach($brands as $brand)
-                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
-                        @endforeach
-                    </select>
+                            @foreach($brands as $brand)
+                                <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-row-container">
-                    <label for="newCategory">Category</label>
-                    <select id="newCategory">
+                        <label for="newCategory">Category</label>
+                        <select id="newCategory">
                             <option value="">Select Category</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->name }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->name }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-row-container">
-                            <label for="newDescription">Description</label>
-                            <textarea id="newDescription" name="newDescription" placeholder="Enter description" rows="4"></textarea>
-                        </div>
-                    </div>
-
+                </div>
                 <div class="form-row">
-                <div class="form-row-container">
-                <label for="newPrice">Price</label>
-                    <input id="newPrice" name="newPrice" placeholder="500" required onkeypress="return onlyNumbers(event)">
+                    <div class="form-row-container">
+                        <label for="newDescription">Description</label>
+                        <textarea id="newDescription" name="newDescription" placeholder="Enter description" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-row-container">
+                        <label for="newPrice">Price</label>
+                        <input id="newPrice" name="newPrice" placeholder="500" required onkeypress="return onlyNumbers(event)">
                     </div>
                     <div class="form-row-container">
-                    <label for="newUpdatedBy">Updated By</label>
-                    <input id="newUpdatedBy" name="newUpdatedBy" value="{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}" disabled>
-                </div>
+                        <label for="newUpdatedBy">Updated By</label>
+                        <input id="newUpdatedBy" name="newUpdatedBy" value="{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}" disabled>
                     </div>
+                </div>
                 <div class="modal-button-container">
                     <button class="modal-save-button" onclick="addProduct()">Add</button>
                     <button class="modal-close-button" onclick="closeAddProductModal()">Cancel</button>
@@ -332,79 +326,104 @@
 
 
         <div class="add-modal" id="scanProductModal">
-    <div class="modal-content">
-        
-    <div class="add-customer-modal-title">Scan Product</div> <!-- Add the header -->
-<div class="divider"></div>
+            <div class="modal-content">
+                <div class="add-customer-modal-title">Scan Product</div> <!-- Add the header -->
+                <div class="divider"></div>
+                <div class="product-image" id="productImageContainer">
+                    <img id="productImage" src="#" alt="">
+                </div>
+                <div class="form-row">
+                    <div class="form-row-container">
+                        <label for="Barcode">Barcode</label>
+                        <input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" required>
+                    </div>
+                    <div class="form-row-container">
+                        <label for="Id">ID</label>
+                        <input type="text" id="scanId" name="scanId" placeholder="1" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-row-container">
+                        <label for="Product">Product Name</label>
+                        <input type="text" id="scanProduct" name="scanProduct" placeholder="Oil Filter" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-row-container">
+                        <label for="scanDescription">Description</label>
+                        <textarea id="scanDescription" name="scanDescription" placeholder="Description" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-row-container">
+                        <label for="Category">Category</label>
+                        <input type="text" id="scanCategory" name="scanCategory" placeholder="500" readonly>
+                    </div>
+                    <div class="form-row-container">
+                        <label for="Brand">Brand</label>
+                        <input type="text" id="scanBrand" name="scanBrand" placeholder="1" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-row-container">
+                        <label for="Price">Price</label>
+                        <input type="text" id="scanPrice" name="scanPrice" placeholder="500" readonly>
+                    </div>
+                    <div class="form-row-container">
+                        <label for="Quantity">Quantity</label>
+                        <div class="quantity-control">
+                            <button class="quantity-btn minus-btn" onclick="decrementQuantity()">-</button>
+                            <input type="text" id="scanQuantity" name="scanQuantity" placeholder="1">
+                            <button class="quantity-btn plus-btn" onclick="incrementQuantity()">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-button-container">
+                    <button class="modal-save-button" onclick="updateQty()">Update</button>
+                    <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
 
-<div class="product-image" id="productImageContainer">
-    <img id="productImage" src="#" alt="">
-</div>
-
-<div class="form-row">
-<div class="form-row-container">
-<label for="Barcode">Barcode</label>
-<input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" required>
-</div>
-
-<div class="form-row-container">
-<label for="Id">ID</label>
-<input type="text" id="scanId" name="scanId" placeholder="1" required>
-</div>
-</div>
-
-<div class="form-row">
-<div class="form-row-container">
-<label for="Product">Product Name</label>
-<input type="text" id="scanProduct" name="scanProduct" placeholder="Oil Filter" readonly>
-</div>
-</div>
-
-<div class="form-row">
-<div class="form-row-container">
-<label for="scanDescription">Description</label>
-<textarea id="scanDescription" name="scanDescription" placeholder="Description" rows="4"></textarea>
-</div>
-</div>
-
-<div class="form-row">
-<div class="form-row-container">
-<label for="Category">Category</label>
-<input type="text" id="scanCategory" name="scanCategory" placeholder="500" readonly>
-</div>
-<div class="form-row-container">
-<label for="Brand">Brand</label>
-<input type="text" id="scanBrand" name="scanBrand" placeholder="1" readonly>
-</div>
-</div>
-<div class="form-row">
-<div class="form-row-container">
-<label for="Price">Price</label>
-<input type="text" id="scanPrice" name="scanPrice" placeholder="500" readonly>
-</div>
-<div class="form-row-container">
-    <label for="Quantity">Quantity</label>
-    <div class="quantity-control">
-        <button class="quantity-btn minus-btn" onclick="decrementQuantity()">-</button>
-        <input type="text" id="scanQuantity" name="scanQuantity" placeholder="1">
-        <button class="quantity-btn plus-btn" onclick="incrementQuantity()">+</button>
-    </div>
-</div>
-</div>
-
-
-<div class="modal-button-container">
-<button class="modal-save-button" onclick="updateQty()">Update</button>
-    <button class="modal-close-button" onclick="closeScanProductModal()">Cancel</button>
-</div>
-    
     </main>
+
+
     <script src="{{ asset('assets/js/try.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/inventory.js') }}"></script>    
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script>
         var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
+
+        function uploadCSV() {
+    document.getElementById('fileInput').click();
+}
+
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        $.ajax({
+        url: '/upload-inventory',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            console.log('Inventory updated:', response);
+            // Update UI or display success message
+        },
+        error: function(xhr, status, error) {
+            console.error('Error uploading inventory:', error);
+            // Display error message
+        }
+    });
+    }
+
     </script>
 
 </body>
