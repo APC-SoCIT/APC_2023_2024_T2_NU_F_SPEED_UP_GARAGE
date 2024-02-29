@@ -348,6 +348,10 @@ body.dark .sidebar .side-menu li:hover a {
     font-weight: 500;
 }
 
+.dark .current-date {
+    color: #ffffff;
+}
+
 @media (max-width: 768px) {
     .content nav .profile .name-role {
         display: none; /* Hide name-role on smaller screens */
