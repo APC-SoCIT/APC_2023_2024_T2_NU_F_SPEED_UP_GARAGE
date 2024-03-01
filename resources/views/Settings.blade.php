@@ -197,6 +197,16 @@
             // Prevent default form submission
             event.preventDefault();
 
+            // Check if the selected file is a valid image
+            const profilePictureInput = $('#profilePictureInput')[0];
+            if (profilePictureInput.files.length > 0) {
+                const fileType = profilePictureInput.files[0].type;
+                if (!fileType.startsWith('image/')) {
+                    showErrorModal('Please upload an image file.');
+                    return; // Exit the function if file type is not supported
+                }
+            }
+
             // Get the CSRF token value
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -231,7 +241,6 @@
         });
 
         // Function to handle cancel button click
-        // Function to handle cancel button click
         $('.cancel-btn').click(function() {
             $('.edit-btn').show();
             $('.save-btn').hide();
@@ -246,7 +255,7 @@
             // Hide upload and delete buttons
             $('.upload-btn').hide();
             $('.delete-btn').hide();
-            
+
             // Check if a new avatar has been selected
             const profilePictureInput = $('#profilePictureInput')[0];
             if (!profilePictureInput.files || !profilePictureInput.files[0]) {
@@ -255,6 +264,7 @@
             }
         });
     });
+
 
     $(document).ready(function() {
         // Function to handle delete avatar button click
@@ -283,9 +293,16 @@
     function updateAvatarPreview(event) {
         // Get the selected file
         const selectedFile = event.target.files[0];
-        
+
         // Check if a file is selected
         if (selectedFile) {
+            // Check if the selected file is an image
+            if (!selectedFile.type.startsWith('image/')) {
+                // If not an image, show an error modal
+                showErrorModal('Please upload an image file.');
+                return; // Exit the function
+            }
+
             // Read the selected file as a URL
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -295,7 +312,7 @@
             reader.readAsDataURL(selectedFile);
         }
     }
-    
+
 
     $(document).ready(function() {
         // Check if the URL contains a "tab" parameter

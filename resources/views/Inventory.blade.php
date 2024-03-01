@@ -312,6 +312,15 @@
             </div>
         </div>
 
+        <div id="errorModal" class="error-modal" style="display: none;">
+            <div class="error-modal-content">
+                <div class="header">Error</div> <!-- Add the header -->
+                <div class="divider"></div> <!-- Add the divider line -->
+                <p id="errorText"></p>
+                <button class="modal-close-button" onclick="closeErrorModal()">Ok</button>
+            </div>
+        </div>
+
         <div id="confirmationModal" class="confirmation-modal">
             <div class="confirmation-modal-content">
                 <div class="header">Confirm Deletion</div>
@@ -323,7 +332,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="add-modal" id="scanProductModal">
             <div class="modal-content">
@@ -393,11 +401,11 @@
     <script src="{{ asset('assets/js/inventory.js') }}"></script>    
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script>
-        var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
+    var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
 
-        function uploadCSV() {
+    function uploadCSV() {
     document.getElementById('fileInput').click();
-}
+    }
 
     function handleFileUpload(event) {
         const file = event.target.files[0];
@@ -414,14 +422,21 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
-            console.log('Inventory updated:', response);
-            // Update UI or display success message
+            showSuccessModal('Inventory has been updated successfully!');
         },
         error: function(xhr, status, error) {
-            console.error('Error uploading inventory:', error);
-            // Display error message
+            showErrorModal('Error updating inventory: ' + error);
         }
     });
+    }
+
+    function showErrorModal(errorMessage) {
+        document.getElementById('errorText').innerText = errorMessage;
+        document.getElementById('errorModal').style.display = 'flex';
+    }
+
+    function closeErrorModal() {
+        document.getElementById('errorModal').style.display = 'none';
     }
 
     </script>

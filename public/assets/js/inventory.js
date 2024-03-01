@@ -21,55 +21,55 @@ function addProduct() {
     var newPrice = document.getElementById('newPrice');
     var newUpdatedBy = document.getElementById('newUpdatedBy');
     var newDescription = document.getElementById('newDescription'); // Get the description field
-    var newProductImage = document.getElementById('newProductImage'); 
-
-    if (newProductImage.value.trim() === '') {
-        newProductImage.setCustomValidity('Please add an image.');
-        newProductImage.reportValidity();
-        return;
-        }
+    var newProductImage = document.getElementById('newProductImage');
 
     if (newTag.value.trim() === '') {
         newTag.setCustomValidity('Please fill out the barcode.');
         newTag.reportValidity();
-        return; 
-        }
+        return;
+    }
 
-      if (newProductName.value.trim() === '') {
+    if (newProductName.value.trim() === '') {
         newProductName.setCustomValidity('Please fill out the product name.');
         newProductName.reportValidity();
         return;
-      }
+    }
 
-      if (newQuantity.value.trim() === '') {
+    if (newQuantity.value.trim() === '') {
         newQuantity.setCustomValidity('Please add product quantity.');
         newQuantity.reportValidity();
         return;
-      }
+    }
 
-      if (newBrand.value.trim() === '') {
+    if (newBrand.value.trim() === '') {
         newBrand.setCustomValidity('Please select brand.');
         newBrand.reportValidity();
         return; // Exit the function
-      }
+    }
 
-      if (newCategory.value.trim() === '') {
+    if (newCategory.value.trim() === '') {
         newCategory.setCustomValidity('Please select category.');
         newCategory.reportValidity();
         return; // Exit the function
-      }
+    }
 
-      if (newDescription.value === '') {
-        newDescription.setCustomValidity('Please enter product description.');
-        newDescription.reportValidity();
-        return; // Exit the function
-      }
-
-      if (newPrice.value.trim() === '') {
+    if (newPrice.value.trim() === '') {
         newPrice.setCustomValidity('Please enter product price.');
         newPrice.reportValidity();
         return; // Exit the function
-      }
+    }
+
+    // Check if the selected file is a valid image
+    if (newProductImage.files.length > 0) {
+        const fileType = newProductImage.files[0].type;
+        if (!fileType.startsWith('image/')) {
+            showErrorModal('Please upload an image file.');
+            return; // Exit the function if file type is not supported
+        }
+    } else {
+        showErrorModal('Please select an image file.');
+        return; // Exit the function if no file is selected
+    }
 
     var formData = new FormData();
     formData.append('tag', newTag.value);
@@ -124,45 +124,8 @@ function handleImageChange(input) {
     }
 }
 
-function deleteRow(event) {
-    const row = event.target.closest('tr'); // Get the closest <tr> parent of the clicked button
-    const productId = row.getAttribute('data-id'); // Get the product ID from the row
-
-    // Show a confirmation dialog
-    const confirmed = window.confirm('Are you sure you want to delete this product?');
-
-    if (!confirmed) {
-        return; // If not confirmed, do nothing
-    }
-
-    // Include CSRF token in the headers
-    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-    $.ajax({
-        url: `/delete-product/${productId}`,
-        type: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        },
-        success: function (response) {
-            console.log('Product deleted successfully:', response);
-
-            // Handle success response (update UI, etc.)
-            const table = document.querySelector('.inventory-table tbody');
-            table.removeChild(row); // Remove the row from the table on successful deletion
-            showSuccessModal('Product deleted successfully.'); // Display success message
-        },
-        error: function (error) {
-            console.error('Error deleting product:', error);
-
-            // Handle error response (display error message, log, etc.)
-        }
-    });
-}
 var editingProductId;  // Declare a variable to store the currently editing product ID
 var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
-
-
 
 function editRow(event) {
     // Get the parent row of the clicked button
@@ -207,27 +170,59 @@ function editRow(event) {
 
 function saveChanges() {
     // Get the edited values from the input fields
-    const editedQuantity = parseNumericalValue($('#editedQuantity').val());
-    const editedPrice = parseNumericalValue($('#editedPrice').val()).toFixed(2); // Format to two decimal places
-    const editedTag = $('#editedTag').val();
-    const editedProductName = $('#editedProductName').val();
-    const editedCategory = $('#editedCategory').val();
-    const editedBrand = $('#editedBrand').val();
-    const editedUpdatedBy = $('#editedUpdatedBy').val();
-    const editedDescription = $('#editedDescription').val(); // Get the edited description
+    const editedQuantity = document.getElementById('editedQuantity').value.trim();
+    const editedPrice = document.getElementById('editedPrice').value.trim();
+    const editedTag = document.getElementById('editedTag').value.trim();
+    const editedProductName = document.getElementById('editedProductName').value.trim();
+    const editedCategory = document.getElementById('editedCategory').value.trim();
+    const editedBrand = document.getElementById('editedBrand').value.trim();
+    const editedUpdatedBy = document.getElementById('editedUpdatedBy').value.trim();
+    const editedDescription = document.getElementById('editedDescription').value.trim(); // Get the edited description
+    const editedProductImage = document.getElementById('editedProductImage');
 
-    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-    // Ensure all values are strings before calling trim
-    const requiredFields = [editedQuantity, editedPrice, editedTag, editedProductName, editedCategory, editedBrand, editedUpdatedBy, editedDescription].map(String);
-    
-    // If any required field is empty, display error message
-    const emptyFields = requiredFields.filter(field => field.trim() === '');
-    if (emptyFields.length > 0) {
-        const errorMessage = 'Please fill out all required fields.';
-        showErrorMessage(errorMessage);
-        return; // Exit the function
+    if (editedTag === '') {
+        const tagInput = document.getElementById('editedTag');
+        tagInput.setCustomValidity('Please fill out the barcode.');
+        tagInput.reportValidity();
+        return;
     }
+
+    if (editedProductName === '') {
+        const productNameInput = document.getElementById('editedProductName');
+        productNameInput.setCustomValidity('Please fill out the product name.');
+        productNameInput.reportValidity();
+        return;
+    }
+
+    if (editedQuantity === '') {
+        const quantityInput = document.getElementById('editedQuantity');
+        quantityInput.setCustomValidity('Please add product quantity.');
+        quantityInput.reportValidity();
+        return;
+    }
+
+    if (editedBrand === '') {
+        const brandInput = document.getElementById('editedBrand');
+        brandInput.setCustomValidity('Please select brand.');
+        brandInput.reportValidity();
+        return;
+    }
+
+    if (editedCategory === '') {
+        const categoryInput = document.getElementById('editedCategory');
+        categoryInput.setCustomValidity('Please select category.');
+        categoryInput.reportValidity();
+        return;
+    }
+
+    if (editedPrice === '') {
+        const priceInput = document.getElementById('editedPrice');
+        priceInput.setCustomValidity('Please enter product price.');
+        priceInput.reportValidity();
+        return;
+    }
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     // Prepare form data for AJAX request
     const formData = new FormData();
@@ -242,8 +237,13 @@ function saveChanges() {
     formData.append('description', editedDescription); // Append the description field
 
     // Check if a new product image is selected
-    const productImage = $('#editedProductImage')[0].files[0];
+    const productImage = editedProductImage.files[0];
     if (productImage) {
+        // Check if the file type is an image
+        if (!productImage.type.startsWith('image/')) {
+            showErrorModal('Please upload an image file.');
+            return;
+        }
         formData.append('product_image', productImage);
     }
 
@@ -281,6 +281,15 @@ function saveChanges() {
         // Handle error response (display error message, log, etc.)
     }
 });
+}
+
+function showErrorModal(errorMessage) {
+    document.getElementById('errorText').innerText = errorMessage;
+    document.getElementById('errorModal').style.display = 'flex';
+}
+
+function closeErrorModal() {
+    document.getElementById('errorModal').style.display = 'none';
 }
 
 function cancelEditModal() {
