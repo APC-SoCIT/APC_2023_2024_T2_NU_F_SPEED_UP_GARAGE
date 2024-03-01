@@ -191,7 +191,30 @@
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/transactions.js') }}"></script>
+    <script>
+        function filterTable() {
+            // Get the start and end dates from the date inputs
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
 
+            // Loop through each row in the table body
+            $('#inventoryTableBody tr').each(function() {
+                // Get the date of the transaction from the table cell
+                const transactionDate = $(this).find('.date').text();
+
+                // Parse the transaction date to compare with the selected date range
+                const transactionDateTime = new Date(transactionDate);
+
+                // Hide or show the row based on the date range
+                if ((startDate === '' || transactionDateTime >= new Date(startDate)) &&
+                    (endDate === '' || transactionDateTime <= new Date(endDate))) {
+                    $(this).show(); // Show the row
+                } else {
+                    $(this).hide(); // Hide the row
+                }
+            });
+        }
+    </script>
 
 </body>
 

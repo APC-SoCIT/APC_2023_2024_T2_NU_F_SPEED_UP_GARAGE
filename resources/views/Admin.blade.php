@@ -208,18 +208,17 @@
         </main>
 
 
-        <script src="{{ asset('assets/js/chart.js') }}" data-top-products="@json($topProductsData)"></script>
-        
-    <script src="{{ asset('assets/js/inventory.js') }}"></script>  
-    <script src="{{ asset('assets/js/navbar.js') }}"></script>         
-    <script src="{{ asset('assets/js/index.js') }}"></script>
-    <script>    
-    history.pushState(null, null, document.URL);
-    window.addEventListener('popstate', function () {
+        <script src="{{ asset('assets/js/chart.js') }}" data-top-products="@json($topProductsData)"></script> 
+        <script src="{{ asset('assets/js/inventory.js') }}"></script>  
+        <script src="{{ asset('assets/js/navbar.js') }}"></script>         
+        <script src="{{ asset('assets/js/index.js') }}"></script>
+        <script>    
         history.pushState(null, null, document.URL);
-    });
-    
-    </script>
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+        });
+        
+        </script>
 
     
 </body>

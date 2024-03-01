@@ -136,7 +136,7 @@
                                 <td class="brand" id="brand{{ $product->id }}">{{ $product->brand }}</td>
                                 <td class="description" id="description{{ $product->id }}">{{ $product->description }}</td>
                                 <td class="quantity" id="quantity_{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span><input type="text" class="edit-quantity" style="display:none;"></td>
-                                <td class="price" id="price_{{ $product->id }}"><span class="price">{{ number_format($product->price, 2) }}</span><input type="text" class="edit-price" style="display:none;"></td>
+                                <td class="price" id="price_{{ $product->id }}"><span class="price">₱{{ number_format($product->price, 2) }}</span><input type="text" class="edit-price" style="display:none;"></td>
                                 <td class="updated_by" id="updated_by{{ $product->id }}"><span class="updated_by">{{ $product->updated_by }}</span></td>
                                 <td>
                                     <button class="edit-btn" onclick="editRow(event)">Edit</button>

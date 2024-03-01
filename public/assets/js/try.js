@@ -323,7 +323,6 @@ function filterTable() {
 }
 
 
-
 window.onload = function () {
     // Fetch the user role from localStorage or the data attribute
     var userRole = localStorage.getItem('userRole') || document.body.dataset.userRole;

@@ -14,6 +14,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ThresholdController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -101,6 +102,9 @@ Route::get('customers', function () {
 
 // Use UserController to handle inventory-related functionality
 
+// Notifs 
+
+Route::get('/check-notifications', [NotificationController::class, 'checkNotifications'])->name('check.notifications');
 
 Route::post('/add-user', [UserController::class, 'addUser'])->name('user.add');
 Route::get('/edit-user/{id}', [UserController::class, 'editUser'])->name('user.edit');

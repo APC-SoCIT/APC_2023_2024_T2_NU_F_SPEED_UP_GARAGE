@@ -142,6 +142,9 @@ function editRow(event) {
     var updatedBy = row.find('.updated_by span').text();
     var description = row.find('.description').text(); // Extract description
 
+    // Remove the peso sign from the price for editing
+    var priceWithoutPesoSign = price.replace('₱', ''); // Remove the peso sign
+
     // Get the current image source
     var currentImageSrc = row.find('.product-image img').attr('src');
 
@@ -151,7 +154,7 @@ function editRow(event) {
     $('#editedCategory').val(category);
     $('#editedBrand').val(brand);
     $('#editedQuantity').val(quantity);
-    $('#editedPrice').val(price);
+    $('#editedPrice').val(priceWithoutPesoSign); // Use the price without peso sign
     $('#editedUpdatedBy').val(currentUserUsername);
     $('#editedDescription').val(description); // Set the description field value
 
@@ -167,6 +170,7 @@ function editRow(event) {
     // Show the edit modal
     $('#editModal').show();
 }
+
 
 function saveChanges() {
     // Get the edited values from the input fields
@@ -690,8 +694,7 @@ function updateQty() {
         let brand = $(this).find('.brand').text();
         let description = $(this).find('.description').text();
         let quantity = $(this).find('.quantity span').text();
-        let price = parseFloat($(this).find('.price span').text()); // Parse as float
-
+        let price = parseFloat($(this).find('.price span').text().replace('₱', '')); // Parse as float and remove peso sign
         // Format the price to always have two decimal places
         price = price.toFixed(2);
 
