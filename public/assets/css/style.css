@@ -398,6 +398,16 @@ body.dark .sidebar .side-menu li:hover a {
     max-height: calc(100vh - 56px);
 }
 
+.table-wrapper th, .table-wrapper td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.orders {
+    max-height: 335px; /* Height for displaying 3 transactions */
+    overflow-y: auto; /* Enable vertical scrollbar if more than 3 transactions */
+}
+
 .content main .header{
     display: flex;
     align-items: center;
@@ -421,6 +431,7 @@ body.dark .sidebar .side-menu li:hover a {
 .orders tr{
     color: var(--dark);
 }
+
 
 
 .content main .header .left .breadcrumb{

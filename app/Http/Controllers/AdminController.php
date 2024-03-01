@@ -80,7 +80,7 @@ class AdminController extends Controller
         
         $formattedAverageDailySales = number_format($averageDailySales, 2, '.', ',');
 
-        $recentTransactions = Transaction::latest()->take(3)->get();
+        $recentTransactions = Transaction::latest()->take(10)->get();
 
         $currentDate = Carbon::now();
         $currentMonth = Carbon::now()->monthName;

@@ -155,8 +155,6 @@
                 <div class="header">
                     <i class='bx bx-receipt'></i>
                     <h3>Recent Transactions</h3>
-                    <i class='bx bx-filter'></i>
-                    <i class='bx bx-search'></i>
                 </div>
                 <table>
                     <thead>
@@ -179,10 +177,10 @@
                                     // Check if the employee record exists and has a profile picture
                                     if ($employee && $employee->profile_picture) {
                                         // Display the profile picture with a fallback default image
-                                        echo '<img src="' . asset('storage/' . $employee->profile_picture) . '" alt="Profile Picture" width="50" height="50" onerror="this.onerror=null; this.src=\'https://i.stack.imgur.com/l60Hf.png\'">';
+                                        echo '<img src="' . asset('storage/' . $employee->profile_picture) . '" alt="Profile Picture"  onerror="this.onerror=null; this.src=\'https://i.stack.imgur.com/l60Hf.png\'">';
                                     } else {
                                         // Display a default placeholder image if no profile picture is available
-                                        echo '<img src="https://i.stack.imgur.com/l60Hf.png" alt="Default Profile Picture" width="50" height="50">';
+                                        echo '<img src="https://i.stack.imgur.com/l60Hf.png" alt="Default Profile Picture" >';
                                     }
                                 @endphp
                             </td>
