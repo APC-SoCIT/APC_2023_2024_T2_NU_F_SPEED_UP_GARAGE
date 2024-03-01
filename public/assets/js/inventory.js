@@ -422,7 +422,6 @@ function fetchThreshold() {
         })
         .catch(error => {
             console.error('Error fetching threshold:', error);
-            alert('An error occurred while fetching the threshold.');
         });
 }
 
