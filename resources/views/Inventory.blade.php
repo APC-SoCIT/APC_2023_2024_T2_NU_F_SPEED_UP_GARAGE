@@ -38,13 +38,13 @@
                 </div>
 
             <div class="right">
-                <a href="#" class="report" onclick="uploadCSV()">
-                    <i class='bx bx-cloud-download'></i>
+                <a href="#" class="upload" onclick="uploadCSV()">
+                    <i class='bx bx-upload'></i>
                     <span>Upload CSV</span>
                     <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(event)">
                 </a>
-                <a href="#" class="upload" onclick="inventoryCSV()">
-                    <i class='bx bx-upload'></i>
+                <a href="#" class="report" onclick="inventoryCSV()">
+                    <i class='bx bx-cloud-download'></i>
                     <span>Download CSV</span>
                 </a>
             </div>

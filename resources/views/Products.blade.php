@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Products</title>
 </head>
 
@@ -33,7 +34,7 @@
                         <li><a href='/products' class="active">Products</a></li>
                     </ul>
                 </div>
-                <a href="#" class="report" onclick="inventoryCSV()">
+                <a href="#" class="report" onclick="productCSV()">
                     <i class='bx bx-cloud-download'></i>
                     <span>Download CSV</span>
                 </a>
@@ -145,49 +146,7 @@
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/inventory.js') }}"></script>
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
-    <script>
-            function downloadCSV() {
-    // Initialize an empty CSV string
-    let csv = 'Tag,Name,Category,Brand,Description,Quantity,Price\n';
-
-    // Loop through each row in the table body
-    $('#inventoryTableBody tr').each(function() {
-        // Extract data from the row
-        let tag = $(this).find('.tag').text();
-        let name = $(this).find('.product-name').text();
-        let category = $(this).find('.category').text();
-        let brand = $(this).find('.brand').text();
-        let description = $(this).find('.description').text();
-        let quantity = $(this).find('.quantity span').text();
-        let price = parseFloat($(this).find('.price span').text()); // Parse as float
-
-        // Format the price to always have two decimal places
-        price = price.toFixed(2);
-
-        // Format the tag value with leading zeros
-        let formattedTag = `"${tag.replace(/"/g, '""')}"`; // Escape double quotes by doubling them
-
-        // Append the formatted tag to the CSV string
-        csv += `${formattedTag},"${name}","${category}","${brand}","${description}",${quantity},${price}\n`;
-    });
-
-    // Create a Blob object containing the CSV data
-    const blob = new Blob([csv], { type: 'text/csv' });
-
-    // Create a temporary anchor element to trigger the download
-    const a = document.createElement('a');
-    a.href = window.URL.createObjectURL(blob);
-    a.download = 'inventory.csv';
-    document.body.appendChild(a);
-
-    // Trigger the download
-    a.click();
-
-    // Clean up
-    document.body.removeChild(a);
-}
-
-    </script>
+    <script src="{{ asset('assets/js/product.js') }}"></script>
 
 </body>
 

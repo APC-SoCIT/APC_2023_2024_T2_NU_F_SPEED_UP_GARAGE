@@ -687,6 +687,16 @@ function updateQty() {
 
     // Loop through each row in the table body
     $('#inventoryTableBody tr').each(function() {
+        // Check if filters are applied
+        if (filtersApplied()) {
+            // Get the visibility status of the row
+            const isVisible = $(this).is(':visible');
+            // If filters are applied and the row is not visible, skip exporting
+            if (!isVisible) {
+                return;
+            }
+        }
+
         // Extract data from the row
         let tag = $(this).find('.tag').text();
         let name = $(this).find('.product-name').text();
@@ -719,4 +729,43 @@ function updateQty() {
 
     // Clean up
     document.body.removeChild(a);
+}
+
+// Function to check if filters are applied
+function filtersApplied() {
+    const statusFilter = document.getElementById("statusFilter").value;
+    const categoryFilter = document.getElementById("categoryFilter").value;
+    const brandFilter = document.getElementById("brandFilter").value;
+    return (statusFilter !== '' || categoryFilter !== '' || brandFilter !== '');
+}
+
+function filterTable() {
+    var statusFilter = document.getElementById("statusFilter").value;
+    var categoryFilter = document.getElementById("categoryFilter").value;
+    var brandFilter = document.getElementById("brandFilter").value;
+
+    var rows = document.getElementById("inventoryTableBody").getElementsByTagName("tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var status = row.getElementsByClassName("status")[0].textContent;
+        var category = row.getElementsByClassName("category")[0].textContent;
+        var brand = row.getElementsByClassName("brand")[0].textContent;
+
+        var shouldShow = true;
+
+        if (statusFilter && status !== statusFilter) {
+            shouldShow = false;
+        }
+
+        if (categoryFilter && category !== categoryFilter) {
+            shouldShow = false;
+        }
+
+        if (brandFilter && brand !== brandFilter) {
+            shouldShow = false;
+        }
+
+        row.style.display = shouldShow ? "" : "none";
+    }
 }
