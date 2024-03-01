@@ -135,29 +135,23 @@ class POSController extends Controller
                 if ($itemName === "Labor") {
                     continue; // Skip processing for "Labor" item
                 }
-            
-                // Find the product by its name
+
                 $product = Product::where('product_name', $itemName)->first();
             
                 if ($product) {
-                    // Deduct the quantity based on the purchased quantity
-                    $product->quantity -= $qtys[$index];
+                    
                     $product->save();
-            
-                    // Create or update the corresponding TopProduct record
                     $topProduct = TopProduct::where('item_name', $itemName)->first();
                     if ($topProduct) {
-                        // Update existing record
+
                         $topProduct->quantity_sold += $qtys[$index];
                     } else {
-                        // Create new record
                         $topProduct = new TopProduct();
                         $topProduct->item_name = $itemName;
-                        $topProduct->quantity_sold = $qtys[$index]; // Initialize quantity_sold
+                        $topProduct->quantity_sold = $qtys[$index];
                     }
                     $topProduct->save();
                 } else {
-                    // Log error if product is not found
                     Log::error('Product not found for item name: ' . $itemName);
                     return response()->json(['error' => 'Product not found for item name: ' . $itemName], 400);
                 }

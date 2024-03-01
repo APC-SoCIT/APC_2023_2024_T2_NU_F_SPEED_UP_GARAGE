@@ -73,9 +73,9 @@
                                     <thead>
                                     <tr>
                                         <th>Date</th>
-                                        <th>#</th>
                                         <th>Transactions</th>
                                         <th>Total Labor</th>
+                                        <th>Total Item Sales</th>
                                         <th>Total Sales</th>
             
                                     </tr>
@@ -84,9 +84,9 @@
                                         @foreach ($dates as $index => $date)
                                             <tr data-id="{{ $index }}">
                                                 <td class="date" id="date{{ $date }}">{{ $date }}</td>
-                                                <td>{{ $index + 1 }}</td>
                                                 <td class="total-transactions" id="{{ $todayTransactions[$index] }}">{{ $todayTransactions[$index] }}</td>
-                                                <td class="total-amount" id=" ₱{{ $todaySales[$index] }}">₱{{ $todaySales[$index] }}</td>
+                                                <td class="total-amount" id=" ₱{{ $todayLaborSales[$index] }}">₱{{ $todayLaborSales[$index] }}</td>
+                                                <td class="total-amount" id=" ₱{{ $todayItemSales[$index] }}">₱{{ $todayItemSales[$index] }}</td>
                                                 <td class="total-amount" id=" ₱{{ $todaySales[$index] }}">₱{{ $todaySales[$index] }}</td>
                                             </tr>
                                         @endforeach

@@ -42,6 +42,8 @@ function initApp() {
     gcash: 0,
     card: 0,
     change: 0,
+    labor: 0,
+    laborAmount:0,
     isShowModalReceipt: false,
     receiptDate: null,
     
@@ -100,6 +102,7 @@ filteredProducts() {
   return this.keyword && filtered.length === 0 ? [] : filtered;
 },
 
+// FIXED
 addToCart(product) {
   // Check if the product has sufficient stock
   if (product.quantity <= 0) {
@@ -107,7 +110,6 @@ addToCart(product) {
     return; // Exit the function without adding the product to the cart
   }
 
-  // Proceed to add the product to the cart
   let index = this.findCartIndex(product);
   let priceToAdd;
 
@@ -121,56 +123,124 @@ addToCart(product) {
     if (index === -1) {
       this.cart.push({
         productId: product.id,
+        quantity: product.quantity,
         image: '/storage/product_images/' + product.product_image,
         name: product.product_name,
         price: priceToAdd,
         option: product.option,
-        qty: 1,
+        qty: product.product_name === "Labor" ? 1 : Math.min(product.quantity, 1),
       });
     } else {
-      if (this.cart[index].price === priceToAdd || (this.cart[index].editedPrice !== null && this.cart[index].editedPrice === priceToAdd)) {
-        this.cart[index].qty += 1;
-      } else {
+
+      if (product.product_name === "Labor") {
         this.cart.push({
           productId: product.id,
+          quantity: product.quantity,
           image: '/storage/product_images/' + product.product_image,
           name: product.product_name,
           price: priceToAdd,
           option: product.option,
           qty: 1,
         });
+      } else {
+        const newQty = Math.min(this.cart[index].qty + 1, product.quantity);
+
+        if (this.cart[index].price === priceToAdd || (this.cart[index].editedPrice !== null && this.cart[index].editedPrice === priceToAdd)) {
+          this.cart[index].qty = newQty;
+        } else {
+          this.cart.push({ 
+            productId: product.id,
+            quantity: product.quantity,
+            image: '/storage/product_images/' + product.product_image,
+            name: product.product_name,
+            price: priceToAdd,
+            option: product.option,
+            qty: newQty,
+          });
+        }
       }
     }
-
     product.editedPrice = null;
-    
     this.updateChange();
-  } else {
-    console.log('Product price is less than 1, cannot be added to cart.');
   }
 },
 
-    findCartIndex(product) {
-      return this.cart.findIndex((p) => p.productId === product.id);
-    },
-    addQty(item, qty) {
-      const index = this.cart.findIndex((i) => i.productId === item.productId);
+
+findCartIndex(product) {
+  return this.cart.findIndex((p) => p.productId === product.id);
+},
+
+// FIXED
+addQty(item, qty) {
+  const index = this.cart.findIndex((p) => p.productId === item.productId);
+
+  // Check if the product is not found in the cart
+  if (index === -1) {
+    return;
+  }
+
+  const currentQty = this.cart[index].qty; // Get the current quantity from the cart item
+  const currentQuantity = this.cart[index].quantity; // Get the current quantity from the cart item
+
+  // If the item is "Labor," decrement the quantity by 1
+  if (this.cart[index].name === "Labor") {
+    qty = -1; // Decrement quantity by 1
+  }
+
+  // Calculate the new quantity after adding or subtracting
+  const newQty = currentQty + qty;
+
+  // Check if the new quantity exceeds the available stock
+  if (newQty > currentQuantity) {
+    console.log(`Cannot add ${qty} more to ${item.name}. Maximum available quantity is ${currentQuantity}.`);
+    return;
+  }
+
+  const afterAdd = currentQty + qty;
+
+  // Update the quantity or remove the item from the cart based on the new quantity
+  if (afterAdd <= 0) {
+    this.cart.splice(index, 1); // Remove the item from the cart
+  } else {
+    this.cart[index].qty = afterAdd; // Update the quantity
+  }
+
+  // Update the overall change
+  this.updateChange();
+},
+
+// FIXED 
+    checkStock(item) {
+      const index = this.cart.findIndex((p) => p.productId === item.productId);
+
       if (index === -1) {
+        console.log('Product not found in cart.');
         return;
       }
-    
-      const afterAdd = item.qty + qty;
-      if (afterAdd <= 0) {cart
-        this.cart.splice(index, 1);
-      } else {
-        this.cart[index].qty = afterAdd;
+
+      const productName = this.cart[index].name;
+      const productQuantity = this.cart[index].quantity;
+      console.log(`Product name: ${productName}, Quantity: ${productQuantity}`);
+
+      if (productName === "Labor") {
+        item.qty = 1;
+        return;
       }
-    
-      this.updateChange();
+
+      let quantity = parseInt(item.qty);
+      if (quantity > productQuantity) {
+        item.qty = productQuantity;
+      }
     },
-  
+
     addCash(amount) {      
       this.cash = (this.cash || 0) + amount;
+      this.updateChange();
+    },
+
+    addLabor(amount) {
+      // Add the labor amount directly to the total
+      this.labor = amount;
       this.updateChange();
     },
     
@@ -187,24 +257,37 @@ addToCart(product) {
     getItemsCount() {
       return this.cart.reduce((count, item) => count + item.qty, 0);
     },
+
     updateChange() {
       this.change = this.cash + this.gcash + this.card - this.getTotalAmount();
       
   },
+
   
-    updateGCash(value) {
-      this.gcash = parseFloat(value.replace(/[^0-9.]+/g, ""));
-      this.updateChange();
-    },
-    
-    updateCard(value) {
-      this.card = parseFloat(value.replace(/[^0-9.]+/g, ""));
-      this.updateChange();
-    },
-    updateCash(value) {
-      this.cash = parseFloat(value.replace(/[^0-9]+/g, ""));
-      this.updateChange();
-    },
+  updateCash(value) {
+    // Allow input of numbers and up to two decimal places
+    this.cash = parseFloat(value.replace(/[^0-9.]+/g, "").replace(/^(\d+\.\d{2}).*/, '$1')) || 0;
+    this.updateChange();
+  },
+
+  updateLabor(value) {
+    // Allow input of numbers and up to two decimal places
+    this.labor = parseFloat(value.replace(/[^0-9.]+/g, "").replace(/^(\d+\.\d{2}).*/, '$1')) || 0;
+    this.updateChange();
+  },
+  
+  updateGCash(value) {
+    // Allow input of numbers and up to two decimal places
+    this.gcash = parseFloat(value.replace(/[^0-9.]+/g, "").replace(/^(\d+\.\d{2}).*/, '$1')) || 0;
+    this.updateChange();
+  },
+  
+  updateCard(value) {
+    // Allow input of numbers and up to two decimal places
+    this.card = parseFloat(value.replace(/[^0-9.]+/g, "").replace(/^(\d+\.\d{2}).*/, '$1')) || 0;
+    this.updateChange();
+  },
+  
 
     updateCashierName(selectedCashierName) {
       this.selectedCashierName = selectedCashierName;
@@ -326,7 +409,7 @@ addToCart(product) {
         .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1");
     },
     priceFormat(number) {
-      return number ? `₱${this.numberFormat(number)}` : `₱0`;
+      return number ? `₱${this.numberFormat(number)}` : `₱0.00`;
     },
     qtyFormat(number) {
       return number ? `STOCK: ${this.numberFormat1(number)}` : `STOCK: 0`;
@@ -381,6 +464,7 @@ printAndProceed(currentDate) {
       cardAmount: this.card,
       totalPayment: this.getTotalPayment(),
       customerChange: this.change,
+      laborAmount:this.labor,
   };
 
   // Check if cart is empty or not
@@ -417,6 +501,7 @@ printAndProceed(currentDate) {
   window.print();
   this.clear();
   this.isShowModalReceipt = false;
+  window.location.reload()
 },
 
 
@@ -434,7 +519,7 @@ printAndProceed(currentDate) {
       return vat;
     },
       getTotalAmount() {
-      return this.getVAT() + this.getVatable();
+      return this.getVAT() + this.getVatable() + this.labor;
     },
 
   
@@ -504,7 +589,7 @@ printAndProceed(currentDate) {
               customer_change: receiptData.customerChange,
               cashier_name: receiptData.cashierName,
               quantity: receiptData.quantity,
-              labor_amount: laborAmount, // Include the labor amount in the request data
+              labor_amount: receiptData.laborAmount,
           },
           success: function(response) {
               console.log('Transaction added successfully:', response);
@@ -796,6 +881,37 @@ function showPaymentMethod() {
     cardPayment.style.display = "flex";
 }
 }
+function isNumeric(evt) {
+  var charCode = (evt.which) ? evt.which : evt.keyCode;
+  var input = evt.target.value;
+
+  // Allow numeric characters, decimal point, backspace, and arrow keys
+  if (
+    charCode > 31 &&
+    (charCode < 48 || charCode > 57) && // numeric characters
+    charCode !== 46 && // decimal point
+    charCode !== 8 && // backspace
+    (charCode < 37 || charCode > 40) // arrow keys
+  ) {
+    return false;
+  }
+
+  // Ensure only one decimal point
+  if (charCode === 46 && input.indexOf('.') !== -1) {
+    return false;
+  }
+
+  // Limit to max 7 digits
+  if (input.replace(/[.,]/g, '').length >= 7) {
+    return false;
+  }
+
+  evt.target.value = input.replace(/[^\d.]/g, ''); // Remove non-numeric characters except decimal point
+
+  return true;
+}
+
+
 
 
 

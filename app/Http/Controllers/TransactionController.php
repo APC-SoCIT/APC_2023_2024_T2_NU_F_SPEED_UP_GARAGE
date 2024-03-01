@@ -41,18 +41,24 @@ class TransactionController extends Controller
         // Initialize arrays to store aggregated data
         $dates = [];
         $todaySales = [];
+        $todayItemSales = [];
+        $todayLaborSales = [];
         $todayTransactions = [];
     
         // Calculate aggregated data for each date
         foreach ($groupedTransactions as $date => $group) {
             $dates[] = $date;
             $todaySales[] = number_format($group->sum('total_amount'), 2, '.', ',');
+            $todayItemSales[] = number_format($group->sum('total_amount') - $group->sum('labor_amount'), 2, '.', ',');
+            $todayLaborSales[] = number_format($group->sum('labor_amount'), 2, '.', ',');            
             $todayTransactions[] = $group->count();
         }
     
         return view('sales-reports', [
             'dates' => $dates,
             'todaySales' => $todaySales,
+            'todayItemSales' => $todayItemSales,
+            'todayLaborSales' => $todayLaborSales,
             'todayTransactions' => $todayTransactions
         ]);
     }
