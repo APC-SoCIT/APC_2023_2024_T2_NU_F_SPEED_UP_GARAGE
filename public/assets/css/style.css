@@ -406,7 +406,12 @@ body.dark .sidebar .side-menu li:hover a {
 .orders {
     max-height: 335px; /* Height for displaying 3 transactions */
     overflow-y: auto; /* Enable vertical scrollbar if more than 3 transactions */
+
+    scrollbar-color: #ddd rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
 }
+
+
 
 .content main .header{
     display: flex;
