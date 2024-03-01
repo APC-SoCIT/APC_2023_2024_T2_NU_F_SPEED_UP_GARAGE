@@ -24,9 +24,6 @@
     <title>Point of Sales</title>
 </head>
 
-
-
-    <!-- Sidebar -->
     <x-sidebar />
     <!-- End of Sidebar -->
     <div class="content">
@@ -87,8 +84,7 @@
     }
 </script>
 
-              
-
+            
 <div class="user-table-container">
             <div class="user-filter-container">
                 <div class="add-user-container">
@@ -236,12 +232,7 @@
         @endforeach
     </select>
 
-
-   
 </div>
-
-
-
 
 <div class="product-container">
     <div class="product-inner-container">
@@ -302,11 +293,16 @@
                         <div class="product-brand" x-text="product.brand"></div>
                         <div class="product-name" x-text="product.product_name"></div>
                         
-                        <!-- Check if the product is eligible for editing -->
                         <template x-if="product.allowEdit">
                             <div class="price-input-container">
                                 <span>₱</span>
-                                <input type="number" class="editedPrice" x-model="product.editedPrice" @click.stop placeholder="100" step="0.01">
+
+
+                                <!-- temporary --> 
+                                <input type="text" class="editedPrice" x-model="product.editedPrice" @keypress="return isNumeric(event)" placeholder="100">
+                                 <!-- temporary --> 
+
+
                             </div>
                         </template>
 
@@ -323,7 +319,7 @@
             </div>
         </template>
     </div>
-</div>
+</div>  
 
 
 
@@ -379,14 +375,21 @@
                     
                   </div>
                   <div class="py-1">
-                    <div class="w-28 grid grid-cols-3 gap-2 ml-2">
+                    <div class="w-28 grid grid-cols-3 gap-2 ml-2" >
                       <button x-on:click="addQty(item, -1)" class="add-minus">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                         </svg>
                       </button>
-                      <input x-model.number="item.qty" type="text" class="qty-box">
-                      <button x-on:click="addQty(item, 1)" class="add-minus">
+                      <input 
+  x-model.number="item.qty" 
+  x-on:input="checkStock(item)"
+  onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+  class="qty-box" 
+>
+
+
+                      <button x-on:click="addQty(item, 1)" class="add-minus" :disabled="item.name === 'Labor'">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
@@ -429,12 +432,23 @@
           </div>
 
 
+          
+          <div class="summary-card">
+    <div class="total-text1" id="laborAmount">
+        <div>LABOR</div> 
+        <div class="input-container">
+            <div class="signsignsign">₱</div>
+            <input  x-bind:value="numberFormat(labor)"  x-on:keyup="updateLabor($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
+        </div>
+    </div>
+</div>
+
           <div class="summary-card">
 <div class="total-text1" id="cashPayment">
   <div>CASH</div> 
   <div class="input-container">
   <div class="signsignsign">₱</div>
-  <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="cash-inner-card">
+  <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
 </div>
 </div>
 
@@ -442,7 +456,7 @@
   <div>GCASH/MAYA</div>
   <div class="input-container">
   <div class="signsignsign">₱</div>
-  <input x-bind:value="numberFormat(gcash)" x-on:keyup="updateGCash($event.target.value)" type="text" class="cash-inner-card">
+  <input x-bind:value="numberFormat(gcash)" x-on:keyup="updateGCash($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
 </div>
 </div>
 
@@ -450,7 +464,7 @@
   <div>CARD</div>
   <div class="input-container">
   <div class="signsignsign">₱</div>
-  <input x-bind:value="numberFormat(card)" x-on:keyup="updateCard($event.target.value)" type="text" class="cash-inner-card">
+  <input x-bind:value="numberFormat(card)" x-on:keyup="updateCard($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
 </div>
 </div>
 </div>
@@ -522,8 +536,8 @@
 >
 
       <div
-        x-show="isShowModalReceipt"
-        class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalReceipt()"
+        x-show="isShowModalReceipt" closeModalReceipt()
+        class="fixed glass w-full h-screen left-0 top-0 z-0" 
         x-transition:enter="transition ease-out duration-100"
         x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100"
@@ -605,6 +619,10 @@
             </div>
             <hr class="my-2">
             <div class="flex text-xs font-semibold">
+              <div class="flex-grow">LABOR</div>
+              <div x-text="priceFormat(labor)"></div>
+            </div>
+            <div class="flex text-xs font-semibold">
               <div class="flex-grow">VATABLE</div>
               <div x-text="priceFormat(getVatable())"></div>
             </div>
@@ -641,6 +659,7 @@
         <div class="p-4 w-full">
           
           <button class="proceed-btn hide-on-print" x-on:click="printAndProceed()">PROCEED</button>
+       
         </div>
       </div>
     </div>
@@ -686,8 +705,6 @@ function preventCountryCodeDeletion(input) {
 }
 
 </script>
-
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
