@@ -414,6 +414,89 @@ body.dark .success-modal-content .modal-close-button:hover {
     background-color: #2980b9; /* Close button hover background color in dark mode */
 }
 
+.error-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Set a higher z-index value for modals */
+}
+
+.error-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.error-modal-content .header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.error-modal-content .divider {
+    margin: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.error-modal-content #errorText {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.error-modal-content .modal-close-button {
+    padding: 8px 15px;
+    background-color: #e74c3c; /* Change color to red for error */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.error-modal-content .modal-close-button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+/* Dark mode styles for the error modal */
+body.dark .error-modal-content {
+    background-color: #333; /* Background color in dark mode */
+    color: white; /* Text color in dark mode */
+    box-shadow: 0 0 5px rgba(209, 209, 209, 0.2); /* Adjust box shadow for dark mode */
+    border: 1px solid #444343; /* Border color in dark mode */
+}
+
+body.dark .error-modal-content .header {
+    color: white; /* Header text color in dark mode */
+}
+
+body.dark .error-modal-content .divider {
+    border-color: #555; /* Divider line color in dark mode */
+}
+
+body.dark .error-modal-content #errorText {
+    color: white; /* Error message text color in dark mode */
+}
+
+body.dark .error-modal-content .modal-close-button {
+    background-color: #e74c3c; /* Close button background color in dark mode */
+    color: white; /* Close button text color in dark mode */
+    border: 1px solid #e74c3c; /* Close button border color in dark mode */
+}
+
+body.dark .error-modal-content .modal-close-button:hover {
+    background-color: #c0392b; /* Close button hover background color in dark mode */
+}
+
 
 /* Confirmation Modal */
 .confirmation-modal {
