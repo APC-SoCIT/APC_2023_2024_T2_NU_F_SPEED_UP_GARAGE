@@ -271,6 +271,18 @@ body.dark .sidebar .side-menu li:hover a {
     cursor: pointer;
 }
 
+/* Define a class for the drop arrow */
+.drop-arrow {
+    /* You can adjust the size and style of the arrow */
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #494949; /* Adjust color as needed */
+    margin-left: 10px; /* Adjust spacing as needed */
+}
+
+
 /* Adjusted CSS for the notification bar */
 .content nav .notif {
     font-size: 12px;
@@ -310,6 +322,12 @@ body.dark .sidebar .side-menu li:hover a {
     transform-origin: top right;
     opacity: 0;
     transition: opacity 0.3s, transform 0.3s;
+    max-height: none; /* Add this line */
+    overflow: visible; /* Add this line */
+    scrollbar-color: #ddd rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
+    max-height: 300px; /* Adjust the max-height as needed */
+    overflow-y: auto;
 }
 
 .content nav .notif.active .notification-bar {
@@ -558,7 +576,6 @@ body.dark .profile.active .profile-menu {
 }
 
 
-
 .content main .header .left .breadcrumb{
     display: flex;
     align-items: center;
@@ -629,13 +646,14 @@ body.dark .profile.active .profile-menu {
     grid-gap: 24px;
 }
 
-.transaction-amount {
-  text-align: right;
+.orders table th:nth-child(4) {
+    width: calc(100% - 60px); /* Adjust the width of the column */
 }
 
-.orders table th:nth-child(4),
-.orders table td:nth-child(4) {
+.transaction-amount {
     text-align: right;
+    position: relative;
+    left: -50px; /* Adjust the position */
 }
 
 .content main .insights li .bx{
@@ -701,6 +719,11 @@ body.dark .profile.active .profile-menu {
     width: 100%;
     color: var(--dark);
 }
+
+.content main .bottom-data p{
+    font-size: 14px;
+}
+
 
 .content main .bottom-data> div{
     border-radius: 20px;

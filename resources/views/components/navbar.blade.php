@@ -43,7 +43,8 @@
             </p>
 
             <p class="name">{{ $username }}</p>
-        </div>     
+        </div>
+        <div class="drop-arrow"></div>
 
         <!-- Profile dropdown menu -->
         <div class="profile-menu" id="profileMenu">

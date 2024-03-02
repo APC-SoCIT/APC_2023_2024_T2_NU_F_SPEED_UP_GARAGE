@@ -421,7 +421,7 @@ function fetchThreshold() {
             updateUI(); // Call the function to update the UI
         })
         .catch(error => {
-            console.error('Error fetching threshold:', error);
+            console.error('Error fetching threshold:', error);  
         });
 }
 

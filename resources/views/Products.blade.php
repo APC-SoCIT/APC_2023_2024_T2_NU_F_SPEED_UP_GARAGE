@@ -55,15 +55,14 @@
                         <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Category</option>
                             @foreach($categories as $category)
-                                <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
 
-
-                        <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
+                       <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
                             <option value="">Select Brand</option>
                             @foreach($brands as $brand)
-                                <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                             @endforeach
                         </select>
                         
