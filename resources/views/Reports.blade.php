@@ -36,23 +36,28 @@
 
 
             <!-- Insights -->
-            <ul class="insights">
-                <li>
-                    <i class='bx bx-calendar-check'></i>
-                    <span class="info">
-                        <h3 onclick="navigateTo('/inventory-reports')">
-                            Inventory Reports
-                        </h3>
-                    </span>
-                </li>
-                <li>
-                    <i class='bx bx-calendar-check'></i>
-                    <span class="info">
-                    <h3 onclick="navigateTo('/sales-reports')">
-                            Sales Reports
-                        </h3>
-                    </span>
-                </li>
+            <ul class="reports">
+                @if(Auth::user()->role == 1 || Auth::user()->role == 2) {{-- Only for Admin and Inventory --}}
+                    <li>
+                        <i class='bx bx-calendar-check'></i>
+                        <span class="info">
+                            <h3 onclick="navigateTo('/inventory-reports')">
+                                Inventory Reports
+                            </h3>
+                        </span>
+                    </li>
+                @endif
+
+                @if(Auth::user()->role == 1 || Auth::user()->role == 3) {{-- Only for Admin and Cashier --}}
+                    <li>
+                        <i class='bx bx-calendar-check'></i>
+                        <span class="info">
+                            <h3 onclick="navigateTo('/sales-reports')">
+                                Sales Reports
+                            </h3>
+                        </span>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

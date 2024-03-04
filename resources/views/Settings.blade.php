@@ -30,12 +30,15 @@
             </div>  
             
             <div class="filter-container">
-            <div class="tab-container">
-                <div class="tabs">
-                    <button class="tablinks" onclick="openCity(event, 'account')">Account</button>
-                    <button class="tablinks" onclick="openCity(event, 'Brands')">Brands</button>
-                    <button class="tablinks" onclick="openCity(event, 'Category')">Categories</button>
-                    <button class="tablinks" onclick="openCity(event, 'threshold')">Threshold</button>
+                <div class="tab-container">
+                    <div class="tabs">
+                            <button class="tablinks" onclick="openCity(event, 'account')">Account</button>
+                        @if(Auth::user()->role == 1) {{-- Only for Admin --}}
+                            <button class="tablinks" onclick="openCity(event, 'Brands')">Brands</button>
+                            <button class="tablinks" onclick="openCity(event, 'Category')">Categories</button>
+                            <button class="tablinks" onclick="openCity(event, 'threshold')">Threshold</button>
+                        @endif
+                    </div>
                 </div>
 
                 @if(auth()->user()->employee)
