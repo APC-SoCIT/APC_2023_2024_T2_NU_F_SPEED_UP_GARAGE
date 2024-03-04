@@ -26,6 +26,29 @@ class ProductsController extends Controller
         ]);
     }
 
+    public function getProductByBarcode(Request $request)
+{
+    $tag = $request->input('barcode'); // Retrieve the scanned tag (barcode)
+    $product = Product::where('tag', $tag)->first(); // Query the Product table using the tag
+
+    if ($product) {
+        return response()->json([
+            'id' => $product->id,
+            'tag' => $product->tag,
+            'product_name' => $product->product_name,
+            'quantity' => $product->quantity,
+            'price' => $product->price,
+            'category' => $product->category,
+            'brand' => $product->brand,
+            'product_image' => asset('storage/product_images/' . $product->product_image),
+            // Include other attributes as needed
+        ]);
+    } else {
+        return response()->json(['error' => 'Product not found for the given barcode'], 404);
+    }
+}
+
+
     public function getProducts()
     {
         $products = Product::all();
@@ -38,3 +61,4 @@ class ProductsController extends Controller
         return view('inventory-reports', compact('inventory_logs'));
     }
 }
+

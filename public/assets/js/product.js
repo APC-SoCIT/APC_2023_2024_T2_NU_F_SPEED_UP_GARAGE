@@ -99,3 +99,64 @@ function productCSV() {
                 row.style.display = shouldShow ? "" : "none";
             }
         }
+
+        const handleBarcodeScan1 = async (scannedBarcode1) => {
+            try {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', '/get-product-by-barcode?barcode=' + scannedBarcode1, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.product_name) {
+                                document.getElementById('scanBarcode').value = response.tag;
+                                document.getElementById('scanId').value = response.id;
+                                document.getElementById('scanProduct').value = response.product_name;
+                                document.getElementById('scanCategory').value = response.category;
+                                document.getElementById('scanBrand').value = response.brand;
+                                const originalQuantity = parseInt(response.quantity);
+                                const totalQuantity = originalQuantity;
+                                document.getElementById('scanQuantity').value = originalQuantity;
+                                document.getElementById('scanPrice').value = '₱' + response.price;
+                                document.getElementById('productImage').src = response.product_image;
+                                document.getElementById('productImageContainer').style.display = 'block';
+                                document.getElementById('scanProductModal').style.display = 'flex';
+                            }
+                        } else {
+                            alert('Error fetching product data');
+                        }
+                    }
+                };
+                xhr.send();
+            } catch (error) {
+                console.error('Error searching for product:', error);
+            }
+        };
+        
+        const handleKeyPress1 = async (event) => {
+        
+            if (/^[0-9]$/.test(event.key)) {
+                // Append the digit to the scannedBarcode
+                scannedBarcode1 += event.key;
+                // Check if the scannedBarcode length is less than 8 digits
+                if (scannedBarcode1.length < 8) {
+                    // Prevent further processing if the length is less than 8 digits
+                    return;
+                }
+            } else if (event.key === 'Enter') {
+                // If Enter key is pressed, and the length criterion is met, handle barcode scan
+                if (scannedBarcode1.length >= 8 && scannedBarcode1.length <= 20) {
+                    await handleBarcodeScan1(scannedBarcode1);
+                } else {
+                    // If Enter key is pressed without meeting the length criteria, do nothing or handle as needed
+                }
+                // Clear scannedBarcode after handling
+                scannedBarcode1 = '';
+            }
+        };
+        
+        let scannedBarcode1 = '';
+        document.addEventListener('keypress', handleKeyPress1);
+        function closeScanProductModal() {
+            document.getElementById('scanProductModal').style.display = 'none';
+        }

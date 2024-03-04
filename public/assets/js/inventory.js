@@ -542,6 +542,24 @@ function parseNumericalValue(value) {
     return parseFloat(value.replace(/,/g, ''));
 }
 
+function showAddProductModal(scannedBarcode) {
+    const addProductModal = document.getElementById('addProductModal');
+    const editModal = document.getElementById('editModal');
+    
+    // Set the value of the newTag input field to the scanned barcode if available
+    if (scannedBarcode) {
+        document.getElementById('newTag').value = scannedBarcode;
+    } else {
+        document.getElementById('newTag').value = ''; // Set to blank if no scanned barcode
+    }
+    
+    // Hide the Edit Product modal if it's currently displayed
+    editModal.style.display = 'none';
+    
+    // Show the Add Product modal
+    addProductModal.style.display = 'flex'; // Use 'flex' to center the modal
+}
+
 
 const handleBarcodeScan = async (scannedBarcode) => {
     try {
@@ -566,7 +584,13 @@ const handleBarcodeScan = async (scannedBarcode) => {
                         document.getElementById('scanProductModal').style.display = 'flex';
                     }
                 } else {
-                    alert('Error fetching product data');
+                    // Error fetching product data
+                    if (confirm('Error fetching product data with barcode. Do you want to add a new product?')) {
+                        // If user selects "Yes", show addProductModal and pass scannedBarcode
+                        showAddProductModal(scannedBarcode);
+                    } else {
+                        // If user selects "No", do nothing or handle as needed
+                    }
                 }
             }
         };
@@ -577,14 +601,27 @@ const handleBarcodeScan = async (scannedBarcode) => {
 };
 
 const handleKeyPress = async (event) => {
-
-    if (/^[0-9]+$/.test(event.key) || event.key === '\n' || event.key === '\r') {
+    // Check if the entered key is a digit or Enter key
+    if (/^[0-9]$/.test(event.key)) {
+        // Append the digit to the scannedBarcode
         scannedBarcode += event.key;
+        // Check if the scannedBarcode length is less than 8 digits
+        if (scannedBarcode.length < 8) {
+            // Prevent further processing if the length is less than 8 digits
+            return;
+        }
     } else if (event.key === 'Enter') {
-        await handleBarcodeScan(scannedBarcode);
+        // If Enter key is pressed, and the length criterion is met, handle barcode scan
+        if (scannedBarcode.length >= 8 && scannedBarcode.length <= 20) {
+            await handleBarcodeScan(scannedBarcode);
+        } else {
+            // If Enter key is pressed without meeting the length criteria, do nothing or handle as needed
+        }
+        // Clear scannedBarcode after handling
         scannedBarcode = '';
     }
 };
+
 
 let scannedBarcode = '';
 document.addEventListener('keypress', handleKeyPress);

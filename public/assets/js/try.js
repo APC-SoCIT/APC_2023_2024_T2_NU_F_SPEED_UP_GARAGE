@@ -191,16 +191,7 @@ function EditImageChange(input) {
 
 
 
-function showAddProductModal() {
-    const addProductModal = document.getElementById('addProductModal');
-    const editModal = document.getElementById('editModal');
 
-    // Hide the Edit Product modal if it's currently displayed
-    editModal.style.display = 'none';
-
-    // Show the Add Product modal
-    addProductModal.style.display = 'flex'; // Use 'flex' to center the modal
-}
 
 // Function to close the Add Product modal
 function closeAddProductModal() {
