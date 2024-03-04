@@ -133,6 +133,8 @@ Route::post('/threshold/update', [ThresholdController::class, 'updateThreshold']
 Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
 Route::post('/update-profile/{id}', [SettingsController::class, 'updateProfile'])->name('update.profile');
 Route::get('/avatars/{filename}', [SettingsController::class, 'getAvatar'])->name('avatar');
+Route::post('/change-password', [SettingsController::class, 'changePassword'])->name('change.password');
+
 
 // Use CustomerController to handle customer-related functionality
 

@@ -194,6 +194,9 @@ function getLastFiveMonths() {
                 return val;
             },
         },
+        custom: function({ series, seriesIndex, dataPointIndex, w }) {
+            return '<div class="apexcharts-tooltip">' + 'Total Sold: ' + series[seriesIndex][dataPointIndex] + '</div>'
+        },
     },
     series: [{
         data: topProductsData.map(product => product.quantity_sold),
@@ -259,7 +262,8 @@ function getLastFiveMonths() {
             },
         },
     },
-  };
+};
+
   
   let cchart = new ApexCharts(document.querySelector(".bar-chart"), Options);
   cchart.render();

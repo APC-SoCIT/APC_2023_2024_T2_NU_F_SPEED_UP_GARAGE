@@ -660,6 +660,7 @@ body.dark .profile.active .profile-menu {
     display: flex;
     align-items: center;
     grid-gap: 24px;
+    cursor: pointer;
 }
 
 .content main .reports li .bx{
@@ -709,7 +710,8 @@ body.dark .profile.active .profile-menu {
 .transaction-amount {
     text-align: right;
     position: relative;
-    left: -50px; /* Adjust the position */
+    left: -25px; /* Adjust the position */
+    padding-right: 50px;
 }
 
 .content main .insights li .bx{
@@ -816,6 +818,7 @@ body.dark .profile.active .profile-menu {
 }
 
 .content main .bottom-data .orders table th{
+    padding-left: 10px;
     padding-bottom: 12px;
     font-size: 13px;
     text-align: left;
@@ -824,7 +827,9 @@ body.dark .profile.active .profile-menu {
 
 .content main .bottom-data .orders table td{
     padding: 16px 0;
+    padding-left: 10px; 
     font-size: 15px;
+    align-items: center;
 }
 
 .content main .bottom-data .orders table tr td:first-child{

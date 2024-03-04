@@ -33,6 +33,7 @@
                 <div class="tab-container">
                     <div class="tabs">
                             <button class="tablinks" onclick="openCity(event, 'account')">Account</button>
+                            <button class="tablinks" onclick="openCity(event, 'password')">Change Password</button>
                         @if(Auth::user()->role == 1) {{-- Only for Admin --}}
                             <button class="tablinks" onclick="openCity(event, 'Brands')">Brands</button>
                             <button class="tablinks" onclick="openCity(event, 'Category')">Categories</button>
@@ -58,7 +59,7 @@
                                     <button type="button" class="delete-btn" style="display: none;">Delete avatar</button>
                                 </div>
                             </div>
-                            <h4>Personal Details:</h4>
+                            <h3>Personal Details:</h3>
                             <div class="name-group">
                                 <label for="firstName">First Name:</label>
                                 <input type="text" id="firstName" name="firstName" class="account-input" required value="{{ auth()->user()->employee->fname }}">
@@ -79,8 +80,29 @@
                                 <label for="contactNumber">Contact:</label>
                                 <input type="text" id="contactNumber" name="contactNumber" class="account-input" value="{{ auth()->user()->employee->contact_number }}">
                             </div>
+                            <h3>Address Details:</h3>
                             <div class="form-group">
-                                <label for="address">Address:</label>
+                                <label for="address">Address Line 1:</label>
+                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address Line 2:</label>
+                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Subdivision:</label>
+                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Province</label>
+                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">City/Munincipality</label>
+                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Barangay</label>
                                 <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
                             </div>
                             <div class="button-container">
@@ -93,12 +115,34 @@
                 </div>
                 @endif
 
+                <div id="password" class="tabcontent">
+                    <div class="threshold-container">
+                        <div class="threshold-section">
+                            <h3>Change Password</h3>
+                            <hr>
+                            <div class="password-group">
+                                <label class="labels" for="currentPassword">Current Password:</label>
+                                <input type="password" placeholder="Enter current password" id="currentPassword" name="currentPassword"  required>
+                            </div>
+                            <div class="password-group">
+                                <label class="labels" for="newPassword">New Password:</label>
+                                <input type="password" placeholder="Enter new password" id="newPassword" name="newPassword" required>
+                            </div>
+                            <div class="password-group">
+                                <label class="labels" for="confirmPassword">Confirm New Password:</label>
+                                <input type="password" placeholder="Re-enter new password" id="confirmPassword" name="confirmPassword" required>
+                            </div>
+                            <button class="password-btn" onclick="changePassword()">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="Brands" class="tabcontent">
                     <div class="threshold-container">
                         <div class="threshold-section">
                             <h3>Brands</h3>
                             <hr>
-                            <label for="brandName">Add Brand:</label>
+                            <label class="labels" for="brandName">Add Brand:</label>
                             <input type="text" id="brandName" class="threshold-input" name="brandName" placeholder="NMAX" required>
                             <button type="submit" class="update-btn" onclick="addBrand()">Add New Brand</button>
                         </div>
@@ -110,7 +154,7 @@
                         <div class="threshold-section">
                             <h3>Categories</h3>
                             <hr>
-                            <label for="brandName">Add Category:</label>
+                            <label class="labels" for="brandName">Add Category:</label>
                             <input type="text" id="categoryName" class="threshold-input" name="categoryName" placeholder="Oil Filter" required>
                             <button type="submit" class="update-btn" onclick="addCategory()">Add New Category</button>
                         </div>
@@ -122,7 +166,7 @@
                         <div class="threshold-section">
                             <h3>Threshold Level</h3>
                             <hr>
-                            <label for="thresholdInput">Current Level:</label>
+                            <label class="labels" for="thresholdInput">Current Level:</label>
                             <input type="number" id="thresholdInput" class="threshold-input" value="{{ \App\Models\Threshold::first()->value ?? 20 }}" required>
                             <button class="update-btn" onclick="updateThreshold()">Update Threshold</button>
                         </div>
@@ -162,6 +206,16 @@
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script>
+    
+    window.onload = function() {	
+
+    var $ = new City();
+    $.showProvinces("#newProvince");
+    $.showCities("#newCity");
+    $.showProvinces("#customerProvince");
+    $.showCities("#customerCity");
+
+    }
 
     $(document).ready(function() {
         // Get the current date
@@ -349,6 +403,90 @@
         document.getElementById(cityName).style.display = "block";
         evt.currentTarget.className += " active";
     }
+
+    function changePassword() {
+        var currentPassword = document.getElementById('currentPassword');
+        var newPassword = document.getElementById('newPassword');
+        var confirmPassword = document.getElementById('confirmPassword');
+
+        if (currentPassword.value.trim() === '') {
+            currentPassword.setCustomValidity('Please enter your current password.');
+            currentPassword.reportValidity();
+            return;
+        }
+        
+        if (newPassword.value.trim() === '') {
+            newPassword.setCustomValidity('Please enter a new password.');
+            newPassword.reportValidity();
+            return;
+
+        } else if (newPassword.value.length < 8) {
+            newPassword.setCustomValidity('New password must be at least 8 characters long.');
+            newPassword.reportValidity();
+            return;
+        }
+
+        if (confirmPassword.value.trim() === '') {
+            confirmPassword.setCustomValidity('Please confirm your new password.');
+            confirmPassword.reportValidity();
+            return;
+        } else if (confirmPassword.value.length < 8) {
+            confirmPassword.setCustomValidity('Confirmed password must be at least 8 characters long.');
+            confirmPassword.reportValidity();
+            return;
+        }
+
+        if (newPassword.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity('New password and confirmed password do not match.');
+            confirmPassword.reportValidity();
+            return;
+        }
+
+        // Prepare data to send via AJAX
+        var formData = {
+            currentPassword: currentPassword.value,
+            newPassword: newPassword.value,
+            confirmPassword: confirmPassword.value
+        };
+
+        // Send AJAX request to the server
+        $.ajax({
+            url: '/change-password', // Route to change password endpoint
+            type: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                // Handle success response
+                showSuccessModal(response.success);
+                // Optionally, clear input fields after successful password change
+                currentPassword.value = '';
+                newPassword.value = '';
+                confirmPassword.value = '';
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                var errorMessage = xhr.responseJSON.error;
+                showErrorModal(errorMessage);
+            }
+        });
+    }
+
+    // Function to show error modal
+    function showErrorModal(message) {
+        var errorModal = document.getElementById('errorModal');
+        var errorText = document.getElementById('errorText');
+        errorText.innerText = message;
+        errorModal.style.display = 'block';
+    }
+
+    // Function to close error modal
+    function closeErrorModal() {
+        var errorModal = document.getElementById('errorModal');
+        errorModal.style.display = 'none';
+    }
+
 
 
 

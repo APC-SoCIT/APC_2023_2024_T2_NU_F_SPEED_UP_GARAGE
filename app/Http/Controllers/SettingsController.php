@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class SettingsController extends Controller
 {
@@ -103,5 +104,31 @@ class SettingsController extends Controller
         }
     
         return response()->json(['success' => 'Profile updated successfully']);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        // Validate request data
+        $request->validate([
+            'currentPassword' => 'required|string',
+            'newPassword' => 'required|string|min:8', // Example minimum length of 8 characters
+            'confirmPassword' => 'required|string|same:newPassword',
+        ]);
+
+        // Check if the current password matches the user's password
+        if (!Hash::check($request->currentPassword, $user->password)) {
+            Log::error('Incorrect current password for user: ' . $user->email);
+            return response()->json(['error' => 'The current password is incorrect.'], 400);
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        Log::info('Password changed successfully for user: ' . $user->email);
+
+        return response()->json(['success' => 'Password changed successfully.']);
     }
 }

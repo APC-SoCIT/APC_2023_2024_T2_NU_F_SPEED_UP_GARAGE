@@ -129,6 +129,8 @@
         @endif
             <!-- End of Insights -->
 
+
+        @if(Auth::user()->role == 1) {{-- Only for Admin --}}
             <div class="bottom-data">
                 <!-- Reminders -->
                 <div class="reminders">
@@ -169,7 +171,8 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Cashier</th>
+                            <th></th>
+                            <th>Cashier Name</th>
                             <th>Order Date</th>
                             <th>Status</th>
                             <th>Price</th>
@@ -194,6 +197,17 @@
                                     }
                                 @endphp
                             </td>
+                            <td>
+                                @php
+                                    $userId = $transaction->user_id;
+                                    $employee = \App\Models\Employee::where('user_id', $userId)->first();
+                                @endphp
+                                @if($employee)
+                                    {{ $employee->fname }} {{ $employee->lname }}
+                                @else
+                                    No Employee Found
+                                @endif
+                            </td>
 
                                 <td>{{ date('m/d/y', strtotime($transaction->created_at)) }}</td>
 
@@ -210,7 +224,7 @@
                     </tbody>
                 </table>
             </div>
-
+            @endif                            
 
 
 

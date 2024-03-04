@@ -152,11 +152,11 @@
                 <div class="form-row">
                     <div class="form-row-container">
                         <label for="Barcode">Barcode</label>
-                        <input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" required>
+                        <input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" readonly >
                     </div>
                     <div class="form-row-container">
-                        <label for="Id">ID</label>
-                        <input type="text" id="scanId" name="scanId" placeholder="1" required>
+                        <label for="Id" style="display: none;">ID</label>
+                        <input type="text" id="scanId" name="scanId" placeholder="1" required style="display: none;">
                     </div>
                 </div>
                 <div class="form-row">
