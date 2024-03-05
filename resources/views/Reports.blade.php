@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,6 +56,17 @@
                         <span class="info">
                             <h3 onclick="navigateTo('/sales-reports')">
                                 Sales Reports
+                            </h3>
+                        </span>
+                    </li>
+                @endif
+
+                @if(Auth::user()->role == 1 || Auth::user()->role == 2) {{-- Only for Admin and some other role X --}}
+                    <li>
+                        <i class='bx bx-calendar-check'></i>
+                        <span class="info">
+                            <h3 onclick="navigateTo('/item-logs')">
+                                Item Logs
                             </h3>
                         </span>
                     </li>

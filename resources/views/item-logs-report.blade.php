@@ -1,17 +1,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/report.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/filter.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/inventory.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/entries.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
-    <title>Sales Reports</title>
+    <title>Reports</title>
 </head>
 
 <body>
@@ -23,17 +25,16 @@
     <!-- Start of Navbar -->
         <x-navbar />
     <!-- End of Navbar -->
-
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Sales Reports</h1>
+                    <h1>Item Logs Report</h1>
                     <ul class="breadcrumb">
                         <li><a href='/admin'>Dashboard</a></li>
                         /
                         <li><a href='/reports'>Reports</a></li>
                         /
-                        <li><a href='/sales-reports' class="active">Sales Reports</a></li>
+                        <li><a href='/sales-reports' class="active">Item Logs Report</a></li>
                     </ul>
                 </div>
                 <a href="#" class="report">
@@ -71,29 +72,32 @@
                             <div class="table-container">
                                 <table class="inventory-table">
                                     <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Transactions</th>
-                                        <th>Total Labor</th>
-                                        <th>Total Item Sales</th>
-                                        <th>Total Sales</th>
-            
-                                    </tr>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Item Name</th>
+                                            <th>Item ID</th>
+                                            <th>Quantity</th>
+                                            <th>Remarks</th>
+                                            <th>Timestamp</th>
+                                        </tr>
                                     </thead>
-                                    <tbody id="inventoryTableBody">
-                                        @foreach ($dates as $index => $date)
-                                            <tr data-id="{{ $index }}">
-                                                <td class="date" id="date{{ $date }}">{{ $date }}</td>
-                                                <td class="total-transactions" id="{{ $todayTransactions[$index] }}">{{ $todayTransactions[$index] }}</td>
-                                                <td class="total-amount" id=" ₱{{ $todayLaborSales[$index] }}">₱{{ $todayLaborSales[$index] }}</td>
-                                                <td class="total-amount" id=" ₱{{ $todayItemSales[$index] }}">₱{{ $todayItemSales[$index] }}</td>
-                                                <td class="total-amount" id=" ₱{{ $todaySales[$index] }}">₱{{ $todaySales[$index] }}</td>
-                                            </tr>
+                                    <tbody>
+                                        <!-- Loop through your data and populate the table rows -->
+                                        @foreach ($itemLogs as $log)
+                                        <tr>
+                                            <td>{{ $log->id }}</td>
+                                            <td>{{ $log->product->product_name }}</td>
+                                            <td>{{ $log->item_id }}</td>
+                                            <td>{{ $log->qty }}</td>
+                                            <td>{{ $log->remarks }}</td>
+                                            <td class="timestamp">{{ $log->created_at }}</td>
+                                        </tr>
                                         @endforeach
                                     </tbody>
-                                    
                                 </table>
+                                
                             </div>
+                        </div>
 
                 <div class="pagination">
                     <span class="pagination-link" onclick="changePage(-1)"><</span>
@@ -108,33 +112,53 @@
         </div>
         <div id="print-area" class="print-area"></div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="{{ asset('assets/js/index.js') }}"></script>  
-    <script src="{{ asset('assets/js/navbar.js') }}"></script>
-
-    <script>
+        <script src="{{ asset('assets/js/try.js') }}"></script>
+        <script src="{{ asset('assets/js/pagination.js') }}"></script>
+        <script src="{{ asset('assets/js/inventory.js') }}"></script>    
+        <script src="{{ asset('assets/js/navbar.js') }}"></script>
+        <script>
         
         function filterTable() {
-    var startDate = document.getElementById('startDate').value;
-    var endDate = document.getElementById('endDate').value;
+    var startDate = new Date(document.getElementById('startDate').value);
+    var endDate = new Date(document.getElementById('endDate').value);
 
-    // Convert start and end dates to Date objects
-    var startDateObj = new Date(startDate);
-    var endDateObj = new Date(endDate);
-
-    // Iterate through each row of the table body
-    var tableRows = document.querySelectorAll('#inventoryTableBody tr');
+    var tableRows = document.querySelectorAll('.inventory-table tbody tr');
     tableRows.forEach(function(row) {
-        var rowDate = new Date(row.querySelector('.date').textContent);
-
-        // If the row's date is within the specified range, show the row; otherwise, hide it
-        if (rowDate >= startDateObj && rowDate <= endDateObj) {
+        var rowDate = new Date(row.querySelector('.timestamp').textContent);
+        
+        if (rowDate >= startDate && rowDate <= endDate) {
             row.style.display = 'table-row';
         } else {
             row.style.display = 'none';
         }
     });
 }
+function searchTable() {
+    // Get the search input value
+    var searchText = document.getElementById('searchInput').value.toLowerCase();
+
+    // Get all table rows
+    var tableRows = document.querySelectorAll('.inventory-table tbody tr');
+
+    // Loop through each row and hide those that don't match the search query
+    tableRows.forEach(function(row) {
+        var cells = row.getElementsByTagName('td');
+        var found = false;
+        for (var i = 0; i < cells.length; i++) {
+            var cellContent = cells[i].textContent.toLowerCase();
+            if (cellContent.indexOf(searchText) > -1) {
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
         function printReport() {
             // Create a new window to display the report content
             var printWindow = window.open('', '_blank');

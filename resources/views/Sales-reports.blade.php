@@ -1,10 +1,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/filter.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/inventory.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/entries.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
@@ -106,11 +109,11 @@
         </div>
         <div id="print-area" class="print-area"></div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="{{ asset('assets/js/index.js') }}"></script>  
-    <script src="{{ asset('assets/js/navbar.js') }}"></script>
-
-    <script>
+        <script src="{{ asset('assets/js/try.js') }}"></script>
+        <script src="{{ asset('assets/js/pagination.js') }}"></script>
+        <script src="{{ asset('assets/js/inventory.js') }}"></script>    
+        <script src="{{ asset('assets/js/navbar.js') }}"></script>
+        <script>
         
         function filterTable() {
     var startDate = document.getElementById('startDate').value;

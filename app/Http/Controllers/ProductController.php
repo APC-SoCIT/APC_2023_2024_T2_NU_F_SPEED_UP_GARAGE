@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\TransactionItemLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +13,8 @@ use App\Models\Category;
 use Illuminate\Http\UploadedFile; 
 use Illuminate\Support\Str;
 use League\Csv\Reader;
-
+use App\Models\ItemInventoryLog;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -154,6 +156,10 @@ class ProductController extends Controller
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
+
+        // Compute quantity change for item inventory log
+        $quantityChange = $validatedData['quantity'] - $product->quantity;
+        $remarks = $quantityChange >= 0 ? 'IN' : 'OUT';
     
         // Update product data
         $product->quantity = $validatedData['quantity'];
@@ -178,10 +184,30 @@ class ProductController extends Controller
     
             $product->product_image = $imageName;
         }
-    
-        $product->save();
-    
-        return response()->json(['message' => 'Product updated successfully']);
+
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            // Save the updated product
+            $product->save();
+
+            // Log the quantity change in item inventory log
+            TransactionItemLog::create([
+                'item_id' => $product->id,
+                'qty' => abs($quantityChange), // Absolute value to handle both IN and OUT cases
+                'remarks' => $remarks,
+            ]);
+
+            // Commit the transaction
+            DB::commit();
+
+            return response()->json(['message' => 'Product updated successfully']);
+        } catch (\Exception $e) {
+            // Rollback the transaction if an error occurs
+            DB::rollback();
+            return response()->json(['error' => 'Failed to update product. ' . $e->getMessage()], 500);
+        }
     }
     
 
@@ -278,6 +304,4 @@ class ProductController extends Controller
     
         return response()->json(['message' => 'Inventory updated successfully']);
     }
-    
-
 }

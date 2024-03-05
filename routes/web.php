@@ -15,6 +15,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ThresholdController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ItemLogsReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,6 +75,11 @@ Route::get('settings', function () {
 Route::get('inventory-reports', function () {
     return view('Inventory-reports');
 })->name('Inventory-reports');
+
+Route::get('/item-logs', function () {
+    return view('item-logs-report');
+})->name('Item-logs');
+
 
 Route::get('sales-reports', function () {
     return view('sales-reports');
@@ -146,6 +152,7 @@ Route::put('/update-customer/{id}', [CustomerController::class, 'updateCustomer'
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 Route::get('/sales-reports', [TransactionController::class, 'salesrep'])->name('sales-reports.index');
+Route::get('/item-logs', [ItemLogsReportController::class, 'index'])->name('item-logs.index');
 Route::get('/inventory-reports', [ProductsController::class, 'invreport'])->name('inventory-reports.index');
 
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
