@@ -196,12 +196,19 @@ function addUser() {
     var newUserAddress = document.getElementById('newUserAddress');
     var newUserUsername = document.getElementById('newUserUsername');
     var newUserPassword = document.getElementById('newUserPassword');
+    var confirmNewUserPassword = document.getElementById('confirmNewUserPassword');
     var newUserRole = document.getElementById('newUserRole');
 
     // Validate each input field
     if (newUserFirstName.value.trim() === '') {
         newUserFirstName.setCustomValidity('Please fill out this field.');
         newUserFirstName.reportValidity();
+        return; // Exit the function
+    }
+
+    if (newUserPassword.value !== confirmNewUserPassword.value) {
+        confirmNewUserPassword.setCustomValidity('Passwords do not match.');
+        confirmNewUserPassword.reportValidity();
         return; // Exit the function
     }
 
@@ -410,12 +417,19 @@ function saveUserChanges() {
     const editedAddress = $('#userAddress').val();
     const editedUserUsername = $('#userUsername').val();
     const editedUserPassword = $('#userPassword').val();
+    const confirmUserPassword = $('#confirmUserPassword').val();
     const editedUserRole = $('#userRole').val(); // Assuming you have a role field in your modal
 
     // Validate each input field
     if (editedFirstName.trim() === '') {
         $('#userFirstName').get(0).setCustomValidity('Please fill out the First Name field.');
         $('#userFirstName').get(0).reportValidity();
+        return;
+    }
+
+    if (editedUserPassword !== confirmUserPassword) {
+        $('#confirmUserPassword').get(0).setCustomValidity('Passwords do not match.');
+        $('#confirmUserPassword').get(0).reportValidity();
         return;
     }
 

@@ -170,8 +170,6 @@ function editRow(event) {
     // Show the edit modal
     $('#editModal').show();
 }
-
-
 function saveChanges() {
     // Get the edited values from the input fields
     const editedQuantity = document.getElementById('editedQuantity').value.trim();
@@ -253,39 +251,40 @@ function saveChanges() {
 
     // Send AJAX request to update the database
     $.ajax({
-    url: `/update-product/${editingProductId}`, // Change `productId` to `editingProductId`
-    type: 'POST', // Use POST method with FormData
-    headers: {
-        'X-CSRF-TOKEN': csrfToken
-    },
-    data: formData,
-    contentType: false, // Set contentType to false for FormData
-    processData: false, // Set processData to false for FormData
-    success: function(response) {
-        console.log('Product updated successfully:', response);
+        url: `/update-product/${editingProductId}`, // Change `productId` to `editingProductId`
+        type: 'POST', // Use POST method with FormData
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: formData,
+        contentType: false, // Set contentType to false for FormData
+        processData: false, // Set processData to false for FormData
+        success: function(response) {
+            console.log('Product updated successfully:', response);
 
-        // Update UI with the new data
-        $(`#quantity_${editingProductId} .quantity`).text(addCommas(editedQuantity));
-        $(`#price_${editingProductId} .price`).text(addCommas(editedPrice));
-        $(`#tag_${editingProductId} .tag`).text(editedTag);
-        $(`#product_name_${editingProductId} .product_name`).text(editedProductName);
-        $(`#category_${editingProductId} .category`).text(editedCategory);
-        $(`#brand_${editingProductId} .brand`).text(editedBrand);
-        $(`#updated_by${editingProductId} .updated_by`).text(editedUpdatedBy);
-        $(`#description_${editingProductId} .description`).text(editedDescription); // Update description in UI
+            // Update UI with the new data
+            $(`#quantity_${editingProductId} .quantity`).text(addCommas(editedQuantity));
+            $(`#price_${editingProductId} .price`).text(addCommas(editedPrice));
+            $(`#tag_${editingProductId} .tag`).text(editedTag);
+            $(`#product_name_${editingProductId} .product_name`).text(editedProductName);
+            $(`#category_${editingProductId} .category`).text(editedCategory);
+            $(`#brand_${editingProductId} .brand`).text(editedBrand);
+            $(`#updated_by${editingProductId} .updated_by`).text(editedUpdatedBy);
+            $(`#description_${editingProductId} .description`).text(editedDescription); // Update description in UI
+            // Hide the modal
+            $('#editModal').hide();
+            showSuccessModal('Product has been edited successfully.'); // Display success message
 
-        // Hide the modal
-        $('#editModal').hide();
-        updateStatusClassForAll();
-        showSuccessModal('Product has been edited successfully.'); // Display success message
-        updateDisplayedValues(); // Call a function to update displayed values
-    },
-    error: function(error) {
-        console.error('Error updating product:', error);
-        // Handle error response (display error message, log, etc.)
-    }
-});
+
+        },
+        error: function(error) {
+            console.error('Error updating product:', error);
+            // Handle error response (display error message, log, etc.)
+        }
+    });
 }
+
+
 
 function showErrorModal(errorMessage) {
     document.getElementById('errorText').innerText = errorMessage;
