@@ -26,8 +26,6 @@ use App\Http\Controllers\ItemLogsReportController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -36,75 +34,43 @@ Route::get('/dashboard', function () {
     return redirect('/admin');
 });
 
-Route::get('/users', function () {
-    return view('Users');
-})->middleware(['auth', 'verified'])->name('users');
-
-Route::get('/users', [UserController::class, 'showUsers'])
-    ->middleware(['auth', 'verified'])
-    ->name('users');
-
-Route::get('admin', function () {
-    return view('Admin');
-})->name('admin');
-
-Route::get('inventory', function () {
-    return view('Inventory');
-})->name('inventory');
-
-Route::get('transactions', function () {
-    return view('Transactions');
-})->name('transactions');
-
-Route::get('products', function () {
-    return view('Products');
-})->name('products');
-
 Route::get('reports', function () {
     return view('Reports');
 })->name('reports');
 
-Route::get('pos', function () {
-    return view('POS');
-})->name('pos');
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    Route::view('admin', 'Admin')->name('admin');
+    Route::view('inventory', 'Inventory')->name('inventory');
+    Route::view('products', 'Products')->name('products');
+    Route::view('transactions', 'Transactions')->name('transactions');
+    Route::view('customers', 'Customers')->name('customers');
+    Route::view('sales-reports', 'SalesReports')->name('sales-reports');
+    Route::view('inventory-reports', 'InventoryReports')->name('inventory-reports');
+    Route::view('settings', 'Settings')->name('settings');
+    Route::get('/users', [UserController::class, 'showUsers'])->name('users'); // Users route accessible only to admins
+    Route::get('/users', [UserController::class, 'showUsers'])->middleware(['auth', 'verified'])->name('users');
+   
+});
 
-Route::get('settings', function () {
-    return view('Settings');
-})->name('settings');
-
-Route::get('inventory-reports', function () {
-    return view('Inventory-reports');
-})->name('Inventory-reports');
-
-Route::get('/item-logs', function () {
-    return view('item-logs-report');
-})->name('Item-logs');
+// Inventory routes
+Route::middleware(['auth', 'verified', 'inventory'])->group(function () {
+    Route::view('admin', 'Admin')->name('admin');
+    Route::view('inventory', 'Inventory')->name('inventory');
+    Route::view('products', 'Products')->name('products');
+    Route::view('inventory-reports', 'InventoryReports')->name('inventory-reports');
+    Route::view('settings', 'Settings')->name('settings');
+});
 
 
-Route::get('sales-reports', function () {
-    return view('sales-reports');
-})->name('sales-reports');
-
-Route::get('daily-sales', function () {
-    return view('Daily-sales');
-})->name('daily-sales');
-
-Route::get('monthly-sales', function () {
-    return view('Monthly-sales');
-})->name('monthly-sales');
-
-Route::get('daily-inventory', function () {
-    return view('Daily-inventory');
-})->name('daily-inventory');
-
-Route::get('monthly-inventory', function () {
-    return view('Monthly-inventory');
-})->name('monthly-inventory');
-
-Route::get('customers', function () {
-    return view('Customers');
-})->name('customers');
-
+// Cashier routes
+Route::middleware(['auth', 'verified', 'cashier'])->group(function () {
+    Route::view('admin', 'Admin')->name('admin');
+    Route::view('products', 'Products')->name('products');
+    Route::view('transactions', 'Transactions')->name('transactions');
+    Route::view('customers', 'Customers')->name('customers');
+    Route::view('sales-reports', 'SalesReports')->name('sales-reports');
+    Route::view('settings', 'Settings')->name('settings');
+});
 
 // Use UserController to handle inventory-related functionality
 
@@ -126,7 +92,6 @@ Route::put('/update-qty/{id}', [ProductController::class, 'updateQty']);
 Route::get('/edit-product/{id}', [ProductController::class, 'editProduct'])->name('product.edit');
 Route::delete('/delete-product/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
 Route::put('/update-product/{id}', [ProductController::class, 'updateProduct']);
-
 Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
 Route::post('/upload-inventory', [ProductController::class, 'uploadInventory']);
 
@@ -176,11 +141,8 @@ Route::get('/pos/edit-transaction/{transaction_id}', [POSController::class, 'edi
 Route::put('/pos/update-transaction/{transaction_id}', [POSController::class, 'updateTransaction']);
 Route::delete('/pos/delete-transaction/{transaction_id}', [POSController::class, 'deleteTransaction']);
 Route::post('/update-transactions', 'TransactionController@updateTransactions');
-
 Route::get('/get-product-by-barcode', [ProductController::class, 'getProductByBarcode']);
 Route::get('/get-product-by-barcode', [ProductsController::class, 'getProductByBarcode']);
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -189,6 +151,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/reports/{type}', [ReportController::class, 'show'])->name('reports.show');
 });
+
 
 require __DIR__.'/auth.php';
 

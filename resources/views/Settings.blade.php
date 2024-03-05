@@ -82,28 +82,8 @@
                             </div>
                             <h3>Address Details:</h3>
                             <div class="form-group">
-                                <label for="address">Address Line 1:</label>
-                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Address Line 2:</label>
-                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Subdivision:</label>
-                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Province</label>
-                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="address">City/Munincipality</label>
-                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Barangay</label>
-                                <input type="text" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
+                                <label for="address">Address:</label>
+                                <input type="address" id="address" name="address" class="account-input" value="{{ auth()->user()->employee->address }}">
                             </div>
                             <div class="button-container">
                                 <button type="button" class="edit-btn">Edit Profile</button>
