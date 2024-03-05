@@ -11,15 +11,13 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\TopProduct;
 use App\Models\Category;
+use App\Models\TransactionItemLog; // Import the TransactionItemLog model
 use Illuminate\Support\Facades\Auth;
-
 
 class POSController extends Controller
 {
-
     public function showPOS()
     {
-
         $transactions = Transaction::all();
         $customers = Customer::all();
         $products = Product::all();
@@ -35,7 +33,7 @@ class POSController extends Controller
         }
 
         // Pass the products to the 'POS' view
-        return view('POS', compact('products', 'customers', 'transactions', 'users', 'brands', 'categories',));
+        return view('POS', compact('products', 'customers', 'transactions', 'users', 'brands', 'categories'));
     }
 
     private function convertArrayEncoding($array)
@@ -79,26 +77,19 @@ class POSController extends Controller
     }
 
     public function getLatestTransactionId()
-{
-    $latestTransaction = Transaction::latest('transaction_id')->first();
+    {
+        $latestTransaction = Transaction::latest('transaction_id')->first();
 
-    return response()->json(['latestTransactionId' => optional($latestTransaction)->id]);
-}
+        return response()->json(['latestTransactionId' => optional($latestTransaction)->id]);
+    }
 
     public function addTransaction(Request $request)
     {
-
         $userId = Auth::id();
     
         // Create a new transaction instance
         $transaction = new Transaction;
-        
-        // Assign the user's ID to the transaction
-        $transaction->user_id = $userId;
-
-        // Create a new transaction instance
-        $transaction = new Transaction;
-        $transaction->user_id = $request->input('user_id'); // Add user_id
+        $transaction->user_id = $userId; // Add user_id
         $transaction->customer_name = $request->input('customer_name');
         $transaction->phone = $request->input('phone');
         $transaction->date = $request->input('date');
@@ -116,18 +107,18 @@ class POSController extends Controller
         $transaction->payment_method = $request->input('payment_method');
         $transaction->status = $request->input('status');
         $transaction->cashier_name = $request->input('cashier_name');
-        
+    
         $laborAmount = $request->input('labor_amount');
         $transaction->labor_amount = $laborAmount;
         $transaction->save();
-        
+    
         // Retrieve items and quantities from the request
         $items = explode(', ', $request->input('items'));
         $qtys = explode(', ', $request->input('qty'));
-
+    
         // Log the received items and quantities
         Log::info('Items and qtys:', ['items' => $items, 'qtys' => $qtys]);
-
+    
         // Ensure items and quantities are properly defined and match in length
         if (count($items) === count($qtys)) {
             foreach ($items as $index => $itemName) {
@@ -135,15 +126,13 @@ class POSController extends Controller
                 if ($itemName === "Labor") {
                     continue; // Skip processing for "Labor" item
                 }
-
+    
                 $product = Product::where('product_name', $itemName)->first();
-            
+    
                 if ($product) {
-                    
                     $product->save();
                     $topProduct = TopProduct::where('item_name', $itemName)->first();
                     if ($topProduct) {
-
                         $topProduct->quantity_sold += $qtys[$index];
                     } else {
                         $topProduct = new TopProduct();
@@ -151,11 +140,35 @@ class POSController extends Controller
                         $topProduct->quantity_sold = $qtys[$index];
                     }
                     $topProduct->save();
+    
+                    // Log transaction item
+                    $this->logTransactionItem($product->id, $qtys[$index], 'OUT');
+
                 } else {
                     Log::error('Product not found for item name: ' . $itemName);
                     return response()->json(['error' => 'Product not found for item name: ' . $itemName], 400);
                 }
             }
+        } else {
+            Log::error('Mismatched items and quantities');
+            return response()->json(['error' => 'Mismatched items and quantities'], 400);
         }
     }
+    
+    private function logTransactionItem($itemId, $quantity, $remarks)
+    {
+        try {
+            // Create a new log entry for the transaction item
+            $logEntry = new TransactionItemLog();
+            $logEntry->item_id = $itemId;
+            $logEntry->qty = $quantity;
+            $logEntry->remarks = $remarks; // Set remarks
+            $logEntry->save();
+        } catch (\Exception $e) {
+            Log::error('Error logging transaction item: ' . $e->getMessage());
+            // Handle the error as needed, e.g., return an error response
+        }
+    }
+    
+    
 }
