@@ -49,77 +49,12 @@
                     <div class="add-product-container">
                         <button class="add-product-btn" onclick="printReport()">Print Report</button>
                                     <div class="dropdown-container">
-                                    <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
-                                        <option value="">Select Status</option>
-                                        <option value="Out of Stock">Out of Stock</option>
-                                        <option value="Low Stock">Low Stock</option>
-                                        <option value="In Stock">In Stock</option>
-                                    </select>
-            
-                                    <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
-                                        <option value="">Select Category</option>
-                                        <option value="Air Filter">Air Filter</option>
-                                        <option value="Battery">Battery</option>
-                                        <option value="Bearing">Bearing</option>
-                                        <option value="Belt">Belt</option>
-                                        <option value="Brake Pads">Brake Pads</option>
-                                        <option value="Center Spring">Center Spring</option>
-                                        <option value="Clutch">Clutch</option>
-                                        <option value="Crank">Crank</option>
-                                        <option value="Cylinder">Cylinder</option>
-                                        <option value="Disc Brake">Disc Brake</option>
-                                        <option value="Engine Oil">Engine Oil</option>
-                                        <option value="ECU">ECU</option>
-                                        <option value="Flyball">Flyball</option>
-                                        <option value="Fuel Filter">Fuel Filter</option>
-                                        <option value="Fuel Injector">Fuel Injector</option>
-                                        <option value="Fuel Pump">Fuel Pump</option>
-                                        <option value="Gasket">Gasket</option>
-                                        <option value="Grip">Grip</option>
-                                        <option value="ISC">ISC</option>
-                                        <option value="MDL Bracket">MDL Bracket</option>
-                                        <option value="O Ring">O Ring</option>
-                                        <option value="Oil Seal">Oil Seal</option>
-                                        <option value="Piston">Piston</option>
-                                        <option value="Pulley Set">Pulley Set</option>
-                                        <option value="Rectifier">Rectifier</option>
-                                        <option value="Rocker Arm">Rocker Arm</option>
-                                        <option value="Slider Piece">Slider Piece</option>
-                                        <option value="Solenoid Set">Solenoid Set</option>
-                                        <option value="Sparkplug">Sparkplug</option>
-                                        <option value="Speedometer">Speedometer</option>
-                                        <option value="Starter">Starter</option>
-                                        <option value="Stator">Stator</option>
-                                        <option value="Torque">Torque</option>
-                                        <option value="Valve">Valve</option>
-                                        <option value="Washer Plate">Washer Plate</option>
-                                        <option value="Water Pump">Water Pump</option>
-                                        <option value="Wheel">Wheel</option>
-                                        <option value="Wheel Speed Sensor">Wheel Speed Sensor</option>
-                                        <option value="TPS">TPS</option>
-                                    </select>
-            
-                                    <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
-                                        <option value="">Select Brand</option>
-                                        <option value="Mio">Mio</option>
-                                        <option value="NMAX">NMAX</option>
-                                        <option value="AEROX">AEROX</option>
-                                        <option value="PCX">PCX</option>
-                                        <option value="Click">Click</option>
-                                        <option value="ADV">ADV</option>
-                                        <option value="Beat">Beat</option>
-                                        <option value="Faito">Faito</option>
-                                        <option value="M3">M3</option>
-                                        <option value="PIAA">PIAA</option>
-                                        <option value="Burgman">Burgman</option>
-                                        <option value="Legion">Legion</option>
-                                        <option value="Error 12">Error 12</option>
-                                        <option value="MXI">MXI</option>
-                                        <option value="RS8">RS8</option>
-                                    </select>
+                                    <label for="startDate" class="date-filter">From</label>
+                                    <input type="date" id="startDate" class="filter-input" value="{{ now()->format('Y-m-d') }}" onchange="filterTable()" onfocus="this.value='';">                            
+                                    <label for="endDate" class="date-filter">To</label>
+                                    <input type="date" id="endDate" class="filter-input" onchange="filterTable()">
                                     
-                                        <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
-                                    </div>
+                                        <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">                                    </div>
                                 </div>
                             </div>
             
@@ -153,7 +88,9 @@
                                             <td>{{ $product->id }}</td>
                                             <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
                                             <td class="quantity" id="quantity{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span></td>
-                                            <td>{{ $product->created_at}}</td> <!-- Format created_at as date only -->
+                                            <td>{{ \Illuminate\Support\Carbon::parse($product->created_at)->format('Y-m-d') }}</td>
+
+ <!-- Format created_at as date only -->
 
                                         </tr>
                                         @endforeach
@@ -179,6 +116,33 @@
     <script src="{{ asset('assets/js/inventory.js') }}"></script> 
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script>
+        
+        function filterTable() {
+    var startDate = new Date(document.getElementById('startDate').value);
+    var endDate = new Date(document.getElementById('endDate').value);
+
+    // Swap dates if startDate is greater than endDate
+    if (startDate > endDate) {
+        var temp = startDate;
+        startDate = endDate;
+        endDate = temp;
+    }
+
+    // Iterate through each row of the table body
+    var tableRows = document.querySelectorAll('#inventoryTableBody tr');
+    tableRows.forEach(function(row) {
+        var rowDate = new Date(row.cells[4].textContent); // Get the date from the fifth column
+
+        // If the row's date is within the specified range, show the row; otherwise, hide it
+        if (rowDate >= startDate && rowDate <= endDate) {
+            row.style.display = 'table-row';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+
         function printReport() {
             // Create a new window to display the report content
             var printWindow = window.open('', '_blank');
