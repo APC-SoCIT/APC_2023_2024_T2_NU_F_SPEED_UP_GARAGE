@@ -13,6 +13,17 @@
     <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
+    <style>
+        .out-remark {
+            color: red;
+            font-weight: 600;
+        }
+        .in-remark {
+            color: green;
+            font-weight: 600;
+        }
+    </style>
+    
     <title>Reports</title>
 </head>
 
@@ -89,7 +100,7 @@
                                             <td>{{ $log->product->product_name }}</td>
                                             <td>{{ $log->item_id }}</td>
                                             <td>{{ $log->qty }}</td>
-                                            <td>{{ $log->remarks }}</td>
+                                            <td class="@if($log->remarks == 'OUT') out-remark @else in-remark @endif">{{ $log->remarks }}</td>
                                             <td class="timestamp">{{ $log->created_at }}</td>
                                         </tr>
                                         @endforeach
