@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Customer;
-use App\Models\Threshold; // Add this line
+use App\Models\Threshold;
 use App\Models\TopProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +14,29 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
+
+    public function getTopProducts()
+    {
+        $topProducts = TopProduct::all();
+        return response()->json($topProducts);
+    }
+
+    public function updateTopProduct(Request $request, $id)
+    {
+        $topProduct = TopProduct::findOrFail($id);
+        
+        // Check if the created_at month is the current month
+        if (now()->isSameMonth($topProduct->created_at)) {
+            // If the created_at month is the current month, save the product and return success message
+            $topProduct->save();
+            return response()->json(['message' => 'Quantity sold data updated successfully']);
+        } else {
+            // If the created_at month is not the current month, delete the product and return success message
+            $topProduct->delete();
+            return response()->json(['message' => 'Data deleted successfully as created_at month is not the current month.']);
+        }
+    }
+
     public function index()
     {
         $topProductsData = TopProduct::all();
@@ -37,6 +60,8 @@ class AdminController extends Controller
         $totalInventoryValue = $products->sum(function ($product) {
             return $product->quantity * $product->price;
         });
+
+        
 
         $formattedTotalInventoryValue = number_format($totalInventoryValue, 2, '.', ',');
 
@@ -95,6 +120,28 @@ class AdminController extends Controller
         ->pluck('total_sales', 'day')
         ->toArray();
 
+        
+
+        $yesterdaySales = $dailySalesData[date('Y-m-d', strtotime('-1 day'))] ?? 0;
+        $todaySales = end($dailySalesData) ?? 0;
+
+        // Calculate the difference in sales
+        $difference = $todaySales - $yesterdaySales;
+
+        // Calculate the percentage change
+        $percentageChange = ($difference / ($yesterdaySales == 0 ? 1 : $yesterdaySales)) * 100; // Prevent division by zero
+
+        $percentageChangeSign = $percentageChange >= 0 ? '+' : '-';
+        $percentageChangeColor = $percentageChange >= 0 ? 'green' : 'red';
+
+        // Display the percentage change
+
+
+
+        $currentMonth = Carbon::now()->format('Y-m');
+        $previousMonth = Carbon::now()->subMonth()->format('Y-m');
+        
+        // Retrieve sales data for the last six months
         $lastSixMonthsSalesData = Transaction::select(
             DB::raw('SUM(total_amount) as total_sales'),
             DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month_year')
@@ -105,11 +152,33 @@ class AdminController extends Controller
             ->pluck('total_sales', 'month_year')
             ->toArray();
         
+        // Calculate current month and previous month sales
+        $currentMonthSales = $lastSixMonthsSalesData[$currentMonth] ?? 0;
+        $previousMonthSales = $lastSixMonthsSalesData[$previousMonth] ?? 0;
+        
+        // Calculate gain
+        $gain = $currentMonthSales - $previousMonthSales;
+        
+        // Determine gain sign and color
+        $gainSign = $gain >= 0 ? '+' : '-';
+        $gainColor = $gain >= 0 ? 'green' : 'red';
+        
+        // Format gain as currency
+        $formattedGain = '₱' . number_format(abs($gain), 2, '.', ',');
+        
+        // Create an array for percentMonth
+        $percentMonth = [
+            'value' => $formattedGain,
+            'sign' => $gainSign,
+            'color' => $gainColor,
+        ];
+        
         // Create an array with sales data for each of the last six months
         $lastSixMonths = collect(range(5, 0, -1))->map(function ($i) use ($lastSixMonthsSalesData) {
             $monthYear = Carbon::now()->subMonths($i)->format('Y-m');
             return $lastSixMonthsSalesData[$monthYear] ?? 0;
         });
+        
 
         return view('admin', [
             'products' => $products,
@@ -130,6 +199,15 @@ class AdminController extends Controller
             'currentMonth' => $currentMonth,
             'totalLaborSalesToday' => '₱' . number_format($totalLaborSalesToday, 2, '.', ','),
             'totalProductSalesToday' =>'₱' . number_format($totalProductSalesToday, 2, '.', ','),
+            'percentageChange' => '%' . number_format($percentageChange, 2, '.', ','),
+            'percentageChange' => [
+                'value' => $percentageChange,
+                'sign' => $percentageChangeSign,
+                'color' => $percentageChangeColor,
+                
+            ],
+            'percentMonth' => $percentMonth,
         ]);
     }
 } 
+

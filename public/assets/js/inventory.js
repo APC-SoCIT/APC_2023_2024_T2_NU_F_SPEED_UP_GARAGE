@@ -125,6 +125,194 @@ function handleImageChange(input) {
 }
 
 
+
+var editingProductId;  // Declare a variable to store the currently editing product ID
+var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
+
+function editRow(event) {
+    // Get the parent row of the clicked button
+    var row = $(event.target).closest('tr');
+
+    // Extract data from the row
+    editingProductId = row.data('id'); // Set the value of editingProductId
+    var tag = row.find('.tag').text();
+    var productName = row.find('.product-name').text();
+    var category = row.find('.category').text();
+    var brand = row.find('.brand').text();
+    var quantity = row.find('.quantity span').text();
+    var price = row.find('.price span').text();
+    var updatedBy = row.find('.updated_by span').text();
+    var description = row.find('.description').text(); // Extract description
+
+    // Remove the peso sign from the price for editing
+    var priceWithoutPesoSign = price.replace('₱', ''); // Remove the peso sign
+
+    // Get the current image source
+    var currentImageSrc = row.find('.product-image img').attr('src');
+
+    // Populate the modal fields with the extracted data
+    $('#editedTag').val(tag);
+    $('#editedProductName').val(productName);
+    $('#editedCategory').val(category);
+    $('#editedBrand').val(brand);
+    $('#editedQuantity').val(quantity);
+    $('#editedPrice').val(priceWithoutPesoSign); // Use the price without peso sign
+    $('#editedUpdatedBy').val(currentUserUsername);
+    $('#editedDescription').val(description); // Set the description field value
+
+    // Display the current image in the modal
+    if (currentImageSrc) {
+        $('#editedImagePreview').attr('src', currentImageSrc);
+        $('#editedImagePlaceholderContainer').addClass('has-image');
+    } else {
+        $('#editedImagePreview').attr('src', ''); // Set placeholder image or empty string
+        $('#editedImagePlaceholderContainer').removeClass('has-image'); // Remove the 'has-image' class
+    }
+
+    // Show the edit modal
+    $('#editModal').show();
+}
+
+
+function saveChanges() {
+    // Get the edited values from the input fields
+    const editedQuantity = document.getElementById('editedQuantity').value.trim();
+    const editedPrice = document.getElementById('editedPrice').value.trim();
+    const editedTag = document.getElementById('editedTag').value.trim();
+    const editedProductName = document.getElementById('editedProductName').value.trim();
+    const editedCategory = document.getElementById('editedCategory').value.trim();
+    const editedBrand = document.getElementById('editedBrand').value.trim();
+    const editedUpdatedBy = document.getElementById('editedUpdatedBy').value.trim();
+    const editedDescription = document.getElementById('editedDescription').value.trim(); // Get the edited description
+    const editedProductImage = document.getElementById('editedProductImage');
+
+    if (editedTag === '') {
+        const tagInput = document.getElementById('editedTag');
+        tagInput.setCustomValidity('Please fill out the barcode.');
+        tagInput.reportValidity();
+        return;
+    }
+
+    if (editedProductName === '') {
+        const productNameInput = document.getElementById('editedProductName');
+        productNameInput.setCustomValidity('Please fill out the product name.');
+        productNameInput.reportValidity();
+        return;
+    }
+
+    if (editedQuantity === '') {
+        const quantityInput = document.getElementById('editedQuantity');
+        quantityInput.setCustomValidity('Please add product quantity.');
+        quantityInput.reportValidity();
+        return;
+    }
+
+
+    if (editedCategory === '') {
+        const categoryInput = document.getElementById('editedCategory');
+        categoryInput.setCustomValidity('Please select category.');
+        categoryInput.reportValidity();
+        return;
+    }
+
+    if (editedBrand === '') {
+        const brandInput = document.getElementById('editedBrand');
+        brandInput.setCustomValidity('Please select brand.');
+        brandInput.reportValidity();
+        return;
+    }
+
+    if (editedDescription === '') {
+        const brandInput = document.getElementById('editedDescription');
+        brandInput.setCustomValidity('Please add description.');
+        brandInput.reportValidity();
+        return;
+    }
+
+    if (editedPrice === '') {
+        const priceInput = document.getElementById('editedPrice');
+        priceInput.setCustomValidity('Please enter product price.');
+        priceInput.reportValidity();
+        return;
+    }
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    // Prepare form data for AJAX request
+    const formData = new FormData();
+    formData.append('_method', 'PUT'); // Add _method field to emulate PUT request
+    formData.append('quantity', editedQuantity);
+    formData.append('price', editedPrice);
+    formData.append('tag', editedTag);
+    formData.append('product_name', editedProductName);
+    formData.append('category', editedCategory);
+    formData.append('updated_by', editedUpdatedBy);
+    formData.append('brand', editedBrand);
+    formData.append('description', editedDescription); // Append the description field
+
+    // Check if a new product image is selected
+    const productImage = editedProductImage.files[0];
+    if (productImage) {
+        // Check if the file type is an image
+        if (!productImage.type.startsWith('image/')) {
+            showErrorModal('Please upload an image file.');
+            return;
+        }
+        formData.append('product_image', productImage);
+    }
+
+    // Send AJAX request to update the database
+    $.ajax({
+    url: `/update-product/${editingProductId}`, // Change `productId` to `editingProductId`
+    type: 'POST', // Use POST method with FormData
+    headers: {
+        'X-CSRF-TOKEN': csrfToken
+    },
+    data: formData,
+    contentType: false, // Set contentType to false for FormData
+    processData: false, // Set processData to false for FormData
+    success: function(response) {
+        console.log('Product updated successfully:', response);
+
+        // Update UI with the new data
+        $(`#quantity_${editingProductId} .quantity`).text(addCommas(editedQuantity));
+        $(`#price_${editingProductId} .price`).text(addCommas(editedPrice));
+        $(`#tag_${editingProductId} .tag`).text(editedTag);
+        $(`#product_name_${editingProductId} .product_name`).text(editedProductName);
+        $(`#category_${editingProductId} .category`).text(editedCategory);
+        $(`#brand_${editingProductId} .brand`).text(editedBrand);
+        $(`#updated_by${editingProductId} .updated_by`).text(editedUpdatedBy);
+        $(`#description_${editingProductId} .description`).text(editedDescription); // Update description in UI
+
+        // Hide the modal
+        $('#editModal').hide();
+        updateStatusClassForAll();
+        showSuccessModal('Product has been edited successfully.'); // Display success message
+        updateDisplayedValues(); // Call a function to update displayed values
+    },
+    error: function(error) {
+        console.error('Error updating product:', error);
+        // Handle error response (display error message, log, etc.)
+    }
+});
+}
+
+function showErrorModal(errorMessage) {
+    document.getElementById('errorText').innerText = errorMessage;
+    document.getElementById('errorModal').style.display = 'flex';
+}
+
+function closeErrorModal() {
+    document.getElementById('errorModal').style.display = 'none';
+}
+
+function cancelEditModal() {
+    $('#editModal').hide();
+    $(document).on('click', '.edit-button', editRow);
+}
+
+
+
 function showScanProductModal() {
     const scanProductModal = document.getElementById('scanProductModal');
     scanProductModal.style.display = 'flex'; 
@@ -368,7 +556,7 @@ function parseNumericalValue(value) {
 
 function showAddProductModal(scannedBarcode) {
     const addProductModal = document.getElementById('addProductModal');
-    const editModal = document.getElementById('editModal');
+   
     
     // Set the value of the newTag input field to the scanned barcode if available
     if (scannedBarcode) {
@@ -384,6 +572,17 @@ function showAddProductModal(scannedBarcode) {
     addProductModal.style.display = 'flex'; // Use 'flex' to center the modal
 }
 
+function openModal() {
+    const modal = document.getElementById('editModal');
+    modal.style.display = 'flex'; // Use 'flex' to center the modal
+}
+
+// Function to close the modal
+function closeModal() {
+    const modal = document.getElementById('editModal');
+    modal.style.display = 'none';
+}
+
 
 const handleBarcodeScan = async (scannedBarcode) => {
     try {
@@ -392,40 +591,56 @@ const handleBarcodeScan = async (scannedBarcode) => {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
+                    const response = JSON.parse(xhr.response);
                     if (response.product_name) {
                         document.getElementById('scanBarcode').value = response.tag;
                         document.getElementById('scanId').value = response.id;
                         document.getElementById('scanProduct').value = response.product_name;
                         document.getElementById('scanCategory').value = response.category;
                         document.getElementById('scanBrand').value = response.brand;
-                        const originalQuantity = parseInt(response.quantity);
-                        const totalQuantity = originalQuantity;
-                        document.getElementById('scanQuantity').value = originalQuantity;
+                        document.getElementById('scanDescription').value = response.description;
+                        document.getElementById('scanQuantity').value = parseInt(response.quantity);
                         document.getElementById('scanPrice').value = '₱' + response.price;
                         document.getElementById('productImage').src = response.product_image;
                         document.getElementById('productImageContainer').style.display = 'block';
                         document.getElementById('scanProductModal').style.display = 'flex';
                     }
                 } else {
-                    // Error fetching product data
-                    if (confirm('Error fetching product data with barcode. Do you want to add a new product?')) {
-                        // If user selects "Yes", show addProductModal and pass scannedBarcode
-                        showAddProductModal(scannedBarcode);
-                    } else {
-                        // If user selects "No", do nothing or handle as needed
-                    }
+                    // Handle non-200 status codes
+                    console.error('Error fetching product data. Status code:', xhr.status);
+                    // Optionally, display a message to the user
+                    alert('Error fetching product data. Please try again later.');
                 }
             }
+        };
+        xhr.onerror = function() {
+            // Handle network errors
+            console.error('Network error occurred while fetching product data.');
+            // Optionally, display a message to the user
+            alert('Network error occurred while fetching product data. Please check your internet connection.');
         };
         xhr.send();
     } catch (error) {
         console.error('Error searching for product:', error);
+        // Optionally, display a message to the user
+        alert('An unexpected error occurred while fetching product data. Please try again later.');
     }
 };
 
+
 const handleKeyPress = async (event) => {
-    // Check if the entered key is a digit or Enter key
+    // Check if the modals for editing or adding products are active
+    const addProductModalVisible = document.getElementById('addProductModal').style.display === 'flex';
+    const editModalVisible = $('#editModal').is(':visible'); // Check if the edit modal is visible using jQuery
+
+
+    // If either modal is active, prevent barcode scanning
+    if (addProductModalVisible || editModalVisible) {
+       
+        return;
+    }
+
+    // Handle barcode scanning if no modals are active
     if (/^[0-9]$/.test(event.key)) {
         // Append the digit to the scannedBarcode
         scannedBarcode += event.key;
@@ -452,7 +667,6 @@ document.addEventListener('keypress', handleKeyPress);
 function closeScanProductModal() {
     document.getElementById('scanProductModal').style.display = 'none';
 }
-
 
 
 function decrementQuantity() {

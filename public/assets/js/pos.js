@@ -319,16 +319,12 @@ addQty(item, qty) {
     submitable() {
       const cashierNameElement = document.getElementById("cashierName");
       const customerNameElement = document.getElementById("customerName");
-      const phoneElement = document.getElementById("phone");
-     
-    
-      const isPhoneSelected = phoneElement.value !== "Select Phone";
       const isCashierSelected = cashierNameElement.value !== "Select Cashier";
       const isCustomerSelected = customerNameElement.value !== "Select Customer";
      
       const isCashEnough = this.change >= 0;
  
-      return isPhoneSelected && isCashierSelected && isCustomerSelected && isCashEnough && this.cart.length > 0;
+      return isCashierSelected && isCustomerSelected && isCashEnough && this.cart.length > 0;
     },
 
     submit: async function () {
@@ -802,7 +798,7 @@ function isNumeric(evt) {
 }
 
 
-async function handleBarcodeScan(scannedBarcode) {
+async function handleBarcodeScan1(scannedBarcode) {
   try {
       const response = await fetch('http://127.0.0.1:8000/pos1');
       const data = await response.json();
@@ -833,7 +829,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (/^[0-9]+$/.test(event.key) || event.key === '\n' || event.key === '\r') {
           scannedBarcode += event.key;
       } else if (event.key === 'Enter') {
-          await handleBarcodeScan(scannedBarcode);
+          await handleBarcodeScan1(scannedBarcode);
           scannedBarcode = '';
       }
   };

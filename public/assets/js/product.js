@@ -115,6 +115,7 @@ const handleBarcodeScan1 = async (scannedBarcode1) => {
                         document.getElementById('scanId').value = response.id;
                         document.getElementById('scanProduct').value = response.product_name;
                         document.getElementById('scanCategory').value = response.category;
+                        document.getElementById('scanDescription').value = response.description;
                         document.getElementById('scanBrand').value = response.brand;
                         const originalQuantity = parseInt(response.quantity);
                         const totalQuantity = originalQuantity;

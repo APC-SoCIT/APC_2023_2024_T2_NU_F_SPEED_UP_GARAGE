@@ -105,69 +105,6 @@ searchBtn.addEventListener('click', function (e) {
     }
 });
 
-function openModal() {
-    const modal = document.getElementById('editModal');
-    modal.style.display = 'flex'; // Use 'flex' to center the modal
-}
-
-// Function to close the modal
-function closeModal() {
-    const modal = document.getElementById('editModal');
-    modal.style.display = 'none';
-}
-
-function cancelEditModal() {
-    // Reset the file input
-    document.getElementById('editedProductImage').value = '';
-
-    // Reset the image preview
-    const imagePreview = document.getElementById('editedImagePreview');
-    imagePreview.src = '';
-
-    // Close the modal
-    closeModal();
-}
-
-let currentEditingId;
-
-function editRow(event) {
-    const row = event.target.closest('tr');
-
-    if (row) {
-        currentEditingId = row.getAttribute('data-id');
-
-        // Fetch data from the row and populate the modal fields
-        const tagElement = row.querySelector('.tag');
-        const productNameElement = row.querySelector('.product-name');
-        const categoryElement = row.querySelector('.category');
-        const brandElement = row.querySelector('.brand');
-        const quantityElement = row.querySelector('.quantity');
-        const priceElement = row.querySelector('.price');
-        const imageElement = row.querySelector('.product-image');
-
-        const tag = tagElement ? tagElement.textContent : '';
-        const productName = productNameElement ? productNameElement.textContent : '';
-        const category = categoryElement ? categoryElement.textContent : '';
-        const brand = brandElement ? brandElement.textContent : '';
-        const quantity = quantityElement ? quantityElement.textContent : '';
-        const price = priceElement ? priceElement.textContent : '';
-        const imageUrl = imageElement ? imageElement.getAttribute('src') : '';
-
-        // Populate the modal fields with the fetched data
-        document.getElementById('editedTag').value = tag;
-        document.getElementById('editedProductName').value = productName;
-        document.getElementById('editedCategory').value = category;
-        document.getElementById('editedBrand').value = brand;
-        document.getElementById('editedQuantity').value = quantity;
-        document.getElementById('editedPrice').value = price;
-
-        // Set the current image in the preview
-        const imagePreview = document.getElementById('editedImagePreview');
-        imagePreview.src = imageUrl;
-
-        openModal();
-    }
-}
 
 function EditImageChange(input) {
     const imagePreview = document.getElementById('editedImagePreview');

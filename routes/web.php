@@ -127,7 +127,8 @@ Route::delete('/delete-transaction/{transaction_id}', [TransactionController::cl
 Route::put('/update-transaction/{transaction_id}', [TransactionController::class, 'updateTransaction']);
 
 
-// POS IDK BRO 
+Route::get('/get-top-products', [AdminController::class, 'getTopProducts']);
+Route::put('/update-top-product/{id}', [AdminController::class, 'updateTopProduct']);
 
 Route::get('/pos1', [ProductsController::class, 'getProducts']);
 Route::get('/transaction1', [TransactionController::class, 'getTransactions']);

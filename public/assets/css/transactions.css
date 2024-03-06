@@ -15,3 +15,11 @@
   .search-bar{
     margin-left:10px;
   }
+  .text-right {
+    text-align: right !important;
+    
+  }
+  .td .tr {
+
+    text-align: center;
+  }

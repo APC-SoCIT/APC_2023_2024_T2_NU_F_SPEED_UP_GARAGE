@@ -142,7 +142,7 @@
 
 
 
-              <div class="add-modal" id="scanProductModal">
+        <div class="add-modal" id="scanProductModal">
             <div class="modal-content">
                 <div class="add-customer-modal-title">Scan Product</div> <!-- Add the header -->
                 <div class="divider"></div>
@@ -152,44 +152,42 @@
                 <div class="form-row">
                     <div class="form-row-container">
                         <label for="Barcode">Barcode</label>
-                        <input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" readonly >
+                        <input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" readonly style="cursor: default;">
                     </div>
-                    <div class="form-row-container">
-                        <label for="Id" style="display: none;">ID</label>
-                        <input type="text" id="scanId" name="scanId" placeholder="1" required style="display: none;">
                     </div>
-                </div>
+                    <input type="text" id="scanId" name="scanId" placeholder="1" readonly style="display:none;">
+
                 <div class="form-row">
                     <div class="form-row-container">
                         <label for="Product">Product Name</label>
-                        <input type="text" id="scanProduct" name="scanProduct" placeholder="Oil Filter" readonly>
+                        <input type="text" id="scanProduct" name="scanProduct" placeholder="Oil Filter" readonly style="cursor: default;">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-row-container">
                         <label for="scanDescription">Description</label>
-                        <textarea id="scanDescription" name="scanDescription" placeholder="Description" rows="4"></textarea>
+                        <textarea id="scanDescription" name="scanDescription" placeholder="Description" rows="4" readonly style="cursor: default;"></textarea>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-row-container">
                         <label for="Category">Category</label>
-                        <input type="text" id="scanCategory" name="scanCategory" placeholder="500" readonly>
+                        <input type="text" id="scanCategory" name="scanCategory" placeholder="500" readonly style="cursor: default;">
                     </div>
                     <div class="form-row-container">
                         <label for="Brand">Brand</label>
-                        <input type="text" id="scanBrand" name="scanBrand" placeholder="1" readonly>
+                        <input type="text" id="scanBrand" name="scanBrand" placeholder="1" readonly style="cursor: default;">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-row-container">
                         <label for="Price">Price</label>
-                        <input type="text" id="scanPrice" name="scanPrice" placeholder="500" readonly>
+                        <input type="text" id="scanPrice" name="scanPrice" placeholder="500" readonly style="cursor: default;">
                     </div>
                     <div class="form-row-container">
                         <label for="Quantity">Quantity</label>
                         <div class="quantity-control">
-                            <input type="text" id="scanQuantity" name="scanQuantity" placeholder="1">
+                            <input type="text" id="scanQuantity" name="scanQuantity" placeholder="1" readonly style="cursor: default;">
                         </div>
                     </div>
                 </div>

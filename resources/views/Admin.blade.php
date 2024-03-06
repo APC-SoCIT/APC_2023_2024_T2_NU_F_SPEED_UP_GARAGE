@@ -130,11 +130,13 @@
             <!-- End of Insights -->
 
 
-        @if(Auth::user()->role == 1) {{-- Only for Admin --}}
+            @if(Auth::user()->role == 1) {{-- Only for Admin --}}
             <div class="bottom-data">
                 <!-- Reminders -->
                 <div class="reminders">
-                <h2>Sales</h2>
+                <h2>Sales <span style="color: {{ $percentMonth['color'] }}; font-size: 13px;">
+                {{ $percentMonth['sign'] }}{{ $percentMonth['value'] }}</span>
+                </h2>
                 <p>Month-to-month Comparison</p>
                 <div class="pulse"></div>
                 <div class="chart-area">
@@ -143,20 +145,25 @@
                 </div>
                 </div>
          
-            <div class="reminders">
-                <h2>Top Moving Products</h2>
-                <p>Top Products This Month</p>
-                <div class="pulse"></div>
-                <div class="bar-chart">
-                <div class="grid"></div>
-                </div>
-            </div>
+                <div class="reminders" id="topMovingProducts">
+    <h2>Top Moving Products</h2>
+    <p>Top Products This Month</p>
+    <div class="pulse"></div>
+    <div class="bar-chart">
+        <div class="grid"></div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
             <script> let topProductsData = @json($topProductsData);</script>
 
             <div>
                 <div class="salesreminders">
-                    <h2 id="salesForecastTitle">Sales Forecast</h2>
+                    <h2 id="salesForecastTitle">
+                        Sales Forecast  <span style="color: {{ $percentageChange['color'] }}; font-size: 13px;">
+                            {{ $percentageChange['sign'] }}{{ number_format(abs($percentageChange['value']), 2) }}%
+                        </span>
+                    </h2>
                     <p>Sales Performance Overview</p>
                     <div class="pulse"></div>
                     <div id="dailySalesData" data-daily-sales='{!! json_encode($dailySalesData) !!}'></div>

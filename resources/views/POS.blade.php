@@ -10,18 +10,18 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pos.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/select2.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <title>Point of Sales</title>
+   <title>Point of Sales</title>
 </head>
 
     <x-sidebar />
@@ -43,6 +43,8 @@
       <div class="pos-layout">
 
 
+
+
       <div class="order-info">
         <div class="right-section">
         <div class="order-no" id="receiptNo"></div>
@@ -51,38 +53,27 @@
       <div class="left-section">
         <div class="category-plc">
 
-        <select id="phone" class="category-dropdown1" style="display: none;" name="phone" onchange="updatePhoneLabel()">
-                <option value="">Phone</option>
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->phone }}" data-phone="{{ $customer->fname }}">{{ $customer->phone }}</option>
-                                @endforeach
-              </select>
+      
               <input type="hidden" id="currentUserId" value="{{ auth()->user()->id }}">
               <input type="text" id="cashierName" class="category-dropdown1" value="{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}" readonly>
-                <select id="customerName" class="category-dropdown1" name="customerName" onchange="updatePhoneLabel()">
-                <option value="">Customer</option>
-                    @foreach ($customers as $customer)
-                    <option value="{{ $customer->fname . ' ' . $customer->lname }}" data-phone="{{ $customer->phone }}">{{ $customer->fname }} {{ $customer->lname }}</option>
-
-                    @endforeach
+              <select id="customerName" class="category-dropdown1" name="customerName" >
+                  
+                  @foreach ($customers as $customer)
+                  <option value="{{ $customer->fname . ' ' . $customer->lname }}">{{ $customer->fname }} {{ $customer->lname }}</option>
+                  @endforeach
               </select>
 
-              
+          
               <script>
-        function updatePhoneLabel() {
-        var customerNameDropdown = document.getElementById("customerName");
-        var phoneDropdown = document.getElementById("phone");
-        var selectedCustomerName = customerNameDropdown.value;
-        var selectedPhoneNumber = customerNameDropdown.options[customerNameDropdown.selectedIndex].getAttribute("data-phone");
+              $(document).ready(function() {
+                  $('#customerName').select2();
+              });
+              </script>
 
-        for (var i = 0; i < phoneDropdown.options.length; i++) {
-                            if (phoneDropdown.options[i].value === selectedPhoneNumber) {
-                                phoneDropdown.selectedIndex = i;
-                                break;
-                            }
-           }
-    }
-</script>
+
+
+
+ 
 
             
 <div class="user-table-container">
@@ -132,15 +123,6 @@
             <label for="newBirthday">Birthday</label>
             <input type="text" id="newBirthday" name="newBirthday" placeholder="2002-09-29">
 
-            <script>
-                $(function () {
-                    $("#newBirthday").datepicker({
-                        dateFormat: 'yy-mm-dd',
-                        changeMonth: true,
-                        changeYear: true
-                    });
-                });
-                </script>
         </div>
         </div>
 
@@ -419,11 +401,12 @@
     </div>
   </select>
 
-  <select id="status" class="category-dropdown2" >
+  <select id="status" class="category-dropdown2" style="display:none;">
     <option value="Full Payment">Full Payment</option>
     <option value="Installment">Installment</option>
     </div>
   </select>
+
 
 
       <div class="text-php">
@@ -613,10 +596,7 @@
               <div class="flex-grow">CUSTOMER</div>
               <div x-text="selectedCustomerName"></div>
             </div>
-            <div class="flex text-xs font-semibold">
-              <div class="flex-grow">PHONE</div>
-              <div x-text="selectedPhone"></div>
-            </div>
+       
             <hr class="my-2">
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">LABOR</div>
@@ -670,6 +650,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{ asset('assets/js/pos.js') }}"></script>
     <script src="{{ asset('assets/js/navbar.js') }}"></script> 
+    <script src="{{ asset('assets/js/select2.js') }}"></script> 
     <script src="{{ asset('assets/js/city.js') }}"></script>
     <script src="{{ asset('assets/js/inventory.js') }}"></script> 
     <script src="{{ asset('assets/js/index.js') }}"></script>
