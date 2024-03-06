@@ -39,6 +39,7 @@ class ProductsController extends Controller
             'quantity' => $product->quantity,
             'price' => $product->price,
             'category' => $product->category,
+            'description' => $product->description,
             'brand' => $product->brand,
             'product_image' => asset('storage/product_images/' . $product->product_image),
             // Include other attributes as needed

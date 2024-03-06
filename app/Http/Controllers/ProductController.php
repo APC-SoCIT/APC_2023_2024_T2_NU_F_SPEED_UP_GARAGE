@@ -102,19 +102,17 @@ class ProductController extends Controller
     $product = Product::where('tag', $tag)->first(); // Query the Product table using the tag
 
     if ($product) {
-        // Increment the quantity of the product by 1
-        
-        $product->save();
-
         return response()->json([
-            'id' => $product->id, // Include the product ID
+            'id' => $product->products_id,
             'tag' => $product->tag,
             'product_name' => $product->product_name,
             'quantity' => $product->quantity,
             'price' => $product->price,
             'category' => $product->category,
+            'description' => $product->description,
             'brand' => $product->brand,
-            'product_image' => asset('storage/product_images/' . $product->product_image)
+            'product_image' => asset('storage/product_images/' . $product->product_image),
+            // Include other attributes as needed
         ]);
     } else {
         return response()->json(['error' => 'Product not found for the given barcode'], 404);

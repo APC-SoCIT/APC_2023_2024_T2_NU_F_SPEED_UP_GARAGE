@@ -82,95 +82,67 @@
                 </div>
 
                 <div class="table-container">
-                    <table class="inventory-table">
-                        <thead>
-                        <tr>
-                            <th>Receipt #</th>
-                            <th>Customer Name</th>
-                            <th>Phone</th>
-                            <th>Date</th>
-                            <th>Items</th>
-                            <th>Quantity</th>
-                            <th>VATable</th>
-                            <th>VAT</th>
-                            <th>Total Amount</th>
-                            <th>Cash Amount</th>
-                            <th>GCASH Amount</th>
-                            <th>Card Amount</th>
-                            <th>Total Payment</th>
-                            <th>Change</th>
-                            <th>Payment Method</th>
-                            <th>Payment</th>
-                            <th>Cashier</th>
-                        </tr>
-                        </thead>
-
-                        <tbody id="inventoryTableBody">
-                            @foreach ($transactions as $transaction)
-                            <tr data-id="{{ $transaction->transaction_id }}">
-                            <td>{{ $transaction->transaction_id }}</td>
-                                <td class="customer-name" id="customer_name{{ $transaction->transaction_id }}">{{ $transaction->customer_name}}</td>
-                                <td class="phone" id="phone{{ $transaction->transaction_id }}">{{ $transaction->phone }}</td>
-                                <td class="date" id="date{{ $transaction->transaction_id }}">{{ $transaction->created_at }}</td>
-                                <td class="items" id="items{{ $transaction->transaction_id }}">
-                                    @php
-                                        $items = explode(', ', $transaction->items);
-                                        $quantities = explode(', ', $transaction->qty);
-                                    @endphp
-
-                                    @foreach ($items as $key => $item)
-                                        @if (isset($quantities[$key]))
-                                            {{ $item }} ({{ $quantities[$key] }}pcs)@if (!$loop->last),
-                                            @endif
-                                            <br>
-                                        @endif
-                                    @endforeach
-                                </td>
-                                <td class="quantity" id="quantity{{ $transaction->transaction_id }}"><span class="quantity">{{ $transaction->quantity }}</span><input type="text"style="display:none;"></td>
-                                <td class="vatable numeric-cell" id="vatable{{ $transaction->transaction_id }}">
-    <span class="vatable">₱{{ number_format($transaction->vatable, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-<td class="vat numeric-cell" id="vat{{ $transaction->transaction_id }}">
-    <span class="vat">₱{{ number_format($transaction->vat, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-<td class="total_amount numeric-cell" id="total_amount{{ $transaction->transaction_id }}">
-    <span class="total_amount">₱{{ number_format($transaction->total_amount, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
-    <span class="paid_amount">₱{{ number_format($transaction->cash_amount, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-
-<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
-    <span class="paid_amount">₱{{ number_format($transaction->gcash_amount, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-
-<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
-    <span class="paid_amount">₱{{ number_format($transaction->card_amount, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-
-<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
-    <span class="total_payment">₱{{ number_format($transaction->total_payment, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-<td class="customer-change numeric-cell" id="customer_change_{{ $transaction->transaction_id }}">
-    <span class="customer-change">₱{{ number_format($transaction->customer_change, 2) }}</span>
-    <input type="text" class="edit-customer-change" style="display:none;">
-</td>
-
-                                <td class="payment-method" id="payment_method{{ $transaction->transaction_id }}">{{ $transaction->payment_method }}</td>
-                                <td class="" id="status{{ $transaction->transaction_id }}">{{ $transaction->status }}</td>
-                                <td class="cashier-name" id="cashier_name{{ $transaction->transaction_id }}">{{ $transaction->cashier_name }}</td>
+    <table class="inventory-table">
+        <thead>
+            <tr>
+                <th>Receipt #</th>
+                <th>Customer Name</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Quantity</th>
+                <th>VATable</th>
+                <th>VAT</th>
+                <th>Cash Amount</th>
+                <th>GCASH Amount</th>
+                <th>Card Amount</th>
+                <th>Total Payment</th>
+                <th>Total Amount</th>
+                <th>Change</th>
+                <th>Payment Method</th>
+                <th>Payment</th>
+                <th>Cashier</th>
             </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+        </thead>
+
+        <tbody id="inventoryTableBody">
+            @foreach ($transactions as $transaction)
+            <tr data-id="{{ $transaction->transaction_id }}">
+                <td>{{ $transaction->transaction_id }}</td>
+                <td>{{ $transaction->customer_name }}</td>
+                <td>{{ $transaction->created_at }}</td>
+                <td>
+                    @php
+                        $items = explode(', ', $transaction->items);
+                        $quantities = explode(', ', $transaction->qty);
+                    @endphp
+                    @foreach ($items as $key => $item)
+                        @if (isset($quantities[$key]))
+                            {{ $item }} ({{ $quantities[$key] }} pcs)@if (!$loop->last),
+                            @endif
+                            <br>
+                        @endif
+                    @endforeach
+                </td>
+                <td>
+                    <span class="quantity">{{ $transaction->quantity }}</span>
+                    <input type="text" style="display:none;" value="{{ $transaction->quantity }}">
+                </td>
+                <td class="text-right">₱{{ number_format($transaction->vatable, 2) }}</td>
+                <td class="text-right">₱{{ number_format($transaction->vat, 2) }}</td>
+                <td class="text-right">₱{{ number_format($transaction->cash_amount, 2) }}</td>
+                <td class="text-right">₱{{ number_format($transaction->gcash_amount, 2) }}</td>
+                <td class="text-right">₱{{ number_format($transaction->card_amount, 2) }}</td>
+                <td class="text-right">₱{{ number_format($transaction->total_payment, 2) }}</td>
+                <td class="text-right">₱{{ number_format($transaction->total_amount, 2) }}</td>
+                <td class="text-right">₱{{ number_format($transaction->customer_change, 2) }}</td>
+                <td>{{ $transaction->payment_method }}</td>
+                <td>{{ $transaction->status }}</td>
+                <td>{{ $transaction->cashier_name }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 
                 <div class="pagination">
                     <!-- Previous page button -->

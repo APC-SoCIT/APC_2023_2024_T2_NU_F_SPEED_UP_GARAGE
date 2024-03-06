@@ -1,62 +1,62 @@
 function getLastFiveMonths() {
     const months = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" // Normal order of months
     ];
   
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
     const lastFiveMonths = [];
   
-    for (let i = 0; i < 6; i++) {
+    for (let i = 5; i >= 0; i--) { // Reverse the loop to start with the present month on the left
         const monthIndex = (currentMonth - i + 12) % 12;
         lastFiveMonths.push(months[monthIndex]);
     }
   
-    return lastFiveMonths.reverse();
-  }
-  
-  const monthToMonthSalesData = document.getElementById('monthToMonthSalesData').dataset.salesData;
-  const lastSixMonthsSalesData = JSON.parse(monthToMonthSalesData);
-  
-  // Define the last six months array
-  const lastSixMonths = getLastFiveMonths();
-  
-  let primaryColor = "#1976D2";
-  
-  let labelColor = getComputedStyle(document.documentElement)
-      .getPropertyValue("--color-label")
-      .trim();
-  
-  let fontFamily = getComputedStyle(document.documentElement)
-      .getPropertyValue("--font-family")
-      .trim();
-  
-  let defaultOptions = {
-      chart: {
-          tollbar: {
-              show: false,
-          },
-          zoom: {
-              enabled: false,
-          },
-          width: "100%",
-          height: 210,
-          offsetY: 35,
-      },
-  
-      dataLabels: {
-          enabled: false,
-      },
-  };
-  
-  let barOptions = {
-      ...defaultOptions,
-  
-      chart: {
-          ...defaultOptions.chart,
-          type: "area",
-      },
+    return lastFiveMonths;
+
+}
+const monthToMonthSalesData = document.getElementById('monthToMonthSalesData').dataset.salesData;
+const lastSixMonthsSalesData = JSON.parse(monthToMonthSalesData);
+
+// Define the last six months array
+const lastSixMonths = getLastFiveMonths();
+
+let primaryColor = "#1976D2";
+
+let labelColor = getComputedStyle(document.documentElement)
+    .getPropertyValue("--color-label")
+    .trim();
+
+let fontFamily = getComputedStyle(document.documentElement)
+    .getPropertyValue("--font-family")
+    .trim();
+
+let defaultOptions = {
+    chart: {
+        tollbar: {
+            show: false,
+        },
+        zoom: {
+            enabled: false,
+        },
+        width: "100%",
+        height: 210,
+        offsetY: 35,
+    },
+
+    dataLabels: {
+        enabled: false,
+    },
+};
+
+let barOptions = {
+    ...defaultOptions,
+
+    chart: {
+        ...defaultOptions.chart,
+        type: "area",
+    },
   
       tooltip: {
           enabled: true,
@@ -122,27 +122,28 @@ function getLastFiveMonths() {
       },
   
       xaxis: {
-          labels: {
-              show: true,
-              floating: true,
-              style: {
-                  colors: labelColor,
-                  fontFamily: fontFamily,
-              },
-          },
-          axisBorder: {
-              show: false,
-          },
-          crosshairs: {
-              show: false,
-          },
-          categories: lastSixMonths,
-      },
-  };
-  
-  let chart = new ApexCharts(document.querySelector(".chart-area"), barOptions);
-  
-  chart.render();
+        labels: {
+            show: true,
+            floating: true,
+            style: {
+                colors: labelColor,
+                fontFamily: fontFamily,
+            },
+        },
+        axisBorder: {
+            show: false,
+        },
+        crosshairs: {
+            show: false,
+        },
+        categories: lastSixMonths,
+    },
+};
+
+let chart = new ApexCharts(document.querySelector(".chart-area"), barOptions);
+
+chart.render();
+
   
   /* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot *//* Bar Charot */
   
@@ -199,6 +200,7 @@ function getLastFiveMonths() {
         },
     },
     series: [{
+        name: `Quantity`, // Set the initial series name to the current month followed by "Sales"
         data: topProductsData.map(product => product.quantity_sold),
     }],
     colors: [primaryColor],
@@ -262,8 +264,7 @@ function getLastFiveMonths() {
             },
         },
     },
-};
-
+  };
   
   let cchart = new ApexCharts(document.querySelector(".bar-chart"), Options);
   cchart.render();
@@ -306,22 +307,22 @@ function getLastFiveMonths() {
     };
   
     document.addEventListener("DOMContentLoaded", function () {
-      let dailySalesData = JSON.parse(document.getElementById('dailySalesData').getAttribute('data-daily-sales'));
-  
-      // Generate an array of dates for the last 5 days
-      let currentDate = new Date();
-      let dates = [];
-      for (let i = 5  ; i >= 0; i--) {
-          let date = new Date(currentDate);
-          date.setDate(date.getDate() - i);
-          dates.push(date.toISOString().slice(0, 10));
-      }
-  
-      // Create salesDataArray ensuring there's a data point for each of the last 5 days
-      let salesDataArray = dates.map(date => ({
-          x: date,
-          y: dailySalesData[date] ? Number(dailySalesData[date].toFixed(2)) : 0, // If sales data exists for the date, use it, otherwise use 0
-      }));
+        let dailySalesData = JSON.parse(document.getElementById('dailySalesData').getAttribute('data-daily-sales'));
+    
+        // Generate an array of dates for the last 5 days
+        let currentDate = new Date();
+        let dates = [];
+        for (let i = 5  ; i >= 0; i--) {
+            let date = new Date(currentDate);
+            date.setDate(date.getDate() - i);
+            dates.push(date.toISOString().slice(0, 10));
+        }
+    
+        // Create salesDataArray ensuring there's a data point for each of the last 5 days
+        let salesDataArray = dates.map(date => ({
+            x: date,
+            y: dailySalesData[date] ? Number(dailySalesData[date].toFixed(2)) : 0, // If sales data exists for the date, use it, otherwise use 0
+        }));
   
       let primaryColor = "#1976D2";
   
@@ -455,3 +456,57 @@ function getLastFiveMonths() {
       let salesChart = new ApexCharts(document.getElementById("dailySalesData"), salesOptions); // Update to use getElementById
       salesChart.render();
   });
+
+
+
+// Function to check if the month of a given date matches the current month
+function isCurrentMonth(dateString) {
+    const currentDate = new Date();
+    const targetDate = new Date(dateString);
+    
+    return currentDate.getMonth() === targetDate.getMonth() && currentDate.getFullYear() === targetDate.getFullYear();
+}
+
+// Function to drop quantity_sold data if the month doesn't match with the current month
+function dropQuantitySoldData() {
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+        url: '/get-top-products', // Replace with your actual route
+        type: 'GET',
+        success: function(response) {
+            response.forEach(function(product) {
+                // Check if the month of the created_at date doesn't match with the current month
+                if (!isCurrentMonth(product.created_at)) {
+                    // If the month doesn't match, drop the quantity_sold data
+                    product.quantity_sold = 0; // You can set it to any default value or remove it altogether
+                    // Make an AJAX request to update the quantity_sold data
+                    $.ajax({
+                        url: '/update-top-product/' + product.id, // Replace with your actual route
+                        type: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken // Include the CSRF token in the headers
+                        },
+                        data: { quantity_sold: product.quantity_sold },
+                        success: function(updateResponse) {
+                            console.log('Quantity sold data dropped for product ID ' + product.id);
+                        },
+                        error: function(error) {
+                            console.error('Error updating quantity sold data for product ID ' + product.id + ':', error);
+                        }
+                    });
+                }
+            });
+        },
+        error: function(error) {
+            console.error('Error fetching top_products data:', error);
+        }
+    });
+}
+
+
+// Call the function to drop quantity_sold data when the page loads
+$(document).ready(function() {
+    dropQuantitySoldData();
+});
+
