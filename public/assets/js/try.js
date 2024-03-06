@@ -169,8 +169,6 @@ function editRow(event) {
     }
 }
 
-
-
 function EditImageChange(input) {
     const imagePreview = document.getElementById('editedImagePreview');
     const imageInputLabel = document.getElementById('editedImageInputLabel');
@@ -188,10 +186,6 @@ function EditImageChange(input) {
         reader.readAsDataURL(file);
     }
 }
-
-
-
-
 
 // Function to close the Add Product modal
 function closeAddProductModal() {

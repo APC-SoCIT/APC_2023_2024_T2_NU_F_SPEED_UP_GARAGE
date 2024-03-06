@@ -36,6 +36,7 @@ function addUserModal() {
 function cancelUserEditModal(){
     editUserModal.style.display = 'none';
 }
+
 // Function to close the Add User modal
 function closeAddUserModal() {
     const addUserModal = document.getElementById('addUserModal');
@@ -60,6 +61,10 @@ function closeAddUserModal() {
 
     // Hide the modal
     addUserModal.style.display = 'none';
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function addUser() {
@@ -128,6 +133,18 @@ function addUser() {
         newUserRole.reportValidity();
         return; // Exit the function
     }
+
+    // Check if the manually typed birthdate is after the current date
+    if (new Date(newUserBirthDate.value) > new Date()) {
+        $('#newUserBirthDate').get(0).setCustomValidity('Please select a valid birthdate.');
+        $('#newUserBirthDate').get(0).reportValidity();
+        return; // Exit the function
+    }
+
+    newUserFirstName.value = capitalizeFirstLetter(newUserFirstName.value.trim());
+    newUserMiddleName.value = capitalizeFirstLetter(newUserMiddleName.value.trim());
+    newUserLastName.value = capitalizeFirstLetter(newUserLastName.value.trim());
+    newUserAddress.value = capitalizeFirstLetter(newUserAddress.value.trim());
 
     // If all fields are valid, proceed with AJAX request
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -283,6 +300,10 @@ function showModalWithUserData(userId) {
 }
 
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function saveUserChanges() {
     const editedFirstName = $('#userFirstName').val();
     const editedMiddleName = $('#userMiddleName').val();
@@ -350,6 +371,12 @@ function saveUserChanges() {
         return;
     }
 
+    // Capitalize first letter of names and address
+    const capitalizedFirstName = capitalizeFirstLetter(editedFirstName.trim());
+    const capitalizedMiddleName = capitalizeFirstLetter(editedMiddleName.trim());
+    const capitalizedLastName = capitalizeFirstLetter(editedLastName.trim());
+    const capitalizedAddress = capitalizeFirstLetter(editedAddress.trim());
+
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
     // Send AJAX request to update the database
@@ -360,12 +387,12 @@ function saveUserChanges() {
             'X-CSRF-TOKEN': csrfToken
         },
         data: {
-            fname: editedFirstName,
-            mname: editedMiddleName,
-            lname: editedLastName,
+            fname: capitalizedFirstName,
+            mname: capitalizedMiddleName,
+            lname: capitalizedLastName,
             birthdate: editedBirthDate,
             contact_number: editedContactNumber,
-            address: editedAddress,
+            address: capitalizedAddress,
             username: editedUserUsername,
             password: editedUserPassword,
             role: editedUserRole
@@ -392,6 +419,7 @@ function saveUserChanges() {
 }
 
 
+
 function showSuccessModal(message) {
     $('#successText').text(message);
     $('.success-modal').css('display', 'flex');
@@ -408,6 +436,8 @@ $('.modal-close-button').click(function() {
     $('.success-modal').css('display', 'none');
     $('.error-modal').css('display', 'none');
 });
+
+
 
 $(document).ready(function() {
     // Get the current date

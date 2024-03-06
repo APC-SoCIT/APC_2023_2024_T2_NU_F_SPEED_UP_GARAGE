@@ -321,6 +321,39 @@
                 </div>
             </div>
         </div>
+
+        <div class="success-modal" id="successModal">
+                <div class="success-modal-content">
+                    <p class="message-header">Success</p>
+                    <div class="divider"></div>
+                    <p id="successText"></p>
+                    <button class="modal-close-button" onclick="closeSuccessModal()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Error Modal -->
+            <div class="error-modal" id="errorModal">
+                <div class="error-modal-content">
+                    <p class="message-header">Error</p>
+                    <div class="divider"></div>
+                    <p id="errorText"></p>
+                    <button class="modal-close-button" onclick="closeErrorModal()">Close</button>
+                </div>
+            </div>
+
+            <div id="confirmationModal" class="confirmation-modal">
+                <div class="confirmation-modal-content">
+                    <div class="header">Confirm Deletion</div>
+                    <div class="divider"></div>
+                    <p id="confirmationText"></p>
+                    <div class="modal-button-container">
+                        <button class="modal-save-button" id="confirmDeleteButton">Delete</button>
+                        <button class="modal-close-button" id="cancelDeleteButton">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+
     </main>
 
     <script src="{{ asset('assets/js/try.js') }}"></script>

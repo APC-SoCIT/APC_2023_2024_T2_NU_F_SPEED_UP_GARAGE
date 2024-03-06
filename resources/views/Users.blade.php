@@ -231,7 +231,7 @@
 
             <div class="confirmation-modal" id="confirmationModal">
                 <div class="confirmation-modal-content">
-                    <p class="message-header">Confirm Deletion</p>
+                    <p class="message-header" style="font-size: 18px;">Confirm Deletion</p>
                     <div class="divider"></div>
                     <p id="confirmText"></p>
                     <button class="confirmation-modal-button" id="confirmDeleteBtn">Delete</button>

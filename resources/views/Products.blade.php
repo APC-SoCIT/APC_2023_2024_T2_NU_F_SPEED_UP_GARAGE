@@ -296,6 +296,7 @@
         // Trigger change event on entries dropdown to apply default entries
         $('#entries-per-page').change();
     });
+
     </script>
 </body>
 

@@ -220,7 +220,6 @@ body.dark .filter-container {
 .success-modal-content .modal-close-button {
     padding: 8px 15px;
     background-color: #3498db;
-    margin-top: 15px;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -230,7 +229,6 @@ body.dark .filter-container {
 .error-modal-content .modal-close-button {
     padding: 8px 15px;
     background-color: #e74c3c;
-    margin-top: 15px;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -238,34 +236,30 @@ body.dark .filter-container {
 }
 
 .confirmation-modal-content .confirmation-modal-button {
-    padding: 8px 15px;
+    padding: 8px 55px;
     background-color: #3498db;
-    margin-top: 15px;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-.confirmation-modal-content .unconfirmation-modal-button {
-    padding: 8px 15px;
+.confirmation-modal-content .unconfirmation-modal-button{
+    padding: 8px 55px;
     background-color: #e74c3c;
-    margin-top: 15px;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-
-.success-modal-content .modal-close-button:hover{
+.success-modal-content .modal-close-button:hover, .confirmation-modal-content .confirmation-modal-button:hover{
     background-color: #2980b9;
 }
 
-.error-modal-content .modal-close-button:hover {
+.error-modal-content .modal-close-button:hover, .confirmation-modal-content .unconfirmation-modal-button:hover {
     background-color: #c0392b;
 }
-
 
 
 /* Dark mode styles for the success modal */
