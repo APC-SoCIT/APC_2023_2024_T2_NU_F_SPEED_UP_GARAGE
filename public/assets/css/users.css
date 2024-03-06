@@ -99,18 +99,27 @@ body.dark .filter-container {
     color: white;
 }
 
-.edit-user-modal-content input, .add-user-modal-content select, .add-user-modal-content input, .edit-user-modal-content select  {
+.edit-user-modal-content input,
+.add-user-modal-content select,
+.add-user-modal-content input,
+.edit-user-modal-content select,
+.add-user-modal-content textarea, /* Add textarea selector */
+.edit-user-modal-content textarea { /* Add textarea selector */
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
     outline: none;
     border-radius: 4px;
+    resize: none;
 }
 
-
-.dark .edit-user-modal-content select, .dark .edit-user-modal-content input, 
-.dark .add-user-modal-content select, .dark .add-user-modal-content input{
+.dark .edit-user-modal-content select,
+.dark .edit-user-modal-content input,
+.dark .add-user-modal-content select,
+.dark .add-user-modal-content input,
+.dark .edit-user-modal-content textarea, /* Add textarea selector */
+.dark .add-user-modal-content textarea { /* Add textarea selector */
     background-color: #333; /* Background color in dark mode */
     color: #fff; /* Text color in dark mode */
     border-color: var(--border); /* Border color in dark mode */

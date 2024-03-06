@@ -152,7 +152,7 @@
                 <label for="userContactNumber">Contact Number:</label>
                 <input type="text" id="userContactNumber" name="userContactNumber">
                 <label for="userAddress">Address:</label>
-                <input type="text" id="userAddress" name="userAddress">
+                <textarea id="userAddress" name="userAddress" style="width: 100%; height: 100px;"></textarea> <!-- Added inline styles -->
                 <label for="userUsername">Username:</label>
                 <input type="text" id="userUsername" name="userUsername">
                 <label for="userPassword">Password:</label>
@@ -188,7 +188,7 @@
                 <label for="newUserContactNumber">Contact Number:</label>
                 <input type="text" id="newUserContactNumber" name="newUserContactNumber">
                 <label for="newUserAddress">Address:</label>
-                <input type="text" id="newUserAddress" name="newUserAddress">
+                <textarea id="newUserAddress" name="newUserAddress" style="width: 100%; height: 100px;"></textarea> <!-- Added inline styles -->
                 <label for="newUserUsername">Username:</label>
                 <input type="text" id="newUserUsername" name="newUserUsername">
                 <label for="newUserPassword">Password:</label>
