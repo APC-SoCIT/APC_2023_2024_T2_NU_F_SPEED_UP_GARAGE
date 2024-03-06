@@ -59,10 +59,10 @@
                         <input type="date" id="endDate" class="filter-input" onchange="filterTable()">
 
                         <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
-                            <option value="">Select Status</option>
-                            <option value="Out of Stock">Paid</option>
-                            <option value="Low Stock">Partially Paid</option>
-                            <option value="In Stock">Not Paid</option>
+                            <option value="">Select Payment Method</option>
+                            <option value="CASH">Cash</option>
+                            <option value="GCASH">Gcash</option>
+                            <option value="Multiple">Multiple</option>
                         </select>
                         
                             <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
@@ -173,13 +173,8 @@
                 </div>
 
                 <div class="pagination">
-                    <span class="pagination-link" onclick="changePage(-1)"><</span>
-                    <span class="pagination-link" data-page="1" onclick="goToPage(1)">1</span>
-                    <span class="pagination-link" data-page="2" onclick="goToPage(2)">2</span>
-                    <span class="pagination-link" data-page="3" onclick="goToPage(3)">3</span>
-                    <span class="pagination-link" data-page="4" onclick="goToPage(4)">4</span>
-                    <span class="pagination-link" data-page="5" onclick="goToPage(5)">5</span>
-                    <span class="pagination-link" onclick="changePage(1)">></span>
+                    <!-- Previous page button -->
+                    <!-- Next page button -->
                 </div>
             </div>
         </div>

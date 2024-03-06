@@ -20,132 +20,7 @@ function searchTable() {
     }
 }
 
-function filterTable() {
-    var roleFilter = document.getElementById("roleFilter").value;
-    var entriesPerPage = parseInt(document.getElementById("entries-per-page").value);
-    var currentPage = parseInt(document.querySelector(".pagination .pagination-link.active").textContent);
-
-    var startIndex = (currentPage - 1) * entriesPerPage;
-    var endIndex = startIndex + entriesPerPage;
-
-    var tableRows = document.querySelectorAll(".inventory-table tbody tr");
-
-    tableRows.forEach(function(row, index) {
-        var roleCell = row.querySelector("td:nth-child(2)");
-        var roleName = roleCell.textContent.trim();
-
-        if ((roleFilter === "" || roleName === roleFilter) && (index >= startIndex && index < endIndex)) {
-            row.style.display = "table-row";
-        } else {
-            row.style.display = "none";
-        }
-    });
-}
-
-
-
 // Function to open the Add User modal
-function addUserModal() {
-    var addUserModal = document.getElementById('addUserModal');
-    addUserModal.style.display = 'flex';
-}
-
-// Function to close the Add User modal
-function cancelAddUserModal() {
-    var addUserModal = document.getElementById('addUserModal');
-    addUserModal.style.display = 'none';
-
-    // Clear input fields when closing the modal
-    document.getElementById('newUserName').value = '';
-    document.getElementById('newUserUsername').value = '';
-    document.getElementById('newUserPassword').value = '';
-    // Add additional input fields as needed
-}
-
-// Function to add a new user (you can customize this function as per your requirements)
-function addNewUser() {
-    // Get input values
-    var UserName = document.getElementById('newUserName').value;
-    var UserUsername = document.getElementById('newUserUsername').value;
-    var UserPassword = document.getElementById('newUserPassword').value;
-    // Add more fields as needed
-
-    // Perform any necessary validation here
-
-    // You can send the data to the server using an AJAX request or handle it as needed
-    // Example: You can log the data to the console for now
-    console.log('New User Data:', { name: userName, username: userUsername, password: userPassword });
-    
-    // Close the modal after saving
-    cancelAddUserModal();
-}
-
-let currentEditingUserId = null; // Initialize to null
-
-
-// Function to open the Edit User modal
-function editUser(event) {
-    var editUserModal = document.getElementById('editUserModal');
-    editUserModal.style.display = 'flex';
-
-    // Get data from the selected row for editing
-    var selectedRow = event.target.closest('tr');
-    var userId = selectedRow.dataset.id;
-    var userName = selectedRow.cells[1].innerText;
-    var userUsername = selectedRow.cells[2].innerText;
-    var userPassword = selectedRow.cells[3].innerText;
-    // Add more fields as needed
-
-    // Populate the input fields in the Edit User modal with the existing data
-    document.getElementById('userName').value = userName;
-    document.getElementById('userUsername').value = userUsername;
-    document.getElementById('userPassword').value = userPassword;
-    // Add more fields as needed
-}
-
-// Function to close the Edit User modal
-function cancelUserEditModal() {
-    var editUserModal = document.getElementById('editUserModal');
-    editUserModal.style.display = 'none';
-
-    // Clear input fields when closing the modal
-    document.getElementById('userName').value = '';
-    document.getElementById('userUsername').value = '';
-    document.getElementById('userPassword').value = '';
-    // Add more fields as needed
-}
-
-// Function to save changes in the Edit User modal
-function saveUserChanges() {
-    // Get updated values from the input fields
-    
-    const updatedUserName = document.getElementById('userName').value;
-    const updatedUserUsername = document.getElementById('userUsername').value;
-    const updatedUserPassword = document.getElementById('userPassword').value;
-
-    // Validate if any field is empty (you can add more validation as needed)
-    if (!updatedUserName || !updatedUserUsername || !updatedUserPassword) {
-        alert('Please fill in all fields.');
-        return;
-    }
-
-    // Get the row to be updated
-    const row = document.querySelector(`[data-id="${currentEditingUserId}"]`);
-
-    // Check if the row is found
-    if (row) {
-        // Update the row with the new values
-        row.querySelector('.user-name').textContent = updatedUserName;
-        row.querySelector('.user-username').textContent = updatedUserUsername;
-        row.querySelector('.user-password').textContent = updatedUserPassword;
-
-        // Close the modal
-        cancelUserEditModal();
-    } else {
-        console.error(`Row with data-id "${currentEditingUserId}" not found.`);
-    }
-}
-
 
 function addUserModal() {
     const addUserModal = document.getElementById('addUserModal');
@@ -568,3 +443,86 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function() {
+    // Add event listeners to filter dropdowns and entries dropdown
+    $('#roleFilter, #entries-per-page').change(filterTable);
+
+    function filterTable() {
+        var roleFilter = $('#roleFilter').val().toLowerCase();
+        var entriesPerPage = parseInt($('#entries-per-page').val());
+
+        // Hide all rows
+        $('.inventory-table tbody tr').hide();
+
+        // Filter rows based on the selected role
+        $('.inventory-table tbody tr').each(function() {
+            var row = $(this);
+            var role = row.find('td:eq(1)').text().toLowerCase(); // Assuming role is the second column
+
+            // Check if the row matches the selected role filter
+            var matchesRole = (roleFilter === '' || role === roleFilter);
+
+            // Show the row if it matches the filter criteria
+            if (matchesRole) {
+                row.show();
+            }
+        });
+
+        // Implement pagination based on the number of entries per page
+        var visibleRows = $('.inventory-table tbody tr:visible');
+        var totalRows = visibleRows.length;
+        var totalPages = Math.ceil(totalRows / entriesPerPage);
+
+        // Generate pagination links
+        var paginationHtml = '';
+
+        // Previous page button
+        paginationHtml += '<span class="pagination-prev">&lt;</span>';
+
+        for (var i = 1; i <= totalPages; i++) {
+            paginationHtml += '<span class="pagination-link" data-page="' + i + '">' + i + '</span>';
+        }
+
+        // Next page button
+        paginationHtml += '<span class="pagination-next">&gt;</span>';
+
+        $('.pagination').html(paginationHtml);
+
+        // Show only the rows for the current page
+        var currentPage = 1;
+        $('.pagination-link').click(function() {
+            currentPage = parseInt($(this).attr('data-page'));
+            var startIndex = (currentPage - 1) * entriesPerPage;
+            var endIndex = startIndex + entriesPerPage;
+
+            visibleRows.hide();
+            visibleRows.slice(startIndex, endIndex).show();
+
+            // Highlight the current page and manage visibility of "<" and ">"
+            $('.pagination-link').removeClass('active');
+            $(this).addClass('active');
+            $('.pagination-prev').toggle(currentPage !== 1);
+            $('.pagination-next').toggle(currentPage !== totalPages);
+        });
+
+        // Previous page button functionality
+        $('.pagination-prev').click(function() {
+            if (currentPage > 1) {
+                $('.pagination-link[data-page="' + (currentPage - 1) + '"]').click();
+            }
+        });
+
+        // Next page button functionality
+        $('.pagination-next').click(function() {
+            if (currentPage < totalPages) {
+                $('.pagination-link[data-page="' + (currentPage + 1) + '"]').click();
+            }
+        });
+
+        // Trigger click on the first page link to display initial page
+        $('.pagination-link[data-page="1"]').click();
+    }
+
+    // Trigger change event on entries dropdown to apply default entries
+    $('#entries-per-page').change();
+});

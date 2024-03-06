@@ -175,36 +175,37 @@
 
         <!-- Add User Modal -->
         <div class="add-user-modal" id="addUserModal">
-        <div class="add-user-modal-content">
-            <h2 class="add-user-modal-title">Create User</h2>
-            <label for="newUserFirstName">First Name:</label>
-            <input type="text" id="newUserFirstName" name="newUserFirstName" placeholder="e.g. John">
-            <label for="newUserMiddleName">Middle Name:</label>
-            <input type="text" id="newUserMiddleName" name="newUserMiddleName" placeholder="e.g. Michael">
-            <label for="newUserLastName">Last Name:</label>
-            <input type="text" id="newUserLastName" name="newUserLastName" placeholder="e.g. Doe">
-            <label for="newUserBirthDate">Birth Date:</label>
-            <input type="date" id="newUserBirthDate" name="newUserBirthDate" placeholder="YYYY-MM-DD">
-            <label for="newUserContactNumber">Contact Number:</label>
-            <input type="text" id="newUserContactNumber" name="newUserContactNumber" placeholder="e.g. +1234567890">
-            <label for="newUserAddress">Address:</label>
-            <input type="text" id="newUserAddress" name="newUserAddress" placeholder="e.g. 123 Main St, City, Country">
-            <label for="newUserUsername">Username:</label>
-            <input type="text" id="newUserUsername" name="newUserUsername" placeholder="e.g. john.doe">
-            <label for="newUserPassword">Password:</label>
-            <input type="password" id="newUserPassword" name="newUserPassword" placeholder="Enter password">
-            <label for="confirmNewUserPassword">Confirm Password:</label>
-            <input type="password" id="confirmNewUserPassword" name="confirmNewUserPassword" placeholder="Confirm password">
-            <label for="newUserRole">Role:</label>
-            <select id="newUserRole" name="newUserRole">
-                <option value="1">Admin</option>
-                <option value="2">Inventory Clerk</option>
-                <option value="3">Cashier</option>
-            </select>
-            <!-- Add more fields as needed -->
-            <div class="modal-button-container">
-                <button class="modal-save-button" onclick="addUser()">Save</button>
-                <button class="modal-close-button" onclick="closeAddUserModal()">Cancel</button>
+            <div class="add-user-modal-content">
+                <h2 class="add-user-modal-title">Create User</h2>
+                <label for="newUserFirstName">First Name:</label>
+                <input type="text" id="newUserFirstName" name="newUserFirstName">
+                <label for="newUserMiddleName">Middle Name:</label>
+                <input type="text" id="newUserMiddleName" name="newUserMiddleName">
+                <label for="newUserLastName">Last Name:</label>
+                <input type="text" id="newUserLastName" name="newUserLastName">
+                <label for="newUserBirthDate">Birth Date:</label>
+                <input type="date" id="newUserBirthDate" name="newUserBirthDate">
+                <label for="newUserContactNumber">Contact Number:</label>
+                <input type="text" id="newUserContactNumber" name="newUserContactNumber">
+                <label for="newUserAddress">Address:</label>
+                <input type="text" id="newUserAddress" name="newUserAddress">
+                <label for="newUserUsername">Username:</label>
+                <input type="text" id="newUserUsername" name="newUserUsername">
+                <label for="newUserPassword">Password:</label>
+                <input type="password" id="newUserPassword" name="newUserPassword">
+                <label for="confirmNewUserPassword">Confirm Password:</label>
+                <input type="password" id="confirmNewUserPassword" name="confirmNewUserPassword">
+                <label for="newUserRole">Role:</label>
+                <select id="newUserRole" name="newUserRole">
+                    <option value="1">Admin</option>
+                    <option value="2">Inventory Clerk</option>
+                    <option value="3">Cashier</option>
+                </select>
+                <!-- Add more fields as needed -->
+                <div class="modal-button-container">
+                    <button class="modal-save-button" onclick="addUser()">Save</button>
+                    <button class="modal-close-button" onclick="closeAddUserModal()">Cancel</button>
+                </div>
             </div>
         </div>
 

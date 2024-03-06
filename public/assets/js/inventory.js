@@ -124,181 +124,6 @@ function handleImageChange(input) {
     }
 }
 
-var editingProductId;  // Declare a variable to store the currently editing product ID
-var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
-
-function editRow(event) {
-    // Get the parent row of the clicked button
-    var row = $(event.target).closest('tr');
-
-    // Extract data from the row
-    editingProductId = row.data('id'); // Set the value of editingProductId
-    var tag = row.find('.tag').text();
-    var productName = row.find('.product-name').text();
-    var category = row.find('.category').text();
-    var brand = row.find('.brand').text();
-    var quantity = row.find('.quantity span').text();
-    var price = row.find('.price span').text();
-    var updatedBy = row.find('.updated_by span').text();
-    var description = row.find('.description').text(); // Extract description
-
-    // Remove the peso sign from the price for editing
-    var priceWithoutPesoSign = price.replace('₱', ''); // Remove the peso sign
-
-    // Get the current image source
-    var currentImageSrc = row.find('.product-image img').attr('src');
-
-    // Populate the modal fields with the extracted data
-    $('#editedTag').val(tag);
-    $('#editedProductName').val(productName);
-    $('#editedCategory').val(category);
-    $('#editedBrand').val(brand);
-    $('#editedQuantity').val(quantity);
-    $('#editedPrice').val(priceWithoutPesoSign); // Use the price without peso sign
-    $('#editedUpdatedBy').val(currentUserUsername);
-    $('#editedDescription').val(description); // Set the description field value
-
-    // Display the current image in the modal
-    if (currentImageSrc) {
-        $('#editedImagePreview').attr('src', currentImageSrc);
-        $('#editedImagePlaceholderContainer').addClass('has-image');
-    } else {
-        $('#editedImagePreview').attr('src', ''); // Set placeholder image or empty string
-        $('#editedImagePlaceholderContainer').removeClass('has-image'); // Remove the 'has-image' class
-    }
-
-    // Show the edit modal
-    $('#editModal').show();
-}
-function saveChanges() {
-    // Get the edited values from the input fields
-    const editedQuantity = document.getElementById('editedQuantity').value.trim();
-    const editedPrice = document.getElementById('editedPrice').value.trim();
-    const editedTag = document.getElementById('editedTag').value.trim();
-    const editedProductName = document.getElementById('editedProductName').value.trim();
-    const editedCategory = document.getElementById('editedCategory').value.trim();
-    const editedBrand = document.getElementById('editedBrand').value.trim();
-    const editedUpdatedBy = document.getElementById('editedUpdatedBy').value.trim();
-    const editedDescription = document.getElementById('editedDescription').value.trim(); // Get the edited description
-    const editedProductImage = document.getElementById('editedProductImage');
-
-    if (editedTag === '') {
-        const tagInput = document.getElementById('editedTag');
-        tagInput.setCustomValidity('Please fill out the barcode.');
-        tagInput.reportValidity();
-        return;
-    }
-
-    if (editedProductName === '') {
-        const productNameInput = document.getElementById('editedProductName');
-        productNameInput.setCustomValidity('Please fill out the product name.');
-        productNameInput.reportValidity();
-        return;
-    }
-
-    if (editedQuantity === '') {
-        const quantityInput = document.getElementById('editedQuantity');
-        quantityInput.setCustomValidity('Please add product quantity.');
-        quantityInput.reportValidity();
-        return;
-    }
-
-    if (editedBrand === '') {
-        const brandInput = document.getElementById('editedBrand');
-        brandInput.setCustomValidity('Please select brand.');
-        brandInput.reportValidity();
-        return;
-    }
-
-    if (editedCategory === '') {
-        const categoryInput = document.getElementById('editedCategory');
-        categoryInput.setCustomValidity('Please select category.');
-        categoryInput.reportValidity();
-        return;
-    }
-
-    if (editedPrice === '') {
-        const priceInput = document.getElementById('editedPrice');
-        priceInput.setCustomValidity('Please enter product price.');
-        priceInput.reportValidity();
-        return;
-    }
-
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-    // Prepare form data for AJAX request
-    const formData = new FormData();
-    formData.append('_method', 'PUT'); // Add _method field to emulate PUT request
-    formData.append('quantity', editedQuantity);
-    formData.append('price', editedPrice);
-    formData.append('tag', editedTag);
-    formData.append('product_name', editedProductName);
-    formData.append('category', editedCategory);
-    formData.append('updated_by', editedUpdatedBy);
-    formData.append('brand', editedBrand);
-    formData.append('description', editedDescription); // Append the description field
-
-    // Check if a new product image is selected
-    const productImage = editedProductImage.files[0];
-    if (productImage) {
-        // Check if the file type is an image
-        if (!productImage.type.startsWith('image/')) {
-            showErrorModal('Please upload an image file.');
-            return;
-        }
-        formData.append('product_image', productImage);
-    }
-
-    // Send AJAX request to update the database
-    $.ajax({
-        url: `/update-product/${editingProductId}`, // Change `productId` to `editingProductId`
-        type: 'POST', // Use POST method with FormData
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        },
-        data: formData,
-        contentType: false, // Set contentType to false for FormData
-        processData: false, // Set processData to false for FormData
-        success: function(response) {
-            console.log('Product updated successfully:', response);
-
-            // Update UI with the new data
-            $(`#quantity_${editingProductId} .quantity`).text(addCommas(editedQuantity));
-            $(`#price_${editingProductId} .price`).text(addCommas(editedPrice));
-            $(`#tag_${editingProductId} .tag`).text(editedTag);
-            $(`#product_name_${editingProductId} .product_name`).text(editedProductName);
-            $(`#category_${editingProductId} .category`).text(editedCategory);
-            $(`#brand_${editingProductId} .brand`).text(editedBrand);
-            $(`#updated_by${editingProductId} .updated_by`).text(editedUpdatedBy);
-            $(`#description_${editingProductId} .description`).text(editedDescription); // Update description in UI
-            // Hide the modal
-            $('#editModal').hide();
-            showSuccessModal('Product has been edited successfully.'); // Display success message
-
-
-        },
-        error: function(error) {
-            console.error('Error updating product:', error);
-            // Handle error response (display error message, log, etc.)
-        }
-    });
-}
-
-
-
-function showErrorModal(errorMessage) {
-    document.getElementById('errorText').innerText = errorMessage;
-    document.getElementById('errorModal').style.display = 'flex';
-}
-
-function closeErrorModal() {
-    document.getElementById('errorModal').style.display = 'none';
-}
-
-function cancelEditModal() {
-    $('#editModal').hide();
-    $(document).on('click', '.edit-button', editRow);
-}
 
 function showScanProductModal() {
     const scanProductModal = document.getElementById('scanProductModal');
@@ -707,7 +532,98 @@ function updateQty() {
     });
   }
 
-  function inventoryCSV() {
+
+  $(document).ready(function() {
+    // Add event listeners to filter dropdowns and entries dropdown
+    $('#statusFilter, #categoryFilter, #brandFilter, #entries-per-page').change(filterTable);
+
+    function filterTable() {
+        var statusFilter = $('#statusFilter').val();
+        var categoryFilter = $('#categoryFilter').val();
+        var brandFilter = $('#brandFilter').val();
+        var entriesPerPage = parseInt($('#entries-per-page').val());
+
+        // Hide all rows
+        $('.inventory-table tbody tr').hide();
+
+        // Filter rows based on the selected criteria
+        $('.inventory-table tbody tr').each(function() {
+            var row = $(this);
+            var status = row.find('.status').text();
+            var category = row.find('.category').text();
+            var brand = row.find('.brand').text();
+
+            // Check if the row matches the selected filter criteria
+            var matchesStatus = (statusFilter === '' || status === statusFilter);
+            var matchesCategory = (categoryFilter === '' || category === categoryFilter);
+            var matchesBrand = (brandFilter === '' || brand === brandFilter);
+
+            // Show the row if it matches the filter criteria
+            if (matchesStatus && matchesCategory && matchesBrand) {
+                row.show();
+            }
+        });
+
+        // Implement pagination based on the number of entries per page
+        var visibleRows = $('.inventory-table tbody tr:visible');
+        var totalRows = visibleRows.length;
+        var totalPages = Math.ceil(totalRows / entriesPerPage);
+
+        // Generate pagination links
+        var paginationHtml = '';
+
+        // Previous page button
+        paginationHtml += '<span class="pagination-prev">&lt;</span>';
+
+        for (var i = 1; i <= totalPages; i++) {
+            paginationHtml += '<span class="pagination-link" data-page="' + i + '">' + i + '</span>';
+        }
+
+        // Next page button
+        paginationHtml += '<span class="pagination-next">&gt;</span>';
+
+        $('.pagination').html(paginationHtml);
+
+        // Show only the rows for the current page
+        var currentPage = 1;
+        $('.pagination-link').click(function() {
+            currentPage = parseInt($(this).attr('data-page'));
+            var startIndex = (currentPage - 1) * entriesPerPage;
+            var endIndex = startIndex + entriesPerPage;
+
+            visibleRows.hide();
+            visibleRows.slice(startIndex, endIndex).show();
+
+            // Highlight the current page and manage visibility of "<" and ">"
+            $('.pagination-link').removeClass('active');
+            $(this).addClass('active');
+            $('.pagination-prev').toggle(currentPage !== 1);
+            $('.pagination-next').toggle(currentPage !== totalPages);
+        });
+
+        // Previous page button functionality
+        $('.pagination-prev').click(function() {
+            if (currentPage > 1) {
+                $('.pagination-link[data-page="' + (currentPage - 1) + '"]').click();
+            }
+        });
+
+        // Next page button functionality
+        $('.pagination-next').click(function() {
+            if (currentPage < totalPages) {
+                $('.pagination-link[data-page="' + (currentPage + 1) + '"]').click();
+            }
+        });
+
+        // Trigger click on the first page link to display initial page
+        $('.pagination-link[data-page="1"]').click();
+    }
+
+    // Trigger change event on entries dropdown to apply default entries
+    $('#entries-per-page').change();
+});
+
+function inventoryCSV() {
     // Get the current date
     const currentDate = new Date();
     const day = currentDate.getDate().toString().padStart(2, '0'); // Add leading zero if needed
@@ -721,17 +637,7 @@ function updateQty() {
     let csv = 'Tag,Name,Category,Brand,Description,Quantity,Price\n';
 
     // Loop through each row in the table body
-    $('#inventoryTableBody tr').each(function() {
-        // Check if filters are applied
-        if (filtersApplied()) {
-            // Get the visibility status of the row
-            const isVisible = $(this).is(':visible');
-            // If filters are applied and the row is not visible, skip exporting
-            if (!isVisible) {
-                return;
-            }
-        }
-
+    $('.inventory-table tbody tr').each(function() {
         // Extract data from the row
         let tag = $(this).find('.tag').text();
         let name = $(this).find('.product-name').text();
@@ -746,8 +652,22 @@ function updateQty() {
         // Format the tag value with leading zeros
         let formattedTag = `"${tag.replace(/"/g, '""')}"`; // Escape double quotes by doubling them
 
-        // Append the formatted tag to the CSV string
-        csv += `${formattedTag},"${name}","${category}","${brand}","${description}",${quantity},${price}\n`;
+        // Check if the row matches the selected filter criteria
+         // Extract status from the row
+         let status = $(this).find('.status').text();
+
+         // Get the selected status filter value
+        let statusFilter = $('#statusFilter').val();
+        let categoryFilter = $('#categoryFilter').val();
+        let brandFilter = $('#brandFilter').val();
+        let matchesStatus = (statusFilter === '' || status === statusFilter);
+        let matchesCategory = (categoryFilter === '' || category === categoryFilter);
+        let matchesBrand = (brandFilter === '' || brand === brandFilter);
+
+        // Include the row in the CSV string if it matches the filter criteria
+        if (statusFilter&& matchesStatus && matchesCategory && matchesBrand) {
+            csv += `${formattedTag},"${name}","${category}","${brand}","${description}",${quantity},${price}\n`;
+        }
     });
 
     // Create a Blob object containing the CSV data
@@ -764,43 +684,4 @@ function updateQty() {
 
     // Clean up
     document.body.removeChild(a);
-}
-
-// Function to check if filters are applied
-function filtersApplied() {
-    const statusFilter = document.getElementById("statusFilter").value;
-    const categoryFilter = document.getElementById("categoryFilter").value;
-    const brandFilter = document.getElementById("brandFilter").value;
-    return (statusFilter !== '' || categoryFilter !== '' || brandFilter !== '');
-}
-
-function filterTable() {
-    var statusFilter = document.getElementById("statusFilter").value;
-    var categoryFilter = document.getElementById("categoryFilter").value;
-    var brandFilter = document.getElementById("brandFilter").value;
-
-    var rows = document.getElementById("inventoryTableBody").getElementsByTagName("tr");
-
-    for (var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var status = row.getElementsByClassName("status")[0].textContent;
-        var category = row.getElementsByClassName("category")[0].textContent;
-        var brand = row.getElementsByClassName("brand")[0].textContent;
-
-        var shouldShow = true;
-
-        if (statusFilter && status !== statusFilter) {
-            shouldShow = false;
-        }
-
-        if (categoryFilter && category !== categoryFilter) {
-            shouldShow = false;
-        }
-
-        if (brandFilter && brand !== brandFilter) {
-            shouldShow = false;
-        }
-
-        row.style.display = shouldShow ? "" : "none";
-    }
 }

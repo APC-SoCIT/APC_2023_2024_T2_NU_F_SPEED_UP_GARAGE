@@ -204,35 +204,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }
 
-function filterTable() {
-    var statusFilter = document.getElementById("statusFilter").value;
-    var categoryFilter = document.getElementById("categoryFilter").value;
-    var brandFilter = document.getElementById("brandFilter").value;
-
-    var rows = document.getElementById("inventoryTableBody").getElementsByTagName("tr");
-
-    for (var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var status = row.getElementsByClassName("status")[0].textContent;
-        var category = row.getElementsByClassName("category")[0].textContent;
-        var brand = row.getElementsByClassName("brand")[0].textContent;
-
-        var shouldShow = true;
-
-        if (statusFilter && status !== statusFilter) {
-            shouldShow = false;
-        }
-
-        if (categoryFilter && category !== categoryFilter) {
-            shouldShow = false;
-        }
-
-        if (brandFilter && brand !== brandFilter) {
-            shouldShow = false;
-        }
-
-        row.style.display = shouldShow ? "" : "none";
-    }
-}
-
-

@@ -111,15 +111,10 @@
 </tbody>
                     </table>
                 </div>
-
+                
                 <div class="pagination">
-                    <span class="pagination-link" onclick="changePage(-1)"><</span>
-                    <span class="pagination-link" data-page="1" onclick="goToPage(1)">1</span>
-                    <span class="pagination-link" data-page="2" onclick="goToPage(2)">2</span>
-                    <span class="pagination-link" data-page="3" onclick="goToPage(3)">3</span>
-                    <span class="pagination-link" data-page="4" onclick="goToPage(4)">4</span>
-                    <span class="pagination-link" data-page="5" onclick="goToPage(5)">5</span>
-                    <span class="pagination-link" onclick="changePage(1)">></span>
+                    <!-- Previous page button -->
+                    <!-- Next page button -->
                 </div>
 
             </div>
@@ -164,16 +159,7 @@
 
                 <div class="form-row-container">
                 <label for="customerSuffix">Birthday</label>
-                <input type="text" id="customerBirthday" name="customerBirthday" placeholder="Birthday (yyyy-mm-dd)">
-                <script>
-                $(function () {
-                    $("#customerBirthday").datepicker({
-                        dateFormat: 'yy-mm-dd',
-                        changeMonth: true,
-                        changeYear: true
-                    });
-                });
-                </script>
+                <input type="date" id="customerBirthday" name="customerBirthday" placeholder="Birthday (yyyy-mm-dd)">
                 </div>
                 </div>
 
@@ -274,17 +260,7 @@
             </div>
             <div class="form-row-container">
             <label for="newBirthday">Birthday</label>
-            <input type="text" id="newBirthday" name="newBirthday" placeholder="2002-09-29">
-
-            <script>
-                $(function () {
-                    $("#newBirthday").datepicker({
-                        dateFormat: 'yy-mm-dd',
-                        changeMonth: true,
-                        changeYear: true
-                    });
-                });
-                </script>
+            <input type="date" id="newBirthday" name="newBirthday" placeholder="2002-09-29">
         </div>
         </div>
 
@@ -350,6 +326,7 @@
     <script src="{{ asset('assets/js/try.js') }}"></script>
     <script src="{{ asset('assets/js/city.js') }}"></script>
     <script src="{{ asset('assets/js/index.js') }}"></script>
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script>	
@@ -362,6 +339,99 @@
 	$.showCities("#customerCity");
 
     }
+
+    $(document).ready(function() {
+        // Add event listeners to filter dropdowns and entries dropdown
+        $('.search-bar, #entries-per-page').change(filterTable);
+
+        function filterTable() {
+            var searchTerm = $('.search-bar').val().toLowerCase();
+            var entriesPerPage = parseInt($('#entries-per-page').val());
+
+            // Hide all rows
+            $('.inventory-table tbody tr').hide();
+
+            // Filter rows based on the search term
+            $('.inventory-table tbody tr').each(function() {
+                var row = $(this);
+
+                // Check if any column contains the search term
+                var containsSearchTerm = false;
+                row.find('td').each(function() {
+                    if ($(this).text().toLowerCase().indexOf(searchTerm) > -1) {
+                        containsSearchTerm = true;
+                        return false; // Break the loop if the term is found in any column
+                    }
+                });
+
+                // Show the row if it contains the search term
+                if (containsSearchTerm) {
+                    row.show();
+                }
+            });
+
+            // Implement pagination based on the number of entries per page
+            var visibleRows = $('.inventory-table tbody tr:visible');
+            var totalRows = visibleRows.length;
+            var totalPages = Math.ceil(totalRows / entriesPerPage);
+
+            // Generate pagination links
+            var paginationHtml = '';
+
+            // Previous page button
+            if (totalPages > 1) {
+                paginationHtml += '<span class="pagination-prev">&lt;</span>';
+            }
+
+            for (var i = 1; i <= totalPages; i++) {
+                paginationHtml += '<span class="pagination-link" data-page="' + i + '">' + i + '</span>';
+            }
+
+            // Next page button
+            if (totalPages > 1) {
+                paginationHtml += '<span class="pagination-next">&gt;</span>';
+            }
+
+            $('.pagination').html(paginationHtml);
+
+            // Show only the rows for the current page
+            var currentPage = 1;
+            $('.pagination-link').click(function() {
+                currentPage = parseInt($(this).attr('data-page'));
+                var startIndex = (currentPage - 1) * entriesPerPage;
+                var endIndex = startIndex + entriesPerPage;
+
+                visibleRows.hide();
+                visibleRows.slice(startIndex, endIndex).show();
+
+                // Highlight the current page and manage visibility of "<" and ">"
+                $('.pagination-link').removeClass('active');
+                $(this).addClass('active');
+                $('.pagination-prev').toggle(currentPage !== 1);
+                $('.pagination-next').toggle(currentPage !== totalPages);
+            });
+
+            // Previous page button functionality
+            $('.pagination-prev').click(function() {
+                if (currentPage > 1) {
+                    $('.pagination-link[data-page="' + (currentPage - 1) + '"]').click();
+                }
+            });
+
+            // Next page button functionality
+            $('.pagination-next').click(function() {
+                if (currentPage < totalPages) {
+                    $('.pagination-link[data-page="' + (currentPage + 1) + '"]').click();
+                }
+            });
+
+            // Trigger click on the first page link to display initial page
+            $('.pagination-link[data-page="1"]').click();
+        }
+
+        // Trigger change event on entries dropdown to apply default entries
+        $('#entries-per-page').change();
+    });
 </script>
 
 </body>
