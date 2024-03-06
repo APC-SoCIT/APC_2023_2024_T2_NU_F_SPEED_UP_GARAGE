@@ -187,28 +187,100 @@
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/transactions.js') }}"></script>
     <script>
-        function filterTable() {
-            // Get the start and end dates from the date inputs
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
 
-            // Loop through each row in the table body
-            $('#inventoryTableBody tr').each(function() {
-                // Get the date of the transaction from the table cell
-                const transactionDate = $(this).find('.date').text();
 
-                // Parse the transaction date to compare with the selected date range
-                const transactionDateTime = new Date(transactionDate);
+    $(document).ready(function() {
+    // Add event listeners to filter dropdowns and entries dropdown
+    $('#statusFilter, #startDate, #endDate, #entries-per-page').change(filterTable);
 
-                // Hide or show the row based on the date range
-                if ((startDate === '' || transactionDateTime >= new Date(startDate)) &&
-                    (endDate === '' || transactionDateTime <= new Date(endDate))) {
-                    $(this).show(); // Show the row
-                } else {
-                    $(this).hide(); // Hide the row
-                }
-            });
+    function filterTable() {
+        var statusFilter = $('#statusFilter').val();
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
+        var entriesPerPage = parseInt($('#entries-per-page').val());
+        
+
+        // Hide all rows
+        $('.inventory-table tbody tr').hide();
+
+        // Filter rows based on the selected criteria
+        $('.inventory-table tbody tr').each(function() {
+            var row = $(this);
+            var status = row.find('.status').text();
+            var date = row.find('.date').text();
+
+            // Check if the row matches the selected filter criteria
+            var matchesStatus = (statusFilter === '' || status === statusFilter);
+            var matchesDate = true;
+            if (startDate !== '' && endDate !== '') {
+                matchesDate = (new Date(date) >= new Date(startDate) && new Date(date) <= new Date(endDate));
+            }
+
+            // Show the row if it matches the filter criteria
+            if (matchesStatus && matchesDate) {
+                row.show();
+            }
+        });
+
+        // Implement pagination based on the number of entries per page
+        var visibleRows = $('.inventory-table tbody tr:visible');
+        var totalRows = visibleRows.length;
+        var totalPages = Math.ceil(totalRows / entriesPerPage);
+
+        // Generate pagination links
+        var paginationHtml = '';
+
+        // Previous page button
+        paginationHtml += '<span class="pagination-prev">&lt;</span>';
+
+        for (var i = 1; i <= totalPages; i++) {
+            paginationHtml += '<span class="pagination-link" data-page="' + i + '">' + i + '</span>';
         }
+
+        // Next page button
+        paginationHtml += '<span class="pagination-next">&gt;</span>';
+
+        $('.pagination').html(paginationHtml);
+
+        // Show only the rows for the current page
+        var currentPage = 1;
+        $('.pagination-link').click(function() {
+            currentPage = parseInt($(this).attr('data-page'));
+            var startIndex = (currentPage - 1) * entriesPerPage;
+            var endIndex = startIndex + entriesPerPage;
+
+            visibleRows.hide();
+            visibleRows.slice(startIndex, endIndex).show();
+
+            // Highlight the current page and manage visibility of "<" and ">"
+            $('.pagination-link').removeClass('active');
+            $(this).addClass('active');
+            $('.pagination-prev').toggle(currentPage !== 1);
+            $('.pagination-next').toggle(currentPage !== totalPages);
+        });
+
+        // Previous page button functionality
+        $('.pagination-prev').click(function() {
+            if (currentPage > 1) {
+                $('.pagination-link[data-page="' + (currentPage - 1) + '"]').click();
+            }
+        });
+
+        // Next page button functionality
+        $('.pagination-next').click(function() {
+            if (currentPage < totalPages) {
+                $('.pagination-link[data-page="' + (currentPage + 1) + '"]').click();
+            }
+        });
+
+        // Trigger click on the first page link to display initial page
+        $('.pagination-link[data-page="1"]').click();
+    }
+
+    // Trigger change event on entries dropdown to apply default entries
+    $('#entries-per-page').change();
+});
+
     </script>
 
 </body>
