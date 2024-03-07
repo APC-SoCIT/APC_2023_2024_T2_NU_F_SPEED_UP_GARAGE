@@ -89,7 +89,7 @@
                             <th>Customer Name</th>
                             <th>Date</th>
                             <th>Items</th>
-                            <th>Quantity</th>
+                            <th>Total Quantities</th>
                             <th>VATable</th>
                             <th>VAT</th>
                             <th>Cash Amount</th>

@@ -181,8 +181,7 @@
                             <th></th>
                             <th>Cashier Name</th>
                             <th>Order Date</th>
-                            <th>Status</th>
-                            <th>Price</th>
+                            <th style="padding-left: 40px;">Price</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -218,11 +217,6 @@
 
                                 <td>{{ date('m/d/y', strtotime($transaction->created_at)) }}</td>
 
-                                <td>
-                                    <span class="status {{ $transaction->status == 'Pending' ? 'pending' : 'process' }}">
-                                        {{ $transaction->status }}
-                                    </span>
-                                </td>
                                 <td class="transaction-amount">
                                     ₱{{ number_format($transaction->total_amount, 2, '.', ',') }}
                                 </td>
