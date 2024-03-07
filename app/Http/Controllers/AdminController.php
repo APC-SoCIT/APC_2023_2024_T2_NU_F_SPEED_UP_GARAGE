@@ -161,7 +161,7 @@ class AdminController extends Controller
             ->toArray();
         
         // Calculate current month and previous month sales
-        $currentMonthSales = $lastSixMonthsSalesData[$currentMonth] ?? 0;
+        $currentMonthSales = $lastSixMonthsSalesData[$currentMonths] ?? 0;
         $previousMonthSales = $lastSixMonthsSalesData[$previousMonth] ?? 0;
         
         // Calculate gain
