@@ -6,12 +6,13 @@ function transactionCSV() {
 
     const filename = `transaction-${day}-${month}-${year}.csv`;
 
-    let csv = 'Receipt #,Customer Name,Date,Items,Total Quantities,VATable,VAT,Total Amount,Cash Amount,GCASH Amount,Card Amount,Total Payment,Change,Payment Method,Payment,Cashier\n';
+    let csv = 'Receipt #,Customer Name,Date,Items,Total Quantities,VATable,VAT,Total Amount,Cash Amount,GCASH Amount,Card Amount, Total Labor, Total Payment,Change,Payment Method,Payment,Cashier\n';
 
     // Check if filters are applied
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
-    const filtersApplied = startDate !== '' || endDate !== '';
+    const statusFilter = document.getElementById('statusFilter').value;
+    const filtersApplied = startDate !== '' || endDate !== '' || statusFilter !== '';
 
     // Loop through each row in the table body
     $('#inventoryTableBody tr').each(function(index, row) {
@@ -22,8 +23,15 @@ function transactionCSV() {
         const transactionDateTime = new Date(transactionDate);
 
         // Check if filters are applied and if the transaction date is within the selected range
-        if (!filtersApplied || ((startDate === '' || transactionDateTime >= new Date(startDate)) &&
-            (endDate === '' || transactionDateTime <= new Date(endDate)))) {
+        const matchesDate = (startDate === '' || transactionDateTime >= new Date(startDate)) &&
+                            (endDate === '' || transactionDateTime <= new Date(endDate));
+
+        // Check if payment method matches the selected filter
+        const paymentMethod = $(row).find('.payment-method').text();
+        const matchesPaymentMethod = statusFilter === '' || paymentMethod === statusFilter;
+
+        // Show the row if it matches the filter criteria
+        if (!filtersApplied || (matchesDate && matchesPaymentMethod)) {
             // Extract data from the row
             let receipt = $(row).find('td:eq(0)').text();
             let customerName = $(row).find('td:eq(1)').text();
@@ -36,21 +44,23 @@ function transactionCSV() {
 
             let vatable = $(row).find('td:eq(5) .vatable').text().replace('₱', '').replace(',', '') || '0';
             let vat = $(row).find('td:eq(6) .vat').text().replace('₱', '').replace(',', '') || '0';
-            let totalAmount = $(row).find('td:eq(7) .total_amount').text().replace('₱', '').replace(',', '') || '0';
-            let cashAmount = $(row).find('td:eq(8) .paid_amount').text().replace('₱', '').replace(',', '') || '0';
-            let gcashAmount = $(row).find('td:eq(9) .paid_amount').text().replace('₱', '').replace(',', '') || '0';
-            let cardAmount = $(row).find('td:eq(10) .paid_amount').text().replace('₱', '').replace(',', '') || '0';
-            let totalPayment = $(row).find('td:eq(11) .total_payment').text().replace('₱', '').replace(',', '') || '0';
-            let change = $(row).find('td:eq(12) .customer-change').text().replace('₱', '').replace(',', '') || '0';
+            let cashAmount = $(row).find('td:eq(7) .paid_amount').text().replace('₱', '').replace(',', '') || '0';
+            let gcashAmount = $(row).find('td:eq(8) .paid_amount').text().replace('₱', '').replace(',', '') || '0';
+            let cardAmount = $(row).find('td:eq(9) .paid_amount').text().replace('₱', '').replace(',', '') || '0';
+            let lotalLabor = $(row).find('td:eq(10) .total_amount').text().replace('₱', '').replace(',', '') || '0';
+            let totalAmount = $(row).find('td:eq(11) .total_amount').text().replace('₱', '').replace(',', '') || '0';
+            let totalPayment = $(row).find('td:eq(12) .total_payment').text().replace('₱', '').replace(',', '') || '0';
+            let change = $(row).find('td:eq(13) .customer-change').text().replace('₱', '').replace(',', '') || '0';
 
-            let paymentMethod = $(row).find('td:eq(13)').text();
-            let payment = $(row).find('td:eq(14)').text();
-            let cashier = $(row).find('td:eq(15)').text();
+            let paymentMethod = $(row).find('td:eq(14)').text();
+            let payment = $(row).find('td:eq(15)').text();
+            let cashier = $(row).find('td:eq(16)').text();
 
             // Append the data to the CSV string
-            csv += `"${receipt}","${customerName}","${date}","${itemsText}","${quantityCell}","${vatable}","${vat}","${totalAmount}","${cashAmount}","${gcashAmount}","${cardAmount}","${totalPayment}","${change}","${paymentMethod}","${payment}","${cashier}"\n`;
+            csv += `"${receipt}","${customerName}","${date}","${itemsText}","${quantityCell}","${vatable}","${vat}","${totalAmount}","${cashAmount}","${gcashAmount}","${cardAmount}","${lotalLabor}","${totalPayment}","${change}","${paymentMethod}","${payment}","${cashier}"\n`;
         }
     });
+
     // Create a Blob object containing the CSV data
     const blob = new Blob([csv], { type: 'text/csv' });
 
@@ -66,7 +76,6 @@ function transactionCSV() {
     // Clean up
     document.body.removeChild(a);
 }
-
 
 
 $(document).ready(function() {

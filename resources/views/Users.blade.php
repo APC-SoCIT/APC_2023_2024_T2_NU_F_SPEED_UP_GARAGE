@@ -47,11 +47,11 @@
                 <div class="add-user-container">
                     <button class="add-user-btn" onclick="addUserModal()">+ Add User</button>
                     <div class="dropdown-container">
-                        <select id="roleFilter" class="category-dropdown" onchange="filterTable()">
+                        <select id="roleFilter" class="category-dropdown">
                             <option value="">Select Role</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Inventory Clerk">Inventory Clerk</option>
-                            <option value="Cashier">Cashier</option>
+                            <option value="admin">Admin</option>
+                            <option value="inventory clerk">Inventory Clerk</option>
+                            <option value="cashier">Cashier</option>
                         </select>
 
                         <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()"
@@ -93,7 +93,7 @@
                             @endphp
                             <tr data-id="{{ $user->id }}" style="height: 100px;">
                                 <td>{{ $loop->index + 1 }}</td>
-                                <td>
+                                <td class="user-role">
                                     @php
                                         $roleName = ($user->role == 1) ? 'Admin' : (($user->role == 2) ? 'Inventory Clerk' : (($user->role == 3) ? 'Cashier' : 'Unknown Role'));
                                     @endphp
@@ -250,28 +250,24 @@
     <script src="{{ asset('assets/js/pagination.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script>
-        $(document).ready(function() {
+$(document).ready(function() {
     // Add event listeners to filter dropdowns and entries dropdown
-    $('#roleFilter, #entries-per-page').change(filterTable);
+    $('#roleFilter, #entries-per-page').change(function() {
+        filterTable(parseInt($('#entries-per-page').val()));
+    });
 
-    function filterTable() {
-        var roleFilter = $('#roleFilter').val().toLowerCase();
-        var entriesPerPage = parseInt($('#entries-per-page').val());
-
+    function filterTable(entriesPerPage) {
+        var roleFilter = $('#roleFilter').val().trim().toLowerCase();
         // Hide all rows
         $('.inventory-table tbody tr').hide();
 
         // Filter rows based on the selected role
         $('.inventory-table tbody tr').each(function() {
-            var row = $(this);
-            var role = row.find('td:eq(1)').text().toLowerCase(); // Assuming role is the second column
+            var role = $(this).find('.user-role').text().trim().toLowerCase();
 
             // Check if the row matches the selected role filter
-            var matchesRole = (roleFilter === '' || role === roleFilter);
-
-            // Show the row if it matches the filter criteria
-            if (matchesRole) {
-                row.show();
+            if (roleFilter === '' || role === roleFilter) {
+                $(this).show();
             }
         });
 
