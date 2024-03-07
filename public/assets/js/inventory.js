@@ -286,9 +286,8 @@ function saveChanges() {
 
         // Hide the modal
         $('#editModal').hide();
-        updateStatusClassForAll();
         showSuccessModal('Product has been edited successfully.'); // Display success message
-        updateDisplayedValues(); // Call a function to update displayed values
+        
     },
     error: function(error) {
         console.error('Error updating product:', error);

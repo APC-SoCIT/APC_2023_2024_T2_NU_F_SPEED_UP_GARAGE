@@ -76,7 +76,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th class="user-roles" id="userRoles">Role</th>
+                            <th>Role</th>
                             <th>Username</th>
                             <th>Name</th>
                             <th>Birth Date</th>
@@ -93,7 +93,7 @@
                             @endphp
                             <tr data-id="{{ $user->id }}">
                                 <td>{{ $loop->index + 1 }}</td>
-                                <td class="user-roles" id="userRoles">
+                                <td>
                                     @php
                                         $roleName = ($user->role == 1) ? 'Admin' : (($user->role == 2) ? 'Inventory Clerk' : (($user->role == 3) ? 'Cashier' : 'Unknown Role'));
                                     @endphp
@@ -255,25 +255,25 @@
     $('#roleFilter, #entries-per-page').change(filterTable);
 
     function filterTable() {
-    var roleFilter = $('#roleFilter').val().toLowerCase();
-    var entriesPerPage = parseInt($('#entries-per-page').val());
+        var roleFilter = $('#roleFilter').val().toLowerCase();
+        var entriesPerPage = parseInt($('#entries-per-page').val());
 
-    // Hide all rows
-    $('.inventory-table tbody tr').hide();
+        // Hide all rows
+        $('.inventory-table tbody tr').hide();
 
-    // Filter rows based on the selected role
-    $('.inventory-table tbody tr').each(function() {
-        var row = $(this);
-        var role = row.find('td:eq(1)').text().toLowerCase(); // Assuming role is the second column
+        // Filter rows based on the selected role
+        $('.inventory-table tbody tr').each(function() {
+            var row = $(this);
+            var role = row.find('td:eq(1)').text().toLowerCase(); // Assuming role is the second column
 
-        // Check if the row matches the selected role filter
-        var matchesRole = (roleFilter === '' || role === roleFilter || roleFilter === 'select role');
+            // Check if the row matches the selected role filter
+            var matchesRole = (roleFilter === '' || role === roleFilter);
 
-        // Show the row if it matches the filter criteria
-        if (matchesRole) {
-            row.show();
-        }
-    });
+            // Show the row if it matches the filter criteria
+            if (matchesRole) {
+                row.show();
+            }
+        });
 
         // Implement pagination based on the number of entries per page
         var visibleRows = $('.inventory-table tbody tr:visible');
