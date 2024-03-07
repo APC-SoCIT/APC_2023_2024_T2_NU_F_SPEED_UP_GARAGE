@@ -68,7 +68,7 @@
 
                         <select id="categoryFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Category</option>
-                            @foreach($categories as $category)
+                            @foreach($categories->sortBy('name') as $category)
                                 <option value="{{ $category->name }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
@@ -76,7 +76,7 @@
 
                         <select id="brandFilter" class="brand-dropdown" onchange="filterTable()">
                             <option value="">Select Brand</option>
-                            @foreach($brands as $brand)
+                            @foreach($brands->sortBy('name') as $brand)
                                 <option value="{{ $brand->name }}">{{ $brand->name }}</option>
                             @endforeach
                         </select>
@@ -188,19 +188,19 @@
                 </div>  
                 <div class="form-row">
                     <div class="form-row-container"> 
-                        <label for="editedCategory">Category</label>
-                        <select id="editedCategory">
-                            <option value="">Select Category</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->name }}">{{ $category->name }}</option>
-                            @endforeach
-                        </select>
+                    <label for="editedCategory">Category</label>
+<select id="editedCategory">
+    <option value="">Select Category</option>
+    @foreach($categories->sortBy('name') as $category)
+        <option value="{{ $category->name }}">{{ $category->name }}</option>
+    @endforeach
+</select>
                     </div>  
                     <div class="form-row-container"> 
                         <label for="editedBrand">Brand</label>
                         <select id="editedBrand">
                             <option value="">Select Brand</option>
-                            @foreach($brands as $brand)
+                            @foreach($brands->sortBy('name') as $brand)
                                 <option value="{{ $brand->name }}">{{ $brand->name }}</option>
                             @endforeach
                         </select>
@@ -265,7 +265,7 @@
                         <label for="newBrand">Brand</label>
                         <select id="newBrand">
                             <option value="">Select Brand</option>
-                            @foreach($brands as $brand)
+                            @foreach($brands->sortBy('name') as $brand)
                                 <option value="{{ $brand->name }}">{{ $brand->name }}</option>
                             @endforeach
                         </select>
@@ -274,7 +274,7 @@
                         <label for="newCategory">Category</label>
                         <select id="newCategory">
                             <option value="">Select Category</option>
-                            @foreach($categories as $category)
+                            @foreach($categories->sortBy('name') as $category)
                                 <option value="{{ $category->name }}">{{ $category->name }}</option>
                             @endforeach
                         </select>

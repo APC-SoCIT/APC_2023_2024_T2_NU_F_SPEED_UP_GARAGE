@@ -218,14 +218,14 @@
 <div class="brandpartSelect">
           <select class="category-dropdown2" x-model="selectedBrand">
           <option value="">Select Brand</option>
-        @foreach($brands as $brand)
+          @foreach($brands->sortBy('name') as $brand)
             <option value="{{ $brand->name }}">{{ $brand->name }}</option>
         @endforeach 
 </select>
 
 <select class="category-dropdown3" x-model="selectedCategory">
 <option value="">Select Category</option>
-        @foreach($categories as $category)
+@foreach($categories->sortBy('name') as $category)
             <option value="{{ $category->name }}">{{ $category->name }}</option>
         @endforeach
     </select>
@@ -289,18 +289,16 @@
                 <div class="product-card-pad">
                     <div class="product-details">
                         <div class="product-brand" x-text="product.brand"></div>
+                        <!-- Display product name and description -->
                         <div class="product-name" x-text="product.product_name"></div>
+                        <div class="product-name" x-text="product.description" style="font-size:12px !important; font-weight:1 !imporant;"></div>
                         
                         <template x-if="product.allowEdit">
                             <div class="price-input-container">
                                 <span>₱</span>
-
-
                                 <!-- temporary --> 
                                 <input type="text" class="editedPrice" x-model="product.editedPrice" @keypress="return isNumeric(event)" placeholder="100">
                                  <!-- temporary --> 
-
-
                             </div>
                         </template>
 
@@ -317,7 +315,9 @@
             </div>
         </template>
     </div>
-</div>  
+</div>
+
+
 
 
 
