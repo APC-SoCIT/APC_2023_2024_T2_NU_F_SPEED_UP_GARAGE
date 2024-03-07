@@ -60,9 +60,9 @@
                         <button class="add-product-btn" onclick="printReport()">Print Report</button>
                                     <div class="dropdown-container">
                                     <label for="startDate" class="date-filter">From</label>
-                                    <input type="date" id="startDate" class="filter-input" value="{{ now()->format('Y-m-d') }}" onchange="filterTable()" onfocus="this.value='';">                            
+                                    <input type="date" id="startDate" class="filter-input" onchange="filterTable()" onfocus="this.value='';">                            
                                     <label for="endDate" class="date-filter">To</label>
-                                    <input type="date" id="endDate" class="filter-input" onchange="filterTable()">
+                                    <input type="date" id="endDate" class="filter-input" value="{{ now()->format('Y-m-d') }}"  onchange="filterTable()">
                                     
                                         <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
                                     </div>

@@ -53,9 +53,9 @@
                         <button class="add-product-btn" onclick="printReport()">Print Report</button>
                                     <div class="dropdown-container">
                                     <label for="startDate" class="date-filter">From</label>
-                                    <input type="date" id="startDate" class="filter-input" value="{{ now()->format('Y-m-d') }}" onchange="filterTable()" onfocus="this.value='';">                            
+                                    <input type="date" id="startDate" class="filter-input" onchange="filterTable()" onfocus="this.value='';">                            
                                     <label for="endDate" class="date-filter">To</label>
-                                    <input type="date" id="endDate" class="filter-input" onchange="filterTable()">
+                                    <input type="date" id="endDate" class="filter-input" value="{{ now()->format('Y-m-d') }}"  onchange="filterTable()">
                                     
                                         <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">                                    </div>
                                 </div>
@@ -85,18 +85,15 @@
                                     </thead>
                                     <tbody id="inventoryTableBody">
                                 
-                                        @foreach ($inventory_logs as $product)
+                                    @foreach ($inventory_logs as $product)
                                         <tr data-id="{{ $product->id }}">
-                                        <td><span class="status"></span></td>
+                                            <td><span class="status"></span></td>
                                             <td>{{ $product->id }}</td>
                                             <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
-                                            <td class="quantity" id="quantity{{ $product->id }}"><span class="quantity">{{ $product->quantity }}</span></td>
+                                            <td class="quantity" id="quantity{{ $product->id }}" style="text-align: left;"><span class="quantity">{{ $product->quantity }}</span></td>
                                             <td>{{ \Illuminate\Support\Carbon::parse($product->created_at)->format('Y-m-d') }}</td>
-
- <!-- Format created_at as date only -->
-
                                         </tr>
-                                        @endforeach
+                                    @endforeach
                                         
                                     </tbody>
                                 </table>

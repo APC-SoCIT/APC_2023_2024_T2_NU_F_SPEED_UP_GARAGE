@@ -56,7 +56,7 @@
                         <label for="startDate" class="date-filter">From</label>
                         <input type="date" id="startDate" class="filter-input" onchange="filterTable()">
                         <label for="endDate" class="date-filter">To</label>
-                        <input type="date" id="endDate" class="filter-input" onchange="filterTable()">
+                        <input type="date" id="endDate" class="filter-input" value="{{ now()->format('Y-m-d') }}" onchange="filterTable()">
 
                         <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Payment Method</option>
@@ -190,84 +190,74 @@
 
 $(document).ready(function() {
     // Add event listeners to filter dropdowns and entries dropdown
-    $('#roleFilter, #entries-per-page').change(filterTable);
-
+    $('#statusFilter, #startDate, #endDate, #entries-per-page').change(filterTable);
     function filterTable() {
-        var roleFilter = $('#roleFilter').val().toLowerCase();
+        var statusFilter = $('#statusFilter').val();
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
         var entriesPerPage = parseInt($('#entries-per-page').val());
-
+        
         // Hide all rows
         $('.inventory-table tbody tr').hide();
-
-        // Filter rows based on the selected role
+        // Filter rows based on the selected criteria
         $('.inventory-table tbody tr').each(function() {
             var row = $(this);
-            var role = row.find('td:eq(1)').text().toLowerCase(); // Assuming role is the second column
-
-            // Check if the row matches the selected role filter
-            var matchesRole = (roleFilter === '' || role === roleFilter);
-
+            var status = row.find('.status').text();
+            var date = row.find('.date').text();
+            // Check if the row matches the selected filter criteria
+            var matchesStatus = (statusFilter === '' || status === statusFilter);
+            var matchesDate = true;
+            if (startDate !== '' && endDate !== '') {
+                matchesDate = (new Date(date) >= new Date(startDate) && new Date(date) <= new Date(endDate));
+            }
             // Show the row if it matches the filter criteria
-            if (matchesRole) {
+            if (matchesStatus && matchesDate) {
                 row.show();
             }
         });
-
         // Implement pagination based on the number of entries per page
         var visibleRows = $('.inventory-table tbody tr:visible');
         var totalRows = visibleRows.length;
         var totalPages = Math.ceil(totalRows / entriesPerPage);
-
         // Generate pagination links
         var paginationHtml = '';
-
         // Previous page button
         paginationHtml += '<span class="pagination-prev">&lt;</span>';
-
         for (var i = 1; i <= totalPages; i++) {
             paginationHtml += '<span class="pagination-link" data-page="' + i + '">' + i + '</span>';
         }
-
         // Next page button
         paginationHtml += '<span class="pagination-next">&gt;</span>';
-
         $('.pagination').html(paginationHtml);
-
         // Show only the rows for the current page
         var currentPage = 1;
         $('.pagination-link').click(function() {
             currentPage = parseInt($(this).attr('data-page'));
             var startIndex = (currentPage - 1) * entriesPerPage;
             var endIndex = startIndex + entriesPerPage;
-
             visibleRows.hide();
             visibleRows.slice(startIndex, endIndex).show();
-
             // Highlight the current page and manage visibility of "<" and ">"
             $('.pagination-link').removeClass('active');
             $(this).addClass('active');
             $('.pagination-prev').toggle(currentPage !== 1);
             $('.pagination-next').toggle(currentPage !== totalPages);
         });
-
         // Previous page button functionality
         $('.pagination-prev').click(function() {
             if (currentPage > 1) {
                 $('.pagination-link[data-page="' + (currentPage - 1) + '"]').click();
             }
         });
-
         // Next page button functionality
         $('.pagination-next').click(function() {
             if (currentPage < totalPages) {
                 $('.pagination-link[data-page="' + (currentPage + 1) + '"]').click();
             }
         });
-
         // Trigger click on the first page link to display initial page
         $('.pagination-link[data-page="1"]').click();
     }
-
     // Trigger change event on entries dropdown to apply default entries
     $('#entries-per-page').change();
 });
