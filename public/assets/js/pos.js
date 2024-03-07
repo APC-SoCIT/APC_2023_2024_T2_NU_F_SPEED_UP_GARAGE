@@ -11,6 +11,9 @@ function updateReceiptNo(app, newReceiptNo, time) {
   }
 }
 
+
+
+
 const app = initApp();
 app.initReceiptNo();
 document.addEventListener('DOMContentLoaded', function () {
@@ -316,13 +319,35 @@ addQty(item, qty) {
         0
       );
     },
+    
+    
+  
     submitable() {
       const cashierNameElement = document.getElementById("cashierName");
+      const customerNameElement = document.getElementById("customerName");
+      
       const isCashierSelected = cashierNameElement.value !== "Select Cashier";
-      const isLaborAmountValid = this.labor > 0;
-      const isCashEnough = this.change >= 0;
-      return isCashierSelected && isCashEnough && isLaborAmountValid;
+      const isCustomerSelected = customerNameElement.value !== "Select Customer";
+      
+      const isCashEnough = this.change >= 0; // Cash provided is enough or more than the total amount
+      const isCartNotEmpty = this.cart.length > 0; // Check if the cart is not empty
+      const isLaborAmountValid = this.labor > 0; // Check if labor amount is greater than 0
+    
+      // Allow checkout if there's no cart but there's labor and cash is enough
+      if (!isCartNotEmpty && isLaborAmountValid && isCashEnough) {
+        return isCashierSelected && isCustomerSelected;
+      } 
+      // Disallow checkout if there's no labor and no items in the cart
+      else if (!isLaborAmountValid && !isCartNotEmpty) {
+        return false;
+      } 
+      // Allow checkout if there's labor, cash is enough, and both customer and cashier are selected
+      else {
+        return isCashierSelected && isCustomerSelected && isCashEnough && isCartNotEmpty;
+      }
     },
+
+  
 
     submit: async function () {
       const time = new Date();
@@ -498,22 +523,31 @@ printAndProceed(currentDate) {
 },
 
 
-    getVatable() {
-      const totalPrice = this.cart.reduce(
-        (total, item) => total + (item.qty * item.price),
-        0
-      );
-      return totalPrice;
-    },
+getVatable() {
+  // Calculate the total price of items in the cart
+  const totalPrice = this.cart.reduce(
+    (total, item) => total + (item.qty * item.price),
+    0
+  );
 
-    getVAT() {
-      const totalPrice = this.getTotalPrice();
-      const vat = totalPrice * 0.12;
-      return vat;
-    },
-      getTotalAmount() {
-      return this.getVAT() + this.getVatable() + this.labor;
-    },
+  // Add the labor amount to the total price
+  const totalPriceWithLabor = totalPrice + this.labor;
+  return totalPriceWithLabor;
+},
+
+getVAT() {
+  const vatableAmount = this.getVatable();
+  const vat = vatableAmount * 0.03;
+  return vat;
+},
+
+getTotalAmount() {
+  // Calculate the total amount including VAT and labor
+  const vatableAmount = this.getVatable();
+  const vat = this.getVAT();
+  const totalAmount = vatableAmount + vat;
+  return totalAmount;
+},
 
   
   };
@@ -778,6 +812,9 @@ function addCustomer() {
         $('#errorModal').show();
     }
 });
+} else {
+  console.error('One or more elements not found.');
+}
 }
 
 function updateCustomerDropdown() {
@@ -793,27 +830,23 @@ function updateCustomerDropdown() {
       // Add new options for each customer in the response
       $.each(response, function (index, customer) {
         var fullName = customer.fname + ' ' + customer.mname + ' ' + customer.lname;
-        var value = customer.id;
-        if (customer.value !== undefined) {
-          value = customer.value;
-        }
-        var newOption = $('<option></option>').attr('value', value).text(fullName + ' (' + value + ')');
+        var value = fullName + ' (' + customer.id + ')'; // Include full name and ID in the value
+        var newOption = $('<option></option>').attr('value', value).text(fullName);
         $('#customerName').append(newOption);
       });
 
-      // Refresh Select2 to reflect the changes
-      $('#customerName').trigger('change');
-
       // Automatically select the last added customer
-      var lastAddedCustomer = response[response.length - 1]; // Assuming the last customer in the response is the newly added one
-      $('#customerName').val(lastAddedCustomer.id).trigger('change');
+      var lastAddedCustomer = response[response.length - 1];
+      var lastAddedFullName = lastAddedCustomer.fname + ' ' + lastAddedCustomer.mname + ' ' + lastAddedCustomer.lname;
+      var lastAddedValue = lastAddedFullName + ' (' + lastAddedCustomer.id + ')';
+      $('#customerName').val(lastAddedValue).trigger('change');
     },
     error: function (error) {
       console.error('Error fetching customers:', error);
       // Handle error response (display error message, log, etc.)
     }
   });
-} 
+}
 
 function addCountryCode() {
   var newPhoneInput = document.getElementById('newPhone');
@@ -939,7 +972,8 @@ function isNumeric(evt) {
     return false;
   }
 
-  // Limit to max 7 digits
+  // Limit to max 7 digits6971962389509
+
   if (input.replace(/[.,]/g, '').length >= 7) {
     return false;
   }
@@ -965,5 +999,5 @@ $(document).ready(function() {
 });
 
 
-}
+
 

@@ -305,7 +305,7 @@
                         </template>
 
                         <template x-if="!product.allowEdit">
-                            <div class="product-price" x-text="priceFormat(product.price * 1.12)"></div>
+                            <div class="product-price" x-text="priceFormat(product.price * 1.03)"></div>
                         </template>
                         
                         <div class="product-price-quantity">
@@ -369,7 +369,7 @@
                   <img :src="item.image" alt="" class="rounded-lg h-10 w-10 bg-white shadow mr-2">
                   <div class="flex-grow">
                   <h5 class="text-sm" x-text="item.name"></h5>
-                    <p class="text-xs block" x-text="priceFormat(item.price * 1.12)"></p>
+                    <p class="text-xs block" x-text="priceFormat(item.price * 1.03)"></p>
                     
                   </div>
                   <div class="py-1">
@@ -475,7 +475,7 @@
   </div>
 
   <div class="total-text">
-    <div>VAT</div>
+    <div>VAT (3%)</div>
     <div class="text-right" x-text="priceFormat(getVAT())"></div>
   </div>
 
@@ -585,10 +585,10 @@
                     <td class="py-2 text-left">
                       <span x-text="item.name"></span>
                       <br/>
-                      <small x-text="priceFormat(item.price * 1.12)"></small>
+                      <small x-text="priceFormat(item.price * 1.03)"></small>
                     </td>
                     <td class="py-2 text-center" x-text="item.qty"></td>
-                    <td class="py-2 text-right" x-text="priceFormat(item.qty * item.price * 1.12)"></td>
+                    <td class="py-2 text-right" x-text="priceFormat(item.qty * item.price * 1.03)"></td>
                   </tr>
                 </template>
               </tbody>
