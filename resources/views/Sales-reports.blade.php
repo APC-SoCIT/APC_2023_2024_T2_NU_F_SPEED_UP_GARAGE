@@ -226,6 +226,7 @@ function printReport() {
             totalSales += sales;
         }
     });
+    
 
     // Generate the HTML content with dynamic date and time and total summaries
     var htmlContent = `
