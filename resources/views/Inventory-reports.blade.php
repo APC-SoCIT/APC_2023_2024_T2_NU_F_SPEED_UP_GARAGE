@@ -41,10 +41,6 @@
                         <li><a href='/inventory-reports' class="active">Inventory Reports</a></li>
                     </ul>
                 </div>
-                <a href="#" class="report">
-                    <i class='bx bx-cloud-download'></i>
-                    <span>Download CSV</span>
-                </a>
             </div>
 
             <div class="maintable-container">
@@ -76,27 +72,51 @@
                                 <table class="inventory-table">
                                     <thead>
                                         <tr>
-                                            <th>Status</th>
-                                            <th>Product #</th>
-                                            <th>Name</th>
-                                            <th>Quantity</th>
                                             <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
+                                            <th>IN</th>
+                                            <th>OUT</th>
                                         </tr>
                                     </thead>
                                     <tbody id="inventoryTableBody">
-                                
-                                    @foreach ($inventory_logs as $product)
-                                        <tr data-id="{{ $product->id }}">
-                                            <td><span class="status"></span></td>
-                                            <td>{{ $product->id }}</td>
-                                            <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
-                                            <td class="quantity" id="quantity{{ $product->id }}" style="text-align: left;"><span class="quantity">{{ $product->quantity }}</span></td>
-                                            <td>{{ \Illuminate\Support\Carbon::parse($product->created_at)->format('Y-m-d') }}</td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach ($inventory_logs as $product)
+                                            @php
+                                                $in_quantity = 0;
+                                                $out_quantity = 0;
+                                            @endphp
+                                            @foreach ($transaction_item_logs as $log)
+                                            @php
+                                                $log_date = \Illuminate\Support\Carbon::parse($log->created_at)->format('Y-m-d');
+                                            @endphp
+                                            @if ($log->item_id == $product->product_id && $log_date == \Illuminate\Support\Carbon::parse($product->created_at)->format('Y-m-d'))
+                                                @if ($log->remarks == 'IN')
+                                                    @php
+                                                        $in_quantity += $log->qty;
+                                                    @endphp
+                                                @elseif ($log->remarks == 'OUT')
+                                                    @php
+                                                        $out_quantity += $log->qty;
+                                                    @endphp
+                                                @endif
+                                            @endif
+                                        @endforeach
                                         
+                                            <tr data-id="{{ $product->id }}">
+                                                <td>{{ \Illuminate\Support\Carbon::parse($product->created_at)->format('Y-m-d') }}</td>
+                                                <td><span class="status"></span></td>
+                                                <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name }}</td>
+                                                <td class="quantity" id="quantity{{ $product->id }}" style="text-align: left;"><span class="quantity">{{ $product->quantity }}</span></td>
+                                                <td>{{ $in_quantity }}</td>
+                                                <td>{{ $out_quantity }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+                                
+                                </div>
+                                
                             </div>
 
                 <div class="pagination">
@@ -128,19 +148,24 @@
         endDate = temp;
     }
 
+    // Format start and end dates to match the date format used in the table
+    var startDateFormatted = startDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
+    var endDateFormatted = endDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
+
     // Iterate through each row of the table body
     var tableRows = document.querySelectorAll('#inventoryTableBody tr');
     tableRows.forEach(function(row) {
-        var rowDate = new Date(row.cells[4].textContent); // Get the date from the fifth column
+        var rowDate = row.cells[0].textContent; // Get the date from the first column
 
         // If the row's date is within the specified range, show the row; otherwise, hide it
-        if (rowDate >= startDate && rowDate <= endDate) {
+        if (rowDate >= startDateFormatted && rowDate <= endDateFormatted) {
             row.style.display = 'table-row';
         } else {
             row.style.display = 'none';
         }
     });
 }
+
 
 
         function printReport() {
