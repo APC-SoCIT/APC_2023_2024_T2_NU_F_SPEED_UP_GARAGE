@@ -145,6 +145,8 @@ Route::post('/update-transactions', 'TransactionController@updateTransactions');
 Route::get('/get-product-by-barcode', [ProductController::class, 'getProductByBarcode']);
 Route::get('/get-product-by-barcode', [ProductsController::class, 'getProductByBarcode']);
 
+Route::get('/get-customers', [POSController::class, 'getCustomers']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

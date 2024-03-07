@@ -76,6 +76,14 @@ class POSController extends Controller
         return view('POS', ['customers' => $customers]);
     }
 
+    public function getCustomers()
+    {
+        $customers = Customer::all();
+
+        return response()->json($customers);
+    }
+
+
     public function getLatestTransactionId()
     {
         $latestTransaction = Transaction::latest('transaction_id')->first();

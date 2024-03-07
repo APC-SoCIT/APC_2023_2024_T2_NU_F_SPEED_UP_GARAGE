@@ -56,7 +56,7 @@
               <select id="customerName" class="category-dropdown1" name="customerName">
     <option value="Select Customer">Select Customer</option>
     @foreach ($customers as $customer)
-        <option value="{{ $customer->fname . ' ' . $customer->lname }}">{{ $customer->fname }} {{ $customer->lname }}</option>
+        <option value="{{ $customer->fname . ' ' . $customer->lname . ' '. $customer->mname . ' ' . $customer->id}}">{{ $customer->fname }} {{ $customer->mname }} {{ $customer->lname }} ({{ $customer->id }}) </option>
     @endforeach
 </select>
 
@@ -117,7 +117,7 @@
             </div>
             <div class="form-row-container">
             <label for="newBirthday">Birthday</label>
-            <input type="text" id="newBirthday" name="newBirthday" placeholder="2002-09-29">
+            <input type="date" id="newBirthday" name="newBirthday" placeholder="2002-09-29" style="font-size:12px;">
 
         </div>
         </div>
@@ -184,6 +184,26 @@
     </div>
   </div>
 </div>
+
+
+<div class="success-modal" id="successModal">
+                <div class="success-modal-content">
+                    <p class="message-header">Success</p>
+                    <div class="divider"></div>
+                    <p id="successText"></p>
+                    <button class="modal-close-button" onclick="closeSuccessModal()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Error Modal -->
+            <div class="error-modal" id="errorModal">
+                <div class="error-modal-content">
+                    <p class="message-header">Error</p>
+                    <div class="divider"></div>
+                    <p id="errorText"></p>
+                    <button class="modal-close-button" onclick="closeErrorModal()">Close</button>
+                </div>
+            </div>
 
         <div class="con">
           <div class="search-button">

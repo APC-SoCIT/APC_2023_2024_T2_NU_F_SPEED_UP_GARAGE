@@ -95,6 +95,7 @@
                             <th style="text-align: right;">Cash Amount</th>
                             <th style="text-align: right;">GCASH Amount</th>
                             <th style="text-align: right;">Card Amount</th>
+                            <th style="text-align: right;">Total Labor</th>
                             <th style="text-align: right;">Total Amount</th>
                             <th style="text-align: right;">Total Payment</th>
                             <th style="text-align: right;">Change</th>
@@ -146,6 +147,10 @@
 
                                 <td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}" style="text-align: right;">
                                     <span class="paid_amount">₱{{ number_format($transaction->card_amount, 2) }}</span>
+                                    <input type="text" style="display:none;">
+                                </td>
+                                <td class="total_amount numeric-cell" id="total_amount{{ $transaction->transaction_id }}" style="text-align: right;">
+                                    <span class="total_amount">₱{{ number_format($transaction->labor_amount, 2) }}</span>
                                     <input type="text" style="display:none;">
                                 </td>
                                 <td class="total_amount numeric-cell" id="total_amount{{ $transaction->transaction_id }}" style="text-align: right;">

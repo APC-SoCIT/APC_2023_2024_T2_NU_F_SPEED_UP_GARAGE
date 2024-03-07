@@ -108,7 +108,7 @@ class AdminController extends Controller
         $recentTransactions = Transaction::latest()->take(10)->get();
 
         $currentDate = Carbon::now();
-        $currentMonths = Carbon::now()->monthName;
+        $currentMonth = Carbon::now()->monthName;
 
         // Get the count of transactions that occurred today
         $transactionsTodayCount = Transaction::whereDate('created_at', $currentDate)->count();
@@ -126,19 +126,27 @@ class AdminController extends Controller
         $todaySales = end($dailySalesData) ?? 0;
 
         // Calculate the difference in sales
-        $difference = $todaySales - $yesterdaySales;
+       
 
-        // Calculate the percentage change
-        $percentageChange = ($difference / ($yesterdaySales == 0 ? 1 : $yesterdaySales)) * 100; // Prevent division by zero
+        // Log the difference
+      
+        $differenceSales = $todaySales - $yesterdaySales;
 
-        $percentageChangeSign = $percentageChange >= 0 ? '+' : '-';
-        $percentageChangeColor = $percentageChange >= 0 ? 'green' : 'red';
+        // Determine the sign and color for the difference
+        $differenceSign = $differenceSales >= 0 ? '+' : '-';
+        $differenceColor = $differenceSales >= 0 ? 'green' : 'red';
+        
+        // Format the difference in sales as peso
+        $formattedDifferenceSales = '₱' . number_format(abs($differenceSales), 2, '.', ',');
+       
+        $difference = [
+            'value' => $formattedDifferenceSales,
+            'sign' => $differenceSign,
+            'color' => $differenceColor,
+        ];
 
-        // Display the percentage change
 
-
-
-        $currentMonth = Carbon::now()->format('Y-m');
+        $currentMonths = Carbon::now()->format('Y-m');
         $previousMonth = Carbon::now()->subMonth()->format('Y-m');
         
         // Retrieve sales data for the last six months
@@ -200,13 +208,7 @@ class AdminController extends Controller
             'currentMonths' => $currentMonths,
             'totalLaborSalesToday' => '₱' . number_format($totalLaborSalesToday, 2, '.', ','),
             'totalProductSalesToday' =>'₱' . number_format($totalProductSalesToday, 2, '.', ','),
-            'percentageChange' => '%' . number_format($percentageChange, 2, '.', ','),
-            'percentageChange' => [
-                'value' => $percentageChange,
-                'sign' => $percentageChangeSign,
-                'color' => $percentageChangeColor,
-                
-            ],
+            'difference' => $difference,
             'percentMonth' => $percentMonth,
         ]);
     }

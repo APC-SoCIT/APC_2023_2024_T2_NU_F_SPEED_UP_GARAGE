@@ -3,6 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
     <title>Dashboard</title>
@@ -113,7 +114,7 @@
                         <h3>
                             ₱{{$formattedCurrentMonthSales}}
                         </h3>
-                        <p>{{$currentMonths}}'s Total Sales</p>
+                        <p>{{$currentMonth}}'s Total Sales</p>
                         </span>
                     </li>
                 <li>
@@ -122,7 +123,7 @@
                         <h3>
                             ₱{{$formattedAverageDailySales}}
                         </h3>
-                        <p>Average Daily Sales / {{$currentMonths}}</p>
+                        <p>Average Daily Sales / {{$currentMonth}}</p>
                     </span>
                 </li>    
             </ul>
@@ -158,17 +159,18 @@
             <script> let topProductsData = @json($topProductsData);</script>
 
             <div>
-                <div class="salesreminders">
-                    <h2 id="salesForecastTitle">
-                        Sales Forecast  <span style="color: {{ $percentageChange['color'] }}; font-size: 13px;">
-                            {{ $percentageChange['sign'] }}{{ number_format(abs($percentageChange['value']), 2) }}%
-                        </span>
-                    </h2>
-                    <p>Sales Performance Overview</p>
-                    <div class="pulse"></div>
-                    <div id="dailySalesData" data-daily-sales='{!! json_encode($dailySalesData) !!}'></div>
-                </div>
-            </div>
+    <div class="salesreminders">
+        <h2 id="salesForecastTitle">
+            Sales Forecast  
+            <span style="color: {{ $difference['color'] }}; font-size: 13px;">
+                {{ $difference['sign'] }}{{ $difference['value'] }}
+            </span>
+        </h2>
+        <p>Sales Performance Overview</p>
+        <div class="pulse"></div>
+        <div id="dailySalesData" data-daily-sales='{!! json_encode($dailySalesData) !!}'></div>
+    </div>
+</div>
 
             <div class="orders">
                 <div class="header">
@@ -181,7 +183,7 @@
                             <th></th>
                             <th>Cashier Name</th>
                             <th>Order Date</th>
-                            <th style="text-align: center;">Price</th>
+                            <th style="padding-left: 40px;">Price</th>
                         </tr>
                     </thead>
                     <tbody>

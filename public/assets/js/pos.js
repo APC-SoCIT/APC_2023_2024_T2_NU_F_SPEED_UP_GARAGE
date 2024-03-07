@@ -318,12 +318,10 @@ addQty(item, qty) {
     },
     submitable() {
       const cashierNameElement = document.getElementById("cashierName");
-      
       const isCashierSelected = cashierNameElement.value !== "Select Cashier";
-     
+      const isLaborAmountValid = this.labor > 0;
       const isCashEnough = this.change >= 0;
- 
-      return isCashierSelected && isCashEnough && this.cart.length > 0;
+      return isCashierSelected && isCashEnough && isLaborAmountValid;
     },
 
     submit: async function () {
@@ -758,19 +756,64 @@ function addCustomer() {
       headers: {
         'X-CSRF-TOKEN': csrfToken
       },
-      success: function(response) {
-        console.log('Customer added successfully:', response);
+      success: function (response) {
+        console.log('Server response:', response);
+    
+        // Handle success response (update UI, close modal, etc.)
+        $('#successText').text(response.message);
+        $('#successModal').show();
+        // Hide success modal after 3 seconds
+        setTimeout(function () {
+            $('#successModal').hide();
+        }, 3000);
         closeAddCustomerModal();
-      },
-      error: function(error) {
+        
+        // Call the function to update the customer dropdown
+        updateCustomerDropdown();
+    },
+    error: function (error) {
         console.error('Error adding customer:', error);
-      }
-    });
-  } else {
-    console.error('One or more elements not found.');
-  }
+        // Handle error response (display error message, log, etc.)
+        $('#errorText').text('Error adding customer. Please try again later.');
+        $('#errorModal').show();
+    }
+});
 }
-  
+
+function updateCustomerDropdown() {
+  $.ajax({
+    url: '/get-customers', // Adjust the URL to your endpoint for fetching customers
+    type: 'GET',
+    success: function (response) {
+      console.log('Customers fetched successfully:', response);
+
+      // Clear existing options in the dropdown
+      $('#customerName').empty();
+
+      // Add new options for each customer in the response
+      $.each(response, function (index, customer) {
+        var fullName = customer.fname + ' ' + customer.mname + ' ' + customer.lname;
+        var value = customer.id;
+        if (customer.value !== undefined) {
+          value = customer.value;
+        }
+        var newOption = $('<option></option>').attr('value', value).text(fullName + ' (' + value + ')');
+        $('#customerName').append(newOption);
+      });
+
+      // Refresh Select2 to reflect the changes
+      $('#customerName').trigger('change');
+
+      // Automatically select the last added customer
+      var lastAddedCustomer = response[response.length - 1]; // Assuming the last customer in the response is the newly added one
+      $('#customerName').val(lastAddedCustomer.id).trigger('change');
+    },
+    error: function (error) {
+      console.error('Error fetching customers:', error);
+      // Handle error response (display error message, log, etc.)
+    }
+  });
+} 
 
 function addCountryCode() {
   var newPhoneInput = document.getElementById('newPhone');
@@ -906,7 +949,21 @@ function isNumeric(evt) {
   return true;
 }
 
+$(document).ready(function() {
+  // Get the current date
+  var currentDate = new Date();
+  
+  // Subtract 18 years from the current date to ensure the birthdate is always 18 years ago or earlier
+  currentDate.setFullYear(currentDate.getFullYear() - 18);
+  
+  // Format the currentDate to YYYY-MM-DD
+  var maxDate = currentDate.toISOString().split('T')[0];
+  
+  // Set the max attribute for the birthdate input field
+  $('#newBirthday').attr('max', maxDate);
+  $('#customerBirthday').attr('max', maxDate);
+});
 
 
-
+}
 
