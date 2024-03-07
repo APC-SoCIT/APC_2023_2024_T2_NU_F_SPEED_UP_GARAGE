@@ -318,13 +318,12 @@ addQty(item, qty) {
     },
     submitable() {
       const cashierNameElement = document.getElementById("cashierName");
-      const customerNameElement = document.getElementById("customerName");
+      
       const isCashierSelected = cashierNameElement.value !== "Select Cashier";
-      const isCustomerSelected = customerNameElement.value !== "Select Customer";
      
       const isCashEnough = this.change >= 0;
  
-      return isCashierSelected && isCustomerSelected && isCashEnough && this.cart.length > 0;
+      return isCashierSelected && isCashEnough && this.cart.length > 0;
     },
 
     submit: async function () {

@@ -345,11 +345,10 @@
                         <label for="Barcode">Barcode</label>
                         <input type="text" id="scanBarcode" name="scanBarcode" placeholder="4800047865633" required>
                     </div>
-                    <div class="form-row-container">
-                        <label for="Id">ID</label>
-                        <input type="text" id="scanId" name="scanId" placeholder="1" required>
+
                     </div>
-                </div>
+                    <input type="text" id="scanId" name="scanId" placeholder="1" readonly style="display:none;">
+                
                 <div class="form-row">
                     <div class="form-row-container">
                         <label for="Product">Product Name</label>

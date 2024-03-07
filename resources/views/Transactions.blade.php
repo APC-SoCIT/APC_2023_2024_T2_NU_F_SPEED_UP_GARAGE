@@ -87,16 +87,15 @@
                         <tr>
                             <th>Receipt #</th>
                             <th>Customer Name</th>
-                            <th>Phone</th>
                             <th>Date</th>
                             <th>Items</th>
                             <th>Quantity</th>
                             <th>VATable</th>
                             <th>VAT</th>
-                            <th>Total Amount</th>
                             <th>Cash Amount</th>
                             <th>GCASH Amount</th>
                             <th>Card Amount</th>
+                            <th>Total Amount</th>
                             <th>Total Payment</th>
                             <th>Change</th>
                             <th>Payment Method</th>
@@ -110,7 +109,6 @@
                             <tr data-id="{{ $transaction->transaction_id }}">
                             <td>{{ $transaction->transaction_id }}</td>
                                 <td class="customer-name" id="customer_name{{ $transaction->transaction_id }}">{{ $transaction->customer_name}}</td>
-                                <td class="phone" id="phone{{ $transaction->transaction_id }}">{{ $transaction->phone }}</td>
                                 <td class="date" id="date{{ $transaction->transaction_id }}">{{ $transaction->created_at }}</td>
                                 <td class="items" id="items{{ $transaction->transaction_id }}">
                                     @php
@@ -135,10 +133,7 @@
     <span class="vat">₱{{ number_format($transaction->vat, 2) }}</span>
     <input type="text" style="display:none;">
 </td>
-<td class="total_amount numeric-cell" id="total_amount{{ $transaction->transaction_id }}">
-    <span class="total_amount">₱{{ number_format($transaction->total_amount, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
+
 <td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
     <span class="paid_amount">₱{{ number_format($transaction->cash_amount, 2) }}</span>
     <input type="text" style="display:none;">
@@ -153,7 +148,10 @@
     <span class="paid_amount">₱{{ number_format($transaction->card_amount, 2) }}</span>
     <input type="text" style="display:none;">
 </td>
-
+<td class="total_amount numeric-cell" id="total_amount{{ $transaction->transaction_id }}">
+    <span class="total_amount">₱{{ number_format($transaction->total_amount, 2) }}</span>
+    <input type="text" style="display:none;">
+</td>
 <td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
     <span class="total_payment">₱{{ number_format($transaction->total_payment, 2) }}</span>
     <input type="text" style="display:none;">
@@ -178,9 +176,8 @@
                 </div>
             </div>
         </div>
-
-        
-    </main>
+ 
+</main>
 
     <script src="{{ asset('assets/js/try.js') }}"></script> 
     <script src="{{ asset('assets/js/navbar.js') }}"></script>

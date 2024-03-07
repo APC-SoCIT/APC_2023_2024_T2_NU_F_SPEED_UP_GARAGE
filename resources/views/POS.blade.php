@@ -42,9 +42,6 @@
       <!-- store menu -->
       <div class="pos-layout">
 
-
-
-
       <div class="order-info">
         <div class="right-section">
         <div class="order-no" id="receiptNo"></div>
@@ -56,26 +53,25 @@
       
               <input type="hidden" id="currentUserId" value="{{ auth()->user()->id }}">
               <input type="text" id="cashierName" class="category-dropdown1" value="{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}" readonly>
-              <select id="customerName" class="category-dropdown1" name="customerName" >
-                  
-                  @foreach ($customers as $customer)
-                  <option value="{{ $customer->fname . ' ' . $customer->lname }}">{{ $customer->fname }} {{ $customer->lname }}</option>
-                  @endforeach
-              </select>
+              <select id="customerName" class="category-dropdown1" name="customerName">
+    <option value="Select Customer">Select Customer</option>
+    @foreach ($customers as $customer)
+        <option value="{{ $customer->fname . ' ' . $customer->lname }}">{{ $customer->fname }} {{ $customer->lname }}</option>
+    @endforeach
+</select>
 
-          
-              <script>
-              $(document).ready(function() {
-                  $('#customerName').select2();
-              });
-              </script>
+<!-- Add the necessary JavaScript for Select2 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-
-
-
- 
-
-            
+<script>
+    // Initialize Select2 on your dropdown
+    $(document).ready(function() {
+        $('#customerName').select2({
+            // Any Select2 options you want to include can go here
+        });
+    });
+</script>  
+   
 <div class="user-table-container">
             <div class="user-filter-container">
                 <div class="add-user-container">
