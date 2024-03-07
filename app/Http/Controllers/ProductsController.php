@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\User;
+use App\Models\TransactionItemLog;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\InventoryLog;
@@ -59,7 +60,10 @@ class ProductsController extends Controller
     public function invreport()
     {
         $inventory_logs = InventoryLog::all();
-        return view('inventory-reports', compact('inventory_logs'));
+        $transaction_item_logs = TransactionItemLog::all(); // Assuming TransactionItemLog is your model
+    
+        return view('inventory-reports', compact('inventory_logs', 'transaction_item_logs'));
     }
+    
 }
 
