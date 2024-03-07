@@ -472,4 +472,3 @@ $(document).ready(function() {
         $(this).val(trimmedInput);
     });
 });
-

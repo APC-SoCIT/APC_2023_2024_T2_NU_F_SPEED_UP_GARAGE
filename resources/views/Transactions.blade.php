@@ -106,7 +106,7 @@
 
                         <tbody id="inventoryTableBody">
                             @foreach ($transactions as $transaction)
-                            <tr data-id="{{ $transaction->transaction_id }}">
+                            <tr data-id="{{ $transaction->transaction_id }}" style="height: 140px;">
                             <td>{{ $transaction->transaction_id }}</td>
                                 <td class="customer-name" id="customer_name{{ $transaction->transaction_id }}">{{ $transaction->customer_name}}</td>
                                 <td class="date" id="date{{ $transaction->transaction_id }}">{{ $transaction->created_at }}</td>
@@ -263,4 +263,4 @@ $(document).ready(function() {
 
 </body>
 
-</html>
+</html> 

@@ -687,6 +687,11 @@ body.dark .profile.active .profile-menu {
     color: var(--warning);
 }
 
+.content main .reports li:nth-child(3) .bx{
+    background: var(--light-success);
+    color: var(--success);
+}
+
 .content main .reports li .info p, .content main .reports li .info a{
     font-size: 14px;
 }

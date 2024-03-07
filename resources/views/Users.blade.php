@@ -91,7 +91,7 @@
                                 $employee = App\Models\Employee::where('user_id', $user->id)->first();
                                 $fullName = $employee->fname . ' ' . $employee->mname . ' ' . $employee->lname;
                             @endphp
-                            <tr data-id="{{ $user->id }}">
+                            <tr data-id="{{ $user->id }}" style="height: 100px;">
                                 <td>{{ $loop->index + 1 }}</td>
                                 <td>
                                     @php

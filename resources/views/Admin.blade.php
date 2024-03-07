@@ -113,7 +113,7 @@
                         <h3>
                             ₱{{$formattedCurrentMonthSales}}
                         </h3>
-                        <p>{{$currentMonth}}'s Total Sales</p>
+                        <p>{{$currentMonths}}'s Total Sales</p>
                         </span>
                     </li>
                 <li>
@@ -122,7 +122,7 @@
                         <h3>
                             ₱{{$formattedAverageDailySales}}
                         </h3>
-                        <p>Average Daily Sales / {{$currentMonth}}</p>
+                        <p>Average Daily Sales / {{$currentMonths}}</p>
                     </span>
                 </li>    
             </ul>
@@ -181,7 +181,7 @@
                             <th></th>
                             <th>Cashier Name</th>
                             <th>Order Date</th>
-                            <th style="padding-left: 40px;">Price</th>
+                            <th style="text-align: center;">Price</th>
                         </tr>
                     </thead>
                     <tbody>

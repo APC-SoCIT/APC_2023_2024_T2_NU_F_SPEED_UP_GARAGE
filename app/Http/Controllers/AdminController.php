@@ -108,7 +108,7 @@ class AdminController extends Controller
         $recentTransactions = Transaction::latest()->take(10)->get();
 
         $currentDate = Carbon::now();
-        $currentMonth = Carbon::now()->monthName;
+        $currentMonths = Carbon::now()->monthName;
 
         // Get the count of transactions that occurred today
         $transactionsTodayCount = Transaction::whereDate('created_at', $currentDate)->count();
@@ -197,6 +197,7 @@ class AdminController extends Controller
             'topProductsData' => $topProductsData,
             'transactionsTodayCount' => $transactionsTodayCount,
             'currentMonth' => $currentMonth,
+            'currentMonths' => $currentMonths,
             'totalLaborSalesToday' => '₱' . number_format($totalLaborSalesToday, 2, '.', ','),
             'totalProductSalesToday' =>'₱' . number_format($totalProductSalesToday, 2, '.', ','),
             'percentageChange' => '%' . number_format($percentageChange, 2, '.', ','),

@@ -85,7 +85,7 @@
                         </thead>
                         <tbody id="inventoryTableBody">
             @foreach ($customers as $index => $customer)
-            <tr data-id="{{ $customer->id }}">
+            <tr data-id="{{ $customer->id }}"  style="height: 100px;">
             <td>{{ $index + 1 }}</td>
             <td class="customer-name" id="fname{{ $customer->id }}">{{ $customer->fname }}</td>
             <td class="customer-name" id="lname{{ $customer->id }}">{{ $customer->lname }}</td>

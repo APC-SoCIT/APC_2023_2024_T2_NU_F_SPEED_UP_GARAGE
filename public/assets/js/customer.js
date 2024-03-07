@@ -326,6 +326,28 @@ $('#saveCustomerChanges').on('click', function() {
     saveCustomerChanges();
 });
 
+$(document).ready(function() {
+    // Attach event listener to the phone number input for validation
+    $('#newPhone').on('input', function() {
+        // Remove any non-numeric characters
+        var sanitizedInput = $(this).val().replace(/\D/g, '');
+        
+        // Update the input field value
+        $(this).val(sanitizedInput);
+    });
+});
+
+$(document).ready(function() {
+    // Attach event listener to the customer phone input for validation
+    $('#customerPhone').on('input', function() {
+        // Remove any non-numeric characters
+        var sanitizedInput = $(this).val().replace(/\D/g, '');
+        
+        // Update the input field value
+        $(this).val(sanitizedInput);
+    });
+});
+
 function saveCustomerChanges() {
     const editedCustomerFirstName = $('#customerFirstName').val();
     const editedCustomerLastName = $('#customerLastName').val();
