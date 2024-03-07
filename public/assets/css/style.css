@@ -23,6 +23,10 @@
     --white: #fff;
 }
 
+.apexcharts-menu-item.exportSVG,
+.apexcharts-menu-item.exportPNG {
+    display: none;
+}
 
 .modals {
     display: flex;

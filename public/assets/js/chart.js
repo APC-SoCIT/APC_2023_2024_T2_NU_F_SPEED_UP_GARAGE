@@ -118,8 +118,15 @@ let barOptions = {
       },
   
       yaxis: {
-          show: false,
-      },
+        show: true, // Display Y-axis numbers
+        labels: {
+            formatter: (value) => `₱${value.toFixed(2)}`, // Format labels to two decimal places
+            style: {
+                colors: labelColor,
+                fontFamily: fontFamily,
+            },
+        },
+    },
   
       xaxis: {
         labels: {
@@ -155,6 +162,7 @@ chart.render();
       chart: {
           toolbar: {
               show: true,
+              
           },
           zoom: {
               enabled: false,
