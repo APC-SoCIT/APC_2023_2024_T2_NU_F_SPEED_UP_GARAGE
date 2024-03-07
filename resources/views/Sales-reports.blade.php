@@ -226,7 +226,7 @@ function printReport() {
             totalSales += sales;
         }
     });
-    
+
 
     // Generate the HTML content with dynamic date and time and total summaries
     var htmlContent = `
@@ -281,7 +281,6 @@ function printReport() {
     // Print the newly created window
     printWindow.print();
 }
-
 
 // Call calculateTotals function to initialize total summaries when the page is loaded
 calculateTotals();
