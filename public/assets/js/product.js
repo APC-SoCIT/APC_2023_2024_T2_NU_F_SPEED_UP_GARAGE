@@ -6,7 +6,7 @@ function productCSV() {
     const year = currentDate.getFullYear();
 
     // Form the filename
-    const filename = `inventory-${day}-${month}-${year}.csv`;
+    const filename = `products-${day}-${month}-${year}.csv`;
 
     // Initialize an empty CSV string
     let csv = 'Tag,Name,Category,Brand,Description,Quantity,Price\n';
@@ -27,20 +27,21 @@ function productCSV() {
         // Format the tag value with leading zeros
         let formattedTag = `"${tag.replace(/"/g, '""')}"`; // Escape double quotes by doubling them
 
-        // Check if the row matches the selected filter criteria
-         // Extract status from the row
-         let status = $(this).find('.status').text();
+        // Extract status from the row
+        let status = $(this).find('.status').text();
 
-         // Get the selected status filter value
+        // Get the selected status filter value
         let statusFilter = $('#statusFilter').val();
         let categoryFilter = $('#categoryFilter').val();
         let brandFilter = $('#brandFilter').val();
+
+        // Check if the row matches the filter criteria
         let matchesStatus = (statusFilter === '' || status === statusFilter);
         let matchesCategory = (categoryFilter === '' || category === categoryFilter);
         let matchesBrand = (brandFilter === '' || brand === brandFilter);
 
         // Include the row in the CSV string if it matches the filter criteria
-        if (statusFilter&& matchesStatus && matchesCategory && matchesBrand) {
+        if ((statusFilter === '' || matchesStatus) && matchesCategory && matchesBrand) {
             csv += `${formattedTag},"${name}","${category}","${brand}","${description}",${quantity},${price}\n`;
         }
     });
