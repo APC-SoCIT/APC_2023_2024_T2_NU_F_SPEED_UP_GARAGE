@@ -126,7 +126,7 @@
                                 <td class="tag" id="tag{{ $product->id }}">{{ $product->tag }}</td>
                                 <td class="product-image" id="image{{ $product->id }}">
                                     @if($product->product_image)
-                                        <img src="{{ asset('storage/product_images/' . $product->product_image) }}" alt="Product Image" style="max-width: 100px; max-height: 100px; width: auto; height: auto;">
+                                        <img src="{{ asset('storage/product_images/' . $product->product_image) }}" alt="Product Image" style="max-width: 100px; max-height: 100px; width: 250px; height: 250px;">
                                     @else
                                         No Image
                                     @endif

@@ -90,14 +90,14 @@
                             <th>Date</th>
                             <th>Items</th>
                             <th>Total Quantities</th>
-                            <th>VATable</th>
-                            <th>VAT</th>
-                            <th>Cash Amount</th>
-                            <th>GCASH Amount</th>
-                            <th>Card Amount</th>
-                            <th>Total Amount</th>
-                            <th>Total Payment</th>
-                            <th>Change</th>
+                            <th style="text-align: right;">VATable</th>
+                            <th style="text-align: right;">VAT</th>
+                            <th style="text-align: right;">Cash Amount</th>
+                            <th style="text-align: right;">GCASH Amount</th>
+                            <th style="text-align: right;">Card Amount</th>
+                            <th style="text-align: right;">Total Amount</th>
+                            <th style="text-align: right;">Total Payment</th>
+                            <th style="text-align: right;">Change</th>
                             <th>Payment Method</th>
                             <th>Payment</th>
                             <th>Cashier</th>
@@ -125,41 +125,41 @@
                                     @endforeach
                                 </td>
                                 <td class="quantity" id="quantity{{ $transaction->transaction_id }}"><span class="quantity">{{ $transaction->quantity }}</span><input type="text"style="display:none;"></td>
-                                <td class="vatable numeric-cell" id="vatable{{ $transaction->transaction_id }}">
-    <span class="vatable">₱{{ number_format($transaction->vatable, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-<td class="vat numeric-cell" id="vat{{ $transaction->transaction_id }}">
-    <span class="vat">₱{{ number_format($transaction->vat, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
+                                <td class="vatable numeric-cell" id="vatable{{ $transaction->transaction_id }}" style="text-align: right;">
+                                    <span class="vatable">₱{{ number_format($transaction->vatable, 2) }}</span>
+                                    <input type="text" style="display:none;">
+                                </td>
+                                <td class="vat numeric-cell" id="vat{{ $transaction->transaction_id }}" style="text-align: right;">
+                                    <span class="vat">₱{{ number_format($transaction->vat, 2) }}</span>
+                                    <input type="text" style="display:none;">
+                                </td>
 
-<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
-    <span class="paid_amount">₱{{ number_format($transaction->cash_amount, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
+                                <td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}" style="text-align: right; ">
+                                    <span class="paid_amount">₱{{ number_format($transaction->cash_amount, 2) }}</span>
+                                    <input type="text" style="display:none;">
+                                </td>
 
-<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
-    <span class="paid_amount">₱{{ number_format($transaction->gcash_amount, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
+                                <td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}" style="text-align: right;">
+                                    <span class="paid_amount">₱{{ number_format($transaction->gcash_amount, 2) }}</span>
+                                    <input type="text" style="display:none;">
+                                </td>
 
-<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
-    <span class="paid_amount">₱{{ number_format($transaction->card_amount, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-<td class="total_amount numeric-cell" id="total_amount{{ $transaction->transaction_id }}">
-    <span class="total_amount">₱{{ number_format($transaction->total_amount, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-<td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}">
-    <span class="total_payment">₱{{ number_format($transaction->total_payment, 2) }}</span>
-    <input type="text" style="display:none;">
-</td>
-<td class="customer-change numeric-cell" id="customer_change_{{ $transaction->transaction_id }}">
-    <span class="customer-change">₱{{ number_format($transaction->customer_change, 2) }}</span>
-    <input type="text" class="edit-customer-change" style="display:none;">
-</td>
+                                <td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}" style="text-align: right;">
+                                    <span class="paid_amount">₱{{ number_format($transaction->card_amount, 2) }}</span>
+                                    <input type="text" style="display:none;">
+                                </td>
+                                <td class="total_amount numeric-cell" id="total_amount{{ $transaction->transaction_id }}" style="text-align: right;">
+                                    <span class="total_amount">₱{{ number_format($transaction->total_amount, 2) }}</span>
+                                    <input type="text" style="display:none;">
+                                </td>
+                                <td class="paid_amount numeric-cell" id="paid_amount{{ $transaction->transaction_id }}" style="text-align: right;">
+                                    <span class="total_payment">₱{{ number_format($transaction->total_payment, 2) }}</span>
+                                    <input type="text" style="display:none;">
+                                </td>
+                                <td class="customer-change numeric-cell" id="customer_change_{{ $transaction->transaction_id }}" style="text-align: right;">
+                                    <span class="customer-change">₱{{ number_format($transaction->customer_change, 2) }}</span>
+                                    <input type="text" class="edit-customer-change" style="display:none;">
+                                </td>
 
                                 <td class="payment-method" id="payment_method{{ $transaction->transaction_id }}">{{ $transaction->payment_method }}</td>
                                 <td class="" id="status{{ $transaction->transaction_id }}">{{ $transaction->status }}</td>
