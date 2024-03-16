@@ -57,17 +57,6 @@
                                 </div>
                             </div>
             
-                            <div class="entries-dropdown">
-                                <label class="entries-label" for="entries-per-page">Show</label>
-                                <select class="entries-per-page" id="entries-per-page">
-                                    <option class="entries-option" value="5">5</option>
-                                    <option class="entries-option" value="10">10</option>
-                                    <option class="entries-option" value="20">20</option>
-                                    <option class="entries-option" value="50">50</option>
-                                </select>
-                                <label class="entries-label" for="entries-per-page">entries</label>
-                            </div>
-            
                             <div class="table-container">
                                 <table class="inventory-table">
                                     <thead>
@@ -118,16 +107,7 @@
                                 </div>
                                 
                             </div>
-
-                <div class="pagination">
-                    <span class="pagination-link" onclick="changePage(-1)"><</span>
-                    <span class="pagination-link" data-page="1" onclick="goToPage(1)">1</span>
-                    <span class="pagination-link" data-page="2" onclick="goToPage(2)">2</span>
-                    <span class="pagination-link" data-page="3" onclick="goToPage(3)">3</span>
-                    <span class="pagination-link" data-page="4" onclick="goToPage(4)">4</span>
-                    <span class="pagination-link" data-page="5" onclick="goToPage(5)">5</span>
-                    <span class="pagination-link" onclick="changePage(1)">></span>
-                </div>
+                            
             </div>
         </div>
 
@@ -136,6 +116,22 @@
         <script src="{{ asset('assets/js/inventory.js') }}"></script>    
         <script src="{{ asset('assets/js/navbar.js') }}"></script>
         <script>
+            
+            document.getElementById('entries-per-page').addEventListener('change', function() {
+                var entriesPerPage = this.value;
+                var tableRows = document.querySelectorAll('#inventoryTableBody tr');
+                
+                // Hide all rows
+                tableRows.forEach(function(row) {
+                    row.style.display = 'none';
+                });
+                
+                // Show only the selected number of rows
+                for (var i = 0; i < entriesPerPage && i < tableRows.length; i++) {
+                    tableRows[i].style.display = 'table-row';
+                }
+            });
+
         
         function filterTable() {
     var startDate = new Date(document.getElementById('startDate').value);
@@ -213,6 +209,8 @@
             printWindow.print();
         }
     </script>
+
+    
 </body>
 
 </html>
