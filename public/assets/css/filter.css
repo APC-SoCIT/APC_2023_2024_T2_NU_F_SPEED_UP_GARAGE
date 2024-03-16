@@ -21,6 +21,11 @@ body.dark .filter-container {
     margin-bottom: 15px;
 }
 
+.dropdown-container {
+    align-items: center;
+    margin-bottom: 15px;
+}
+
 .add-product-btn {
     padding: 12px 20px;
     background-color: #2ecc71; /* Green color, you can change it */
@@ -162,11 +167,21 @@ body.dark .search-bar i {
 
     .add-product-container {
         flex-direction: column; /* Adjust to a column layout on small screens */
+        width: 100%;
+    }
+
+    .add-product-containers {
+        width: 100%;
+    }
+
+    .dropdown-container {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
     }
 
     .add-product-btn {
-        margin-top: 10px; /* Add some spacing between button and inputs on small screens */
-        margin: 20px;
+        margin-bottom: 10px; /* Add some spacing between button and inputs on small screens */
         width: 100%;
     }
 

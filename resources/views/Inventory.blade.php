@@ -55,11 +55,12 @@
             <div class="maintable-container">
                 <div class="filter-container">
                     <div class="add-product-container">
-                    <div>
-                       <button class="add-product-btn" onclick="showAddProductModal()">+ Add Product</button>
+                    <div class="add-product-containers">
+                    <button class="add-product-btn" onclick="showAddProductModal()">+ Add Product</button>
                      </div>
                        <div class="dropdown-container">
-                        <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
+
+                            <select id="statusFilter" class="category-dropdown" onchange="filterTable()">
                             <option value="">Select Status</option>
                             <option value="Out of Stock">Out of Stock</option>
                             <option value="Low Stock">Low Stock</option>
@@ -126,9 +127,9 @@
                                 <td class="tag" id="tag{{ $product->id }}">{{ $product->tag }}</td>
                                 <td class="product-image" id="image{{ $product->id }}">
                                     @if($product->product_image)
-                                        <img src="{{ asset('storage/product_images/' . $product->product_image) }}" alt="Product Image" style="max-width: 100px; max-height: 100px; width: 250px; height: 250px;">
+                                        <img src="{{ asset('storage/product_images/' . $product->product_image) }}" class="product-images" alt="Product Image" onclick="openImageModal(this)">
                                     @else
-                                        No Image
+                                        No Image    
                                     @endif
                                 </td>
                                 <td class="product-name" id="name{{ $product->id }}">{{ $product->product_name}}</td>
@@ -159,6 +160,11 @@
                     <span class="pagination-link" onclick="changePage(1)">></span>
                 </div>
             </div>
+        </div>
+
+        <div id="imageModal" class="image-modal" style="display: none;">
+            <span class="image-close" onclick="closeImageModal()">&times;</span>
+            <img class="modal-content" id="expandedImage">
         </div>
 
         <div class="edit-modal" id="editModal" style="display: none;">

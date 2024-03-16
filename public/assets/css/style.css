@@ -634,6 +634,18 @@ body.dark .profile.active .profile-menu {
     margin-left: 10px;
 }
 
+@media only screen and (max-width: 768px) {
+    .content main .header .report,
+    .content main .header .upload {
+        height: 30px; /* Decrease height */
+        padding: 0 10px; /* Decrease padding */
+        font-size: 14px; /* Decrease font size */
+        margin-left: 5px; /* Adjust margin for separation */
+        white-space: nowrap; /* Prevent line breaks */
+        
+    }
+}
+
 .content main .insights{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -723,6 +735,13 @@ body.dark .profile.active .profile-menu {
     padding-right: 50px;
 }
 
+@media only screen and (max-width: 768px) {
+    .transaction-amount {
+        text-align: right; /* Adjust alignment for smaller screens */
+        left: 10px; /* Adjust the position */
+    }
+}
+
 .content main .insights li .bx{
     width: 80px;
     height: 80px;
@@ -764,7 +783,7 @@ body.dark .profile.active .profile-menu {
 
 
 .content main .insights li .info h3{
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     color: var(--dark);
 }
@@ -940,7 +959,6 @@ content main .bottom-data .orders table tr td .status.completed{
         width: calc(100% - 60px);
         left: 200px;
     }
-
 }
 
 @media screen and (max-width: 576px) {
@@ -976,6 +994,10 @@ content main .bottom-data .orders table tr td .status.completed{
 
     .content main .insights {
         grid-template-columns: 1fr;
+    }
+
+    .content main .insights a {
+        font-size: 10px;
     }
 
     .content main .bottom-data .header{

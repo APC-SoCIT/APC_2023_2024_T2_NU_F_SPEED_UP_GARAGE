@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/filter.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory-modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/inventory.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/product.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/entries.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
@@ -109,7 +110,7 @@
                                 <td class="tag" id="tag{{ $product->id }}">{{ $product->tag }}</td>
                                 <td class="product-image" id="image{{ $product->id }}">
                                     @if($product->product_image)
-                                        <img src="{{ asset('storage/product_images/' . $product->product_image) }}" alt="Product Image" style="max-width: 100px; max-height: 100px; width: 250px; height: 250px;">
+                                        <img src="{{ asset('storage/product_images/' . $product->product_image) }}" alt="Product Image" class="product-images" onclick="openProductImageModal(this)">
                                     @else
                                         No Image
                                     @endif
@@ -140,7 +141,10 @@
             </div>
         </div>
 
-
+        <div id="productImageModal" class="product-image-modal" style="display: none;">
+            <span class="image-close" onclick="closeProductImageModal()">&times;</span>
+            <img class="modal-content" id="productImageExpanded">
+        </div>
 
         <div class="add-modal" id="scanProductModal">
             <div class="modal-content">
@@ -205,6 +209,7 @@
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/product.js') }}"></script>
     <script>
+
         $(document).ready(function () {
         // Add event listeners to filter dropdowns and entries dropdown
         $('#statusFilter, #categoryFilter, #brandFilter, #entries-per-page').change(filterTable);

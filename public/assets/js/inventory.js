@@ -899,3 +899,28 @@ function inventoryCSV() {
     // Clean up
     document.body.removeChild(a);
 }
+
+const modal = document.getElementById('imageModal');
+const closeButton = document.getElementById('closeButton');
+
+// Get the modal content
+const modalContent = document.getElementById('modalContent');
+
+// Function to open the modal
+function openImageModal(image) {
+    const modalImg = document.getElementById('expandedImage');
+    modal.style.display = "flex";
+    modalImg.src = image.src;
+}
+
+// Function to close the modal
+function closeImageModal() {
+    modal.style.display = "none";
+}
+
+// Close the modal when clicking outside of it
+window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+        closeImageModal();
+    }
+});

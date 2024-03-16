@@ -165,6 +165,32 @@ function closeScanProductModal() {
     document.getElementById('scanProductModal').style.display = 'none';
 }
 
+const productImageModal = document.getElementById('productImageModal');
+const productImageCloseButton = document.getElementById('productImageCloseButton');
+
+// Function to open the product image modal
+function openProductImageModal(image) {
+    const modalImg = document.getElementById('productImageExpanded');
+    productImageModal.style.display = "flex";
+    modalImg.src = image.src;
+}
+
+// Function to close the product image modal
+function closeProductImageModal() {
+    productImageModal.style.display = "none";
+}
+
+// Close the product image modal when clicking outside of it
+window.addEventListener('click', function(event) {
+    if (event.target === productImageModal) {
+        closeProductImageModal();
+    }
+});
+
+// Close the product image modal when clicking the close button
+productImageCloseButton.addEventListener('click', function() {
+    closeProductImageModal();
+});
 
 
 
