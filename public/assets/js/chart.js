@@ -317,16 +317,15 @@ chart.render();
     document.addEventListener("DOMContentLoaded", function () {
         let dailySalesData = JSON.parse(document.getElementById('dailySalesData').getAttribute('data-daily-sales'));
     
-        // Generate an array of dates for the last 5 days
+        // Generate an array of dates for the current day up to the 8th of the month
         let currentDate = new Date();
         let dates = [];
-        for (let i = 5  ; i >= 0; i--) {
-            let date = new Date(currentDate);
-            date.setDate(date.getDate() - i);
+        for (let i = 4; i <= 8; i++) {
+            let date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1);
             dates.push(date.toISOString().slice(0, 10));
         }
     
-        // Create salesDataArray ensuring there's a data point for each of the last 5 days
+        // Create salesDataArray ensuring there's a data point for each day
         let salesDataArray = dates.map(date => ({
             x: date,
             y: dailySalesData[date] ? Number(dailySalesData[date].toFixed(2)) : 0, // If sales data exists for the date, use it, otherwise use 0

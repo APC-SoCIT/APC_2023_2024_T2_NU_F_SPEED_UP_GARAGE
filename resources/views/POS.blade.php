@@ -284,7 +284,10 @@
 <div class="products-container">
     <div class="products-product" x-show="filteredProducts().length > 0">
         <template x-for="(product, index) in filteredProducts()" :key="product.id">
-            <div role="button" class="product-card" :title="product.product_name" x-on:click="addToCart(product)" x-bind:class="{ 'disabled': product.price <= 0 || product.quantity <= 0 }">
+        <div role="button" class="product-card" :title="product.product_name" 
+     x-on:click="addToCart(product)" 
+     x-bind:class="{ 'disabled': product.price <= 0 || product.quantity <= 0, 'zero-quantity': product.quantity === 0 }">
+
                 <img class="product-image" :src="'/storage/product_images/' + product.product_image" :alt="product.product_name">
                 <div class="product-card-pad">
                     <div class="product-details">
@@ -303,7 +306,7 @@
                         </template>
 
                         <template x-if="!product.allowEdit">
-                            <div class="product-price" x-text="priceFormat(product.price * 1.03)"></div>
+                            <div class="product-price" x-text="priceFormat(product.price)"></div>
                         </template>
                         
                         <div class="product-price-quantity">
@@ -369,7 +372,7 @@
                   <img :src="item.image" alt="" class="rounded-lg h-10 w-10 bg-white shadow mr-2">
                   <div class="flex-grow">
                   <h5 class="text-sm" x-text="item.name"></h5>
-                    <p class="text-xs block" x-text="priceFormat(item.price * 1.03)"></p>
+                    <p class="text-xs block" x-text="priceFormat(item.price)"></p>
                     
                   </div>
                   <div class="py-1">
@@ -442,42 +445,10 @@
     </div>
 </div>
 
-          <div class="summary-card">
-<div class="total-text1" id="cashPayment">
-  <div>CASH</div> 
-  <div class="input-container">
-  <div class="signsignsign">₱</div>
-  <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
-</div>
-</div>
-
-<div class="total-text1" id="gcashPayment" style="display: none;">
-  <div>GCASH/MAYA</div>
-  <div class="input-container">
-  <div class="signsignsign">₱</div>
-  <input x-bind:value="numberFormat(gcash)" x-on:keyup="updateGCash($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
-</div>
-</div>
-
-<div class="total-text1" id="cardPayment" style="display: none;">
-  <div>CARD</div>
-  <div class="input-container">
-  <div class="signsignsign">₱</div>
-  <input x-bind:value="numberFormat(card)" x-on:keyup="updateCard($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
-</div>
-</div>
-</div>
+          
                 
           <div class="summary-card" >
-  <div class="total-text" >
-    <div>VATable</div>
-    <div class="text-right" x-text="priceFormat(getVatable())"></div>
-  </div>
 
-  <div class="total-text">
-    <div>VAT (3%)</div>
-    <div class="text-right" x-text="priceFormat(getVAT())"></div>
-  </div>
 
   <div class="total-text" >
     <div>TOTAL</div>
@@ -512,6 +483,33 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
               </svg>
             </div>
+
+            <div class="summary-card">
+<div class="total-text1" id="cashPayment">
+  <div>CASH</div> 
+  <div class="input-container">
+  <div class="signsignsign">₱</div>
+  <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
+</div>
+</div>
+
+<div class="total-text1" id="gcashPayment" style="display: none;">
+  <div>GCASH/MAYA</div>
+  <div class="input-container">
+  <div class="signsignsign">₱</div>
+  <input x-bind:value="numberFormat(gcash)" x-on:keyup="updateGCash($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
+</div>
+</div>
+
+<div class="total-text1" id="cardPayment" style="display: none;">
+  <div>CARD</div>
+  <div class="input-container">
+  <div class="signsignsign">₱</div>
+  <input x-bind:value="numberFormat(card)" x-on:keyup="updateCard($event.target.value)" type="text" class="cash-inner-card" placeholder="0">
+</div>
+</div>
+</div>
+
             <button
               
               class="text-white text-lg w-full py-3 focus:outline-none"
@@ -585,10 +583,10 @@
                     <td class="py-2 text-left">
                       <span x-text="item.name"></span>
                       <br/>
-                      <small x-text="priceFormat(item.price * 1.03)"></small>
+                      <small x-text="priceFormat(item.price)"></small>
                     </td>
                     <td class="py-2 text-center" x-text="item.qty"></td>
-                    <td class="py-2 text-right" x-text="priceFormat(item.qty * item.price * 1.03)"></td>
+                    <td class="py-2 text-right" x-text="priceFormat(item.qty * item.price)"></td>
                   </tr>
                 </template>
               </tbody>
@@ -617,14 +615,6 @@
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">LABOR</div>
               <div x-text="priceFormat(labor)"></div>
-            </div>
-            <div class="flex text-xs font-semibold">
-              <div class="flex-grow">VATABLE</div>
-              <div x-text="priceFormat(getVatable())"></div>
-            </div>
-            <div class="flex text-xs font-semibold">
-              <div class="flex-grow">VAT</div>
-              <div x-text="priceFormat(getVAT())"></div>
             </div>
             <div class="flex text-xs font-semibold">
               <div class="flex-grow">TOTAL</div>

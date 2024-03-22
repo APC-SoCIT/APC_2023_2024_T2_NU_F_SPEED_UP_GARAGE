@@ -62,7 +62,7 @@ class ProductController extends Controller
         if ($request->hasFile('product_image')) {
             $image = $request->file('product_image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/product_images', $imageName);
+            $image->storeAs('app/public/avatars/', $imageName);
             $product->product_image = $imageName;
         }
     
@@ -111,7 +111,7 @@ class ProductController extends Controller
             'category' => $product->category,
             'description' => $product->description,
             'brand' => $product->brand,
-            'product_image' => asset('storage/product_images/' . $product->product_image),
+            'product_image' => asset('app/public/avatars/' . $product->product_image),
             // Include other attributes as needed
         ]);
     } else {

@@ -324,10 +324,8 @@ addQty(item, qty) {
   
     submitable() {
       const cashierNameElement = document.getElementById("cashierName");
-      const customerNameElement = document.getElementById("customerName");
       
       const isCashierSelected = cashierNameElement.value !== "Select Cashier";
-      const isCustomerSelected = customerNameElement.value !== "Select Customer";
       
       const isCashEnough = this.change >= 0; // Cash provided is enough or more than the total amount
       const isCartNotEmpty = this.cart.length > 0; // Check if the cart is not empty
@@ -335,7 +333,7 @@ addQty(item, qty) {
     
       // Allow checkout if there's no cart but there's labor and cash is enough
       if (!isCartNotEmpty && isLaborAmountValid && isCashEnough) {
-        return isCashierSelected && isCustomerSelected;
+        return isCashierSelected;
       } 
       // Disallow checkout if there's no labor and no items in the cart
       else if (!isLaborAmountValid && !isCartNotEmpty) {
@@ -343,7 +341,7 @@ addQty(item, qty) {
       } 
       // Allow checkout if there's labor, cash is enough, and both customer and cashier are selected
       else {
-        return isCashierSelected && isCustomerSelected && isCashEnough && isCartNotEmpty;
+        return isCashierSelected && isCashEnough && isCartNotEmpty;
       }
     },
 
@@ -537,7 +535,7 @@ getVatable() {
 
 getVAT() {
   const vatableAmount = this.getVatable();
-  const vat = vatableAmount * 0.03;
+  const vat = vatableAmount * 0.00;
   return vat;
 },
 
