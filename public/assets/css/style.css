@@ -992,11 +992,11 @@ content main .bottom-data .orders table tr td .status.completed{
         display: none;
     }
 
-    .content main .insights {
+    .content main .insights, .content main .reports {
         grid-template-columns: 1fr;
     }
 
-    .content main .insights a {
+    .content main .insights a, .content main .reports a {
         font-size: 10px;
     }
 

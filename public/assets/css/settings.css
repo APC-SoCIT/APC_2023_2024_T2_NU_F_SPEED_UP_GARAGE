@@ -125,6 +125,7 @@ hr {
     padding: 10px;
     border: none;
     cursor: pointer;
+    margin-left: 20px;
     border-radius: 5px;
 }
 
@@ -145,27 +146,6 @@ hr {
     background-color: rgb(85, 85, 85);
 }
 
-/* Media query for smaller screens */
-@media (max-width: 600px) {
-    .tabs {
-        flex-direction: column; /* Stack tabs vertically for small screens */
-        align-items: center; /* Center tabs on small screens */
-    }
-    .update-btn {
-        background-color: #4caf50;
-        color: white;
-        padding: 10px;
-        margin-top: 10px;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
-    .threshold-input {
-        margin-top: 15px;
-        margin: 0;
-    }
-}
 
 /* Success Modal */
 
@@ -452,7 +432,6 @@ form .cancel-btn:hover {
     background-color: #777777;
 }
 
-
 .dark form .edit-btn,
 .dark form .save-btn  {
     background-color: #777777;
@@ -531,6 +510,23 @@ form .cancel-btn:hover {
     margin-right: 20px; /* Add some space between label and input */
 }
 
+/* Password group styles */
+.settings-group {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.settings-group label {
+    margin-bottom: 10px;
+    font-size: 14px;
+    margin-right: 20px; /* Add some space between label and input */
+}
+
+
+
 .password-group input[type="password"] {
     flex: 0.4; /* Allow input fields to grow and fill available space */
     padding: 10px;
@@ -567,4 +563,62 @@ form .cancel-btn:hover {
     padding: 9px 20px;
     cursor: pointer;
     border-style: none;
+}
+
+@media (max-width: 600px) {
+    .tabs {
+        flex-direction: column; /* Stack tabs vertically for small screens */
+        align-items: center; /* Center tabs on small screens */
+    }
+    .update-btn {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px;
+        margin-top: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .update-btn {
+        margin-left: 0;
+    }
+
+    .threshold-input {
+        margin-top: 15px;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .password-labels {
+        margin-left: 0; /* Remove margin on the left */
+    }
+
+    .password-group {
+        flex-direction: column; /* Change to column layout for smaller screens */
+        align-items: start; /* Remove alignment of items */
+    }
+
+    .settings-group {
+        flex-direction: column; /* Change to column layout for smaller screens */
+        align-items: start; /* Remove alignment of items */
+    }
+
+    .password-group input[type="password"] {
+        width: 100%; /* Set input width to 100% for smaller screens */
+    }
+
+    .name-group,
+    .form-group {
+        flex-direction: column; /* Change to column layout for smaller screens */
+        align-items: start; /* Remove alignment of items */
+    }
+
+    .name-group, .form-group {
+        flex-direction: column; /* Change to column layout for smaller screens */
+    }
+
+    .name-group input[type="text"], .name-group input[type="date"], .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="address"] {
+        width: 100%; /* Set input width to 100% for smaller screens */
+    }
 }

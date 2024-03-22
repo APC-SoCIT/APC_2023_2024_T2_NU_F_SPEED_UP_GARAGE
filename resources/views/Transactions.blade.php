@@ -66,7 +66,7 @@
                             <option value="Multiple">Multiple</option>
                         </select>
                         
-                            <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
+                        <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
                         </div>
                     </div>
                 </div>

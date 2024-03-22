@@ -28,13 +28,3 @@
     font-weight: bold;
 }
 
-.date-filter {
-    font-size: 14px;
-    margin-right: 10px;
-}
-
-.dark .date-filter {
-    font-size: 14px;
-    color: white;
-    margin-right: 10px;
-}

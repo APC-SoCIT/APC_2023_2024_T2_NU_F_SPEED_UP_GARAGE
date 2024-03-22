@@ -12,9 +12,6 @@
     z-index: 1000; /* Set a higher z-index value for modals */
   }
 
-  .search-bar{
-    margin-left:10px;
-  }
   .text-right {
     text-align: right !important;
     

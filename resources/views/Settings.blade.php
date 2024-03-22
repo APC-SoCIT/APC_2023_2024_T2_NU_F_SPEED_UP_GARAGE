@@ -122,9 +122,11 @@
                         <div class="threshold-section">
                             <h3>Brands</h3>
                             <hr>
-                            <label class="labels" for="brandName">Add Brand:</label>
+                            <div class="settings-group">
+                            <label class="settings-labels" for="brandName">Add Brand:</label>
                             <input type="text" id="brandName" class="threshold-input" name="brandName" placeholder="NMAX" required>
                             <button type="submit" class="update-btn" onclick="addBrand()">Add New Brand</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -134,9 +136,11 @@
                         <div class="threshold-section">
                             <h3>Categories</h3>
                             <hr>
-                            <label class="labels" for="brandName">Add Category:</label>
+                            <div class="settings-group">
+                            <label class="settings-labels" for="brandName">Add Category:</label>
                             <input type="text" id="categoryName" class="threshold-input" name="categoryName" placeholder="Oil Filter" required>
                             <button type="submit" class="update-btn" onclick="addCategory()">Add New Category</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -146,9 +150,11 @@
                         <div class="threshold-section">
                             <h3>Threshold Level</h3>
                             <hr>
-                            <label class="labels" for="thresholdInput">Current Level:</label>
+                            <div class="settings-group">
+                            <label class="settings-labels" for="thresholdInput">Current Level:</label>
                             <input type="number" id="thresholdInput" class="threshold-input" value="{{ \App\Models\Threshold::first()->value ?? 20 }}" required>
                             <button class="update-btn" onclick="updateThreshold()">Update Threshold</button>
+                            </div>
                         </div>
                     </div>
                 </div>

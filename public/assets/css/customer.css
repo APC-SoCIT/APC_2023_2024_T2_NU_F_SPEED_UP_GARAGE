@@ -6,7 +6,6 @@ label.required::before {
     color: red;
 }
 
-
 .add-customer-modal, .edit-customer-modal {
     display: none;
     position: fixed;
@@ -186,11 +185,6 @@ margin-bottom: 10px;
 .dark .form-row label {
     color: white;
 }
-
-
-
-
-
 
 /* Remove the width property from the following rule to avoid conflicts: */
 .add-customer-modal-content input,

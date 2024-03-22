@@ -9,6 +9,16 @@
     border-bottom: 1px solid #ddd; /* Add a border between filter and table */
 }
 
+.date-filter {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.dark .date-filter {
+    font-size: 14px;
+    color: white;
+    margin-right: 10px;
+}
 
 body.dark .filter-container {
     border-color: #555; /* Border color in dark mode */
@@ -165,29 +175,32 @@ body.dark .search-bar i {
         left: 0;
     }
 
+    .filter-container {
+        flex-direction: column; /* Change flex-direction to column for smaller screens */
+        align-items: stretch; /* Stretch items to full width */
+    }
+
     .add-product-container {
         flex-direction: column; /* Adjust to a column layout on small screens */
         width: 100%;
     }
 
-    .add-product-containers {
-        width: 100%;
-    }
-
     .dropdown-container {
         width: 100%;
-        display: flex;
-        flex-wrap: wrap;
     }
 
-    .add-product-btn {
+    .add-product-btn,
+    .upload-csv-btn {
+        width: 100%; /* Make buttons full-width on small screens */
         margin-bottom: 10px; /* Add some spacing between button and inputs on small screens */
-        width: 100%;
     }
 
     .category-dropdown,
     .brand-dropdown,
-    .search-bar {
+    .search-bar,
+    .filter-input,
+    .date-filter {
+        margin-top: 5px;
         width: 100%; /* Make inputs full-width on small screens */
         margin-bottom: 10px; /* Add some spacing between inputs on small screens */
     }
@@ -206,3 +219,4 @@ body.dark .search-bar i {
         margin-bottom: 5px; /* Add some spacing between buttons on small screens */
     }
 }
+
