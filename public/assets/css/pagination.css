@@ -4,13 +4,14 @@
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    font-size: 14px;
 }
 
 .pagination-link {
     padding: 8px;
     margin: 0 5px;
     cursor: pointer;
-    color: #3498db;
+    color: #1f73b7;
 }
 
 .pagination-link:hover {

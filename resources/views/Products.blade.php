@@ -68,7 +68,7 @@
                             @endforeach
                         </select>
                         
-                            <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
+                            <input type="text" class="search-bar" placeholder="Search..." id="searchInput">
                         </div>
                     </div>
                 </div>
@@ -209,97 +209,116 @@
     <script src="{{ asset('assets/js/pagination.js') }}"></script>
     <script src="{{ asset('assets/js/product.js') }}"></script>
     <script>
+          $(document).ready(function() {
+    var filteredRows = []; // Variable to store filtered rows
+    var currentPage = 1; // Track current page
 
-        $(document).ready(function () {
-        // Add event listeners to filter dropdowns and entries dropdown
-        $('#statusFilter, #categoryFilter, #brandFilter, #entries-per-page').change(filterTable);
+    // Add event listeners to filter dropdowns and entries dropdown
+    $('#statusFilter, #categoryFilter, #brandFilter, #entries-per-page').change(filterTable);
 
-        function filterTable() {
-            var statusFilter = $('#statusFilter').val();
-            var categoryFilter = $('#categoryFilter').val();
-            var brandFilter = $('#brandFilter').val();
-            var entriesPerPage = parseInt($('#entries-per-page').val());
-
-            // Hide all rows
-            $('.inventory-table tbody tr').hide();
-
-            // Filter rows based on the selected criteria
-            $('.inventory-table tbody tr').each(function () {
-                var row = $(this);
-                var status = row.find('.status').text();
-                var category = row.find('.category').text();
-                var brand = row.find('.brand').text();
-
-                // Check if the row matches the selected filter criteria
-                var matchesStatus = (statusFilter === '' || status === statusFilter);
-                var matchesCategory = (categoryFilter === '' || category === categoryFilter);
-                var matchesBrand = (brandFilter === '' || brand === brandFilter);
-
-                // Show the row if it matches the filter criteria
-                if (matchesStatus && matchesCategory && matchesBrand) {
-                    row.show();
-                }
-            });
-
-            // Implement pagination based on the number of entries per page
-            var visibleRows = $('.inventory-table tbody tr:visible');
-            var totalRows = visibleRows.length;
-            var totalPages = Math.ceil(totalRows / entriesPerPage);
-
-            // Generate pagination links
-            var paginationHtml = '';
-
-            // Previous page button
-            paginationHtml += '<span class="pagination-prev">&lt;</span>';
-
-            for (var i = 1; i <= totalPages; i++) {
-                paginationHtml += '<span class="pagination-link" data-page="' + i + '">' + i + '</span>';
-            }
-
-            // Next page button
-            paginationHtml += '<span class="pagination-next">&gt;</span>';
-
-            $('.pagination').html(paginationHtml);
-
-            // Show only the rows for the current page
-            var currentPage = 1;
-            $('.pagination-link').click(function () {
-                currentPage = parseInt($(this).attr('data-page'));
-                var startIndex = (currentPage - 1) * entriesPerPage;
-                var endIndex = startIndex + entriesPerPage;
-
-                visibleRows.hide();
-                visibleRows.slice(startIndex, endIndex).show();
-
-                // Highlight the current page and manage visibility of "<" and ">"
-                $('.pagination-link').removeClass('active');
-                $(this).addClass('active');
-                $('.pagination-prev').toggle(currentPage !== 1);
-                $('.pagination-next').toggle(currentPage !== totalPages);
-            });
-
-            // Previous page button functionality
-            $('.pagination-prev').click(function () {
-                if (currentPage > 1) {
-                    $('.pagination-link[data-page="' + (currentPage - 1) + '"]').click();
-                }
-            });
-
-            // Next page button functionality
-            $('.pagination-next').click(function () {
-                if (currentPage < totalPages) {
-                    $('.pagination-link[data-page="' + (currentPage + 1) + '"]').click();
-                }
-            });
-
-            // Trigger click on the first page link to display initial page
-            $('.pagination-link[data-page="1"]').click();
+    // Trigger filter on search input enter press
+    $('#searchInput').keydown(function(event) {
+        if (event.keyCode === 13) {
+            filterTable();
         }
-
-        // Trigger change event on entries dropdown to apply default entries
-        $('#entries-per-page').change();
     });
 
+    function filterTable() {
+        var statusFilter = $('#statusFilter').val();
+        var categoryFilter = $('#categoryFilter').val();
+        var brandFilter = $('#brandFilter').val();
+        var entriesPerPage = parseInt($('#entries-per-page').val());
+        var searchQuery = $('#searchInput').val().trim().toLowerCase(); // Get search query
+
+        // Filter rows based on the selected criteria and search query
+        filteredRows = []; // Clear filteredRows
+        $('.inventory-table tbody tr').each(function() {
+            var row = $(this);
+            var status = row.find('.status').text();
+            var category = row.find('.category').text();
+            var brand = row.find('.brand').text();
+            var rowText = row.text().toLowerCase(); // Get all text content of the row
+
+            // Check if the row matches the selected filter criteria and search query
+            var matchesStatus = (statusFilter === '' || status === statusFilter);
+            var matchesCategory = (categoryFilter === '' || category === categoryFilter);
+            var matchesBrand = (brandFilter === '' || brand === brandFilter);
+            var matchesSearchQuery = (searchQuery === '' || rowText.includes(searchQuery));
+
+            // Show the row if it matches the filter criteria and search query
+            if (matchesStatus && matchesCategory && matchesBrand && matchesSearchQuery) {
+                filteredRows.push(row); // Store filtered row
+            }
+        });
+
+        currentPage = 1; // Reset current page to 1 after filtering
+        paginate(); // Call paginate function after filtering
+    }
+
+    function paginate() {
+        var entriesPerPage = parseInt($('#entries-per-page').val()); // Get entries per page
+        var startIndex = (currentPage - 1) * entriesPerPage;
+        var endIndex = Math.min(startIndex + entriesPerPage, filteredRows.length);
+        var totalPages = Math.ceil(filteredRows.length / entriesPerPage);
+
+        // Show only the rows for the current page
+        $('.inventory-table tbody tr').hide();
+        for (var i = startIndex; i < endIndex; i++) {
+            filteredRows[i].show();
+        }
+
+        // Generate pagination links with a maximum of 5 pages shown at a time
+        var maxPagesToShow = 5;
+        var startPage = Math.max(1, Math.min(currentPage - Math.floor(maxPagesToShow / 2), totalPages - maxPagesToShow + 1));
+        var endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
+
+        var paginationHtml = '';
+        paginationHtml += '<span class="pagination-prev" ' + (currentPage === 1 ? 'style="display:none;"' : '') + '>&lt;</span>';
+        if (startPage > 1) {
+            paginationHtml += '<span class="pagination-link" data-page="1">1</span>';
+            if (startPage > 2) {
+                paginationHtml += '<span class="pagination-ellipsis">...</span>';
+            }
+        }
+        for (var i = startPage; i <= endPage; i++) {
+            paginationHtml += '<span class="pagination-link' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</span>';
+        }
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                paginationHtml += '<span class="pagination-ellipsis">...</span>';
+            }
+            paginationHtml += '<span class="pagination-link" data-page="' + totalPages + '">' + totalPages + '</span>';
+        }
+        paginationHtml += '<span class="pagination-next" ' + (currentPage === totalPages ? 'style="display:none;"' : '') + '>&gt;</span>';
+        $('.pagination').html(paginationHtml);
+    }
+
+    // Handle pagination click events (delegated)
+    $('.pagination').on('click', '.pagination-link', function() {
+        currentPage = parseInt($(this).attr('data-page'));
+        paginate(); // Update pagination when page link is clicked
+    });
+
+    // Previous page button functionality
+    $('.pagination').on('click', '.pagination-prev', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            paginate(); // Update pagination when previous button is clicked
+        }
+    });
+
+    // Next page button functionality
+    $('.pagination').on('click', '.pagination-next', function() {
+        var totalPages = Math.ceil(filteredRows.length / parseInt($('#entries-per-page').val()));
+        if (currentPage < totalPages) {
+            currentPage++;
+            paginate(); // Update pagination when next button is clicked
+        }
+    });
+
+    // Trigger change event on entries dropdown to apply default entries
+    $('#entries-per-page').change();
+});  
     </script>
 </body>
 

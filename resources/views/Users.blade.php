@@ -54,8 +54,7 @@
                             <option value="cashier">Cashier</option>
                         </select>
 
-                        <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()"
-                            id="searchInput">
+                        <input type="text" class="search-bar" placeholder="Search..." id="searchInput">
                     </div>
                 </div>
             </div>
@@ -93,7 +92,7 @@
                             @endphp
                             <tr data-id="{{ $user->id }}" style="height: 100px;">
                                 <td>{{ $loop->index + 1 }}</td>
-                                <td class="user-role">
+                                <td class="user-role" id="role{{ $user->id }}">
                                     @php
                                         $roleName = ($user->role == 1) ? 'Admin' : (($user->role == 2) ? 'Inventory Clerk' : (($user->role == 3) ? 'Cashier' : 'Unknown Role'));
                                     @endphp
@@ -250,85 +249,111 @@
     <script src="{{ asset('assets/js/pagination.js') }}"></script>  
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script>
-$(document).ready(function() {
-    // Add event listeners to filter dropdowns and entries dropdown
-    $('#roleFilter, #entries-per-page').change(function() {
-        filterTable(parseInt($('#entries-per-page').val()));
-    });
 
-    function filterTable(entriesPerPage) {
-        var roleFilter = $('#roleFilter').val().trim().toLowerCase();
-        // Hide all rows
-        $('.inventory-table tbody tr').hide();
+    $(document).ready(function() {
+        var filteredRows = []; // Variable to store filtered rows
+        var currentPage = 1; // Track current page
 
-        // Filter rows based on the selected role
-        $('.inventory-table tbody tr').each(function() {
-            var role = $(this).find('.user-role').text().trim().toLowerCase();
+        // Add event listeners to filter dropdowns and entries dropdown
+        $('#roleFilter, #entries-per-page').change(filterTable);
 
-            // Check if the row matches the selected role filter
-            if (roleFilter === '' || role === roleFilter) {
-                $(this).show();
+        // Trigger filter on search input enter press
+        $('#searchInput').keydown(function(event) {
+            if (event.keyCode === 13) {
+                filterTable();
             }
         });
 
-        // Implement pagination based on the number of entries per page
-        var visibleRows = $('.inventory-table tbody tr:visible');
-        var totalRows = visibleRows.length;
-        var totalPages = Math.ceil(totalRows / entriesPerPage);
+        function filterTable() {
+            var roleFilter = $('#roleFilter').val().trim().toLowerCase();
+            var entriesPerPage = parseInt($('#entries-per-page').val());
+            var searchQuery = $('#searchInput').val().trim().toLowerCase(); // Get search query
 
-        // Generate pagination links
-        var paginationHtml = '';
+            // Filter rows based on the selected role and search query
+            filteredRows = []; // Clear filteredRows
+            $('.inventory-table tbody tr').each(function() {
+                var row = $(this);
+                var role = row.find('.user-role').text().trim().toLowerCase();
+                var rowText = row.text().toLowerCase(); // Get all text content of the row
 
-        // Previous page button
-        paginationHtml += '<span class="pagination-prev">&lt;</span>';
+                // Check if the row matches the selected role filter and search query
+                var matchesRoleFilter = (roleFilter === '' || role === roleFilter);
+                var matchesSearchQuery = (searchQuery === '' || rowText.includes(searchQuery));
 
-        for (var i = 1; i <= totalPages; i++) {
-            paginationHtml += '<span class="pagination-link" data-page="' + i + '">' + i + '</span>';
+                // Show the row if it matches the filter criteria and search query
+                if (matchesRoleFilter && matchesSearchQuery) {
+                    filteredRows.push(row); // Store filtered row
+                }
+            });
+
+            currentPage = 1; // Reset current page to 1 after filtering
+            paginate(); // Call paginate function after filtering
         }
 
-        // Next page button
-        paginationHtml += '<span class="pagination-next">&gt;</span>';
-
-        $('.pagination').html(paginationHtml);
-
-        // Show only the rows for the current page
-        var currentPage = 1;
-        $('.pagination-link').click(function() {
-            currentPage = parseInt($(this).attr('data-page'));
+        function paginate() {
+            var entriesPerPage = parseInt($('#entries-per-page').val()); // Get entries per page
             var startIndex = (currentPage - 1) * entriesPerPage;
-            var endIndex = startIndex + entriesPerPage;
+            var endIndex = Math.min(startIndex + entriesPerPage, filteredRows.length);
+            var totalPages = Math.ceil(filteredRows.length / entriesPerPage);
 
-            visibleRows.hide();
-            visibleRows.slice(startIndex, endIndex).show();
+            // Show only the rows for the current page
+            $('.inventory-table tbody tr').hide();
+            for (var i = startIndex; i < endIndex; i++) {
+                filteredRows[i].show();
+            }
 
-            // Highlight the current page and manage visibility of "<" and ">"
-            $('.pagination-link').removeClass('active');
-            $(this).addClass('active');
-            $('.pagination-prev').toggle(currentPage !== 1);
-            $('.pagination-next').toggle(currentPage !== totalPages);
+            // Generate pagination links with a maximum of 5 pages shown at a time
+            var maxPagesToShow = 5;
+            var startPage = Math.max(1, Math.min(currentPage - Math.floor(maxPagesToShow / 2), totalPages - maxPagesToShow + 1));
+            var endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
+
+            var paginationHtml = '';
+            paginationHtml += '<span class="pagination-prev" ' + (currentPage === 1 ? 'style="display:none;"' : '') + '>&lt;</span>';
+            if (startPage > 1) {
+                paginationHtml += '<span class="pagination-link" data-page="1">1</span>';
+                if (startPage > 2) {
+                    paginationHtml += '<span class="pagination-ellipsis">...</span>';
+                }
+            }
+            for (var i = startPage; i <= endPage; i++) {
+                paginationHtml += '<span class="pagination-link' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</span>';
+            }
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    paginationHtml += '<span class="pagination-ellipsis">...</span>';
+                }
+                paginationHtml += '<span class="pagination-link" data-page="' + totalPages + '">' + totalPages + '</span>';
+            }
+            paginationHtml += '<span class="pagination-next" ' + (currentPage === totalPages ? 'style="display:none;"' : '') + '>&gt;</span>';
+            $('.pagination').html(paginationHtml);
+        }
+
+        // Handle pagination click events (delegated)
+        $('.pagination').on('click', '.pagination-link', function() {
+            currentPage = parseInt($(this).attr('data-page'));
+            paginate(); // Update pagination when page link is clicked
         });
 
         // Previous page button functionality
-        $('.pagination-prev').click(function() {
+        $('.pagination').on('click', '.pagination-prev', function() {
             if (currentPage > 1) {
-                $('.pagination-link[data-page="' + (currentPage - 1) + '"]').click();
+                currentPage--;
+                paginate(); // Update pagination when previous button is clicked
             }
         });
 
         // Next page button functionality
-        $('.pagination-next').click(function() {
+        $('.pagination').on('click', '.pagination-next', function() {
+            var totalPages = Math.ceil(filteredRows.length / parseInt($('#entries-per-page').val()));
             if (currentPage < totalPages) {
-                $('.pagination-link[data-page="' + (currentPage + 1) + '"]').click();
+                currentPage++;
+                paginate(); // Update pagination when next button is clicked
             }
         });
 
-        // Trigger click on the first page link to display initial page
-        $('.pagination-link[data-page="1"]').click();
-    }
-
-    // Trigger change event on entries dropdown to apply default entries
-    $('#entries-per-page').change();
-});
+        // Trigger change event on entries dropdown to apply default entries
+        $('#entries-per-page').change();
+    });
 
     </script>
 </body>

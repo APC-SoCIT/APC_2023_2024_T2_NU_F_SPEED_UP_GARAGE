@@ -60,40 +60,51 @@
                             </div>
             
                             <div class="total-container">
-                            <div class="total-dropdown">
-                                <p class="total-label" for="total-per-page">Total number of transactions</p>
-                                <p class="total-label" for="total-per-page">Total labor sales</p>
-                                <p class="total-label" for="total-per-page">Total item sales:</p>
-                                <p class="total-label" for="total-per-page">Total sales:</p>
-                            </div>
-                            </div>
+    <div class="total-labels">
+        <p class="total-label">Total number of transactions:</p>
+        <p class="total-label">Total labor sales:</p>
+        <p class="total-label">Total item sales:</p>
+        <p class="total-label">Total sales:</p>
+    </div>
+    <div class="total-numbers">
+        <p class="total-number" id="totalTransactions"></p>
+        <p class="total-number" id="totalLaborSales"></p>
+        <p class="total-number" id="totalItemSales"></p>
+        <p class="total-number" id="totalSales"></p>
+    </div>
+</div>
+
+
 
                           
-            
-                            <div class="table-container">
-                                <table class="inventory-table">
-                                    <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Transactions</th>
-                                        <th>Total Labor</th>
-                                        <th>Total Item Sales</th>
-                                        <th>Total Sales</th>
-            
-                                    </tr>
-                                    </thead>
-                                    <tbody id="inventoryTableBody">
-                                        @foreach ($dates as $index => $date)
-                                            <tr data-id="{{ $index }}">
-                                                <td class="date" id="date{{ $date }}">{{ $date }}</td>
-                                                <td class="total-transactions" id="{{ $todayTransactions[$index] }}">{{ $todayTransactions[$index] }}</td>
-                                                <td class="total-amount" id=" ₱{{ $todayLaborSales[$index] }}">₱{{ $todayLaborSales[$index] }}</td>
-                                                <td class="total-amount" id=" ₱{{ $todayItemSales[$index] }}">₱{{ $todayItemSales[$index] }}</td>
-                                                <td class="total-amount" id=" ₱{{ $todaySales[$index] }}">₱{{ $todaySales[$index] }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    
+<div class="table-container">
+    <table class="inventory-table">
+        <thead>
+            <tr>
+                <th style="width: 100px;">Date</th> <!-- Adjust width as needed -->
+                <th style="width: 10px; text-align: center; margin-right: -210px;" >Transactions</th> <!-- Adjust width as needed -->
+                <th style="width: 200px; text-align: right; padding-right: 20px;">Total Labor</th> <!-- Adjust width as needed -->
+                <th style="width: 200px; text-align: right; padding-right: 20px;">Total Item Sales</th> <!-- Adjust width as needed -->
+                <th style="width: 200px; text-align: right; padding-right: 20px;">Total Sales</th> <!-- Adjust width as needed -->
+            </tr>
+        </thead>
+        <tbody id="inventoryTableBody">
+            @foreach ($dates as $index => $date)
+                <tr data-id="{{ $index }}">
+                    <td class="date" id="date{{ $date }}" style="width: 100px;">{{ $date }}</td> <!-- Adjust width as needed -->
+                    <td class="total-transactions" id="{{ $todayTransactions[$index] }}" style="text-align: center;">{{ $todayTransactions[$index] }}</td> <!-- Adjust width as needed -->
+                    <!-- Apply inline style for aligning prices to the right -->
+                    <td class="total-amount" id="laborSales{{ $index }}" style="text-align: right; padding-right: 20px; width: 200px;">₱{{ $todayLaborSales[$index] }}</td> <!-- Adjust width as needed -->
+                    <td class="total-amount" id="itemSales{{ $index }}" style="text-align: right; padding-right: 20px; width: 200px;">₱{{ $todayItemSales[$index] }}</td> <!-- Adjust width as needed -->
+                    <td class="total-amount" id="totalSales{{ $index }}" style="text-align: right; padding-right: 20px; width: 200px;">₱{{ $todaySales[$index] }}</td> <!-- Adjust width as needed -->
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+
+
                                 </table>
                             </div>
             </div>
@@ -128,13 +139,12 @@
             totalSales += sales;
         });
 
-        // Update the totals in the HTML
-        document.querySelector('.total-dropdown').innerHTML = `
-            <p class="total-label" for="total-per-page">Total labor sales: ₱${totalLaborSales.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p>
-            <p class="total-label" for="total-per-page">Total item sales: ₱${totalItemSales.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p>
-            <p class="total-label" for="total-per-page">Total number of transactions: ${totalTransactions.toLocaleString('en-US')}</p>
-            <p class="total-label" for="total-per-page">Total sales: ₱${totalSales.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p>
-        `;
+        // Update total numbers in the HTML
+        document.getElementById('totalTransactions').textContent = totalTransactions.toLocaleString('en-US');
+        document.getElementById('totalLaborSales').textContent = `₱${totalLaborSales.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
+        document.getElementById('totalItemSales').textContent = `₱${totalItemSales.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
+        document.getElementById('totalSales').textContent = `₱${totalSales.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
+
     }
 
 // Function to filter the table based on date range

@@ -192,7 +192,6 @@ body.dark .search-bar i {
     .add-product-btn,
     .upload-csv-btn {
         width: 100%; /* Make buttons full-width on small screens */
-        margin-bottom: 10px; /* Add some spacing between button and inputs on small screens */
     }
 
     .category-dropdown,

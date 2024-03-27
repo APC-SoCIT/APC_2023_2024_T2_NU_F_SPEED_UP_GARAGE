@@ -13,6 +13,16 @@
     <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dropdown.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}">
+    <style>
+        .filter-container {
+            margin-top: 20px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd; /* Add a border between filter and table */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
     <title>Inventory</title>
 </head>
 
@@ -55,8 +65,7 @@
             <div class="maintable-container">
                 <div class="filter-container">
                     <div class="add-product-container">
-                    <div class="add-product-containers">
-                    <button class="add-product-btn" onclick="showAddProductModal()">+ Add Product</button>
+                        <button class="add-product-btn" onclick="showAddProductModal()">+ Add Product</button>
                      </div>
                        <div class="dropdown-container">
 
@@ -81,8 +90,7 @@
                                 <option value="{{ $brand->name }}">{{ $brand->name }}</option>
                             @endforeach
                         </select>
-                        
-                            <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
+                            <input type="text" class="search-bar" placeholder="Search..." id="searchInput">
                         </div>
                     </div>
                 </div>
@@ -406,6 +414,7 @@
     <script src="{{ asset('assets/js/inventory.js') }}"></script>    
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script>
+
     var currentUserUsername = "{{ auth()->user()->employee->fname }} {{ auth()->user()->employee->lname }}";
 
     function uploadCSV() {

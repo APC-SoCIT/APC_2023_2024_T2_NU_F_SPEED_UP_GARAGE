@@ -260,6 +260,7 @@ function editUser(event) {
     const birthdate = birthdateCell.text().trim() !== 'N/A' ? birthdateCell.text().trim() : ''; // Check if birthdate is "N/A"
     const contact_number = $(`#contact_number${userId}`).text();
     const address = $(`#address${userId}`).text();
+    const userRole = $(`#role${userId}`).text().trim(); // Fetch the user role
 
     // Set values to the modal fields
     $('#userUsername').val(username);
@@ -269,35 +270,22 @@ function editUser(event) {
     $('#userBirthDate').val(birthdate);
     $('#userContactNumber').val(contact_number);
     $('#userAddress').val(address);
+    
+    // Set the selected option based on the user role
+    $('#userRole').val(function() {
+        if (userRole === 'Admin') {
+            return '1';
+        } else if (userRole === 'Inventory Clerk') {
+            return '2';
+        } else if (userRole === 'Cashier') {
+            return '3';
+        }
+    });
 
     // Show the modal
     $('#editUserModal').show();
 }
 
-
-function showModalWithUserData(userId) {
-    // Populate modal with current data
-    const username = $(`#username${userId}`).text();
-    const fname = $(`#fname${userId}`).text();
-    const mname = $(`#mname${userId}`).text();
-    const lname = $(`#lname${userId}`).text();
-    const birthdate = $(`#birthdate${userId}`).text();
-    const contact_number = $(`#contact_number${userId}`).text();
-    const password = $(`#password${userId}`).text();
-    const address = $(`#address${userId}`).text();
-
-    $('#userUsername').val(username);
-    $('#userFirstName').val(fname);
-    $('#userMiddleName').val(mname);
-    $('#userLastName').val(lname);
-    $('#userBirthDate').val(birthdate);
-    $('#userContactNumber').val(contact_number);
-    $('#userPassword').val(password); // Corrected line
-    $('#userAddress').val(address);
-
-    // Show the modal
-    $('#editUserModal').show();
-}
 
 
 function capitalizeFirstLetter(string) {

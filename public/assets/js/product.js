@@ -192,6 +192,3 @@ productImageCloseButton.addEventListener('click', function() {
     closeProductImageModal();
 });
 
-
-
-       

@@ -45,7 +45,8 @@
                     <button class="add-product-btn" onclick="addCustomerModal()">+ Add Customer</button>
                         <span></span>
                         <div class="dropdown-container">
-                            <input type="text" class="search-bar" placeholder="Search..." oninput="searchTable()" id="searchInput">
+
+                            <input type="text" class="search-bar" placeholder="Search..." id="searchInput">
                         </div>
                     </div>
                 </div>
@@ -363,108 +364,101 @@
     <script src="{{ asset('assets/js/customer.js') }}"></script>
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script>	
-    window.onload = function() {	
+   $(document).ready(function() {
+    var currentPage = 1; // Track current page
 
-	var $ = new City();
-	$.showProvinces("#newProvince");
-	$.showCities("#newCity");
-    $.showProvinces("#customerProvince");
-	$.showCities("#customerCity");
+    // Add event listeners to search input and entries dropdown
+    $('.search-bar, #entries-per-page').change(filterTable);
 
-    }
+    function filterTable() {
+        var searchTerm = $('.search-bar').val().toLowerCase();
+        var entriesPerPage = parseInt($('#entries-per-page').val());
 
-    $(document).ready(function() {
-        // Add event listeners to filter dropdowns and entries dropdown
-        $('.search-bar, #entries-per-page').change(filterTable);
+        // Hide all rows
+        $('.inventory-table tbody tr').hide();
 
-        function filterTable() {
-            var searchTerm = $('.search-bar').val().toLowerCase();
-            var entriesPerPage = parseInt($('#entries-per-page').val());
+        // Filter rows based on the search term
+        $('.inventory-table tbody tr').each(function() {
+            var row = $(this);
 
-            // Hide all rows
-            $('.inventory-table tbody tr').hide();
-
-            // Filter rows based on the search term
-            $('.inventory-table tbody tr').each(function() {
-                var row = $(this);
-
-                // Check if any column contains the search term
-                var containsSearchTerm = false;
-                row.find('td').each(function() {
-                    if ($(this).text().toLowerCase().indexOf(searchTerm) > -1) {
-                        containsSearchTerm = true;
-                        return false; // Break the loop if the term is found in any column
-                    }
-                });
-
-                // Show the row if it contains the search term
-                if (containsSearchTerm) {
-                    row.show();
+            // Check if any column contains the search term
+            var containsSearchTerm = false;
+            row.find('td').each(function() {
+                if ($(this).text().toLowerCase().indexOf(searchTerm) > -1) {
+                    containsSearchTerm = true;
+                    return false; // Break the loop if the term is found in any column
                 }
             });
 
-            // Implement pagination based on the number of entries per page
-            var visibleRows = $('.inventory-table tbody tr:visible');
-            var totalRows = visibleRows.length;
-            var totalPages = Math.ceil(totalRows / entriesPerPage);
-
-            // Generate pagination links
-            var paginationHtml = '';
-
-            // Previous page button
-            if (totalPages > 1) {
-                paginationHtml += '<span class="pagination-prev">&lt;</span>';
+            // Show the row if it contains the search term
+            if (containsSearchTerm) {
+                row.show();
             }
+        });
 
-            for (var i = 1; i <= totalPages; i++) {
-                paginationHtml += '<span class="pagination-link" data-page="' + i + '">' + i + '</span>';
-            }
+        // Implement pagination based on the number of entries per page
+        var visibleRows = $('.inventory-table tbody tr:visible');
+        var totalRows = visibleRows.length;
+        var totalPages = Math.ceil(totalRows / entriesPerPage);
 
-            // Next page button
-            if (totalPages > 1) {
-                paginationHtml += '<span class="pagination-next">&gt;</span>';
-            }
+        // Generate pagination links
+        var paginationHtml = '';
 
-            $('.pagination').html(paginationHtml);
-
-            // Show only the rows for the current page
-            var currentPage = 1;
-            $('.pagination-link').click(function() {
-                currentPage = parseInt($(this).attr('data-page'));
-                var startIndex = (currentPage - 1) * entriesPerPage;
-                var endIndex = startIndex + entriesPerPage;
-
-                visibleRows.hide();
-                visibleRows.slice(startIndex, endIndex).show();
-
-                // Highlight the current page and manage visibility of "<" and ">"
-                $('.pagination-link').removeClass('active');
-                $(this).addClass('active');
-                $('.pagination-prev').toggle(currentPage !== 1);
-                $('.pagination-next').toggle(currentPage !== totalPages);
-            });
-
-            // Previous page button functionality
-            $('.pagination-prev').click(function() {
-                if (currentPage > 1) {
-                    $('.pagination-link[data-page="' + (currentPage - 1) + '"]').click();
-                }
-            });
-
-            // Next page button functionality
-            $('.pagination-next').click(function() {
-                if (currentPage < totalPages) {
-                    $('.pagination-link[data-page="' + (currentPage + 1) + '"]').click();
-                }
-            });
-
-            // Trigger click on the first page link to display initial page
-            $('.pagination-link[data-page="1"]').click();
+        // Previous page button
+        if (totalPages > 1) {
+            paginationHtml += '<span class="pagination-prev">&lt;</span>';
         }
 
-        // Trigger change event on entries dropdown to apply default entries
-        $('#entries-per-page').change();
-    });
+        for (var i = 1; i <= totalPages; i++) {
+            paginationHtml += '<span class="pagination-link" data-page="' + i + '">' + i + '</span>';
+        }
+
+        // Next page button
+        if (totalPages > 1) {
+            paginationHtml += '<span class="pagination-next">&gt;</span>';
+        }
+
+        $('.pagination').html(paginationHtml);
+
+        // Show only the rows for the current page
+        currentPage = 1;
+        $('.pagination-link').click(function() {
+            currentPage = parseInt($(this).attr('data-page'));
+            var startIndex = (currentPage - 1) * entriesPerPage;
+            var endIndex = startIndex + entriesPerPage;
+
+            visibleRows.hide();
+            visibleRows.slice(startIndex, endIndex).show();
+
+            // Highlight the current page and manage visibility of "<" and ">"
+            $('.pagination-link').removeClass('active');
+            $(this).addClass('active');
+            $('.pagination-prev').toggle(currentPage !== 1);
+            $('.pagination-next').toggle(currentPage !== totalPages);
+        });
+
+        // Previous page button functionality
+        $('.pagination-prev').click(function() {
+            if (currentPage > 1) {
+                $('.pagination-link[data-page="' + (currentPage - 1) + '"]').click();
+            }
+        });
+
+        // Next page button functionality
+        $('.pagination-next').click(function() {
+            if (currentPage < totalPages) {
+                $('.pagination-link[data-page="' + (currentPage + 1) + '"]').click();
+            }
+        });
+
+        // Trigger click on the first page link to display initial page
+        $('.pagination-link[data-page="1"]').click();
+    }
+
+    // Trigger change event on entries dropdown to apply default entries
+    $('#entries-per-page').change();
+});
+
 </script>
 
 </body>

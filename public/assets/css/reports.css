@@ -13,6 +13,7 @@
     border-radius: 5px;
 }
 
+
 .generate-report-btn {
     background-color: #4CAF50;
     color: white;
@@ -27,27 +28,48 @@
 }
 
 .total-container {
-    text-align: end;
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start; /* Adjust alignment as needed */
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
 }
 
-.total-dropdown {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: #f9f9f9;
+.dark .total-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start; /* Adjust alignment as needed */
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #555555;
+    border-radius: 10px;
 }
 
+/* Total labels */
+.total-labels {
+    margin-right: 20px;
+    text-align: right;
+    font-weight: 500;
+}
 
-.total-label {
+/* Total numbers */
+.total-numbers {
+    text-align: right;
+}
+
+/* Individual label and number */
+.total-label,
+.total-number {
+    margin-bottom: 10px;
     font-size: 16px;
-    margin: 5px 0;
-    color: #555;
+    color: #333; /* Adjust color as needed */
 }
 
-.total-amount {
-    font-weight: 500px;
-    margin-left: 10px;
-    color: #333;
+.dark .total-label,
+.dark .total-number {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: white;
 }
-
